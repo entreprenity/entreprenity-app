@@ -1,66 +1,80 @@
-<div class="directory" ng-controller="DirectoryController as DirectorytCtrl">
-	<uib-tabset active="active">
-		<uib-tab index="0" heading="Members">
-			<label>Location: 
-				<span  class="nullable">
-					<select ng-model="selectedCity" ng-options="member.city for member in DirectorytCtrl.members">
-						<option value="">All Locations</option>
-					</select>
-				</span>
-			</label>
-			<ul class="membersDirectory">
-				<li ng-repeat="member in DirectorytCtrl.members | filter:selectedCity">
-					<div>
-						<img class="img-circle" ng-src="assets/img/{{member.avatar}}">
-						<h3>{{member.firstName + ' ' + member.lastName}}</h3>
-						<p>{{member.position}}</p>
-						<p>{{member.company}}</p>
-						<button>FOLLOW</button>
-					</div>
-				</li>
-			</ul>
-		</uib-tab>
-		<uib-tab index="1" heading="Companies">
-			<label>Location: 
-				<span  class="nullable">
-					<select ng-model="selectedCity2" ng-options="company.city for company in DirectorytCtrl.companies">
-						<option value="">All Locations</option>
-					</select>
-				</span>
-			</label>
-			<ul class="companiesDirectory">
-				<li ng-repeat="company in DirectorytCtrl.companies | filter:selectedCity2">
-					<div>
-						<img ng-src="assets/img/{{company.avatar}}">
-						<h3>{{company.companyName}}</h3>
-						<p>{{company.city}}</p>
-						<p>{{company.description}}</p>
-						<button>FOLLOW</button>
-					</div>
-				</li>
-			</ul>
-		</uib-tab>
-		<uib-tab index="2" heading="Events">
-			<label>Location: 
-				<span  class="nullable">
-					<select ng-model="selectedCity3" ng-options="event.city for event in DirectorytCtrl.events">
-						<option value="">All Locations</option>
-					</select>
-				</span>
-			</label>
-			<ul class="eventsDirectory">
-				<li ng-repeat="event in DirectorytCtrl.events | filter:selectedCity3">
-					<div>
-						<img ng-src="assets/img/{{event.image}}">
-						<h3>{{event.eventName}}</h3>
-						<p>{{event.date}}</p>
-						<p>{{event.time}}</p>
-						<p>{{event.city}}</p>
-						<p>{{event.description}}</p>
-						<button>JOIN</button>
-					</div>
-				</li>
-			</ul>
-		</uib-tab>
-	</uib-tabset>
+<div class="col-md-8 col-md-offset-2">
+	<div class="directory" ng-controller="DirectoryController as vm">
+		<uib-tabset active="active">
+			<uib-tab index="0" heading="Members">
+				<div class="col-md-3">
+					<label>Location: 
+						<span  class="nullable">
+							<select ng-model="selectedCity" ng-options="member.city for member in vm.members">
+								<option value="">All Locations</option>
+							</select>
+						</span>
+					</label>	
+				</div>
+				<div class="col-md-6">
+					<ul class="membersDirectory">
+						<li ng-repeat="member in vm.members | filter:selectedCity">
+							<div>
+								<img class="img-circle" ng-src="assets/img/{{member.avatar}}">
+								<h3>{{member.firstName + ' ' + member.lastName}}</h3>
+								<p>{{member.position}}</p>
+								<p>{{member.company}}</p>
+								<button>FOLLOW</button>
+							</div>
+						</li>
+					</ul>				
+				</div>
+			</uib-tab>
+			<uib-tab index="1" heading="Companies">
+				<div class="col-md-3">
+					<label>Location: 
+						<span  class="nullable">
+							<select ng-model="selectedCity2" ng-options="company.city for company in vm.companies">
+								<option value="">All Locations</option>
+							</select>
+						</span>
+					</label>
+				</div>
+				<div class="col-md-6">
+					<ul class="companiesDirectory">
+						<li ng-repeat="company in vm.companies | filter:selectedCity2">
+							<div>
+								<img ng-src="assets/img/{{company.avatar}}">
+								<h3>{{company.companyName}}</h3>
+								<p>{{company.city}}</p>
+								<p>{{company.description}}</p>
+								<button>FOLLOW</button>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</uib-tab>
+			<uib-tab index="2" heading="Events">
+				<div class="col-md-3">
+					<label>Location: 
+						<span  class="nullable">
+							<select ng-model="selectedCity3" ng-options="event.city for event in vm.events">
+								<option value="">All Locations</option>
+							</select>
+						</span>
+					</label>				
+				</div>
+				<div class="col-md-6">
+					<ul class="eventsDirectory">
+						<li ng-repeat="event in vm.events | filter:selectedCity3">
+							<div>
+								<img ng-src="assets/img/{{event.image}}">
+								<h3>{{event.eventName}}</h3>
+								<p>{{event.date}}</p>
+								<p>{{event.time}}</p>
+								<p>{{event.city}}</p>
+								<p>{{event.description}}</p>
+								<button>JOIN</button>
+							</div>
+						</li>
+					</ul>					
+				</div>
+			</uib-tab>
+		</uib-tabset>
+	</div>
 </div>

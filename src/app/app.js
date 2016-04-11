@@ -9,14 +9,30 @@
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
-		$routeProvider.
-		when('/directory', {
+		$routeProvider
+		.when('/login', {
+			controller: 'LoginController',
+			templateUrl: 'app/components/login/loginView.html',
+			controllerAs: 'vm'
+		})
+		.when('/register', {
+			controller: 'RegisterController',
+			templateUrl: 'app/components/register/registerView.html',
+			controllerAs: 'vm'
+		})
+		.when('/forgotpassword', {
+			controller: 'ForgotpasswordController',
+			templateUrl: 'app/components/forgotpassword/forgotpasswordView.html',
+			controllerAs: 'vm'
+		})
+		.when('/directory', {
+			controller: 'DirectoryController',
 			templateUrl: 'app/components/directory/directoryView.html',
-		}).
-		otherwise({
+			controllerAs: 'vm'
+		})
+		.otherwise({
 			redirectTo: '/directory'
 		});
 	}]);
-	/*asdasd*/
 
 })();
