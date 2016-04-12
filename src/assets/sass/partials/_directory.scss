@@ -1,3 +1,4 @@
+@import "compass/css3/border-radius";
 $orange-color-base: #e27325;
 
 $tabs-bg-color: #ffffff;
@@ -5,6 +6,16 @@ $tabs-text-color: black;
 $tabs-underline-color: $orange-color-base;
 
 .directory {
+	/*-- reset ul and li for directory --*/
+	ul {
+		list-style: none;
+	}
+	ul, li {
+		margin: 0;
+		padding: 0;
+	}
+	
+	/*-- Tabs --*/
 	.nav-tabs {
 		position: relative;
 		margin: 0 auto;
@@ -21,8 +32,7 @@ $tabs-underline-color: $orange-color-base;
 			text-align: center;
 			height: 100%;
 			width: 33%;
-			&.active {
-				border: 0px;
+			&.active, {
 				border-bottom: 5px solid $tabs-underline-color;
 			}
 			a {
@@ -36,10 +46,15 @@ $tabs-underline-color: $orange-color-base;
 				overflow: hidden;
 				transition: color .28s ease;
 				&:hover {
+					border: 0px;
 					background-color: darken($tabs-bg-color, 10%);
 					color: lighten($tabs-text-color, 20%);
 				}
+				&:focus, &:active {
+					border: 0px;
+				}
 				will-change: left, right;
+				@include border-radius(0px 0px, 0px 0px);
 
 				i {
 					display: none;
@@ -56,9 +71,58 @@ $tabs-underline-color: $orange-color-base;
 						display: none;
 					}
 				}
-
-
 			}
 		}
-	}	
+	}
+	
+	/*-- Members Directory --*/
+	.directory-members {
+		li {
+			text-align: center;
+			border: 1px solid black;
+			margin: 2px;
+			width: 32%;
+			float: left;
+			padding: 10px 15px;
+			
+			img{
+				width: 100px;
+				height: auto;
+			}
+		}
+	}
+	
+	/*-- Companies Directory --*/
+	.directory-companies {
+		li {
+			text-align: center;
+			border: 1px solid black;
+			margin: 2px;
+			width: 49%;
+			float: left;
+			padding: 10px 15px;
+			
+			img{
+				width: 100px;
+				height: auto;
+			}
+		}
+	}
+	
+	/*-- Events Directory --*/
+	.directory-events {
+		li {
+			text-align: center;
+			border: 1px solid black;
+			margin: 2px;
+			width: 49%;
+			float: left;
+			padding: 10px 15px;
+		}
+		
+		img{
+			width: 100%;
+			height: auto;
+		}
+	}
 }
