@@ -21,7 +21,7 @@
 	
 		.controller('DirectoryController', function(directoryService) {
 
-			var that = this;
+			var vm = this;
 			/*
 			countryService.getMembers().success(function(data) {
 				that.members = data;
@@ -35,7 +35,7 @@
 			*/
 		
 		//Dummy Data
-			that.members = [
+		vm.members = [
 				{
 					"id": "1",
 					"firstName": "Ken",
@@ -64,7 +64,7 @@
 					"city": "Pasig"
 				}];
 		
-		that.companies = [
+		vm.companies = [
 			{
 				"id": "1",
 				"companyName": "Cre8",
@@ -87,7 +87,7 @@
 				"city": "Pasig"
 			}];
 		
-		that.events = [
+		vm.events = [
 			{
 				"id": "1",
 				"eventName": "Coffee One",

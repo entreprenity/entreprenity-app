@@ -1,0 +1,64 @@
+$orange-color-base: #e27325;
+
+$tabs-bg-color: #ffffff;
+$tabs-text-color: black;
+$tabs-underline-color: $orange-color-base;
+
+.directory {
+	.nav-tabs {
+		position: relative;
+		margin: 0 auto;
+		width: 100%;
+		height: 48px;
+		border: 0px;
+		margin: 10px 0;
+
+		@media (max-width: 600px) {
+			height: 36px;
+		}
+
+		li {
+			text-align: center;
+			height: 100%;
+			width: 33%;
+			&.active {
+				border: 0px;
+				border-bottom: 5px solid $tabs-underline-color;
+			}
+			a {
+				background-color: $tabs-bg-color;
+				border: 0px;
+				color: $tabs-text-color;
+				display: block;
+				width: 100%;
+				height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				transition: color .28s ease;
+				&:hover {
+					background-color: darken($tabs-bg-color, 10%);
+					color: lighten($tabs-text-color, 20%);
+				}
+				will-change: left, right;
+
+				i {
+					display: none;
+
+					@media (max-width: 600px) {
+						display: block;
+					}
+				}
+
+				span {
+					display: block;
+
+					@media (max-width: 600px) {
+						display: none;
+					}
+				}
+
+
+			}
+		}
+	}	
+}
