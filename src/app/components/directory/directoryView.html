@@ -1,4 +1,4 @@
-<div class="col-md-8 col-md-offset-2">
+<div style="max-width: 1000px; margin: 0 auto;">
 	<div class="directory" ng-controller="DirectoryController as vm">
 		<uib-tabset active="active">
 			<uib-tab index="0" heading="Members">
@@ -11,16 +11,19 @@
 						</span>
 					</label>	
 				</div>
-				<div class="col-md-6">
-					<ul class="membersDirectory">
+				<div class="col-md-9">
+					<ul class="directory-members">
 						<li ng-repeat="member in vm.members | filter:selectedCity">
-							<div>
-								<img class="img-circle" ng-src="assets/img/{{member.avatar}}">
-								<h3>{{member.firstName + ' ' + member.lastName}}</h3>
-								<p>{{member.position}}</p>
-								<p>{{member.company}}</p>
-								<button>FOLLOW</button>
-							</div>
+							<a ng-href="/members/{{member.id}}">
+								<div>
+									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
+									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
+									<p>{{member.position}}</p>
+									<p>{{member.company}}</p>
+									<hr>
+									<button class="btn btn-primary">FOLLOW</button>
+								</div>
+							</a>
 						</li>
 					</ul>				
 				</div>
@@ -35,16 +38,21 @@
 						</span>
 					</label>
 				</div>
-				<div class="col-md-6">
-					<ul class="companiesDirectory">
+				<div class="col-md-9">
+					<ul class="directory-companies">
 						<li ng-repeat="company in vm.companies | filter:selectedCity2">
-							<div>
-								<img ng-src="assets/img/{{company.avatar}}">
-								<h3>{{company.companyName}}</h3>
-								<p>{{company.city}}</p>
-								<p>{{company.description}}</p>
-								<button>FOLLOW</button>
-							</div>
+							<a ng-href="/companies/{{company.id}}">
+								<div>
+									<div class="top-part">
+										<img ng-src="assets/img/companies/{{company.avatar}}">
+									</div>
+									<h3>{{company.companyName}}</h3>
+									<p>{{company.city}}</p>
+									<p>{{company.description}}</p>
+									<hr>
+									<button class="btn btn-primary">FOLLOW</button>
+								</div>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -59,18 +67,23 @@
 						</span>
 					</label>				
 				</div>
-				<div class="col-md-6">
-					<ul class="eventsDirectory">
+				<div class="col-md-9">
+					<ul class="directory-events">
 						<li ng-repeat="event in vm.events | filter:selectedCity3">
-							<div>
-								<img ng-src="assets/img/{{event.image}}">
-								<h3>{{event.eventName}}</h3>
-								<p>{{event.date}}</p>
-								<p>{{event.time}}</p>
-								<p>{{event.city}}</p>
-								<p>{{event.description}}</p>
-								<button>JOIN</button>
-							</div>
+							<a ng-href="/events/{{event.id}}">
+								<div>
+									<div class="top-part">
+										<img ng-src="assets/img/events/{{event.poster}}">
+									</div>
+									<h3>{{event.eventName}}</h3>
+									<p>{{event.date}}</p>
+									<p>{{event.time}}</p>
+									<p>{{event.city}}</p>
+									<p>{{event.description}}</p>
+									<hr>
+									<button class="btn btn-primary">JOIN</button>
+								</div>
+							</a>
 						</li>
 					</ul>					
 				</div>
