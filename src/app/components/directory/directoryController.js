@@ -3,25 +3,28 @@
 	angular
 		.module('entreprenityApp.directory', [])
 	
-		.factory('directoryService', function($http) {
-			var baseUrl = 'dataServices/';
-		
+		.factory('directoryService', function($http) 
+		{
+			var baseUrl = 'api/';
 			return {
 				getMembers: function() {
-					return $http.get(baseUrl + 'getMembers.php');
-				},
+					return $http.get(baseUrl + 'getMembers');
+				}
+				,
 				getCompanies: function() {
-					return $http.get(baseUrl + 'getCompanies.php');
+					return $http.get(baseUrl + 'getCompanies');
 				},
 				getEvents: function() {
-					return $http.get(baseUrl + 'getEvents.php');
+					return $http.get(baseUrl + 'getEvents');
 				},
+				
 			};
 		})
 	
 		.controller('DirectoryController', function(directoryService) {
 
 			var vm = this;
+<<<<<<< HEAD
 			/*
 			directoryService.getMembers().success(function(data) {
 				vm.members = data;
@@ -117,6 +120,19 @@
 				"date": "Apr 4, 2016",
 				"time": "8:00 - 10:00"
 			}];
+=======
+			
+			directoryService.getMembers().success(function(data) {
+				vm.members =data;
+			});
+			
+			directoryService.getCompanies().success(function(data) {
+				vm.companies = data;
+			});
+			directoryService.getEvents().success(function(data) {
+				vm.events = data;
+			});
+>>>>>>> refs/remotes/origin/master
 			
 		});
 		
