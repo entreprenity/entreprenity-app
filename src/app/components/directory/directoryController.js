@@ -23,18 +23,20 @@
 
 			var vm = this;
 			/*
-			countryService.getMembers().success(function(data) {
-				that.members = data;
+			directoryService.getMembers().success(function(data) {
+				vm.members = data;
 			});
-			countryService.getCompanies().success(function(data) {
-				that.companies = data;
+			directoryService.getCompanies().success(function(data) {
+				vm.companies = data;
 			});
-			countryService.getEvents().success(function(data) {
-				that.events = data;
+			directoryService.getEvents().success(function(data) {
+				vm.events = data;
 			});
 			*/
+			
 		
 		//Dummy Data
+	
 		vm.members = [
 				{
 					"id": "1",
@@ -117,6 +119,7 @@
 			}];
 			
 		});
+		
 		
 
 })();
