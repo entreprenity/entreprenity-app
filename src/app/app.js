@@ -31,7 +31,7 @@
 			controllerAs: 'vm'
 		})
 		.otherwise({
-			redirectTo: '/directory'
+			redirectTo: '/login'
 		});
 	}]);
 
