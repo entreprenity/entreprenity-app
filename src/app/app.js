@@ -5,6 +5,7 @@
 		'ngAnimate',
 		'ngTouch',
 		'ui.bootstrap',
+		'entreprenityApp.login',
 		'entreprenityApp.directory'
 	])
 	
