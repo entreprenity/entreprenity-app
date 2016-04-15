@@ -1,10 +1,20 @@
 @charset "UTF-8";
+/*** Colors ***/
+/*black*/
+/*orange*/
+/*green*/
+/*red*/
+/*blue*/
+/*black*/
+/*darkgray*/
+/*lightgray*/
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300);
 /* line 9, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_normalize.scss */
 html {
   font-family: sans-serif;
@@ -1736,12 +1746,12 @@ textarea {
 
 /* line 48, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_scaffolding.scss */
 a {
-  color: #337ab7;
+  color: #1795aa;
   text-decoration: none;
 }
 /* line 52, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_scaffolding.scss */
 a:hover, a:focus {
-  color: #23527c;
+  color: #0e5a67;
   text-decoration: underline;
 }
 /* line 58, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_scaffolding.scss */
@@ -4740,7 +4750,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 /* line 96, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_buttons.scss */
 .btn-link {
-  color: #337ab7;
+  color: #1795aa;
   font-weight: normal;
   border-radius: 0;
 }
@@ -4756,7 +4766,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 }
 /* line 115, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_buttons.scss */
 .btn-link:hover, .btn-link:focus {
-  color: #23527c;
+  color: #0e5a67;
   text-decoration: underline;
   background-color: transparent;
 }
@@ -5460,7 +5470,7 @@ tbody.collapse.in {
 /* line 46, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_navs.scss */
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
   background-color: #eeeeee;
-  border-color: #337ab7;
+  border-color: #1795aa;
 }
 /* line 59, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_navs.scss */
 .nav .nav-divider {
@@ -6290,7 +6300,7 @@ tbody.collapse.in {
   padding: 6px 12px;
   line-height: 1.42857143;
   text-decoration: none;
-  color: #337ab7;
+  color: #1795aa;
   background-color: #fff;
   border: 1px solid #ddd;
   margin-left: -1px;
@@ -6313,7 +6323,7 @@ tbody.collapse.in {
 .pagination > li > span:hover,
 .pagination > li > span:focus {
   z-index: 2;
-  color: #23527c;
+  color: #0e5a67;
   background-color: #eeeeee;
   border-color: #ddd;
 }
@@ -6551,7 +6561,7 @@ a.label:hover, a.label:focus {
 }
 /* line 41, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_badges.scss */
 .list-group-item.active > .badge, .nav-pills > .active > a > .badge {
-  color: #337ab7;
+  color: #1795aa;
   background-color: #fff;
 }
 /* line 47, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_badges.scss */
@@ -6657,7 +6667,7 @@ a.badge:hover, a.badge:focus {
 a.thumbnail:hover,
 a.thumbnail:focus,
 a.thumbnail.active {
-  border-color: #337ab7;
+  border-color: #1795aa;
 }
 
 /* line 9, ../../../../../../RailsInstaller/Ruby2.2.0/lib/ruby/gems/2.2.0/gems/bootstrap-sass-3.3.6/assets/stylesheets/bootstrap/_alerts.scss */
@@ -8791,6 +8801,77 @@ button.close {
     display: none !important;
   }
 }
+@font-face {
+  font-family: 'HelveticaNeueThin';
+  src: url("../fonts/HelveticaNeueLTStd-Th.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/HelveticaNeueLTStd-Th.eot?#iefix") format("embedded-opentype"), url("../fonts/HelveticaNeueLTStd-Th.woff2") format("woff2"), url("../fonts/HelveticaNeueLTStd-Th.woff") format("woff"), url("../fonts/HelveticaNeueLTStd-Th.ttf") format("truetype"), url("../fonts/HelveticaNeueLTStd-Th.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+}
+/* line 12, ../sass/partials/_global.scss */
+body {
+  padding-top: 60px;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* line 6, ../sass/partials/_button.scss */
+.btn {
+  padding: 6px 32px;
+  -moz-border-radius: 0px 0px / 0px 0px;
+  -webkit-border-radius: 0px 0px;
+  border-radius: 0px 0px / 0px 0px;
+  font-size: 14px;
+}
+
+/* line 12, ../sass/partials/_button.scss */
+.btn-default {
+  border-color: #f29b13 !important;
+  color: #f29b13;
+  background-color: transparent;
+}
+/* line 17, ../sass/partials/_button.scss */
+.btn-default:hover {
+  color: #fff;
+  background-color: #f29b13;
+  transition: background 100ms ease-in-out;
+}
+
+/* line 25, ../sass/partials/_button.scss */
+.btn-primary {
+  border-color: #f29b13 !important;
+  background-color: #f29b13;
+  color: #fff;
+  border-width: 2px;
+}
+/* line 30, ../sass/partials/_button.scss */
+.btn-primary:hover {
+  color: #f29b13;
+  background-color: transparent !important;
+  transition: background 100ms ease-in-out;
+}
+
+/* line 1, ../sass/partials/_login.scss */
+#loginPage {
+  width: 100%;
+  height: 100vh;
+  background: #00ff00 url("../img/login-bg.jpg") no-repeat fixed center;
+  text-align: center;
+  padding-top: 200px;
+}
+/* line 8, ../sass/partials/_login.scss */
+#loginPage .formContainer {
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 400px;
+}
+/* line 14, ../sass/partials/_login.scss */
+#loginPage .formContainer img {
+  width: 100px;
+  height: auto;
+  margin: 20px 0px;
+}
+
 /* line 8, ../sass/partials/_directory.scss */
 .directory {
   /*-- reset ul and li for directory --*/
@@ -8798,6 +8879,7 @@ button.close {
   /*-- Members Directory --*/
   /*-- Companies Directory --*/
   /*-- Events Directory --*/
+  /*-- Side Filters and Search --*/
 }
 /* line 10, ../sass/partials/_directory.scss */
 .directory ul {
@@ -8808,36 +8890,42 @@ button.close {
   margin: 0;
   padding: 0;
 }
-/* line 19, ../sass/partials/_directory.scss */
+/* line 17, ../sass/partials/_directory.scss */
+.directory a {
+  text-decoration: none;
+  color: inherit;
+}
+/* line 23, ../sass/partials/_directory.scss */
 .directory .nav-tabs {
   position: relative;
-  margin: 0 auto;
   width: 100%;
-  height: 48px;
+  height: 36px;
   border: 0px;
   margin: 10px 0;
+  padding-left: 28%;
+  padding-right: 20px;
 }
-@media (max-width: 600px) {
-  /* line 19, ../sass/partials/_directory.scss */
+@media (max-width: 1000px) {
+  /* line 23, ../sass/partials/_directory.scss */
   .directory .nav-tabs {
-    height: 36px;
+    padding: 0px 20px;
   }
 }
-/* line 31, ../sass/partials/_directory.scss */
+/* line 37, ../sass/partials/_directory.scss */
 .directory .nav-tabs li {
   text-align: center;
   height: 100%;
   width: 33%;
 }
-/* line 35, ../sass/partials/_directory.scss */
+/* line 41, ../sass/partials/_directory.scss */
 .directory .nav-tabs li.active {
-  border-bottom: 5px solid #e27325;
+  border-bottom: 5px solid #f29b13;
 }
-/* line 38, ../sass/partials/_directory.scss */
+/* line 44, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a {
   background-color: #ffffff;
   border: 0px;
-  color: black;
+  color: #202020;
   display: block;
   width: 100%;
   height: 100%;
@@ -8849,75 +8937,83 @@ button.close {
   -webkit-border-radius: 0px 0px;
   border-radius: 0px 0px / 0px 0px;
 }
-/* line 48, ../sass/partials/_directory.scss */
+/* line 54, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:hover {
   border: 0px;
   background-color: #e6e6e6;
-  color: #333333;
+  color: #535353;
 }
-/* line 53, ../sass/partials/_directory.scss */
+/* line 59, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:focus, .directory .nav-tabs li a:active {
   border: 0px;
 }
-/* line 59, ../sass/partials/_directory.scss */
+/* line 65, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a i {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 59, ../sass/partials/_directory.scss */
+  /* line 65, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a i {
     display: block;
   }
 }
-/* line 67, ../sass/partials/_directory.scss */
+/* line 73, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a span {
   display: block;
 }
 @media (max-width: 600px) {
-  /* line 67, ../sass/partials/_directory.scss */
+  /* line 73, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a span {
     display: none;
   }
 }
-/* line 80, ../sass/partials/_directory.scss */
+/* line 86, ../sass/partials/_directory.scss */
 .directory .directory-members li {
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid #b5b5b5;
   margin: 2px;
   width: 32%;
   float: left;
   padding: 10px 15px;
 }
-/* line 88, ../sass/partials/_directory.scss */
+/* line 94, ../sass/partials/_directory.scss */
 .directory .directory-members li img {
   width: 100px;
   height: auto;
 }
-/* line 97, ../sass/partials/_directory.scss */
+/* line 103, ../sass/partials/_directory.scss */
 .directory .directory-companies li {
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid #b5b5b5;
   margin: 2px;
   width: 49%;
   float: left;
   padding: 10px 15px;
 }
-/* line 105, ../sass/partials/_directory.scss */
+/* line 111, ../sass/partials/_directory.scss */
 .directory .directory-companies li img {
   width: 100px;
   height: auto;
 }
-/* line 114, ../sass/partials/_directory.scss */
+/* line 120, ../sass/partials/_directory.scss */
 .directory .directory-events li {
   text-align: center;
-  border: 1px solid black;
+  border: 1px solid #b5b5b5;
   margin: 2px;
   width: 49%;
   float: left;
-  padding: 10px 15px;
 }
-/* line 123, ../sass/partials/_directory.scss */
-.directory .directory-events img {
+/* line 127, ../sass/partials/_directory.scss */
+.directory .directory-events li img {
   width: 100%;
   height: auto;
+}
+/* line 132, ../sass/partials/_directory.scss */
+.directory .directory-events li a {
+  padding: 10px 15px;
+}
+/* line 140, ../sass/partials/_directory.scss */
+.directory .side-filters {
+  border: 1px solid #b5b5b5;
+  padding: 15px;
 }
