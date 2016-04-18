@@ -1,0 +1,36 @@
+@import "compass/css3/border-radius";
+
+//Button Variables
+$secondary-color: $secondary-color; //orange
+
+.btn {
+	padding: 6px 32px;
+	@include border-radius(0px 0px, 0px 0px);
+	font-size: 14px;
+}
+// Button Default Style
+.btn-default {
+	border-color: $secondary-color !important;
+	color: $secondary-color;
+	background-color: transparent;
+	
+	&:hover {
+		color: #fff;
+		background-color: $secondary-color;
+		transition: background 100ms ease-in-out;
+	}
+}
+
+// Button Default Style
+.btn-primary {
+	border-color: $secondary-color !important;
+	background-color: $secondary-color;
+	color: #fff;
+	border-width: 2px;
+	&:hover {
+		color: $secondary-color;
+		background-color: transparent !important;
+		
+		transition: background 100ms ease-in-out;
+	}
+}
