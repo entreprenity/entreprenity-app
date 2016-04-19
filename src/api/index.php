@@ -61,7 +61,75 @@ Flight::route('/forgotpassword', function()
 
 });
 
+//Function to get user session
+//April 18,2016
+Flight::route('/get_user_session', function()
+{
+   enable_cors();	
+	$returnarray=get_user_session();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//Function to get user session
+//April 19,2016
+Flight::route('/getLocations', function()
+{
+   enable_cors();	
+	$returnarray=getLocations_dropdown();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
 Flight::start();
+
+//Function to fetch location list (centers)
+//April 19,2016
+function getLocations_dropdown()
+{
+	$data= array();	
+	$qry="SELECT  id,location_desc FROM location_info";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data[$i]['id']				=	$row['id'];
+			$data[$i]['location_desc']	=	$row['location_desc'];
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']				=	"";
+		$data[$i]['location_desc']	=	"";
+   }
+	return $data;	
+}
+
+
+//Function to get session values
+//April 18,2016
+function get_user_session()
+{
+	if (!isset($_SESSION))
+	{    
+	    session_start();
+	}    
+	
+	$sessions = array();
+			
+	$sessions['login_token'] 	= $_SESSION['login_token'];
+	$sessions['firstname'] 		= $_SESSION['firstname'];
+	$sessions['lastname'] 		= $_SESSION['lastname'];
+	$sessions['id'] 				= $_SESSION['id'];
+	
+	return $sessions;
+}
 
 
 //Function for forgot password feature
@@ -76,12 +144,14 @@ function forgot_password()
 function login()
 {
 	$data= array();
+	/*
 	$content=json_decode(file_get_contents('php://input'));
 	$ncontent=(array)	$content;
-	//$username='kurt@petstudio.com';
-	//$password=123456;
 	$username=validate_input($ncontent['username']);
 	$password=validate_input($ncontent['password']);
+	*/
+	$username=validate_input($_POST['username']);
+	$password=validate_input($_POST['password']);
 	
 	$qry="SELECT * FROM client_info where email='".$username."' AND password='".md5($password)."' ";
    $res=getData($qry);
@@ -91,17 +161,21 @@ function login()
    	while($row=mysqli_fetch_array($res))
       {
       	$data['firstname']	=	$row['firstname'];
-			$data['lastName']	=	$row['lastname'];
+			$data['lastname']		=	$row['lastname'];
 			$data['id']				=	$row['clientid'];
-			$data['success'] = true;
-			$data['msg'] = 'Valid User';
+			$data['success'] 		= true;
+			$data['msg'] 			= 'Valid User';
 			
 			//generate a client token
 			$client_session_token=generate_login_token();
 			
-			//session_start();
 			//set session
-			
+			session_start();
+			$_SESSION['id'] 				= $data['id'];
+			$_SESSION['firstname'] 		= $data['firstname'];
+			$_SESSION['lastname'] 		= $data['lastname'];
+			$_SESSION['login_token'] 	= $client_session_token;
+
 			set_client_session_token($client_session_token,$row['clientid']);
 			
 		}
@@ -148,9 +222,11 @@ function generate_login_token()
 function getMembers()
 {
 	$data= array();	
-	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,CI.city 
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM client_info AS CI 
-	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid";
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location 
+	      LIMIT 50";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -158,13 +234,69 @@ function getMembers()
    {
    	while($row=mysqli_fetch_array($res))
       {
-      	$data[$i]['id']				=	$row['clientid'];
-			$data[$i]['firstName']		=	$row['firstname'];
-			$data[$i]['lastName']		=	$row['lastname'];
-			$data[$i]['avatar']			=	$row['avatar'];
-			$data[$i]['position']		=	$row['designation'];
-			$data[$i]['companyName']	=	$row['company_name'];
-			$data[$i]['city']				=	$row['city'];
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	"img-member.jpg";
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+			
+			if(!empty($row['company_name']))
+      	{
+      		$data[$i]['companyName']	=	$row['company_name'];
+      	}
+      	else
+      	{
+      		$data[$i]['companyName']	=	"";
+      	}
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
 			$i++;
       }	
    }
@@ -188,7 +320,9 @@ function getMembers()
 function getCompanies()
 {	
 	$data= array();	
-	$qry="SELECT  id,clientid,company_name,description,avatar,city FROM company_profiles";
+	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,LI.location_desc AS city 
+			FROM company_profiles AS CP
+			LEFT JOIN location_info as LI ON LI.id=CP.client_location ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count

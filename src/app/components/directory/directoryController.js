@@ -16,8 +16,21 @@
 				getEvents: function() {
 					return $http.get(baseUrl + 'getEvents');
 				},	
+				getLocations:function() {
+					return $http.get(baseUrl + 'getLocations');
+				}
 			};
 		})
+	
+		/*
+		.factory('Session', function($http) 
+		{   
+			 var baseUrl = 'api/'; 
+		    return $http.get(baseUrl + 'get_user_session').then(function(result) {       
+		        return result.data; 
+		    });
+		}) 
+		*/
 	
 		.factory('Members', function(directoryService) {
 			var Members = function() {
@@ -93,12 +106,21 @@
 			};
 			return Events;
 		})
-	
-		.controller('DirectoryController', function($scope, Members, Companies, Events) {
-		
-			$scope.members = new Members();
-			$scope.companies = new Companies();
-			$scope.events = new Events();
 
-		});
+		.controller('DirectoryController', function(Members, Companies, Events, directoryService) {
+			/*
+			Session.then(function(response){
+				$rootScope.session = response;
+			});
+			*/
+			var vm = this;
+		
+			vm.members = new Members();
+			vm.companies = new Companies();
+			vm.events = new Events();
+		
+			directoryService.getLocations().success(function(data) {
+				vm.location = data;
+			});
+		});			
 })();
