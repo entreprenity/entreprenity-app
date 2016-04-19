@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container" style="padding-top:20px;padding-bottom:20px;">
 		<div class="navbar-header" style="pa">
@@ -18,55 +18,31 @@
 	</div>
 </div>
 
+
 <div id="loginPage">
 	<div class="container">
 		<div class="formContainer">
 			<img class="img-circle" ng-src="assets/img/entreprenity-icon.png">
 			<form name="loginForm" ng-submit="vm.login(loginForm.$valid)" novalidate>
+
 				<div class="form-group" ng-class="{ 'has-error': loginForm.username.$dirty && loginForm.username.$error.required }">
 					<input type="text" name="username" id="username" class="form-control" ng-model="vm.username" placeholder="Username" required />
-					<span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" class="help-block">Username is required</span>
+					<span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" class="help-block">{{getError(loginForm.username.$error, 'username')}}</span>
 				</div>
+
 				<div class="form-group" ng-class="{ 'has-error': loginForm.password.$dirty && loginForm.password.$error.required }">
 					<input type="password" name="password" id="password" class="form-control" ng-model="vm.password" placeholder="Password" required />
-					<span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">Password is required</span>
+					<span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">{{getError(loginForm.password.$error, 'password')}}</span>
 				</div>
+
 				<div class="form-actions">
-					<button type="submit" class="btn btn-primary">LOGIN</button>
+					<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" class="btn btn-primary">LOGIN</button>
 					<br>
-					<p style="display:none;"><a href="#/forgotpassword">Forgot Password</a></p>
-					<p style="display:none;"><a href="#/register">Register</a></p>
+					<a href="#/register" class="btn btn-link">Register</a>
+					<a href="#/forgotpassword" class="btn btn-link">Forgot Password</a>
 				</div>
+
 			</form>
 		</div>
 	</div>
 </div>
-=======
-<div class="col-md-6 col-md-offset-3">
-		<h2>Login</h2>
-	<form name="loginForm" ng-submit="vm.login(loginForm.$valid)" novalidate>
-	
-			<div class="form-group" ng-class="{ 'has-error': loginForm.username.$dirty && loginForm.username.$error.required }">
-				<label for="username">Email</label>
-				<input type="email" name="username" id="username" class="form-control" ng-model="vm.username" required />
-				<span ng-show="loginForm.username.$dirty && loginForm.password.$error.required" class="help-block">
-					{{getError(loginForm.username.$error, 'username')}}
-				</span>
-			</div>
-			
-			<div class="form-group" ng-class="{ 'has-error': loginForm.password.$dirty && loginForm.password.$error.required }">
-				<label for="password">Password</label>
-				<input type="password" name="password" id="password" class="form-control" data-ng-minlength="4" ng-model="vm.password" required />
-				<span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">
-				{{getError(loginForm.password.$error, 'password')}}
-				</span>
-			</div>
-			
-			<div class="form-actions">
-				<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" class="btn btn-primary">Login</button>
-				<a href="#/register" class="btn btn-link">Register</a>
-				<a href="#/forgotpassword" class="btn btn-link">Forgot Password</a>
-			</div>
-	</form>
-</div>
->>>>>>> refs/remotes/origin/dominic-branch
