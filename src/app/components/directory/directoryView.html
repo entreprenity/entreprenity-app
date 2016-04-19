@@ -36,7 +36,7 @@
 						<li ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
 							<a ng-href="/members/{{member.id}}">
 								<div>
-									<img class="img-circle" ng-src="assets/img/{{member.avatar}}">
+									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
 									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
 									<p>{{member.position}}</p>
 									<p>{{member.companyName}}</p>
@@ -72,7 +72,7 @@
 							<a ng-href="/companies/{{company.id}}">
 								<div>
 									<div class="top-part">
-										<img ng-src="assets/img/{{company.avatar}}">
+										<img ng-src="assets/img/companies/{{company.avatar}}">
 									</div>
 									<h3>{{company.companyName}}</h3>
 									<p>{{company.city}}</p>
@@ -105,7 +105,7 @@
 				<div class="col-md-9">
 					<ul class="directory-events" infinite-scroll='vm.events.nextPage()' infinite-scroll-disabled='vm.events.busy'  infinite-scroll-distance='0'>
 						<li ng-repeat="event in vm.events.items | filter:searchedEvent | filter:selectedCity3">
-							<img ng-src="assets/img/{{event.poster}}">
+							<img ng-src="assets/img/events/{{event.poster}}">
 							<a ng-href="/events/{{event.id}}">
 								<h3>{{event.eventName}}</h3>
 								<p>{{event.date}}</p>
