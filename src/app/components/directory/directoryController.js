@@ -17,14 +17,30 @@
 				getEvents: function() {
 					return $http.get(baseUrl + 'getEvents');
 				},
+				getLocations:function() {
+					return $http.get(baseUrl + 'getLocations');
+				}
 				
 			};
 		})
-	
-		.controller('DirectoryController', function(directoryService) {
+		/*
+		.factory('Session', function($http) 
+		{   
+			 var baseUrl = 'api/'; 
+		    return $http.get(baseUrl + 'get_user_session').then(function(result) {       
+		        return result.data; 
+		    });
+		}) 
+		*/
+		//'$rootScope', 'Session', 
+		.controller('DirectoryController',function(directoryService) {
 
 			var vm = this;
-			
+			/*
+			Session.then(function(response){
+       		 $rootScope.session = response;
+    		});
+    		*/
 			directoryService.getMembers().success(function(data) {
 				vm.members =data;
 			});
@@ -36,5 +52,9 @@
 				vm.events = data;
 			});
 			
+			directoryService.getLocations().success(function(data) {
+				vm.locations = data;
+			});
 		});
+				
 })();
