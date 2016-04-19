@@ -19,19 +19,17 @@
 				// check to make sure the form is completely valid
 				if (isValid) 
 				{
-					//alert('our form is amazing');
 				    $http({
 				      method: 'post',
 				      url: baseUrl+'login',
-				      data: $scope.vm,
+				      data: $.param($scope.vm),
 				      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 				    })
 				    .success(function(data, status, headers, config) 
 				    {
 				    	if(data.success)
 				    	{
-				    		//alert('valid');
-				    		alert(data.msg);
+				    		//alert(data.msg);
 				    		$location.path('/directory');
 				    	}
 				    	else
@@ -45,22 +43,6 @@
 		    			//alert('invalid 2');
 		    			alert(data.msg);
 		    		});
-
-				    /*
-				     .success(function(data) 
-				     {
-			            if(data.success)
-					    	{
-					    		alert('valid');
-					    		alert(data.message);
-					    	}
-					    	else
-					    	{
-					    		alert('invalid 1');
-					    		alert(data.message);
-					    	}
-		          });				    
-		    		*/
 				}
 			};
 			
