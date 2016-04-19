@@ -106,9 +106,24 @@
 			};
 			return Events;
 		})
+	
+	/*
+		.factory('Location', function(directoryService) {
+			var Location = function() {
+				this.items = [];
+			};
+			
+			directoryService.getLocations().success(function(data) {
+				this.items = data;
+				console.log(this.items);
+			}.bind(this));
+
+			return Location;
+		})
+		*/
 
 		.controller('DirectoryController', function(Members, Companies, Events, directoryService) {
-			/*
+			/*, 
 			Session.then(function(response){
 				$rootScope.session = response;
 			});
@@ -118,9 +133,11 @@
 			vm.members = new Members();
 			vm.companies = new Companies();
 			vm.events = new Events();
+			//vm.location = new Location();
 		
 			directoryService.getLocations().success(function(data) {
-				vm.location = data;
-			});
+				vm.locations = data;
+				console.log(vm.location);
+			})
 		});			
 })();
