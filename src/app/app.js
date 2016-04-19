@@ -5,10 +5,12 @@
 		'ngAnimate',
 		'ngTouch',
 		'ui.bootstrap',
+		'infinite-scroll',
 		'entreprenityApp.login',
 		'entreprenityApp.directory'
+		
 	])
-	
+	 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 		.when('/login', {
@@ -35,5 +37,7 @@
 			redirectTo: '/login'
 		});
 	}]);
+	
+	angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
 
 })();

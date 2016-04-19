@@ -23,7 +23,7 @@
 						</label>
 						<label>LOCATION 
 							<div>
-								<select ng-model="selectedCity" ng-options="member.city for member in vm.members">
+								<select ng-model="selectedCity" ng-options="member.city for member in members.items">
 									<option value="">All Locations</option>
 								</select>
 							</div>
@@ -31,8 +31,8 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-members">
-						<li ng-repeat="member in vm.members | filter:searchedMember | filter:selectedCity ">
+					<ul class="directory-members" infinite-scroll='members.nextPage()' infinite-scroll-disabled='members.busy'  infinite-scroll-distance='2'>
+						<li ng-repeat="member in members.items | filter:searchedMember | filter:selectedCity">
 							<a ng-href="/members/{{member.id}}">
 								<div>
 									<img class="img-circle" ng-src="assets/img/{{member.avatar}}">
@@ -44,7 +44,8 @@
 								</div>
 							</a>
 						</li>
-					</ul>				
+						<div ng-show='members.busy'>Loading data...</div>
+					</ul>		
 				</div>
 			</uib-tab>
 			<uib-tab index="1" heading="Companies">
@@ -55,7 +56,7 @@
 						</label>
 						<label>LOCATION  
 							<div>
-								<select ng-model="selectedCity2" ng-options="company.city for company in vm.companies">
+								<select ng-model="selectedCity2" ng-options="company.city for company in companies.items">
 									<option value="">All Locations</option>
 								</select>
 							</div>
@@ -63,8 +64,8 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-companies">
-						<li ng-repeat="company in vm.companies | filter:searchedCompany | filter:selectedCity2">
+					<ul class="directory-companies" infinite-scroll='companies.nextPage()' infinite-scroll-disabled='companies.busy'  infinite-scroll-distance='0'>
+						<li ng-repeat="company in companies.items | filter:searchedCompany | filter:selectedCity2">
 							<a ng-href="/companies/{{company.id}}">
 								<div>
 									<div class="top-part">
@@ -78,6 +79,7 @@
 								</div>
 							</a>
 						</li>
+						<div ng-show='companies.busy'>Loading data...</div>
 					</ul>
 				</div>
 			</uib-tab>
