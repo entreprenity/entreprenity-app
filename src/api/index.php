@@ -83,7 +83,125 @@ Flight::route('/getLocations', function()
 });
 
 
+//Route to fetch new members
+// April 21,2015
+Flight::route('/getNewMembers', function()
+{
+   enable_cors();	
+	$returnarray=getNewMembers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
+
+
+//Function to fetch newly registered members list
+//April 21,2016
+function getNewMembers()
+{
+	$today=date('Y-m-d H:i:s');
+	$to_day = new DateTime($today);
+	$to_day->modify('-14 day');
+	$fromday= $to_day->format('Y-m-d H:i:s');
+	
+	$data= array();	
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM client_info AS CI 
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."'
+	      ORDER BY CI.clientid DESC 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	"img-member.jpg";
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+			
+			if(!empty($row['company_name']))
+      	{
+      		$data[$i]['companyName']	=	$row['company_name'];
+      	}
+      	else
+      	{
+      		$data[$i]['companyName']	=	"";
+      	}
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']				=	"";
+		$data[$i]['firstName']		=	"";
+		$data[$i]['lastName']		=	"";
+		$data[$i]['avatar']			=	"";
+		$data[$i]['position']		=	"";
+		$data[$i]['companyName']	=	"";
+		$data[$i]['city']				=	"";
+   }
+	return $data;
+
+}
+
 
 //Function to fetch location list (centers)
 //April 19,2016
@@ -294,12 +412,41 @@ function generate_login_token()
 // April 13,2015
 function getMembers()
 {
+	$records=1;
+	$start=0;
+	$limit=12;
+	$end=12;
+	if(isset($_GET['page']))
+	{
+		$records=$_GET['page'];
+		if($records==1)
+		{
+			$start=0;
+			$end=12;
+		}
+		else if($records==1)
+		{
+			$start=$limit+$records;
+			$end=$end+$limit;
+		}
+		else
+		{
+			$start=($limit*$records)+1;
+			$end=$limit*$records;
+		}
+		
+	}
+	
+	
+	$limit=$start * $records;
 	$data= array();	
 	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM client_info AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
-	      LEFT JOIN location_info as LI ON LI.id=CP.client_location 
-	      LIMIT 50";
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      ORDER BY CI.clientid ASC 
+	      LIMIT $start ,$end
+	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
