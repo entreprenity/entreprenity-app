@@ -7,10 +7,10 @@
 		'ui.bootstrap',
 		'infinite-scroll',
 		'entreprenityApp.login',
-		'entreprenityApp.directory'
-		
+		'entreprenityApp.directory',
+		'entreprenityApp.forgotpassword'
 	])
-	 
+	
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 		.when('/login', {
