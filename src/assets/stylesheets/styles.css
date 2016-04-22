@@ -8833,12 +8833,10 @@ ul, li {
 
 /* line 29, ../sass/partials/_global.scss */
 a {
-  text-decoration: none;
-  color: inherit;
   cursor: pointer;
 }
 
-/* line 35, ../sass/partials/_global.scss */
+/* line 33, ../sass/partials/_global.scss */
 .uppercase {
   text-transform: uppercase;
 }
@@ -8909,7 +8907,12 @@ a {
   /*-- Events Directory --*/
   /*-- Side Filters and Search --*/
 }
-/* line 12, ../sass/partials/_directory.scss */
+/* line 9, ../sass/partials/_directory.scss */
+.directory a {
+  text-decoration: none;
+  color: inherit;
+}
+/* line 14, ../sass/partials/_directory.scss */
 .directory .nav-tabs {
   position: relative;
   width: 100%;
@@ -8920,22 +8923,22 @@ a {
   padding-right: 20px;
 }
 @media (max-width: 1000px) {
-  /* line 12, ../sass/partials/_directory.scss */
+  /* line 14, ../sass/partials/_directory.scss */
   .directory .nav-tabs {
     padding: 0px 20px;
   }
 }
-/* line 26, ../sass/partials/_directory.scss */
+/* line 28, ../sass/partials/_directory.scss */
 .directory .nav-tabs li {
   text-align: center;
   height: 100%;
   width: 33%;
 }
-/* line 30, ../sass/partials/_directory.scss */
+/* line 32, ../sass/partials/_directory.scss */
 .directory .nav-tabs li.active {
   border-bottom: 5px solid #f29b13;
 }
-/* line 33, ../sass/partials/_directory.scss */
+/* line 35, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a {
   background-color: #ffffff;
   border: 0px;
@@ -8951,41 +8954,41 @@ a {
   -webkit-border-radius: 0px 0px;
   border-radius: 0px 0px / 0px 0px;
 }
-/* line 43, ../sass/partials/_directory.scss */
+/* line 45, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:hover {
   border: 0px;
   background-color: #e6e6e6;
   color: #535353;
 }
-/* line 48, ../sass/partials/_directory.scss */
+/* line 50, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:focus, .directory .nav-tabs li a:active {
   border: 0px;
 }
-/* line 54, ../sass/partials/_directory.scss */
+/* line 56, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a i {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 54, ../sass/partials/_directory.scss */
+  /* line 56, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a i {
     display: block;
   }
 }
-/* line 62, ../sass/partials/_directory.scss */
+/* line 64, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a span {
   display: block;
 }
 @media (max-width: 600px) {
-  /* line 62, ../sass/partials/_directory.scss */
+  /* line 64, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a span {
     display: none;
   }
 }
-/* line 73, ../sass/partials/_directory.scss */
+/* line 75, ../sass/partials/_directory.scss */
 .directory select {
   max-width: 100%;
 }
-/* line 77, ../sass/partials/_directory.scss */
+/* line 79, ../sass/partials/_directory.scss */
 .directory .directory-members li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -8994,12 +8997,12 @@ a {
   float: left;
   padding: 10px 15px;
 }
-/* line 85, ../sass/partials/_directory.scss */
+/* line 87, ../sass/partials/_directory.scss */
 .directory .directory-members li img {
   width: 100px;
   height: auto;
 }
-/* line 94, ../sass/partials/_directory.scss */
+/* line 96, ../sass/partials/_directory.scss */
 .directory .directory-companies li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -9008,12 +9011,12 @@ a {
   float: left;
   padding: 10px 15px;
 }
-/* line 102, ../sass/partials/_directory.scss */
+/* line 104, ../sass/partials/_directory.scss */
 .directory .directory-companies li img {
   width: 100px;
   height: auto;
 }
-/* line 111, ../sass/partials/_directory.scss */
+/* line 113, ../sass/partials/_directory.scss */
 .directory .directory-events li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -9021,16 +9024,16 @@ a {
   width: 49%;
   float: left;
 }
-/* line 118, ../sass/partials/_directory.scss */
+/* line 120, ../sass/partials/_directory.scss */
 .directory .directory-events li img {
   width: 100%;
   height: auto;
 }
-/* line 123, ../sass/partials/_directory.scss */
+/* line 125, ../sass/partials/_directory.scss */
 .directory .directory-events li a {
   padding: 10px 15px;
 }
-/* line 131, ../sass/partials/_directory.scss */
+/* line 133, ../sass/partials/_directory.scss */
 .directory .side-filters {
   border: 1px solid #b5b5b5;
   padding: 15px;

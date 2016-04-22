@@ -6,8 +6,10 @@ $tabs-text-color: $primary-text-color;
 
 
 .directory {
-
-	
+	a {
+		text-decoration: none;
+		color:inherit;
+	}
 	/*-- Tabs --*/
 	.nav-tabs {
 		position: relative;
