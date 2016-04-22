@@ -36,12 +36,11 @@
 				</div>
 
 				<div class="form-actions">
-					<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" class="btn btn-primary">LOGIN</button>
+					<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" ng-class="{ 'disabled': loginForm.$invalid || vm.dataLoading }" class="btn btn-primary">LOGIN</button>
 					<br>
 					<a href="#/register" class="btn btn-link">Register</a>
 					<a href="#/forgotpassword" class="btn btn-link">Forgot Password</a>
 				</div>
-
 			</form>
 		</div>
 	</div>

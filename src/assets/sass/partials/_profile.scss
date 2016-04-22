@@ -1,0 +1,72 @@
+/*** Colors ***/
+
+//$primary-color: #202020 !default; /*black*/
+//$secondary-color: #f29b13 !default; /*orange*/
+//$success-color:  green !default; /*green*/
+//$error-color:  red !default; /*red*/
+//$link-color: #1795aa !default; /*blue*/
+
+//$primary-text-color:   #202020; /*black*/
+//$secondary-text-color: #717171; /*darkgray*/
+//$divider-color:        #b5b5b5; /*lightgray*/
+
+.profile {
+	
+	.profile-top {
+		padding: 0 !important;
+		border: 1px solid $divider-color;
+		margin: 15px 0px;
+		.coverPhoto {
+			height: 150px;
+			background-color: lightseagreen;
+		}
+		.info {
+			position: relative;
+			padding: 15px;
+			padding-left: 200px;
+			
+			.profilePhoto {
+				position: absolute;
+				top: -50%;
+				left: 40px;
+
+				img {
+					width: 150px;
+				}
+			}
+			
+			.followers {
+				a {
+					text-decoration: none;
+					color:$primary-text-color; 
+					
+					span {
+						color: $secondary-color;
+						font-size: 20px;
+						font-weight: bold;
+						padding-right: 4px;
+					}
+				}
+				a:last-child {margin-left: 20px;}
+			}
+			.btn {
+				position: absolute;
+				bottom: 15px;
+				right: 40px;
+			}
+		}
+	}
+	
+	.profile-sidenav {
+		border: 1px solid $divider-color;
+		h4 {
+			padding: 10px 15px;
+			border-top: 1px solid $divider-color;
+			border-bottom: 1px solid $divider-color;
+		}
+		.content {
+			padding: 15px;
+			span {padding-right: 5px;}
+		}
+	}
+}

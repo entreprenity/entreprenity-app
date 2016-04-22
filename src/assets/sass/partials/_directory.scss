@@ -6,19 +6,10 @@ $tabs-text-color: $primary-text-color;
 
 
 .directory {
-	/*-- reset ul and li for directory --*/
-	ul {
-		list-style: none;
-	}
-	ul, li {
-		margin: 0;
-		padding: 0;
-	}
-	a{
+	a {
 		text-decoration: none;
 		color:inherit;
 	}
-	
 	/*-- Tabs --*/
 	.nav-tabs {
 		position: relative;
@@ -53,7 +44,7 @@ $tabs-text-color: $primary-text-color;
 				transition: color .28s ease;
 				&:hover {
 					border: 0px;
-					background-color: darken($tabs-bg-color, 10%);
+					/*background-color: darken($tabs-bg-color, 10%);*/
 					color: lighten($tabs-text-color, 20%);
 				}
 				&:focus, &:active {
