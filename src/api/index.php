@@ -83,7 +83,125 @@ Flight::route('/getLocations', function()
 });
 
 
+//Route to fetch new members
+// April 21,2015
+Flight::route('/getNewMembers', function()
+{
+   enable_cors();	
+	$returnarray=getNewMembers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
+
+
+//Function to fetch newly registered members list
+//April 21,2016
+function getNewMembers()
+{
+	$today=date('Y-m-d H:i:s');
+	$to_day = new DateTime($today);
+	$to_day->modify('-14 day');
+	$fromday= $to_day->format('Y-m-d H:i:s');
+	
+	$data= array();	
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM client_info AS CI 
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."'
+	      ORDER BY CI.clientid DESC 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	"img-member.jpg";
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+			
+			if(!empty($row['company_name']))
+      	{
+      		$data[$i]['companyName']	=	$row['company_name'];
+      	}
+      	else
+      	{
+      		$data[$i]['companyName']	=	"";
+      	}
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']				=	"";
+		$data[$i]['firstName']		=	"";
+		$data[$i]['lastName']		=	"";
+		$data[$i]['avatar']			=	"";
+		$data[$i]['position']		=	"";
+		$data[$i]['companyName']	=	"";
+		$data[$i]['city']				=	"";
+   }
+	return $data;
+
+}
+
 
 //Function to fetch location list (centers)
 //April 19,2016
@@ -136,7 +254,80 @@ function get_user_session()
 //April 15, 2016
 function forgot_password()
 {
+	$data= array();
+	$username=validate_input($_POST['username']);
+	//check whether this email id exist on database
+	$qry="SELECT clientid,firstname,lastname FROM client_info AS CI where CI.email='".$username."'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);   
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+			$data['firstname']	=	$row['firstname'];
+			$data['lastname']		=	$row['lastname'];
+			$data['id']				=	$row['clientid'];      
+      }
+         	
+   	//if yes, start password reset process
+		  
+   	$fullname=$data['firstname'].' '.$data['lastname'];
+   	$password=generateRandomAlphaNumeric($length=8);
+   	ob_start();
+		include('email_templates/password_reset.php');
+		$order_placement_template = ob_get_contents();			
+		ob_end_clean();			
 
+ 		$to='dominic@cliffsupport.com'; 
+ 		//$to1='cs@vrush.ph'; 
+ 		$strSubject="Password reset form";
+ 		$message =  $order_placement_template;              
+ 		$headers = 'MIME-Version: 1.0'."\r\n";
+ 		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
+ 		$headers .= "From: eprty@test.com"; 
+ 
+ 		$qry2="UPDATE client_info SET password='".md5($password)."' where email='".$username."' ";
+   	if(setData($qry2))
+   	{
+   	 	$mail_to_vrush=mail($to, $strSubject, $message, $headers);  			
+	 		if($mail_to_vrush)
+	 		{
+	 			$data['success'] 		= true;
+				$data['msg'] 			= 'An email has been sent to you with your new password - Please check your email';
+	 		}
+	 		else
+	 		{
+	 			$data['success'] 		= false;
+				$data['msg'] 			= 'We did not recognize that email';
+	 		}
+   	}
+   	else
+   	{
+   		$data['success'] 		= false;
+			$data['msg'] 			= 'We did not recognize that email';
+   	}
+   }
+   else
+   {
+   	//if no, show them a message
+   	$data['success'] 		= false;
+		$data['msg'] 			= 'We did not recognize that email';
+   }
+	return $data;
+}
+
+//Function to generate random alpha numeric string
+//April 19,2016
+function generateRandomAlphaNumeric($length = 4) 
+{
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) 
+    {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }
 
 //Function to login
@@ -221,12 +412,41 @@ function generate_login_token()
 // April 13,2015
 function getMembers()
 {
+	$records=1;
+	$start=0;
+	$limit=12;
+	$end=12;
+	if(isset($_GET['page']))
+	{
+		$records=$_GET['page'];
+		if($records==1)
+		{
+			$start=0;
+			$end=12;
+		}
+		else if($records==1)
+		{
+			$start=$limit+$records;
+			$end=$end+$limit;
+		}
+		else
+		{
+			$start=($limit*$records)+1;
+			$end=$limit*$records;
+		}
+		
+	}
+	
+	
+	$limit=$start * $records;
 	$data= array();	
 	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM client_info AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
-	      LEFT JOIN location_info as LI ON LI.id=CP.client_location 
-	      LIMIT 50";
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      ORDER BY CI.clientid ASC 
+	      LIMIT $start ,$end
+	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count

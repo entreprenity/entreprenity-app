@@ -2,26 +2,26 @@
 
 	angular
 		.module('entreprenityApp.directory', [])
-	
+		
 		.factory('directoryService', function($http) 
 		{
 			var baseUrl = 'api/';
 			return {
-				getMembers: function() {
-					return $http.get(baseUrl + 'getMembers?page=');
+				getMembers: function(pageNumber) {
+					return $http.get(baseUrl + 'getMembers?page='+pageNumber);
 				},
-				getCompanies: function() {
-					return $http.get(baseUrl + 'getCompanies');
+				getCompanies: function(pageNumber) {
+					return $http.get(baseUrl + 'getCompanies?page='+pageNumber);
 				},
-				getEvents: function() {
-					return $http.get(baseUrl + 'getEvents');
+				getEvents: function(pageNumber) {
+					return $http.get(baseUrl + 'getEvents?page='+pageNumber);
 				},	
 				getLocations:function() {
 					return $http.get(baseUrl + 'getLocations');
 				}
 			};
 		})
-	
+		
 		/*
 		.factory('Session', function($http) 
 		{   
@@ -43,7 +43,7 @@
 				if (this.busy) return;
 				this.busy = true;
 				
-				directoryService.getMembers().success(function(data) {
+				directoryService.getMembers(this.pageNumber).success(function(data) {
 					var itemData = data;
 					
 					for (var i = 0; i < itemData.length; i++) {
@@ -68,7 +68,7 @@
 				if (this.busy) return;
 				this.busy = true;
 
-				directoryService.getCompanies().success(function(data) {
+				directoryService.getCompanies(this.pageNumber).success(function(data) {
 					var itemData = data;
 					
 					for (var i = 0; i < itemData.length; i++) {
@@ -93,7 +93,7 @@
 				if (this.busy) return;
 				this.busy = true;
 
-				directoryService.getEvents().success(function(data) {
+				directoryService.getEvents(this.pageNumber).success(function(data) {
 					var itemData = data;
 
 					for (var i = 0; i < itemData.length; i++) {
@@ -137,7 +137,7 @@
 		
 			directoryService.getLocations().success(function(data) {
 				vm.locations = data;
-				console.log(vm.location);
+				//console.log(vm.location);
 			})
 		});			
 })();
