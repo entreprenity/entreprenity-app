@@ -134,6 +134,7 @@
 			vm.companies = new Companies();
 			vm.events = new Events();
 			//vm.location = new Location();
+			console.log(vm.members);
 		
 			directoryService.getLocations().success(function(data) {
 				vm.locations = data;

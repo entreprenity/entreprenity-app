@@ -8,7 +8,8 @@
 		'infinite-scroll',
 		'entreprenityApp.login',
 		'entreprenityApp.directory',
-		'entreprenityApp.forgotpassword'
+		'entreprenityApp.forgotpassword',
+		'entreprenityApp.memberProfile'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -31,6 +32,11 @@
 		.when('/directory', {
 			controller: 'DirectoryController',
 			templateUrl: 'app/components/directory/directoryView.html',
+			controllerAs: 'vm'
+		})
+		.when('/members/:memberId', {
+			controller: 'memberProfileController',
+			templateUrl: 'app/components/profile/memberProfileView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
