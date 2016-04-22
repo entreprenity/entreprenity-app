@@ -8810,8 +8810,37 @@ button.close {
 }
 /* line 12, ../sass/partials/_global.scss */
 body {
-  padding-top: 60px;
+  padding-top: 70px;
   font-family: 'Roboto Condensed', sans-serif;
+}
+
+/* line 17, ../sass/partials/_global.scss */
+p, h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+/*-- reset a, ul and li --*/
+/* line 22, ../sass/partials/_global.scss */
+ul {
+  list-style: none;
+}
+
+/* line 25, ../sass/partials/_global.scss */
+ul, li {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 29, ../sass/partials/_global.scss */
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* line 35, ../sass/partials/_global.scss */
+.uppercase {
+  text-transform: uppercase;
 }
 
 /* line 6, ../sass/partials/_button.scss */
@@ -8874,28 +8903,13 @@ body {
 
 /* line 8, ../sass/partials/_directory.scss */
 .directory {
-  /*-- reset ul and li for directory --*/
   /*-- Tabs --*/
   /*-- Members Directory --*/
   /*-- Companies Directory --*/
   /*-- Events Directory --*/
   /*-- Side Filters and Search --*/
 }
-/* line 10, ../sass/partials/_directory.scss */
-.directory ul {
-  list-style: none;
-}
-/* line 13, ../sass/partials/_directory.scss */
-.directory ul, .directory li {
-  margin: 0;
-  padding: 0;
-}
-/* line 17, ../sass/partials/_directory.scss */
-.directory a {
-  text-decoration: none;
-  color: inherit;
-}
-/* line 23, ../sass/partials/_directory.scss */
+/* line 12, ../sass/partials/_directory.scss */
 .directory .nav-tabs {
   position: relative;
   width: 100%;
@@ -8906,22 +8920,22 @@ body {
   padding-right: 20px;
 }
 @media (max-width: 1000px) {
-  /* line 23, ../sass/partials/_directory.scss */
+  /* line 12, ../sass/partials/_directory.scss */
   .directory .nav-tabs {
     padding: 0px 20px;
   }
 }
-/* line 37, ../sass/partials/_directory.scss */
+/* line 26, ../sass/partials/_directory.scss */
 .directory .nav-tabs li {
   text-align: center;
   height: 100%;
   width: 33%;
 }
-/* line 41, ../sass/partials/_directory.scss */
+/* line 30, ../sass/partials/_directory.scss */
 .directory .nav-tabs li.active {
   border-bottom: 5px solid #f29b13;
 }
-/* line 44, ../sass/partials/_directory.scss */
+/* line 33, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a {
   background-color: #ffffff;
   border: 0px;
@@ -8937,41 +8951,41 @@ body {
   -webkit-border-radius: 0px 0px;
   border-radius: 0px 0px / 0px 0px;
 }
-/* line 54, ../sass/partials/_directory.scss */
+/* line 43, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:hover {
   border: 0px;
   background-color: #e6e6e6;
   color: #535353;
 }
-/* line 59, ../sass/partials/_directory.scss */
+/* line 48, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:focus, .directory .nav-tabs li a:active {
   border: 0px;
 }
-/* line 65, ../sass/partials/_directory.scss */
+/* line 54, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a i {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 65, ../sass/partials/_directory.scss */
+  /* line 54, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a i {
     display: block;
   }
 }
-/* line 73, ../sass/partials/_directory.scss */
+/* line 62, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a span {
   display: block;
 }
 @media (max-width: 600px) {
-  /* line 73, ../sass/partials/_directory.scss */
+  /* line 62, ../sass/partials/_directory.scss */
   .directory .nav-tabs li a span {
     display: none;
   }
 }
-/* line 84, ../sass/partials/_directory.scss */
+/* line 73, ../sass/partials/_directory.scss */
 .directory select {
   max-width: 100%;
 }
-/* line 88, ../sass/partials/_directory.scss */
+/* line 77, ../sass/partials/_directory.scss */
 .directory .directory-members li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -8980,12 +8994,12 @@ body {
   float: left;
   padding: 10px 15px;
 }
-/* line 96, ../sass/partials/_directory.scss */
+/* line 85, ../sass/partials/_directory.scss */
 .directory .directory-members li img {
   width: 100px;
   height: auto;
 }
-/* line 105, ../sass/partials/_directory.scss */
+/* line 94, ../sass/partials/_directory.scss */
 .directory .directory-companies li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -8994,12 +9008,12 @@ body {
   float: left;
   padding: 10px 15px;
 }
-/* line 113, ../sass/partials/_directory.scss */
+/* line 102, ../sass/partials/_directory.scss */
 .directory .directory-companies li img {
   width: 100px;
   height: auto;
 }
-/* line 122, ../sass/partials/_directory.scss */
+/* line 111, ../sass/partials/_directory.scss */
 .directory .directory-events li {
   text-align: center;
   border: 1px solid #b5b5b5;
@@ -9007,17 +9021,86 @@ body {
   width: 49%;
   float: left;
 }
-/* line 129, ../sass/partials/_directory.scss */
+/* line 118, ../sass/partials/_directory.scss */
 .directory .directory-events li img {
   width: 100%;
   height: auto;
 }
-/* line 134, ../sass/partials/_directory.scss */
+/* line 123, ../sass/partials/_directory.scss */
 .directory .directory-events li a {
   padding: 10px 15px;
 }
-/* line 142, ../sass/partials/_directory.scss */
+/* line 131, ../sass/partials/_directory.scss */
 .directory .side-filters {
   border: 1px solid #b5b5b5;
   padding: 15px;
+}
+
+/*** Colors ***/
+/* line 15, ../sass/partials/_profile.scss */
+.profile .profile-top {
+  padding: 0 !important;
+  border: 1px solid #b5b5b5;
+  margin: 15px 0px;
+}
+/* line 19, ../sass/partials/_profile.scss */
+.profile .profile-top .coverPhoto {
+  height: 150px;
+  background-color: lightseagreen;
+}
+/* line 23, ../sass/partials/_profile.scss */
+.profile .profile-top .info {
+  position: relative;
+  padding: 15px;
+  padding-left: 200px;
+}
+/* line 28, ../sass/partials/_profile.scss */
+.profile .profile-top .info .profilePhoto {
+  position: absolute;
+  top: -50%;
+  left: 40px;
+}
+/* line 33, ../sass/partials/_profile.scss */
+.profile .profile-top .info .profilePhoto img {
+  width: 150px;
+}
+/* line 39, ../sass/partials/_profile.scss */
+.profile .profile-top .info .followers a {
+  text-decoration: none;
+  color: #202020;
+}
+/* line 43, ../sass/partials/_profile.scss */
+.profile .profile-top .info .followers a span {
+  color: #f29b13;
+  font-size: 20px;
+  font-weight: bold;
+  padding-right: 4px;
+}
+/* line 50, ../sass/partials/_profile.scss */
+.profile .profile-top .info .followers a:last-child {
+  margin-left: 20px;
+}
+/* line 52, ../sass/partials/_profile.scss */
+.profile .profile-top .info .btn {
+  position: absolute;
+  bottom: 15px;
+  right: 40px;
+}
+/* line 60, ../sass/partials/_profile.scss */
+.profile .profile-sidenav {
+  border: 1px solid #b5b5b5;
+}
+/* line 62, ../sass/partials/_profile.scss */
+.profile .profile-sidenav h4 {
+  padding: 10px 15px;
+  border-top: 1px solid #b5b5b5;
+  border-bottom: 1px solid #b5b5b5;
+}
+/* line 67, ../sass/partials/_profile.scss */
+.profile .profile-sidenav .content {
+  padding: 15px;
+}
+/* line 69, ../sass/partials/_profile.scss */
+.profile .profile-sidenav .content span {
+  padding-right: 5px;
 }
