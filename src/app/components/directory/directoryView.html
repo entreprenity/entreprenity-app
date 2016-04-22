@@ -32,9 +32,9 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-members" infinite-scroll='vm.members.nextPage()' infinite-scroll-disabled='vm.members.busy'  infinite-scroll-distance='2'>
+					<ul class="directory-members" infinite-scroll='vm.members.nextPage()' infinite-scroll-disabled='vm.members.busy'  infinite-scroll-distance='0'>
 						<li ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
-							<a ng-href="/members/{{member.id}}">
+							<a ng-href="#/members/{{member.id}}">
 								<div>
 									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
 									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
