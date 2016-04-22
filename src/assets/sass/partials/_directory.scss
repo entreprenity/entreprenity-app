@@ -44,7 +44,7 @@ $tabs-text-color: $primary-text-color;
 				transition: color .28s ease;
 				&:hover {
 					border: 0px;
-					background-color: darken($tabs-bg-color, 10%);
+					/*background-color: darken($tabs-bg-color, 10%);*/
 					color: lighten($tabs-text-color, 20%);
 				}
 				&:focus, &:active {

@@ -22,7 +22,7 @@
 							<input type="text" class="form-control" placeholder="Search for member" ng-model="searchedMember">
 						</label>
 						<label>LOCATION 
-							<div>
+							<div class="select-style">
 								<select ng-model="selectedCity">
 									<option value="">All Locations</option>
 									<option ng-repeat="location in vm.locations" value="{{location.location_desc}}">{{location.location_desc}}</option>

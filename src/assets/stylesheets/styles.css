@@ -8877,6 +8877,36 @@ a {
   transition: background 100ms ease-in-out;
 }
 
+/** Search Bar **/
+/** Select Box **/
+/* line 4, ../sass/partials/_forms.scss */
+.select-style {
+  color: #717171;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: #fff;
+  background: #E9E9EB url("../img/caret-down.png") no-repeat 95% 50%;
+}
+
+/* line 14, ../sass/partials/_forms.scss */
+.select-style select {
+  padding: 5px 8px;
+  width: 100%;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* line 25, ../sass/partials/_forms.scss */
+.select-style select:focus {
+  outline: none;
+}
+
 /* line 1, ../sass/partials/_login.scss */
 #loginPage {
   width: 100%;
@@ -8957,7 +8987,7 @@ a {
 /* line 45, ../sass/partials/_directory.scss */
 .directory .nav-tabs li a:hover {
   border: 0px;
-  background-color: #e6e6e6;
+  /*background-color: darken($tabs-bg-color, 10%);*/
   color: #535353;
 }
 /* line 50, ../sass/partials/_directory.scss */
