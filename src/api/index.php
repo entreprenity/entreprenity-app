@@ -109,6 +109,62 @@ Flight::route('/view_user_profile', function()
 Flight::start();
 
 
+//Function to get total followings of a user
+//April 25,2016
+function user_following($clientid)
+{
+	//To fetch user following
+   //SELECT COUNT(entrp_user_follows.follows) AS following FROM entrp_user_follows WHERE entrp_user_follows.clientid=1
+	$qry="SELECT COUNT(entrp_user_follows.follows) AS following 
+			 FROM entrp_user_follows 
+			 WHERE entrp_user_follows.clientid=".$clientid."
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$count_following 		= $row['following'];
+   	}
+	}
+	else
+	{
+		$count_following 			= 0;
+	}
+	return $count_following;
+}
+
+
+
+//Function to get total followers of a user
+//April 25, 2016
+function user_followers($clientid)
+{
+	//To fetch user followers
+	//SELECT COUNT(entrp_user_follows.clientid) AS followers FROM entrp_user_follows WHERE entrp_user_follows.follows=1
+	$qry="SELECT COUNT(entrp_user_follows.clientid) AS followers 
+			 FROM entrp_user_follows 
+			 WHERE entrp_user_follows.follows=".$clientid."
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$count_followers 		= $row['followers'];
+   	}
+	}
+	else
+	{
+		$count_followers 			= 0;
+	}
+	return $count_followers;
+}
+
+
+
 //Function to fetch a user profile
 //April 22,2016
 function viewUserProfile()
@@ -151,17 +207,11 @@ function viewUserProfile()
 			$data['lastName'] 	= 	$row['lastname'];
 			
 			$data['city'] 			= 	$row['city'];
-			//$data['followers'] 	= 	$row['clientid'];
-			$data['followers'] 	= 	10;
-			$data['following'] 	=  20;
-			//$data['following'] 	=  $row['clientid'];
-			//$data['aboutMe'] 		=  $row['about_me'];
-			$data['aboutMe'] 		=  "This is hardcoded from backend. About me.";
+			
+			$data['aboutMe'] 		=  $row['about_me'];
 			$data['email'] 		=  $row['email'];
-			//$data['website'] 		=  $row['website'];
-			$data['website'] 		=  "www.staticwebs.com";
-			//$data['mobile'] 		=  $row['mobile'];
-			$data['mobile'] 		=  "0123456789";
+			$data['website'] 		=  $row['website'];
+			$data['mobile'] 		=  $row['mobile'];
 			
 			$data['company']['companyName'] 		= $row['company_name'];
 			$data['company']['companyDesc'] 		= $row['company_name'];
@@ -192,7 +242,6 @@ function viewUserProfile()
    		$data['interests'][$j] 		= '';
    	}
    	
-   	//SELECT entrp_user_skills.skill_id,entrp_skills.skills FROM entrp_user_skills LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id WHERE entrp_user_skills.user_id=1
    	//To fetch user skill set
    	$qry3="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
    			 FROM entrp_user_skills 
@@ -214,6 +263,13 @@ function viewUserProfile()
    	{
    		$data['skills'][$k] 		= '';
    	}
+   	
+   	//Function to get total followers of a user
+		$data['followers'] 	= user_followers($clientid);
+		
+		//Function to get total followings of a user
+		$data['following'] 	= user_following($clientid);
+   	   	
    }
    else
    {
@@ -222,6 +278,7 @@ function viewUserProfile()
    }
    return $data;
 }
+
 
 //Function to fetch newly registered members list
 //April 21,2016
