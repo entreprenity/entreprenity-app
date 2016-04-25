@@ -8,7 +8,7 @@
 			var baseUrl = 'api/';
 			return {
 				getMemberProfile: function(id) {
-					return $http.get(url, id);
+					return $http.get(baseUrl+ 'view_user_profile?id='+id);
 				}
 			};
 		})
@@ -17,7 +17,7 @@
 			var vm = this;
 			vm.memberId = $routeParams.memberId;
 			
-
+			/*
 			data = {
 				"id": 1,
 				"avatar": "member01.jpg",
@@ -49,10 +49,11 @@
 
 		
 			vm.member = data;
-			/*
+			*/
+			
 			memberProfileService.getMemberProfile(vm.memberId).success(function(data) {
 				vm.member = data;
 			});	
-			*/
+			
 		});			
 })();

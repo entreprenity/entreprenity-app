@@ -95,8 +95,133 @@ Flight::route('/getNewMembers', function()
 });
 
 
+//Route to fetch new members
+// April 21,2015
+Flight::route('/view_user_profile', function()
+{
+   enable_cors();	
+	$returnarray=viewUserProfile();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 Flight::start();
 
+
+//Function to fetch a user profile
+//April 22,2016
+function viewUserProfile()
+{
+	$clientid=validate_input($_GET['id']);
+	
+	$data= array();		
+	/*
+	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+			 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
+			 location_info.location_desc,company_profiles.company_name,company_profiles.description
+	FROM client_info
+	LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+	LEFT JOIN location_info ON location_info.id=client_profile.client_location
+	LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
+	*/
+
+
+  $qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
+			 		 location_info.location_desc,
+			 		 company_profiles.company_name,company_profiles.description
+			FROM client_info
+			LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+			LEFT JOIN location_info ON location_info.id=client_profile.client_location
+			LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
+			WHERE client_info.clientid=".$clientid."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data['id']				=	$row['clientid'];
+			$data['avatar']		=	$row['avatar'];
+			$data['coverPhoto']	=	$row['cover_pic'];
+			$data['firstName'] 	= 	$row['firstname'];
+			$data['lastName'] 	= 	$row['lastname'];
+			
+			$data['city'] 			= 	$row['city'];
+			//$data['followers'] 	= 	$row['clientid'];
+			$data['followers'] 	= 	10;
+			$data['following'] 	=  20;
+			//$data['following'] 	=  $row['clientid'];
+			//$data['aboutMe'] 		=  $row['about_me'];
+			$data['aboutMe'] 		=  "This is hardcoded from backend. About me.";
+			$data['email'] 		=  $row['email'];
+			//$data['website'] 		=  $row['website'];
+			$data['website'] 		=  "www.staticwebs.com";
+			//$data['mobile'] 		=  $row['mobile'];
+			$data['mobile'] 		=  "0123456789";
+			
+			$data['company']['companyName'] 		= $row['company_name'];
+			$data['company']['companyDesc'] 		= $row['company_name'];
+
+			$data['success'] = true;
+			$data['msg'] = 'Profile fetched';
+		}
+		
+		//To fetch user interest list
+		$qry2="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
+   			 FROM entrp_user_interests 
+   			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
+   			 WHERE entrp_user_interests.user_id=".$clientid."
+   			 ";
+   	$res2=getData($qry2);
+   	$count_res2=mysqli_num_rows($res2);
+   	$j=0;
+   	if($count_res2>0)
+   	{
+   		while($row2=mysqli_fetch_array($res2))
+	   	{
+	   		$data['interests'][$j] 		= $row2['interest'];
+	   		$j++;
+	   	}
+   	}
+   	else
+   	{
+   		$data['interests'][$j] 		= '';
+   	}
+   	
+   	//SELECT entrp_user_skills.skill_id,entrp_skills.skills FROM entrp_user_skills LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id WHERE entrp_user_skills.user_id=1
+   	//To fetch user skill set
+   	$qry3="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
+   			 FROM entrp_user_skills 
+   			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
+   			 WHERE entrp_user_skills.user_id=".$clientid."
+   			";
+   	$res3=getData($qry3);
+   	$count_res3=mysqli_num_rows($res3);
+   	$k=0;
+   	if($count_res3>0)
+   	{
+   		while($row3=mysqli_fetch_array($res3))
+	   	{
+	   		$data['skills'][$k] 		= $row3['interest'];
+	   		$k++;
+	   	}
+   	}
+   	else
+   	{
+   		$data['skills'][$k] 		= '';
+   	}
+   }
+   else
+   {
+   	$data['success'] = false;
+		$data['msg'] = 'Please check your credentials once again';
+   }
+   return $data;
+}
 
 //Function to fetch newly registered members list
 //April 21,2016
