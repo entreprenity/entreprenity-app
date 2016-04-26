@@ -68,5 +68,11 @@
 			padding: 15px;
 			span {padding-right: 5px;}
 		}
+		
+		.team li {
+			display: inline-block;
+			margin-right: 5px;
+			img {max-width: 80px;}
+		}
 	}
 }

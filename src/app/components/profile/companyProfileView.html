@@ -14,24 +14,23 @@
 
 
 <div style="max-width: 1000px; margin: 0 auto;">
-	<div class="profile memberProfile">
-	
+	<div class="profile companyProfile">
+
 		<div class="row">
 			<div class="col-md-12 ">
 				<div class="profile-top">
 					<div class="coverPhoto">
-						<img ng-src="assets/img/members/">
+
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
-							<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
+							<img class="img-circle" ng-src="assets/img/companies/{{vm.company.profilePhoto}}">
 						</div>
-						<h3>{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
-						<p>{{vm.member.position}}</p>
+						<h3>{{vm.company.name}}</h3>
+						<p>{{vm.company.location}}</p>
 						<br>
 						<div class="followers">
-							<a><span>{{vm.member.followers}}</span>Followers</a>
-							<a><span>{{vm.member.following}}</span>Following</a>
+							<a><span>{{vm.company.followers}}</span>Followers</a>
 						</div>
 						<a class="btn btn-default">FOLLOW</a>
 					</div>		
@@ -43,45 +42,39 @@
 			<div class="col-md-4">
 				<div class="profile-sidenav">
 					<div class="about-me">
-						<h4>ABOUT ME</h4>
+						<h4>WHAT WE DO</h4>
 						<div class="content">
-							<p>{{vm.member.aboutMe}}</p>
+							<p>{{vm.company.desc}}</p>
+							<ul>
+								<li ng-repeat="category in vm.company.categories"><a href="#" class="badge">{{category}}</a></li>
+							</ul>
 						</div>
 					</div>
 					<div class="contact">
 						<h4>CONTACT</h4>
 						<div class="content">
-							<p><span>e:</span><a ng-href="mailto:{{vm.member.email}}">{{vm.member.email}}</a></p>
-							<p><span>w:</span><a ng-href="http://{{vm.member.website}}">{{vm.member.website}}</a></p>
-							<p><span>m:</span>{{vm.member.mobile}}</p>
+							<p><span>e:</span><a ng-href="mailto:{{vm.company.email}}">{{vm.company.email}}</a></p>
+							<p><span>w:</span><a ng-href="http://{{vm.company.website}}">{{vm.company.website}}</a></p>
+							<p><span>t:</span>{{vm.company.tel}}</p>
+							<p><span>f:</span>{{vm.company.mobile}}</p>
+							<p><span>m:</span>{{vm.company.fax}}</p>
 						</div>
 					</div>
-					<div class="work">
-						<h4>WORK/COMPANY</h4>
-						<div class="content">
-							<p class="uppercase">{{vm.member.company.companyName}}</p>
-							<p>{{vm.member.company.companyDesc}}</p>
-						</div>
-					</div>
-					<div class="skills">
-						<h4>SKILLS</h4>
+					<div class="team">
+						<h4>TEAM</h4>
 						<div class="content">
 							<ul>
-								<li ng-repeat="skill in vm.member.skills"><a href="#" class="badge">{{skill}}</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="interests">
-						<h4>INTERESTS</h4>
-						<div class="content">
-							<ul>
-								<li ng-repeat="interest in vm.member.interests"><a href="#" class="badge">{{interest}}</a></li>
+								<li ng-repeat="employee in vm.company.employees">
+									<a ng-href="#/members/{{employee.id}}">
+										<img class="img-circle" ng-src="assets/img/members/{{employee.profilePhoto}}">
+									</a>
+								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="col-md-8">
 				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
 					TIMELINE MODULE				
@@ -90,5 +83,6 @@
 		</div>
 	</div>
 </div>
+
 
 

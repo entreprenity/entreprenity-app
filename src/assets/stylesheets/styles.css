@@ -9137,3 +9137,12 @@ a {
 .profile .profile-sidenav .content span {
   padding-right: 5px;
 }
+/* line 72, ../sass/partials/_profile.scss */
+.profile .profile-sidenav .team li {
+  display: inline-block;
+  margin-right: 5px;
+}
+/* line 75, ../sass/partials/_profile.scss */
+.profile .profile-sidenav .team li img {
+  max-width: 80px;
+}
