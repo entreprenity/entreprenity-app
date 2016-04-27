@@ -7,7 +7,7 @@
 
 		var baseUrl = 'api/';
 		return {
-			getMemberProfile: function(id) {
+			getCompanyProfile: function(id) {
 				return $http.get(baseUrl+ 'view_user_profile?id='+id);
 			}
 		};
@@ -54,7 +54,7 @@
 			vm.company = data;
 			
 			/*
-		  memberProfileService.getMemberProfile(vm.memberId).success(function(data) {
+		  memberProfileService.getCompanyProfile(vm.memberId).success(function(data) {
 			vm.member = data;
 			*/
 		});			
