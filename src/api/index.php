@@ -106,8 +106,254 @@ Flight::route('/view_user_profile', function()
 
 });
 
+
+//Route to fetch new members
+// April 21,2015
+Flight::route('/view_company_profile', function()
+{
+   enable_cors();	
+	$returnarray=viewCompanyProfile();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch new members
+// April 21,2015
+Flight::route('/view_event_detail', function()
+{
+   enable_cors();	
+	$returnarray=viewEventDetail();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
 
+
+//Function to fetch a company profile
+//April 25,2016
+function viewCompanyProfile()
+{
+		/*
+		{
+		  "name": "vOffice",
+		  "location": "Fort Legend Tower",
+		  "coverPhoto": "cover.jpg",
+		  "profilePhoto": "profile.jpg",
+		  "website": "voffice.com.ph",
+		  "email": "sales@voffice.com",
+		  "mobile": "639175296299",
+		  "tel": "6322931533",
+		  "fax": "6329165745",
+		  "desc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
+		  "natureOfBusinessTags": [
+		    "virtual office",
+		    "serviced office",
+		    "co-working spaces"
+		  ],
+		  "employees": [
+		    {
+		      "id": "1",
+		      "firstName": "Ken",
+		      "lastName": "Sia",
+		      "profilePhoto": "emp1.jpg"
+		    },
+		    {
+		      "id": "2",
+		      "firstName": "Jaye",
+		      "lastName": "Atienza",
+		      "profilePhoto": "emp2.jpg"
+		    }
+		  ]
+		}
+		*/
+
+	$companyid=validate_input($_GET['id']);
+	$data= array();	
+	$company_default_profile='company-default.jpg';
+	$company_default_cover='company-default.jpg';
+	$member_default='member-default.jpg';
+	
+	$qry="SELECT  CP.*,LI.location_desc AS city 
+			FROM company_profiles AS CP
+			LEFT JOIN location_info as LI ON LI.id=CP.client_location
+			WHERE CP.id=".$companyid." 
+		  ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data['id']					=	$row['id'];
+   		$data['name']				=	$row['company_name'];
+   		$data['location']			=	$row['client_location'];
+   		
+   		if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']		=	$row['cover_photo'];
+   		}
+   		else
+   		{
+   			$data['coverPhoto']		=	$company_default_cover;
+   		}
+   		
+   		if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']	=	$row['avatar'];
+   		}
+   		else
+   		{
+   			$data['profilePhoto']	=	$company_default_profile;
+   		}     				
+   		$data['website']			=	$row['avatar'];
+   		$data['email']				=	$row['email'];
+   		$data['mobile']			=	$row['mobile'];
+   		$data['tel']				=	$row['telephone'];
+   		$data['fax']				=	$row['fax'];
+   		$data['desc']				=	$row['description'];
+   		$data['followers']		=	20;
+
+   	}
+   	
+	}
+	else
+	{
+		$data['id']				=	'';
+		$data['name']			=	'';
+		$data['location']		=	'';
+		$data['coverPhoto']		=	'';
+		$data['profilePhoto']		=	'';
+		$data['website']			=	'';
+		$data['mobile']	=	'';
+		$data['tel']		=	'';
+		$data['fax']	=	'';
+		$data['desc']		=	'';
+	}
+	return $data;
+
+}
+
+//Function to get an event's details
+//April 25, 2016
+function viewEventDetail()
+{
+		/*
+		{
+	  "name": "Master The Art Of Selling",
+	  "address": "10-f, Fort Legend Tower, 3rd Ave, Taguig, Metro Manila",
+	  "gmapLong": 121.04692,
+	  "gmapLat": 14.55408,
+	  "date": "4-25-2016",
+	  "startTime": "10:00",
+	  "endTime": "19:00",
+	  "eventPhoto": "event.jpg",
+	  "about": "We will teach you on how to master selling and generate more sales for your brand or company",
+	  "attendees": [
+	    {
+	      "id": "1",
+	      "firstName": "Ken",
+	      "lastName": "Sia",
+	      "profilePhoto": "emp1.jpg"
+	    },
+	    {
+	      "id": "2",
+	      "firstName": "Jaye",
+	      "lastName": "Atienza",
+	      "profilePhoto": "emp2.jpg"
+	    }
+	  ]
+	  }
+	  */
+
+	$eventid=validate_input($_GET['id']);
+	$data= array();	
+	$events_default='events-default.jpg';
+	$member_default='member-default.jpg';
+	
+	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
+			FROM entrp_events 
+			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
+		   WHERE id=".$eventid."
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data['id']				=	$row['id'];
+   		$data['name']			=	$row['eventName'];
+   		$data['address']		=	$row['address'];
+   		$data['gmapLong']		=	$row['location_lat'];
+   		$data['gmapLat']		=	$row['location_long'];
+   		$data['date']			=	$row['event_date'];
+   		$data['startTime']	=	$row['start_time'];
+   		$data['endTime']		=	$row['end_time'];
+   		$data['eventPhoto']	=	$row['clientid'];
+   		if($row['poster']!='')
+   		{
+   			$data['poster']	=	$row['poster'];
+   		}
+   		else
+   		{
+   			$data['poster']	=	$events_default;
+   		}
+   		$data['about']			=	$row['description'];
+   		$data['category']		=	$row['category_name'];
+   	}
+   	
+   	$i=0;
+   	$data2= array();
+   	$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
+				 FROM entrp_event_attendees 
+				 LEFT JOIN client_info ON client_info.clientid=entrp_event_attendees.clientid 
+				 LEFT JOIN client_profile ON client_profile.clientid=client_info.clientid
+				 WHERE entrp_event_attendees.eventid=".$eventid."
+				";
+	   $res2=getData($qry2);
+		$count_res2=mysqli_num_rows($res2);
+		if($count_res2>0)
+		{
+			while($row2=mysqli_fetch_array($res2))
+   		{
+   			$data2[$i]['id']				=	$row2['clientid'];
+   			$data2[$i]['firstName']		=	$row2['firstname'];
+   			$data2[$i]['lastName']		=	$row2['lastname'];
+   			if($row2['avatar']!='')
+   			{
+   				$data2[$i]['profilePhoto']	=	$row2['avatar'];
+   			}
+   			else
+   			{
+   				$data2[$i]['profilePhoto']	=	$member_default;
+   			}   			
+   			$i++;
+   		}		
+		}
+		$data['attendees']=$data2;
+	}
+	else
+	{
+		$data['id']				=	'';
+		$data['name']			=	'';
+		$data['address']		=	'';
+		$data['gmapLong']		=	'';
+		$data['gmapLat']		=	'';
+		$data['date']			=	'';
+		$data['startTime']	=	'';
+		$data['endTime']		=	'';
+		$data['eventPhoto']	=	'';
+		$data['poster']		=	'';
+		$data['about']			=	'';
+   	$data['category']		=	'';		
+	}
+	return $data;
+}
 
 //Function to get total followings of a user
 //April 25,2016
@@ -598,6 +844,7 @@ function getMembers()
 	$start=0;
 	$limit=12;
 	$end=12;
+	$member_default='member-default.jpg';
 	if(isset($_GET['page']))
 	{
 		$records=$_GET['page'];
@@ -669,7 +916,7 @@ function getMembers()
       	}
       	else
       	{
-      		$data[$i]['avatar']			=	"img-member.jpg";
+      		$data[$i]['avatar']			=	$member_default;
       	}
 			
 			if(!empty($row['designation']))
@@ -759,7 +1006,7 @@ function getEvents()
 {
 	$data= array();
 	
-	$qry="SELECT * FROM events";
+	$qry="SELECT * FROM entrp_events";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
