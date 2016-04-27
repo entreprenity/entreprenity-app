@@ -278,7 +278,7 @@ function viewEventDetail()
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
 			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
-		   WHERE id=".$eventid."
+		   WHERE entrp_events.id=".$eventid."
 			";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
@@ -289,8 +289,7 @@ function viewEventDetail()
    		$data['id']				=	$row['id'];
    		$data['name']			=	$row['eventName'];
    		$data['address']		=	$row['address'];
-   		$data['gmapLong']		=	$row['location_lat'];
-   		$data['gmapLat']		=	$row['location_long'];
+
    		$data['date']			=	$row['event_date'];
    		$data['startTime']	=	$row['start_time'];
    		$data['endTime']		=	$row['end_time'];
@@ -305,6 +304,9 @@ function viewEventDetail()
    		}
    		$data['about']			=	$row['description'];
    		$data['category']		=	$row['category_name'];
+   		$data['map']['center']['latitude']		=	$row['location_lat'];
+			$data['map']['center']['longitude']		=	$row['location_long'];
+			$data['map']['zoom']	=	8;
    	}
    	
    	$i=0;

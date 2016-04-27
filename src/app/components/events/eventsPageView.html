@@ -1,0 +1,60 @@
+<div style="max-width: 1000px; margin: 0 auto;">
+	<div class="profile eventsPage">
+
+		<div class="row">
+			<div class="col-md-12 ">
+				<div class="profile-top">
+					<div class="coverPhoto">
+
+					</div>	
+					<div class="info">
+						<h3>{{vm.event.name}}</h3>
+						<p>{{vm.event.location}}</p>
+						<a class="btn btn-default">JOIN</a>
+						<a class="btn btn-default">INVITE</a>
+					</div>		
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="profile-sidenav">
+					<div class="about">
+						<h4>ABOUT THE EVENT</h4>
+						<div class="content">
+							<p>{{vm.event.about}}</p>
+						</div>
+					</div>
+					<div class="contact">
+						<h4>MAP</h4>
+						<div class="content">
+								
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-8">
+				<div class="attendees">
+					<h4>ATTENDEES</h4>
+					<div class="content">
+						<ul>
+							<li ng-repeat="attendee in vm.event.attendees">
+								<a ng-href="#/members/{{attendee.id}}">
+									<img class="img-circle" ng-src="assets/img/members/{{attendee.profilePhoto}}">
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
+					TIMELINE MODULE				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

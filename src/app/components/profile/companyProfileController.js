@@ -16,6 +16,7 @@
 		.controller('companyProfileController', function($routeParams, companyProfileService) {
 		var vm = this;
 		vm.companyId = $routeParams.companyId;
+		
 			/*
 				data = {
 					"id": 1,

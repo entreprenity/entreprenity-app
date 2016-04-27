@@ -143,6 +143,6 @@
 		});
 	
 	$(function() {
-		$('.item').matchHeight(options);
+		$('.item').matchHeight();
 	});
 })();
