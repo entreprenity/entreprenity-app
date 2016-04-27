@@ -131,6 +131,31 @@ Flight::route('/view_event_detail', function()
 							});
 
 
+
+//Route to fetch new members
+// April 21,2015
+Flight::route('/view_company_profile', function()
+{
+   enable_cors();	
+	$returnarray=viewCompanyProfile();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch new members
+// April 21,2015
+Flight::route('/view_event_detail', function()
+{
+   enable_cors();	
+	$returnarray=viewEventDetail();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
 
 
@@ -138,7 +163,11 @@ Flight::start();
 //April 25,2016
 function viewCompanyProfile()
 {
+<<<<<<< HEAD
 	/*
+=======
+		/*
+>>>>>>> refs/remotes/origin/dominic-branch
 		{
 		  "name": "vOffice",
 		  "location": "Fort Legend Tower",
@@ -177,13 +206,18 @@ function viewCompanyProfile()
 	$company_default_profile='company-default.jpg';
 	$company_default_cover='company-default.jpg';
 	$member_default='member-default.jpg';
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/remotes/origin/dominic-branch
 	$qry="SELECT  CP.*,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location
 			WHERE CP.id=".$companyid." 
 		  ";
 	$res=getData($qry);
+<<<<<<< HEAD
 	$count_res=mysqli_num_rows($res);
 	if($count_res>0)
 	{
@@ -220,6 +254,44 @@ function viewCompanyProfile()
 
 		}
 
+=======
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data['id']					=	$row['id'];
+   		$data['name']				=	$row['company_name'];
+   		$data['location']			=	$row['client_location'];
+   		
+   		if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']		=	$row['cover_photo'];
+   		}
+   		else
+   		{
+   			$data['coverPhoto']		=	$company_default_cover;
+   		}
+   		
+   		if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']	=	$row['avatar'];
+   		}
+   		else
+   		{
+   			$data['profilePhoto']	=	$company_default_profile;
+   		}     				
+   		$data['website']			=	$row['avatar'];
+   		$data['email']				=	$row['email'];
+   		$data['mobile']			=	$row['mobile'];
+   		$data['tel']				=	$row['telephone'];
+   		$data['fax']				=	$row['fax'];
+   		$data['desc']				=	$row['description'];
+   		$data['followers']		=	20;
+
+   	}
+   	
+>>>>>>> refs/remotes/origin/dominic-branch
 	}
 	else
 	{
@@ -242,7 +314,11 @@ function viewCompanyProfile()
 //April 25, 2016
 function viewEventDetail()
 {
+<<<<<<< HEAD
 	/*
+=======
+		/*
+>>>>>>> refs/remotes/origin/dominic-branch
 		{
 	  "name": "Master The Art Of Selling",
 	  "address": "10-f, Fort Legend Tower, 3rd Ave, Taguig, Metro Manila",
@@ -274,7 +350,11 @@ function viewEventDetail()
 	$data= array();	
 	$events_default='events-default.jpg';
 	$member_default='member-default.jpg';
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/remotes/origin/dominic-branch
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
 			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
@@ -285,6 +365,7 @@ function viewEventDetail()
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
+<<<<<<< HEAD
 		{
 			$data['id']				=	$row['id'];
 			$data['name']			=	$row['eventName'];
@@ -310,16 +391,48 @@ function viewEventDetail()
 		$i=0;
 		$data2= array();
 		$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
+=======
+   	{
+   		$data['id']				=	$row['id'];
+   		$data['name']			=	$row['eventName'];
+   		$data['address']		=	$row['address'];
+   		$data['gmapLong']		=	$row['location_lat'];
+   		$data['gmapLat']		=	$row['location_long'];
+   		$data['date']			=	$row['event_date'];
+   		$data['startTime']	=	$row['start_time'];
+   		$data['endTime']		=	$row['end_time'];
+   		$data['eventPhoto']	=	$row['clientid'];
+   		if($row['poster']!='')
+   		{
+   			$data['poster']	=	$row['poster'];
+   		}
+   		else
+   		{
+   			$data['poster']	=	$events_default;
+   		}
+   		$data['about']			=	$row['description'];
+   		$data['category']		=	$row['category_name'];
+   	}
+   	
+   	$i=0;
+   	$data2= array();
+   	$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
+>>>>>>> refs/remotes/origin/dominic-branch
 				 FROM entrp_event_attendees 
 				 LEFT JOIN client_info ON client_info.clientid=entrp_event_attendees.clientid 
 				 LEFT JOIN client_profile ON client_profile.clientid=client_info.clientid
 				 WHERE entrp_event_attendees.eventid=".$eventid."
 				";
+<<<<<<< HEAD
 		$res2=getData($qry2);
+=======
+	   $res2=getData($qry2);
+>>>>>>> refs/remotes/origin/dominic-branch
 		$count_res2=mysqli_num_rows($res2);
 		if($count_res2>0)
 		{
 			while($row2=mysqli_fetch_array($res2))
+<<<<<<< HEAD
 			{
 				$data2[$i]['id']				=	$row2['clientid'];
 				$data2[$i]['firstName']		=	$row2['firstname'];
@@ -334,6 +447,22 @@ function viewEventDetail()
 				}   			
 				$i++;
 			}		
+=======
+   		{
+   			$data2[$i]['id']				=	$row2['clientid'];
+   			$data2[$i]['firstName']		=	$row2['firstname'];
+   			$data2[$i]['lastName']		=	$row2['lastname'];
+   			if($row2['avatar']!='')
+   			{
+   				$data2[$i]['profilePhoto']	=	$row2['avatar'];
+   			}
+   			else
+   			{
+   				$data2[$i]['profilePhoto']	=	$member_default;
+   			}   			
+   			$i++;
+   		}		
+>>>>>>> refs/remotes/origin/dominic-branch
 		}
 		$data['attendees']=$data2;
 	}
@@ -350,7 +479,11 @@ function viewEventDetail()
 		$data['eventPhoto']	=	'';
 		$data['poster']		=	'';
 		$data['about']			=	'';
+<<<<<<< HEAD
 		$data['category']		=	'';		
+=======
+   	$data['category']		=	'';		
+>>>>>>> refs/remotes/origin/dominic-branch
 	}
 	return $data;
 }
@@ -911,6 +1044,7 @@ function getMembers()
 			}
 
 			if(!empty($row['avatar']))
+<<<<<<< HEAD
 			{
 				$data[$i]['avatar']			=	$row['avatar'];
 			}
@@ -919,6 +1053,16 @@ function getMembers()
 				$data[$i]['avatar']			=	$member_default;
 			}
 
+=======
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	$member_default;
+      	}
+			
+>>>>>>> refs/remotes/origin/dominic-branch
 			if(!empty($row['designation']))
 			{
 				$data[$i]['position']		=	$row['designation'];
@@ -1005,7 +1149,11 @@ function getCompanies()
 function getEvents()
 {
 	$data= array();
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> refs/remotes/origin/dominic-branch
 	$qry="SELECT * FROM entrp_events";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
