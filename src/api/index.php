@@ -669,7 +669,7 @@ function getMembers()
       	}
       	else
       	{
-      		$data[$i]['avatar']			=	"img-member.jpg";
+					$data[$i]['avatar']			=	$member_default;
       	}
 			
 			if(!empty($row['designation']))
@@ -759,7 +759,7 @@ function getEvents()
 {
 	$data= array();
 	
-	$qry="SELECT * FROM events";
+	$qry="SELECT * FROM entrp_events";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
