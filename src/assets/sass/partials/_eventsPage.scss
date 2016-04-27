@@ -1,33 +1,23 @@
-.profile {
-	
+
+.eventsPage {
+
 	.profile-top {
 		padding: 0 !important;
 		border: 1px solid $divider-color;
 		margin: 15px 0px;
 		.coverPhoto {
 			height: 150px;
-			background-color: lightseagreen;
+			background-color: palevioletred;
 		}
 		.info {
 			position: relative;
 			padding: 15px;
-			padding-left: 200px;
-			
-			.profilePhoto {
-				position: absolute;
-				top: -50%;
-				left: 40px;
 
-				img {
-					width: 150px;
-				}
-			}
-			
 			.followers {
 				a {
 					text-decoration: none;
 					color:$primary-text-color; 
-					
+
 					span {
 						color: $secondary-color;
 						font-size: 20px;
@@ -37,14 +27,16 @@
 				}
 				a:last-child {margin-left: 20px;}
 			}
-			.btn {
+			.btn-group {
 				position: absolute;
 				bottom: 15px;
 				right: 40px;
+				
+				.btn {margin: 0px 10px;}
 			}
 		}
 	}
-	
+
 	.profile-sidenav {
 		border: 1px solid $divider-color;
 		h4 {
@@ -56,11 +48,25 @@
 			padding: 15px;
 			span {padding-right: 5px;}
 		}
-		
-		.team li {
-			display: inline-block;
-			margin-right: 5px;
-			img {max-width: 80px;}
+	}
+	
+	.attendees {
+		border: 1px solid $divider-color;
+		margin-bottom: 10px;
+		h4 {
+			padding: 10px 15px;
+			border-top: 1px solid $divider-color;
+			border-bottom: 1px solid $divider-color;
 		}
+		.content {
+			padding: 15px;
+			span {padding-right: 5px;}
+			li {
+				display: inline-block;
+				margin-right: 5px;
+				img {max-width: 80px;}
+			}
+		}
+
 	}
 }

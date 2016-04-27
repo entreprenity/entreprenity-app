@@ -33,13 +33,13 @@
 					"id": "1",
 					"firstName": "Ken",
 					"lastName": "Sia",
-					"profilePhoto": "emp1.jpg"
+					"profilePhoto": "member01.jpg"
 				},
 				{
 					"id": "2",
 					"firstName": "Jaye",
 					"lastName": "Atienza",
-					"profilePhoto": "emp2.jpg"
+					"profilePhoto": "member02.jpg"
 				}
 			]
 		};

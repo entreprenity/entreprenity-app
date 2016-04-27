@@ -1,17 +1,36 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header" style="padding-top: 10px; padding-bottom: 10px;width: 100%;">
+			<img ng-src="assets/img/entreprenity-logo.png" width="150px">
+			<button type="button" class="navbar-toggle navbar-right" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" style="display:block;">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+	</div>
+</div>
+
 <div style="max-width: 1000px; margin: 0 auto;">
-	<div class="profile eventsPage">
+	<div class="eventsPage">
 
 		<div class="row">
 			<div class="col-md-12 ">
 				<div class="profile-top">
 					<div class="coverPhoto">
-
+					
 					</div>	
 					<div class="info">
 						<h3>{{vm.event.name}}</h3>
+						<p>{{vm.event.date}}</p>
+						<p>{{vm.event.startTime}} to {{vm.event.endTime}}</p>
 						<p>{{vm.event.location}}</p>
-						<a class="btn btn-default">JOIN</a>
-						<a class="btn btn-default">INVITE</a>
+						<div class="btn-group">
+							<a class="btn btn-default">JOIN</a>
+							<a class="btn btn-default">INVITE</a>
+						</div>
+
 					</div>		
 				</div>
 			</div>
@@ -23,13 +42,15 @@
 					<div class="about">
 						<h4>ABOUT THE EVENT</h4>
 						<div class="content">
-							<p>{{vm.event.desc}}</p>
+							<p>{{vm.event.about}}</p>
 						</div>
 					</div>
 					<div class="contact">
 						<h4>MAP</h4>
 						<div class="content">
-								
+							<ui-gmap-google-map center='{ latitude: 14.55408, longitude: 121.04692 }' zoom='16'>
+								<ui-gmap-marker coords="{ latitude: 14.55408, longitude: 121.04692 }" idkey="1231231"></ui-gmap-marker>
+							</ui-gmap-google-map>
 						</div>
 					</div>
 				</div>
@@ -40,9 +61,9 @@
 					<h4>ATTENDEES</h4>
 					<div class="content">
 						<ul>
-							<li ng-repeat="employee in vm.company.employees">
-								<a ng-href="#/members/{{employee.id}}">
-									<img class="img-circle" ng-src="assets/img/members/{{employee.profilePhoto}}">
+							<li ng-repeat="attendee in vm.event.attendees">
+								<a ng-href="#/members/{{attendee.id}}">
+									<img class="img-circle" ng-src="assets/img/members/{{attendee.profilePhoto}}">
 								</a>
 							</li>
 						</ul>
