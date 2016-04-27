@@ -15,7 +15,7 @@
 
 		.controller('eventsPageController', function($routeParams, eventsPageService) {
 		var vm = this;
-		//vm.eventId = $routeParams.eventId;
+		vm.eventId = $routeParams.eventId;
 
 		data = {
 			"id": 1,
