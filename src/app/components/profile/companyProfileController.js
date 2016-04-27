@@ -16,11 +16,8 @@
 		.controller('companyProfileController', function($routeParams, companyProfileService) {
 		var vm = this;
 		vm.companyId = $routeParams.companyId;
-<<<<<<< HEAD
-		/*
-=======
+		
 			/*
->>>>>>> refs/remotes/origin/dominic-branch
 				data = {
 					"id": 1,
 					"name": "vOffice",
@@ -56,18 +53,10 @@
 				};
 				vm.company = data;
 			*/
-<<<<<<< HEAD
-
-		companyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
-			vm.company = data;
-		});
-
-=======
 			
 		  companyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
 		   vm.company = data;
 		});
 		
->>>>>>> refs/remotes/origin/dominic-branch
 	});			
 })();
