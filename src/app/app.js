@@ -10,7 +10,8 @@
 		'entreprenityApp.directory',
 		'entreprenityApp.forgotpassword',
 		'entreprenityApp.memberProfile',
-		'entreprenityApp.companyProfile'
+		'entreprenityApp.companyProfile',
+		'entreprenityApp.eventsPage'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -43,6 +44,11 @@
 		.when('/companies/:companyId', {
 			controller: 'companyProfileController',
 			templateUrl: 'app/components/profile/companyProfileView.html',
+			controllerAs: 'vm'
+		})
+		.when('/events', {
+			controller: 'eventsPageController',
+			templateUrl: 'app/components/events/eventsPageView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

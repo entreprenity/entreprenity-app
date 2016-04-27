@@ -16,7 +16,7 @@
 		.controller('companyProfileController', function($routeParams, companyProfileService) {
 		var vm = this;
 		vm.companyId = $routeParams.companyId;
-			/*
+/*
 				data = {
 					"id": 1,
 					"name": "vOffice",
@@ -52,10 +52,10 @@
 				};
 				vm.company = data;
 			*/
-			
-		  companyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
-		   vm.company = data;
+
+		companyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
+			vm.company = data;
 		});
-		
+
 	});			
 })();
