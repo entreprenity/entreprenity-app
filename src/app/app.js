@@ -6,6 +6,7 @@
 		'ngTouch',
 		'ui.bootstrap',
 		'infinite-scroll',
+		'uiGmapgoogle-maps',
 		'entreprenityApp.login',
 		'entreprenityApp.directory',
 		'entreprenityApp.forgotpassword',
