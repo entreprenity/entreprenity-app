@@ -13,7 +13,7 @@
 		};
 	})
 
-		.controller('eventsPageController', function($routeParams, eventsPageService) {
+		.controller('EventsPageController', function($routeParams, eventsPageService) {
 		var vm = this;
 		vm.eventId = $routeParams.eventId;
 
