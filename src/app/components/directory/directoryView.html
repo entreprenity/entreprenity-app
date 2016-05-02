@@ -106,7 +106,7 @@
 					<ul class="directory-events" infinite-scroll='vm.events.nextPage()' infinite-scroll-disabled='vm.events.busy'  infinite-scroll-distance='0'>
 						<li ng-repeat="event in vm.events.items | filter:searchedEvent | filter:selectedCity3">
 							<img ng-src="assets/img/events/{{event.poster}}">
-							<a ng-href="/events/{{event.id}}">
+							<a ng-href="#/events/{{event.id}}">
 								<h3>{{event.eventName}}</h3>
 								<p>{{event.date}}</p>
 								<p>{{event.time}}</p>

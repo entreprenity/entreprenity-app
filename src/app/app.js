@@ -6,6 +6,7 @@
 		'ngTouch',
 		'ui.bootstrap',
 		'infinite-scroll',
+		'uiGmapgoogle-maps',
 		'entreprenityApp.login',
 		'entreprenityApp.directory',
 		'entreprenityApp.forgotpassword',
@@ -46,7 +47,7 @@
 			templateUrl: 'app/components/profile/companyProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/events', {
+		.when('/events/:eventId', {
 			controller: 'eventsPageController',
 			templateUrl: 'app/components/events/eventsPageView.html',
 			controllerAs: 'vm'
