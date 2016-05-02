@@ -13,13 +13,12 @@
 		};
 	})
 
-		.controller('companyProfileController', function($routeParams, companyProfileService) {
+		.controller('CompanyProfileController', function($routeParams, companyProfileService) {
 		var vm = this;
 		vm.companyId = $routeParams.companyId;
 		
 		companyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
 			vm.company = data;
 		});
-
 	});			
 })();

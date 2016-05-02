@@ -37,10 +37,13 @@
 				}
 				a:last-child {margin-left: 20px;}
 			}
-			.btn {
+			
+			.btn-group {
 				position: absolute;
 				bottom: 15px;
 				right: 40px;
+
+				.btn {margin: 0px 10px;}
 			}
 		}
 	}

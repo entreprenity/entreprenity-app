@@ -13,7 +13,7 @@
 			};
 		})
 
-		.controller('memberProfileController', function($routeParams, memberProfileService) {
+		.controller('MemberProfileController', function($routeParams, memberProfileService) {
 			var vm = this;
 			vm.memberId = $routeParams.memberId;
 			
@@ -57,3 +57,5 @@
 			
 		});			
 })();
+
+
