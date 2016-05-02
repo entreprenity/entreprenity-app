@@ -8,137 +8,345 @@ require 'flight/Flight.php';
 //Route to events directory
 // April 13,2015
 Flight::route('/getEvents', function()
-							{
-								enable_cors();	
-								$returnarray=getEvents();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=getEvents();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 //Route to members directory
 // April 13,2015
 Flight::route('/getMembers', function()
-							{
-								enable_cors();	
-								$returnarray=getMembers();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=getMembers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 //Route to companies directory
 // April 13,2015
 Flight::route('/getCompanies', function()
-							{
-								enable_cors();	
-								$returnarray=getCompanies();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=getCompanies();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 
 //Route to login and redirect
 // April 15,2015
 Flight::route('/login', function()
-							{
-								enable_cors();	
-								$returnarray=login();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=login();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 //Function for forgot password feature
 //April 15, 2016
 Flight::route('/forgotpassword', function()
-							{
-								enable_cors();	
-								$returnarray=forgot_password();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=forgot_password();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 //Function to get user session
 //April 18,2016
 Flight::route('/get_user_session', function()
-							{
-								enable_cors();	
-								$returnarray=get_user_session();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
-							});
+{
+   enable_cors();	
+	$returnarray=get_user_session();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
 
 
 //Function to get user session
 //April 19,2016
 Flight::route('/getLocations', function()
-							{
-								enable_cors();	
-								$returnarray=getLocations_dropdown();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
-							});
+{
+   enable_cors();	
+	$returnarray=getLocations_dropdown();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
 
 
 //Route to fetch new members
 // April 21,2015
 Flight::route('/getNewMembers', function()
-							{
-								enable_cors();	
-								$returnarray=getNewMembers();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=getNewMembers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 
 //Route to fetch new members
 // April 21,2015
 Flight::route('/view_user_profile', function()
-							{
-								enable_cors();	
-								$returnarray=viewUserProfile();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=viewUserProfile();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 
 //Route to fetch new members
-// April 21,2015
+// April 25,2015
 Flight::route('/view_company_profile', function()
-							{
-								enable_cors();	
-								$returnarray=viewCompanyProfile();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=viewCompanyProfile();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
 
 
 //Route to fetch new members
-// April 21,2015
+// April 27,2015
 Flight::route('/view_event_detail', function()
-							{
-								enable_cors();	
-								$returnarray=viewEventDetail();
-								header('Content-type:application/json;charset=utf-8');
-								echo json_encode($returnarray);
+{
+   enable_cors();	
+	$returnarray=viewEventDetail();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
-							});
+});
+
+
+
+//Route to get a user's own details
+// April 28,2015
+Flight::route('/get_my_details', function()
+{
+   enable_cors();	
+	$returnarray=getMyProfileDetails();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
 
 
 Flight::start();
+
+
+//Function to get all interest set
+//May 02, 2016
+function get_all_interest_sets()
+{
+	$i=0;
+	$data= array();
+	$qry="SELECT *  
+			FROM entrp_interests
+			WHERE status=1 
+			";
+   $res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			//$data[$i]['id']		=	$row['id'];
+			$data[$i]		=	$row['interest'];  			
+			$i++;
+		}		
+	}
+	return $data;
+
+}
+
+//Function to get all skill set
+//May 02, 2016
+function get_all_skill_sets()
+{
+	$i=0;
+	$data= array();
+	$qry="SELECT *  
+			FROM entrp_skills
+			WHERE status=1 
+			";
+   $res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			//$data[$i]['id']		=	$row['id'];
+			$data[$i]		=	$row['skills'];  			
+			$i++;
+		}		
+	}
+	return $data;
+}
+
+//Function to fetch a user's skill set
+//May 02, 2016
+function get_user_skill_sets($userid)
+{
+	//To fetch user skill set
+	$data= array();
+	$qry="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
+			 FROM entrp_user_skills 
+			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
+			 WHERE entrp_user_skills.user_id=".$userid."
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	$k=0;
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data[$k] 		= $row['interest'];
+   		$k++;
+   	}
+	}
+	return $data;
+}
+
+
+//Function to fetch a user's interest set
+//May 02, 2016
+function get_user_interest_sets($userid)
+{
+	//To fetch user interest list
+	$data= array();
+	$qry="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
+			 FROM entrp_user_interests 
+			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
+			 WHERE entrp_user_interests.user_id=".$userid."
+			 ";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	$j=0;
+	if($count_res>0)
+	{
+	  while($row=mysqli_fetch_array($res))
+     {
+   	 $data[$j] 		= $row['interest'];
+   	 $j++;
+     }
+	}
+	return $data;
+}
+
+
+
+//Function to fetch a user's own details
+//April 28,2016
+function getMyProfileDetails()
+{
+	
+/*
+{
+	"avatar": "member01.jpg",
+	"coverPhoto": "memberCover01.jpg",
+	"firstName": "Ken",
+	"lastName": "Sia",
+	"position": "Front-end Web Developer",
+	"Location": "Fort Legend Tower",
+	"aboutMe": "Front-end Web Developer who loves listening to music, surfing, and traveling",
+	"email": "ken.voffice@gmail.com",
+	"website": "ken.com.ph",
+	"mobile": "09175296299",
+	"tel": "0229131533"
+	"skills": [
+		"Programming",
+		"Public Speaking"
+	],
+	"interests": [
+		"Design",
+		"Surf",
+		"Basketball"
+	]
+}
+
+*/	
+	$userid=validate_input($_GET['id']);
+	$data= array();
+	
+	$qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.secondary_mobile,client_profile.website,client_profile.about_me,
+			 		 location_info.location_desc,
+			 		 company_profiles.company_name,company_profiles.description
+			FROM client_info
+			LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+			LEFT JOIN location_info ON location_info.id=client_profile.client_location
+			LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
+			WHERE client_info.clientid=".$userid."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+   	{
+   		$data['avatar']			=	$row['avatar'];
+   		$data['coverPhoto']		=	$row['cover_pic'];
+   		$data['firstName']		=	$row['firstname'];
+   		$data['lastName']			=	$row['lastname'];
+   		$data['position']			=	$row['designation'];
+   		$data['Location']			=	$row['location_desc'];
+   		$data['aboutMe']			=	$row['about_me'];
+   		$data['email']				=	$row['email'];
+   		$data['website']			=	$row['website'];
+   		$data['mobile']			=	$row['mobile'];
+   		$data['tel']				=	$row['secondary_mobile'];
+   	}
+   	
+   	//fetch user skills
+   	 $data['userSkills'] 		= get_user_skill_sets($userid);
+   	//fetch user interests
+   	 $data['userInterests'] 	= get_user_interest_sets($userid);
+   	   
+   }
+   else
+   {
+		$data['avatar']			=	'';
+		$data['coverPhoto']		=	'';
+		$data['firstName']		=	'';
+		$data['lastName']			=	'';
+		$data['position']			=	'';
+		$data['Location']			=	'';
+		$data['aboutMe']			=	'';
+		$data['email']				=	'';
+		$data['website']			=	'';
+		$data['mobile']			=	'';
+		$data['tel']				=	'';
+   
+   }
+   //fetch all skills
+   $data['allSkills'] 		= get_all_skill_sets();
+   	
+   //fetch all interests
+   $data['allInterests'] 	= get_all_interest_sets();
+	
+	return $data;
+}
 
 
 //Function to fetch a company profile
 //April 25,2016
 function viewCompanyProfile()
 {
-	/*
+		/*
 		{
 		  "name": "vOffice",
 		  "location": "Fort Legend Tower",
@@ -177,49 +385,49 @@ function viewCompanyProfile()
 	$company_default_profile='company-default.jpg';
 	$company_default_cover='company-default.jpg';
 	$member_default='member-default.jpg';
-
+	
 	$qry="SELECT  CP.*,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location
 			WHERE CP.id=".$companyid." 
 		  ";
 	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
-		{
-			$data['id']					=	$row['id'];
-			$data['name']				=	$row['company_name'];
-			$data['location']			=	$row['client_location'];
+   	{
+   		$data['id']					=	$row['id'];
+   		$data['name']				=	$row['company_name'];
+   		$data['location']			=	$row['client_location'];
+   		
+   		if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']		=	$row['cover_photo'];
+   		}
+   		else
+   		{
+   			$data['coverPhoto']		=	$company_default_cover;
+   		}
+   		
+   		if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']	=	$row['avatar'];
+   		}
+   		else
+   		{
+   			$data['profilePhoto']	=	$company_default_profile;
+   		}     				
+   		$data['website']			=	$row['avatar'];
+   		$data['email']				=	$row['email'];
+   		$data['mobile']			=	$row['mobile'];
+   		$data['tel']				=	$row['telephone'];
+   		$data['fax']				=	$row['fax'];
+   		$data['desc']				=	$row['description'];
+   		$data['followers']		=	20;
 
-			if($row['cover_photo']!='')
-			{
-				$data['coverPhoto']		=	$row['cover_photo'];
-			}
-			else
-			{
-				$data['coverPhoto']		=	$company_default_cover;
-			}
-
-			if($row['avatar']!='')
-			{
-				$data['profilePhoto']	=	$row['avatar'];
-			}
-			else
-			{
-				$data['profilePhoto']	=	$company_default_profile;
-			}     				
-			$data['website']			=	$row['avatar'];
-			$data['email']				=	$row['email'];
-			$data['mobile']			=	$row['mobile'];
-			$data['tel']				=	$row['telephone'];
-			$data['fax']				=	$row['fax'];
-			$data['desc']				=	$row['description'];
-			$data['followers']		=	20;
-
-		}
-
+   	}
+   	
 	}
 	else
 	{
@@ -242,7 +450,7 @@ function viewCompanyProfile()
 //April 25, 2016
 function viewEventDetail()
 {
-	/*
+		/*
 		{
 	  "name": "Master The Art Of Selling",
 	  "address": "10-f, Fort Legend Tower, 3rd Ave, Taguig, Metro Manila",
@@ -274,66 +482,68 @@ function viewEventDetail()
 	$data= array();	
 	$events_default='events-default.jpg';
 	$member_default='member-default.jpg';
-
+	
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
 			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
-		   WHERE id=".$eventid."
+		   WHERE entrp_events.id=".$eventid."
 			";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
-		{
-			$data['id']				=	$row['id'];
-			$data['name']			=	$row['eventName'];
-			$data['address']		=	$row['address'];
-			$data['gmapLong']		=	$row['location_lat'];
-			$data['gmapLat']		=	$row['location_long'];
-			$data['date']			=	$row['event_date'];
-			$data['startTime']	=	$row['start_time'];
-			$data['endTime']		=	$row['end_time'];
-			$data['eventPhoto']	=	$row['clientid'];
-			if($row['poster']!='')
-			{
-				$data['poster']	=	$row['poster'];
-			}
-			else
-			{
-				$data['poster']	=	$events_default;
-			}
-			$data['about']			=	$row['description'];
-			$data['category']		=	$row['category_name'];
-		}
+   	{
+   		$data['id']				=	$row['id'];
+   		$data['name']			=	$row['eventName'];
+   		$data['address']		=	$row['address'];
 
-		$i=0;
-		$data2= array();
-		$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
+   		$data['date']			=	$row['event_date'];
+   		$data['startTime']	=	$row['start_time'];
+   		$data['endTime']		=	$row['end_time'];
+   		$data['eventPhoto']	=	$row['clientid'];
+   		if($row['poster']!='')
+   		{
+   			$data['poster']	=	$row['poster'];
+   		}
+   		else
+   		{
+   			$data['poster']	=	$events_default;
+   		}
+   		$data['about']			=	$row['description'];
+   		$data['category']		=	$row['category_name'];
+   		$data['map']['center']['latitude']		=	$row['location_lat'];
+			$data['map']['center']['longitude']		=	$row['location_long'];
+			$data['map']['zoom']	=	8;
+   	}
+   	
+   	$i=0;
+   	$data2= array();
+   	$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
 				 FROM entrp_event_attendees 
 				 LEFT JOIN client_info ON client_info.clientid=entrp_event_attendees.clientid 
 				 LEFT JOIN client_profile ON client_profile.clientid=client_info.clientid
 				 WHERE entrp_event_attendees.eventid=".$eventid."
 				";
-		$res2=getData($qry2);
+	   $res2=getData($qry2);
 		$count_res2=mysqli_num_rows($res2);
 		if($count_res2>0)
 		{
 			while($row2=mysqli_fetch_array($res2))
-			{
-				$data2[$i]['id']				=	$row2['clientid'];
-				$data2[$i]['firstName']		=	$row2['firstname'];
-				$data2[$i]['lastName']		=	$row2['lastname'];
-				if($row2['avatar']!='')
-				{
-					$data2[$i]['profilePhoto']	=	$row2['avatar'];
-				}
-				else
-				{
-					$data2[$i]['profilePhoto']	=	$member_default;
-				}   			
-				$i++;
-			}		
+   		{
+   			$data2[$i]['id']				=	$row2['clientid'];
+   			$data2[$i]['firstName']		=	$row2['firstname'];
+   			$data2[$i]['lastName']		=	$row2['lastname'];
+   			if($row2['avatar']!='')
+   			{
+   				$data2[$i]['profilePhoto']	=	$row2['avatar'];
+   			}
+   			else
+   			{
+   				$data2[$i]['profilePhoto']	=	$member_default;
+   			}   			
+   			$i++;
+   		}		
 		}
 		$data['attendees']=$data2;
 	}
@@ -350,7 +560,7 @@ function viewEventDetail()
 		$data['eventPhoto']	=	'';
 		$data['poster']		=	'';
 		$data['about']			=	'';
-		$data['category']		=	'';		
+   	$data['category']		=	'';		
 	}
 	return $data;
 }
@@ -360,7 +570,7 @@ function viewEventDetail()
 function user_following($clientid)
 {
 	//To fetch user following
-	//SELECT COUNT(entrp_user_follows.follows) AS following FROM entrp_user_follows WHERE entrp_user_follows.clientid=1
+   //SELECT COUNT(entrp_user_follows.follows) AS following FROM entrp_user_follows WHERE entrp_user_follows.clientid=1
 	$qry="SELECT COUNT(entrp_user_follows.follows) AS following 
 			 FROM entrp_user_follows 
 			 WHERE entrp_user_follows.clientid=".$clientid."
@@ -370,9 +580,9 @@ function user_following($clientid)
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
-		{
-			$count_following 		= $row['following'];
-		}
+   	{
+   		$count_following 		= $row['following'];
+   	}
 	}
 	else
 	{
@@ -398,9 +608,9 @@ function user_followers($clientid)
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
-		{
-			$count_followers 		= $row['followers'];
-		}
+   	{
+   		$count_followers 		= $row['followers'];
+   	}
 	}
 	else
 	{
@@ -416,7 +626,7 @@ function user_followers($clientid)
 function viewUserProfile()
 {
 	$clientid=validate_input($_GET['id']);
-
+	
 	$data= array();		
 	/*
 	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
@@ -429,7 +639,7 @@ function viewUserProfile()
 	*/
 
 
-	$qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+  $qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 		 location_info.location_desc,
 			 		 company_profiles.company_name,company_profiles.description
@@ -440,13 +650,13 @@ function viewUserProfile()
 			WHERE client_info.clientid=".$clientid."
 	      ";
 	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
+   $count_res=mysqli_num_rows($res);
 	if($count_res>0)
-	{
+   {
 
-		while($row=mysqli_fetch_array($res))
-		{
-			$data['id']				=	$row['clientid'];
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data['id']				=	$row['clientid'];
 			$data['avatar']		=	$row['avatar'];
 			$data['coverPhoto']	=	$row['cover_pic'];
 			$data['firstName'] 	= 	$row['firstname'];
