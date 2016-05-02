@@ -1,74 +1,104 @@
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header" style="padding-top: 10px; padding-bottom: 10px;width: 100%;">
-			<img ng-src="assets/img/entreprenity-logo.png" width="150px">
-			<button type="button" class="navbar-toggle navbar-right" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed" style="display:block;">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-		</div>
-	</div>
-</div>
-
-
 <div style="max-width: 1000px; margin: 0 auto;">
-	<div class="myProfile">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
+	<div class="profile memberProfile">
+	<form>
+		
+	</form>
+		<div class="row">
+			<div class="col-md-12 ">
+				<div class="profile-top">
 					<div class="coverPhoto">
 						<img ng-src="assets/img/members/">
-					</div>
-					<div>
+					</div>	
+					<div class="info">
 						<div class="profilePhoto">
-							<img class=" "ng-src="assets/img/members/member01.jpg">
+							<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
 						</div>
-						<p>KEN SIA</p>
-						<p>Developer</p>
-						<p>at VOFFICE</p>
+						<h3>{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
+						<input type="text" name="firstName" ng-model="vm.member.firstName" ng-show="vm.editState">
+						<input type="text" name="lastName" ng-model="vm.member.lastName" ng-show="vm.editState">
+						<p>{{vm.member.position}}</p>
+						<input type="text" name="position" ng-model="vm.member.position" ng-show="vm.editState">
+						<br>
 						<div class="followers">
-							<a><span>4</span>Followers</a>
-							<a><span>20</span>Following</a>
+							<a><span>{{vm.member.followers}}</span>Followers</a>
+							<a><span>{{vm.member.following}}</span>Following</a>
 						</div>
-						<a class="btn btn-default">FOLLOW</a>
+						<div class="btn-group">
+							<a class="btn btn-default" ng-click="vm.editState = true">EDIT PROFILE</a>
+							<a class="btn btn-default" ng-click="vm.updateData()">SAVE PROFILE</a>
+							<a class="btn btn-default" ng-click="vm.reloadData()">CANCEL</a>	
+						</div>
+					</div>		
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="profile-sidenav">
+					<div class="about-me">
+						<h4>ABOUT ME</h4>
+						<div class="content">
+							<p>{{vm.member.aboutMe}}</p>
+							<textarea type="text" name="position" ng-model="vm.member.aboutMe" ng-show="vm.editState"></textarea>
+						</div>
+					</div>
+					<div class="contact">
+						<h4>CONTACT</h4>
+						<div class="content">
+							<p><span>w:</span><a ng-href="http://{{vm.member.website}}">{{vm.member.website}}</a></p>
+							<p><span>e:</span><a ng-href="mailto:{{vm.member.email}}">{{vm.member.email}}</a></p>
+							<p><span>t:</span>{{vm.member.tel}}</p>
+							<p><span>m:</span>{{vm.member.mobile}}</p>
+							<div ng-show="vm.editState">
+								<input type="text" name="website" ng-model="vm.member.website">
+								<input type="text" name="email" ng-model="vm.member.email">
+								<input type="text" name="tel" ng-model="vm.member.tel">
+								<input type="text" name="mobile" ng-model="vm.member.mobile">
+							</div>
+						</div>
+					</div>
+					<div class="work">
+						<h4>WORK/COMPANY</h4>
+						<div class="content">
+							<p class="uppercase">{{vm.member.company.companyName}}</p>
+							<p>{{vm.member.company.companyDesc}}</p>
+						</div>
+					</div>
+					<div class="skills">
+						<h4>SKILLS</h4>
+						<div class="content">
+							<ul>
+								<li ng-repeat="skill in vm.member.skills"><a href="#" class="badge">{{skill.text}}</a></li>
+							</ul>
+							<tags-input class="bootstrap"
+													ng-model="vm.member.skills"
+													placeholder="Add a skill"
+													replace-spaces-with-dashes="false"
+													ng-show="vm.editState">
+							</tags-input>
+						</div>
+					</div>
+					<div class="interests">
+						<h4>INTERESTS</h4>
+						<div class="content">
+							<ul>
+								<li ng-repeat="interest in vm.member.interests"><a href="#" class="badge">{{interest.text}}</a></li>
+							</ul>
+							<tags-input class="bootstrap"
+													ng-model="vm.member.interests"
+													placeholder="Add a skill"
+													replace-spaces-with-dashes="false"
+													ng-show="vm.editState">
+							</tags-input>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-md-3">
-					<div>
-						<h1>ABOUT ME</h1>
-						<hr>
-						<p>Freelance WEb Developer who loves listening to music, surfing, and traveling</p>
-					</div>
-					<div>
-						<h1>CONTACT</h1>
-						<hr>
-						<p><span>e:</span>ken.voffice@gmail.com</p>
-						<p><span>w:</span>voffice.com.ph</p>
-						<p><span>m:</span>09175296299</p>
-					</div>
-					<div>
-						<h1>WORK/COMPANY</h1>
-						<hr>
-						<p>VOFFICE</p>
-						<p>We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore. </p>
-					</div>
-					<div>
-						<h1>SKILLS</h1>
-						<hr>
-						<p>Programming</p>
-					</div>
-					<div>
-						<h1>INTERESTS</h1>
-						<hr>
-						<p>Design</p>
-						<p>Surf</p>
-						<p>Basketball</p>
-					</div>
+			<div class="col-md-8">
+				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
+					TIMELINE MODULE				
 				</div>
 			</div>
 		</div>

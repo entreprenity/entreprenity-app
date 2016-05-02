@@ -140,5 +140,9 @@
 				vm.locations = data;
 				//console.log(vm.location);
 			})
-		});			
+		});
+	
+	$(function() {
+		$('.item').matchHeight();
+	});
 })();

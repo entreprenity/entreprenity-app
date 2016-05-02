@@ -6,10 +6,16 @@
 		'ngTouch',
 		'ui.bootstrap',
 		'infinite-scroll',
+		'uiGmapgoogle-maps',
+		'ngTagsInput',
 		'entreprenityApp.login',
+		'entreprenityApp.home',
 		'entreprenityApp.directory',
 		'entreprenityApp.forgotpassword',
-		'entreprenityApp.memberProfile'
+		'entreprenityApp.myProfile',
+		'entreprenityApp.memberProfile',
+		'entreprenityApp.companyProfile',
+		'entreprenityApp.eventsPage'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -34,9 +40,29 @@
 			templateUrl: 'app/components/directory/directoryView.html',
 			controllerAs: 'vm'
 		})
+		.when('/home', {
+			controller: 'HomeController',
+			templateUrl: 'app/components/home/homeView.html',
+			controllerAs: 'vm'
+		})
+		.when('/myprofile/:memberId', {
+			controller: 'MyProfileController',
+			templateUrl: 'app/components/profile/myProfileView.html',
+			controllerAs: 'vm'
+		})
 		.when('/members/:memberId', {
-			controller: 'memberProfileController',
+			controller: 'MemberProfileController',
 			templateUrl: 'app/components/profile/memberProfileView.html',
+			controllerAs: 'vm'
+		})
+		.when('/companies/:companyId', {
+			controller: 'CompanyProfileController',
+			templateUrl: 'app/components/profile/companyProfileView.html',
+			controllerAs: 'vm'
+		})
+		.when('/events/:eventId', {
+			controller: 'EventsPageController',
+			templateUrl: 'app/components/events/eventsPageView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

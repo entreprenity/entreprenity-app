@@ -8,27 +8,27 @@
 			var baseUrl = 'api/';
 			return {
 				getMemberProfile: function(id) {
-					return $http.get(url, id);
+					return $http.get(baseUrl+ 'view_user_profile?id='+id);
 				}
 			};
 		})
 
-		.controller('memberProfileController', function($routeParams, memberProfileService) {
+		.controller('MemberProfileController', function($routeParams, memberProfileService) {
 			var vm = this;
 			vm.memberId = $routeParams.memberId;
 			
-
+			/*
 			data = {
 				"id": 1,
 				"avatar": "member01.jpg",
 				"coverPhoto": "memberCover01.jpg",
 				"firstName": "Ken",
 				"lastName": "Sia",
-				"position": "Developer",
+				"position": "Front-end Web Developer",
 				"city": "Taguig",
 				"followers": "2",
 				"following": "10",
-				"aboutMe": "Freelance WEb Developer who loves listening to music, surfing, and traveling",
+				"aboutMe": "Front-end Web Developer who loves listening to music, surfing, and traveling",
 				"email": "ken.voffice@gmail.com",
 				"website": "ken.com.ph",
 				"mobile": "09175296299",
@@ -49,10 +49,13 @@
 
 		
 			vm.member = data;
-			/*
+			*/
+			
 			memberProfileService.getMemberProfile(vm.memberId).success(function(data) {
 				vm.member = data;
 			});	
-			*/
+			
 		});			
 })();
+
+
