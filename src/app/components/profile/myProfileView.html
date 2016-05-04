@@ -1,8 +1,8 @@
 <div style="max-width: 1000px; margin: 0 auto;">
 	<div class="profile memberProfile">
-	<form>
+	
 		
-	</form>
+		<form name="myProfileForm" novalidate>
 		<div class="row">
 			<div class="col-md-12 ">
 				<div class="profile-top">
@@ -25,14 +25,14 @@
 						</div>
 						<div class="btn-group">
 							<a class="btn btn-default" ng-click="vm.editState = true">EDIT PROFILE</a>
-							<a class="btn btn-default" ng-click="vm.updateData()">SAVE PROFILE</a>
+							<a class="btn btn-default" ng-click="vm.updateData(vm.member)">SAVE PROFILE</a>
 							<a class="btn btn-default" ng-click="vm.reloadData()">CANCEL</a>	
 						</div>
 					</div>		
 				</div>
 			</div>
 		</div>
-
+		</form>
 		<div class="row">
 			<div class="col-md-4">
 				<div class="profile-sidenav">
