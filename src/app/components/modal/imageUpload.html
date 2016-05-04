@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3 class="modal-title">I'm a modal!</h3>
+</div>
+<div class="modal-body">
+<div>{{text}}</div>
+	<div><img class="img-circle" ng-src="{{myCroppedImage}}"></div>
+	<div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(this)"/></div>
+	<div class="cropArea" ng-style="{{imageSize}}">
+		<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
