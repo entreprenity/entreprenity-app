@@ -71,7 +71,38 @@
 			redirectTo: '/login'
 		});
 	}]);
-	
+	/*
+	.run(function ($rootScope, $location, Data) 
+	{
+	     $rootScope.$on("$routeChangeStart", function (event, next, current) 
+	     {
+	         $rootScope.authenticated = false;
+	         Data.get('session').then(function (results) 
+	         {
+	             if (results.id) 
+	             {
+	                 $rootScope.authenticated = true;
+	                 $rootScope.uid 				= results.id;
+	                 $rootScope.firstname 		= results.firstname;
+	                 $rootScope.lastname 		= results.lastname;
+	                 $rootScope.login_token 	= results.login_token;
+	             } 
+	             else 
+	             {
+	                 var nextUrl = next.$$route.originalPath;
+	                 if (nextUrl == '/login' || nextUrl == '/register') 
+	                 {
+	 
+	                 } 
+	                 else 
+	                 {
+	                     $location.path("/login");
+	                 }
+	             }
+	         });
+	      });
+    });
+	*/
 	angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
 
 })();

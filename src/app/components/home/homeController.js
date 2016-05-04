@@ -2,11 +2,23 @@
 
 	angular
 		.module('entreprenityApp.home', [])
-	
-		.controller('HomeController', function() {
-		var vm = this;
 		
-		vm.id = 1000;
+		.factory('myHomeService', function($http) {
+			var baseUrl = 'api/';
+			return {
+				getUserSessInfo: function() {
+					return $http.get(baseUrl+ 'get_user_session');
+				}
+			};
+		})
+	
+		.controller('HomeController', function($routeParams, myHomeService) {
+				var vm = this;		
+				
+				//To get user session value
+				myHomeService.getUserSessInfo().success(function(data) {
+					vm.id = data.id;
+				});
 		});
 
 })();
