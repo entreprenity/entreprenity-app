@@ -15,10 +15,10 @@ angular
 		};
 	})
 
-	.controller('MyProfileController', function($routeParams, myProfileService) {
+	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal) {
 		var vm = this;
 		vm.id = $routeParams.memberId;
-		vm.editState = true;
+		vm.editState = false;
 	
 		data = {
 			"id": 1,
@@ -50,31 +50,63 @@ angular
 		};
 
 		vm.member = data;
+	/*
+		vm.myImage='';
+		vm.myCroppedImage='';
+	
+		var handleFileSelect=function(evt) {
+			var file = evt.currentTarget.files[0];
+			var reader = new FileReader();
+			reader.onload = function (evt) {
+				$scope.$apply(function($scope){
+					vm.myImage = evt.target.result;
+					console.log(vm.myImage);
+				});
+			};
+			reader.readAsDataURL(file);
+		};
+		angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+		*/
+	
+		vm.open = function (size) {
+			alert('modal');
+			var modalInstance = $uibModal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'app/components/modal/imageUpload.html',
+				controller: 'ImageUploadController',
+				size: size,
+			});
+			
+			modalInstance.result.then(function (myCroppedImage) {
+				vm.member.avatar = myCroppedImage;
+			}, function () {
+				$log.info('Modal dismissed at: ' + new Date());
+			});
+		};
 	
 		/*
-		
 		//get initial data
 		myProfileService.getMemberProfile(vm.memberId).success(function(data) {
 			vm.member = data;
 		});	
-		
+		*/
+	
 		//when user click save, will post data to update in backend
 		vm.updateData = function() {
-			myProfileService.postMemberProfile(vm.memberId).success(function(data) {
-				vm.member = data;
+			//myProfileService.postMemberProfile(vm.memberId).success(function(data) {
+				//vm.member = data;
 				vm.editState = false;
-			});	
+			//});	
 		};
 		
 		//when user click cancel, will reload data and cancel all changes to the model
 		vm.reloadData = function() {
-			myProfileService.getMemberProfile(vm.memberId).success(function(data) {
-				vm.member = data;
+			//myProfileService.getMemberProfile(vm.memberId).success(function(data) {
+				//vm.member = data;
 				vm.editState = false;
-			});	
+			//});	
 		};
 		
-		*/
 	
 
 	});

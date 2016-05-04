@@ -8,6 +8,7 @@
 		'infinite-scroll',
 		'uiGmapgoogle-maps',
 		'ngTagsInput',
+		'ngImgCrop',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
@@ -15,7 +16,8 @@
 		'entreprenityApp.myProfile',
 		'entreprenityApp.memberProfile',
 		'entreprenityApp.companyProfile',
-		'entreprenityApp.eventsPage'
+		'entreprenityApp.eventsPage',
+		'entreprenityApp.imageUpload'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {

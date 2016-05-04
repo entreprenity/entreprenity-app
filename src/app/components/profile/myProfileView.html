@@ -11,12 +11,16 @@
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
+							<!-- <a class="btn btn-default" ng-click="vm.open()">Upload Photo</a> -->
 							<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
+							<!-- <img class="img-circle" ng-src="{{vm.member.avatar}}"> -->
 						</div>
-						<h3>{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
-						<input type="text" name="firstName" ng-model="vm.member.firstName" ng-show="vm.editState">
-						<input type="text" name="lastName" ng-model="vm.member.lastName" ng-show="vm.editState">
-						<p>{{vm.member.position}}</p>
+						<h3 ng-hide="vm.editState">{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
+						<div>
+							<input type="text" name="firstName" ng-model="vm.member.firstName" ng-show="vm.editState">
+							<input type="text" name="lastName" ng-model="vm.member.lastName" ng-show="vm.editState">
+						</div>
+						<p ng-hide="vm.editState">{{vm.member.position}}</p>
 						<input type="text" name="position" ng-model="vm.member.position" ng-show="vm.editState">
 						<br>
 						<div class="followers">
@@ -24,9 +28,9 @@
 							<a><span>{{vm.member.following}}</span>Following</a>
 						</div>
 						<div class="btn-group">
-							<a class="btn btn-default" ng-click="vm.editState = true">EDIT PROFILE</a>
-							<a class="btn btn-default" ng-click="vm.updateData()">SAVE PROFILE</a>
-							<a class="btn btn-default" ng-click="vm.reloadData()">CANCEL</a>	
+							<a class="btn btn-default" ng-hide="vm.editState" ng-click="vm.editState = true">EDIT PROFILE</a>
+							<a class="btn btn-default" ng-show="vm.editState" ng-click="vm.updateData()">SAVE PROFILE</a>
+							<a class="btn btn-default" ng-show="vm.editState" ng-click="vm.reloadData()">CANCEL</a>	
 						</div>
 					</div>		
 				</div>
@@ -39,22 +43,22 @@
 					<div class="about-me">
 						<h4>ABOUT ME</h4>
 						<div class="content">
-							<p>{{vm.member.aboutMe}}</p>
+							<p ng-hide="vm.editState">{{vm.member.aboutMe}}</p>
 							<textarea type="text" name="position" ng-model="vm.member.aboutMe" ng-show="vm.editState"></textarea>
 						</div>
 					</div>
 					<div class="contact">
 						<h4>CONTACT</h4>
 						<div class="content">
-							<p><span>w:</span><a ng-href="http://{{vm.member.website}}">{{vm.member.website}}</a></p>
-							<p><span>e:</span><a ng-href="mailto:{{vm.member.email}}">{{vm.member.email}}</a></p>
-							<p><span>t:</span>{{vm.member.tel}}</p>
-							<p><span>m:</span>{{vm.member.mobile}}</p>
+							<div ng-hide="vm.editState">
+								<p><span>w:</span><a ng-href="http://{{vm.member.website}}">{{vm.member.website}}</a></p>
+								<p><span>e:</span><a ng-href="mailto:{{vm.member.email}}">{{vm.member.email}}</a></p>
+								<p><span>m:</span>{{vm.member.mobile}}</p>
+							</div>
 							<div ng-show="vm.editState">
-								<input type="text" name="website" ng-model="vm.member.website">
-								<input type="text" name="email" ng-model="vm.member.email">
-								<input type="text" name="tel" ng-model="vm.member.tel">
-								<input type="text" name="mobile" ng-model="vm.member.mobile">
+								<p><span>w:</span><input type="text" name="website" ng-model="vm.member.website"></p>
+								<p><span>e: </span><input type="text" name="email" ng-model="vm.member.email"></p>
+								<p><span>m:</span><input type="text" name="mobile" ng-model="vm.member.mobile"></p>
 							</div>
 						</div>
 					</div>
@@ -68,7 +72,7 @@
 					<div class="skills">
 						<h4>SKILLS</h4>
 						<div class="content">
-							<ul>
+							<ul ng-hide="vm.editState">
 								<li ng-repeat="skill in vm.member.skills"><a href="#" class="badge">{{skill.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
@@ -82,12 +86,12 @@
 					<div class="interests">
 						<h4>INTERESTS</h4>
 						<div class="content">
-							<ul>
+							<ul ng-hide="vm.editState">
 								<li ng-repeat="interest in vm.member.interests"><a href="#" class="badge">{{interest.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
 													ng-model="vm.member.interests"
-													placeholder="Add a skill"
+													placeholder="Add an interest"
 													replace-spaces-with-dashes="false"
 													ng-show="vm.editState">
 							</tags-input>
