@@ -42,7 +42,7 @@ angular
 		};
 	
 		vm.memberId = $routeParams.memberId;
-		vm.editState = true;
+		vm.editState = false;
 		
 		//get initial data
 		myProfileService.getMemberProfile(vm.memberId).success(function(data) {

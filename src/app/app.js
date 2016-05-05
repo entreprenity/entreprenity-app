@@ -15,6 +15,7 @@
 		'entreprenityApp.forgotpassword',
 		'entreprenityApp.myProfile',
 		'entreprenityApp.memberProfile',
+		'entreprenityApp.myCompanyProfile',
 		'entreprenityApp.companyProfile',
 		'entreprenityApp.eventsPage',
 		'entreprenityApp.imageUpload'
@@ -57,8 +58,13 @@
 			templateUrl: 'app/components/profile/memberProfileView.html',
 			controllerAs: 'vm'
 		})
+		.when('/mycompany/:companyId', {
+			controller: 'MyProfileController',
+			templateUrl: 'app/components/profile/myCompanyProfileView.html',
+			controllerAs: 'vm'
+		})
 		.when('/companies/:companyId', {
-			controller: 'CompanyProfileController',
+			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/companyProfileView.html',
 			controllerAs: 'vm'
 		})
