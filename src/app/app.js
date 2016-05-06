@@ -59,7 +59,7 @@
 			controllerAs: 'vm'
 		})
 		.when('/mycompany/:companyId', {
-			controller: 'MyProfileController',
+			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/myCompanyProfileView.html',
 			controllerAs: 'vm'
 		})
