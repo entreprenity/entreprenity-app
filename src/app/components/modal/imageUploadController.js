@@ -2,7 +2,7 @@
 
 	angular
 		.module('entreprenityApp.imageUpload', [])
-		
+
 		.factory('imageUploadService', function($http) {
 			var baseUrl = 'api/';
 			
