@@ -25,16 +25,14 @@ angular
 	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal) {
 		var vm = this;
 	
-		vm.open = function (size) {
-			alert('modal');
+		vm.open = function () {
 			var modalInstance = $uibModal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'app/components/modal/imageUpload.html',
 				controller: 'ImageUploadController',
-				size: size,
 				resolve: {
 					id: function () {
-						return id;
+						return 5;
 					}
 				}
 			});
@@ -52,6 +50,7 @@ angular
 		//get initial data
 		myProfileService.getMemberProfile(vm.memberId).success(function(data) {
 			vm.member = data;
+			console.log(vm.member);
 		});	
 
 	

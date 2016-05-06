@@ -8929,10 +8929,18 @@ a {
   margin: 20px 0px;
 }
 
-/* line 2, ../sass/partials/_home.scss */
+/* line 1, ../sass/partials/_home.scss */
+#home {
+  margin-top: 10px;
+}
+/* line 3, ../sass/partials/_home.scss */
 #home a {
   text-decoration: none;
   color: inherit;
+}
+/* line 8, ../sass/partials/_home.scss */
+#home card {
+  border: 1px solid #b5b5b5;
 }
 
 /* line 8, ../sass/partials/_directory.scss */
@@ -9098,60 +9106,73 @@ a {
   top: -50%;
   left: 40px;
 }
-/* line 21, ../sass/partials/_profile.scss */
-.profile .profile-top .info .profilePhoto img {
-  width: 150px;
+/* line 20, ../sass/partials/_profile.scss */
+.profile .profile-top .info .profilePhoto div {
+  position: relative;
 }
-/* line 27, ../sass/partials/_profile.scss */
+/* line 22, ../sass/partials/_profile.scss */
+.profile .profile-top .info .profilePhoto div img {
+  position: absolute;
+  left: 0px;
+  width: 150px;
+  z-index: 99;
+}
+/* line 28, ../sass/partials/_profile.scss */
+.profile .profile-top .info .profilePhoto div .uploadPhoto {
+  position: absolute;
+  bottom: -20px;
+  z-index: 100;
+}
+/* line 38, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a {
   text-decoration: none;
   color: #202020;
 }
-/* line 31, ../sass/partials/_profile.scss */
+/* line 42, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a span {
   color: #f29b13;
   font-size: 20px;
   font-weight: bold;
   padding-right: 4px;
 }
-/* line 38, ../sass/partials/_profile.scss */
+/* line 49, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a:last-child {
   margin-left: 20px;
 }
-/* line 41, ../sass/partials/_profile.scss */
+/* line 52, ../sass/partials/_profile.scss */
 .profile .profile-top .info .btn-group {
   position: absolute;
   bottom: 15px;
   right: 40px;
 }
-/* line 46, ../sass/partials/_profile.scss */
+/* line 57, ../sass/partials/_profile.scss */
 .profile .profile-top .info .btn-group .btn {
   margin: 0px 10px;
 }
-/* line 51, ../sass/partials/_profile.scss */
+/* line 62, ../sass/partials/_profile.scss */
 .profile .profile-sidenav {
   border: 1px solid #b5b5b5;
 }
-/* line 53, ../sass/partials/_profile.scss */
+/* line 64, ../sass/partials/_profile.scss */
 .profile .profile-sidenav h4 {
   padding: 10px 15px;
   border-top: 1px solid #b5b5b5;
   border-bottom: 1px solid #b5b5b5;
 }
-/* line 58, ../sass/partials/_profile.scss */
+/* line 69, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .content {
   padding: 15px;
 }
-/* line 60, ../sass/partials/_profile.scss */
+/* line 71, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .content span {
   padding-right: 5px;
 }
-/* line 63, ../sass/partials/_profile.scss */
+/* line 74, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .team li {
   display: inline-block;
   margin-right: 5px;
 }
-/* line 66, ../sass/partials/_profile.scss */
+/* line 77, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .team li img {
   max-width: 80px;
 }
