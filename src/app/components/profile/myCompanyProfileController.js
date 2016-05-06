@@ -26,7 +26,7 @@
 		var vm = this;
 
 		vm.open = function (size) {
-			alert('modal');
+			//alert('modal');
 			var modalInstance = $uibModal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'app/components/modal/imageUpload.html',
@@ -43,12 +43,12 @@
 
 		vm.companyId = $routeParams.companyId;
 		
-		alert(vm.companyId);
+		//alert(vm.companyId);
 		vm.editState = false;
 
 		//get initial data
 		myCompanyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
-			alert(data);
+			//alert(data);
 			vm.company = data;
 		});	
 

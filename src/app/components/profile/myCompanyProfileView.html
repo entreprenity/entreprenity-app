@@ -44,10 +44,10 @@
 							<p ng-hide="vm.editState">{{vm.company.companyDesc}}</p>
 							<textarea type="text" name="desc" ng-model="vm.company.companyDesc" ng-show="vm.editState"></textarea>
 							<ul>
-								<li ng-repeat="category in vm.company.categories"><a href="#" class="badge">{{category}}</a></li>
+								<li ng-repeat="category in vm.company.categories"><a href="#" class="badge">{{category.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
-													ng-model="vm.company.category"
+													ng-model="vm.company.categories"
 													placeholder="Add a category"
 													replace-spaces-with-dashes="false"
 													ng-show="vm.editState">
@@ -71,7 +71,7 @@
 								<p><span>w:</span><input type="text" name="website" ng-model="vm.company.website"></p>
 								<p><span>t:</span><input type="text" name="tel" ng-model="vm.company.tel"></p>
 								<p><span>m:</span><input type="text" name="mobile" ng-model="vm.company.mobile"></p>
-								<p><span>f:</span><input type="text" name="mobile" ng-model="vm.company.fax"></p>
+								<p><span>f:</span><input type="text" name="fax" ng-model="vm.company.fax"></p>
 							</div>
 						</div>
 					</div>

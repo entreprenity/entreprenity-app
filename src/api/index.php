@@ -10,6 +10,7 @@ require 'flight/Flight.php';
 Flight::route('/getEvents', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getEvents();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -21,6 +22,7 @@ Flight::route('/getEvents', function()
 Flight::route('/getMembers', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getMembers();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -32,6 +34,7 @@ Flight::route('/getMembers', function()
 Flight::route('/getCompanies', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getCompanies();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -44,6 +47,7 @@ Flight::route('/getCompanies', function()
 Flight::route('/login', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=login();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -55,6 +59,7 @@ Flight::route('/login', function()
 Flight::route('/forgotpassword', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=forgot_password();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -66,6 +71,7 @@ Flight::route('/forgotpassword', function()
 Flight::route('/get_user_session', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=get_user_session();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -77,6 +83,7 @@ Flight::route('/get_user_session', function()
 Flight::route('/getLocations', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getLocations_dropdown();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -88,6 +95,7 @@ Flight::route('/getLocations', function()
 Flight::route('/getNewMembers', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getNewMembers();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -100,6 +108,7 @@ Flight::route('/getNewMembers', function()
 Flight::route('/view_user_profile', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=viewUserProfile();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -112,6 +121,7 @@ Flight::route('/view_user_profile', function()
 Flight::route('/view_company_profile', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=viewCompanyProfile();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -124,6 +134,7 @@ Flight::route('/view_company_profile', function()
 Flight::route('/view_event_detail', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=viewEventDetail();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -137,6 +148,7 @@ Flight::route('/view_event_detail', function()
 Flight::route('/get_my_details', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getMyProfileDetails();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -149,6 +161,7 @@ Flight::route('/get_my_details', function()
 Flight::route('/update_my_profile', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=updateMyProfileDetails();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -161,6 +174,7 @@ Flight::route('/update_my_profile', function()
 Flight::route('/get_my_company_profile', function()
 {
    enable_cors();	
+   services_included();	
 	$returnarray=getMyCompanyProfileDetails();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -172,7 +186,8 @@ Flight::route('/get_my_company_profile', function()
 //May 03,2016
 Flight::route('/update_my_company_profile', function()
 {
-   enable_cors();	
+   enable_cors();
+   services_included();	
 	$returnarray=updateMyCompanyDetails();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -182,427 +197,20 @@ Flight::route('/update_my_company_profile', function()
 Flight::start();
 
 
-
-//Function to update a user's company profile information
-//May 03,2016
-function updateMyCompanyDetails()
+function services_included()
 {
-
-	$data= array();
+	require_once 'services/myCompanyProfileServices.php'; 
+	require_once 'services/readOnlyServices.php'; 
+	require_once 'services/userLoginServices.php'; 
+	require_once 'services/userIDBasedServices.php'; 
+	require_once 'services/myProfileServices.php'; 
+	require_once 'services/directoryServices.php'; 
 	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$companyName		=validate_input($_POST['companyName']);
-	$companyDesc		=validate_input($_POST['companyDesc']);
-	$email				=validate_input($_POST['email']);
-	$website				=validate_input($_POST['website']);
-	$mobile				=validate_input($_POST['mobile']);
-	$telephone			=validate_input($_POST['telephone']);
-	$fax					=validate_input($_POST['fax']);
-	
-	$qry="UPDATE company_profiles SET company_name='".$companyName."', description='".$companyDesc."', email='".$email."',website='".$website."',mobile='".$mobile."'
-			,telephone='".$telephone."',fax='".$fax."' 
-			WHERE clientid=".$my_session_id." ";
-   if(setData($qry))
-   {
-   	//updation successful
-   	$data=fetch_company_information_from_userid($my_session_id);
-		$data['success'] 		= true;
-		$data['msg'] 			= 'Company Profile updated.'; 
-   }
-   else
-   {
-   	$data['success'] 		= false;
-		$data['msg'] 			= 'Something went wrong. Profile not updated.'; 
-   }
-	return $data;
-
 }
 
 
 
-//Function to get a user's own company details
-//May 03,2016
-function getMyCompanyProfileDetails()
-{
-	$data= array();
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-	//location_info.location_desc
-	//FROM company_profiles
-	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
-	//WHERE company_profiles.clientid=1
 
-	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-			 		 location_info.location_desc
-			FROM company_profiles
-			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
-			WHERE company_profiles.clientid=".$my_session_id."
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-		{
-			$data['id']					=	$row['id'];  			
-			$data['profilePhoto']	=	$row['avatar'];  			
-			$data['coverPhoto']		=	$row['cover_photo'];  			
-			$data['companyName']		=	$row['company_name'];  			
-			$data['location']			=	$row['location_desc'];  			
-			$data['companyDesc']		=	$row['description'];  			
-			$data['email']				=	$row['email'];  			
-			$data['website']			=	$row['website'];  			
-			$data['mobile']			=	$row['mobile'];  			
-			$data['telephone']		=	$row['telephone'];  			
-			$data['fax']				=	$row['fax'];  			
-		}		
-	}
-	else 
-	{
-		$data['id']					=	'';  			
-		$data['profilePhoto']	=	''; 		
-		$data['coverPhoto']		=	''; 		
-		$data['companyName']		=	''; 
-		$data['location']			=	'';   			
-		$data['companyDesc']		=	''; 		
-		$data['email']				=	''; 			
-		$data['website']			=	'';  			
-		$data['mobile']			=	''; 	
-		$data['telephone']		=	'';  			
-		$data['fax']				=	''; 
-	}
-	return $data;
-	/*
-	{
-	"id": 1,
-	"profilePhoto": "member01.jpg",
-	"coverPhoto": "memberCover01.jpg",
-	"companyName": "vOffice",
-	"location": "Fort Legend Tower",
-	"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
-	"email": "info@voffice.com",
-	"website": "voffice.com.ph",
-	"mobile": "6322242000",
-	"category": [
-		"Virtual Office",
-		"Serviced Office",
-		"Coworking Space"
-	],
-	"allCategory" : []
-	};
-	*/
-
-
-}
-
-//Function to get a user's own company details based on user id
-//May 03,2016
-function fetch_company_information_from_userid($clientid)
-{
-	$data= array();
-	
-	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-	//location_info.location_desc
-	//FROM company_profiles
-	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
-	//WHERE company_profiles.clientid=1
-
-	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-			 		 location_info.location_desc
-			FROM company_profiles
-			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
-			WHERE company_profiles.clientid=".$clientid."
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-		{
-			$data['id']					=	$row['id'];  			
-			$data['profilePhoto']	=	$row['avatar'];  			
-			$data['coverPhoto']		=	$row['cover_photo'];  			
-			$data['companyName']		=	$row['company_name'];  			
-			$data['location']			=	$row['location_desc'];  			
-			$data['companyDesc']		=	$row['description'];  			
-			$data['email']				=	$row['email'];  			
-			$data['website']			=	$row['website'];  			
-			$data['mobile']			=	$row['mobile'];  			
-			$data['telephone']		=	$row['telephone'];  			
-			$data['fax']				=	$row['fax'];  			
-		}		
-	}
-	else 
-	{
-		$data['id']					=	'';  			
-		$data['profilePhoto']	=	''; 		
-		$data['coverPhoto']		=	''; 		
-		$data['companyName']		=	''; 
-		$data['location']			=	'';   			
-		$data['companyDesc']		=	''; 		
-		$data['email']				=	''; 			
-		$data['website']			=	'';  			
-		$data['mobile']			=	''; 	
-		$data['telephone']		=	'';  			
-		$data['fax']				=	''; 
-	}
-	return $data;
-
-}
-
-
-//Function to update a user's profile information
-//May 03,2016
-function updateMyProfileDetails()
-{
-
-	$data= array();
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$firstName		=validate_input($_POST['firstName']);
-	$lastName		=validate_input($_POST['lastName']);
-	$position		=validate_input($_POST['position']);
-	$aboutMe			=validate_input($_POST['aboutMe']);
-	$website			=validate_input($_POST['website']);
-	$mobile			=validate_input($_POST['mobile']);
-	$tel				=validate_input($_POST['tel']);
-	
-	$qry="UPDATE client_profile SET designation='".$position."', mobile='".$mobile."', secondary_mobile='".$tel."',website='".$website."',about_me='".$aboutMe."' WHERE clientid=".$my_session_id." ";
-	$qry2="UPDATE client_info SET firstname='".$firstName."', lastname='".$lastName."' WHERE clientid=".$my_session_id." ";
-   if(setData($qry) && setData($qry2))
-   {
-   	//updation successful
-   	$data=fetch_user_information_from_id($my_session_id);
-		$data['success'] 		= true;
-		$data['msg'] 			= 'User Profile updated.'; 
-   }
-   else
-   {
-   	$data['success'] 		= false;
-		$data['msg'] 			= 'Something went wrong. Profile not updated.'; 
-   }
-   
-	return $data;
-
-}
-
-
-//Function to get all interest set
-//May 02, 2016
-function get_all_interest_sets()
-{
-	$i=0;
-	$data= array();
-	$qry="SELECT *  
-			FROM entrp_interests
-			WHERE status=1 
-			";
-   $res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-		{
-			//$data[$i]['id']		=	$row['id'];
-			$data[$i]		=	$row['interest'];  			
-			$i++;
-		}		
-	}
-	return $data;
-
-}
-
-//Function to get all skill set
-//May 02, 2016
-function get_all_skill_sets()
-{
-	$i=0;
-	$data= array();
-	$qry="SELECT *  
-			FROM entrp_skills
-			WHERE status=1 
-			";
-   $res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-		{
-			//$data[$i]['id']		=	$row['id'];
-			$data[$i]		=	$row['skills'];  			
-			$i++;
-		}		
-	}
-	return $data;
-}
-
-//Function to fetch a user's skill set
-//May 02, 2016
-function get_user_skill_sets($userid)
-{
-	//To fetch user skill set
-	$data= array();
-	$qry="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
-			 FROM entrp_user_skills 
-			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
-			 WHERE entrp_user_skills.user_id=".$userid."
-			";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	$k=0;
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-   	{
-   		$data[$k] 		= $row['skills'];
-   		$k++;
-   	}
-	}
-	return $data;
-}
-
-
-//Function to fetch a user's interest set
-//May 02, 2016
-function get_user_interest_sets($userid)
-{
-	//To fetch user interest list
-	$data= array();
-	$qry="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
-			 FROM entrp_user_interests 
-			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
-			 WHERE entrp_user_interests.user_id=".$userid."
-			 ";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	$j=0;
-	if($count_res>0)
-	{
-	  while($row=mysqli_fetch_array($res))
-     {
-   	 $data[$j] 		= $row['interest'];
-   	 $j++;
-     }
-	}
-	return $data;
-}
-
-
-
-//Function to fetch a user's own details
-//April 28,2016
-function getMyProfileDetails()
-{
-	
-/*
-{
-	"avatar": "member01.jpg",
-	"coverPhoto": "memberCover01.jpg",
-	"firstName": "Ken",
-	"lastName": "Sia",
-	"position": "Front-end Web Developer",
-	"Location": "Fort Legend Tower",
-	"aboutMe": "Front-end Web Developer who loves listening to music, surfing, and traveling",
-	"email": "ken.voffice@gmail.com",
-	"website": "ken.com.ph",
-	"mobile": "09175296299",
-	"tel": "0229131533"
-	"skills": [
-		"Programming",
-		"Public Speaking"
-	],
-	"interests": [
-		"Design",
-		"Surf",
-		"Basketball"
-	]
-}
-
-*/	
-	$data= array();
-	//$userid=validate_input($_GET['id']);
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	$userid=$my_session_id;
-	if($userid)
-	{
-			$qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
-					 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.secondary_mobile,client_profile.website,client_profile.about_me,
-					 		 location_info.location_desc,
-					 		 company_profiles.company_name,company_profiles.description
-					FROM client_info
-					LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
-					LEFT JOIN location_info ON location_info.id=client_profile.client_location
-					LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-					WHERE client_info.clientid=".$userid."
-			      ";
-			$res=getData($qry);
-		   $count_res=mysqli_num_rows($res);
-		   if($count_res>0)
-		   {
-		   	while($row=mysqli_fetch_array($res))
-		   	{
-		   		$data['avatar']			=	$row['avatar'];
-		   		$data['coverPhoto']		=	$row['cover_pic'];
-		   		$data['firstName']		=	$row['firstname'];
-		   		$data['lastName']			=	$row['lastname'];
-		   		$data['position']			=	$row['designation'];
-		   		$data['Location']			=	$row['location_desc'];
-		   		$data['aboutMe']			=	$row['about_me'];
-		   		$data['email']				=	$row['email'];
-		   		$data['website']			=	$row['website'];
-		   		$data['mobile']			=	$row['mobile'];
-		   		$data['tel']				=	$row['secondary_mobile'];
-		   	}
-		   	
-		   	 //fetch user skills
-		   	 $data['userSkills'] 		= get_user_skill_sets($userid);
-		   	 $data['skills']				= $data['userSkills'];
-		   	 //fetch user interests
-		   	 $data['userInterests'] 	= get_user_interest_sets($userid);
-		   	 $data['interests']			= $data['userInterests'];
-		   	 
-		   	 //Function to get total followers of a user
-				 $data['followers'] 	= user_followers($userid);
-		
-				 //Function to get total followings of a user
-				 $data['following'] 	= user_following($userid);
-		   	   
-		   }
-		   else
-		   {
-				$data['avatar']			=	'';
-				$data['coverPhoto']		=	'';
-				$data['firstName']		=	'';
-				$data['lastName']			=	'';
-				$data['position']			=	'';
-				$data['Location']			=	'';
-				$data['aboutMe']			=	'';
-				$data['email']				=	'';
-				$data['website']			=	'';
-				$data['mobile']			=	'';
-				$data['tel']				=	'';
-		   
-		   }
-		   //fetch all skills
-		   $data['allSkills'] 		= get_all_skill_sets();
-		   	
-		   //fetch all interests
-		   $data['allInterests'] 	= get_all_interest_sets();	
-	
-	}
-	return $data;
-}
 
 
 //Function to fetch a company profile
@@ -828,59 +436,7 @@ function viewEventDetail()
 	return $data;
 }
 
-//Function to get total followings of a user
-//April 25,2016
-function user_following($clientid)
-{
-	//To fetch user following
-   //SELECT COUNT(entrp_user_follows.follows) AS following FROM entrp_user_follows WHERE entrp_user_follows.clientid=1
-	$qry="SELECT COUNT(entrp_user_follows.follows) AS following 
-			 FROM entrp_user_follows 
-			 WHERE entrp_user_follows.clientid=".$clientid."
-			";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-   	{
-   		$count_following 		= $row['following'];
-   	}
-	}
-	else
-	{
-		$count_following 			= 0;
-	}
-	return $count_following;
-}
 
-
-
-//Function to get total followers of a user
-//April 25, 2016
-function user_followers($clientid)
-{
-	//To fetch user followers
-	//SELECT COUNT(entrp_user_follows.clientid) AS followers FROM entrp_user_follows WHERE entrp_user_follows.follows=1
-	$qry="SELECT COUNT(entrp_user_follows.clientid) AS followers 
-			 FROM entrp_user_follows 
-			 WHERE entrp_user_follows.follows=".$clientid."
-			";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-   	{
-   		$count_followers 		= $row['followers'];
-   	}
-	}
-	else
-	{
-		$count_followers 			= 0;
-	}
-	return $count_followers;
-}
 
 
 //Function to fetch a user profile
@@ -1001,121 +557,7 @@ function viewUserProfile()
    return $data;
 }
 
-//Function to get user information based on id
-//May 03, 2016
-//Sibling to viewUserProfile
-function fetch_user_information_from_id($clientid)
-{
-	
-	$data= array();		
-	/*
-	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
-			 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
-			 location_info.location_desc,company_profiles.company_name,company_profiles.description
-	FROM client_info
-	LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
-	LEFT JOIN location_info ON location_info.id=client_profile.client_location
-	LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-	*/
 
-
-  $qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
-			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
-			 		 client_profile.secondary_mobile,
-			 		 location_info.location_desc,
-			 		 company_profiles.company_name,company_profiles.description
-			FROM client_info
-			LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
-			LEFT JOIN location_info ON location_info.id=client_profile.client_location
-			LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-			WHERE client_info.clientid=".$clientid."
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-	if($count_res>0)
-   {
-
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data['id']				=	$row['clientid'];
-			$data['avatar']		=	$row['avatar'];
-			$data['coverPhoto']	=	$row['cover_pic'];
-			$data['firstName'] 	= 	$row['firstname'];
-			$data['lastName'] 	= 	$row['lastname'];
-			$data['position'] 	= 	$row['designation'];
-			$data['city'] 			= 	$row['city'];
-			
-			$data['aboutMe'] 		=  $row['about_me'];
-			$data['email'] 		=  $row['email'];
-			$data['website'] 		=  $row['website'];
-			$data['mobile'] 		=  $row['mobile'];
-			$data['tel'] 			=  $row['secondary_mobile'];
-			
-			$data['company']['companyName'] 		= $row['company_name'];
-			$data['company']['companyDesc'] 		= $row['company_name'];
-
-			$data['success'] = true;
-			$data['msg'] = 'Profile fetched';
-		}
-		
-		//To fetch user interest list
-		$qry2="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
-   			 FROM entrp_user_interests 
-   			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
-   			 WHERE entrp_user_interests.user_id=".$clientid."
-   			 ";
-   	$res2=getData($qry2);
-   	$count_res2=mysqli_num_rows($res2);
-   	$j=0;
-   	if($count_res2>0)
-   	{
-   		while($row2=mysqli_fetch_array($res2))
-	   	{
-	   		$data['interests'][$j] 		= $row2['interest'];
-	   		$j++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['interests'][$j] 		= '';
-   	}
-   	
-   	//To fetch user skill set
-   	$qry3="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
-   			 FROM entrp_user_skills 
-   			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
-   			 WHERE entrp_user_skills.user_id=".$clientid."
-   			";
-   	$res3=getData($qry3);
-   	$count_res3=mysqli_num_rows($res3);
-   	$k=0;
-   	if($count_res3>0)
-   	{
-   		while($row3=mysqli_fetch_array($res3))
-	   	{
-	   		$data['skills'][$k] 		= $row3['skills'];
-	   		$k++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['skills'][$k] 		= '';
-   	}
-   	
-   	//Function to get total followers of a user
-		$data['followers'] 	= user_followers($clientid);
-		
-		//Function to get total followings of a user
-		$data['following'] 	= user_following($clientid);
-   	   	
-   }
-   else
-   {
-   	$data['success'] = false;
-		$data['msg'] = 'User Not Found';
-   }
-   return $data;
-}
 
 
 
@@ -1224,31 +666,6 @@ function getNewMembers()
 }
 
 
-//Function to fetch location list (centers)
-//April 19,2016
-function getLocations_dropdown()
-{
-	$data= array();	
-	$qry="SELECT  id,location_desc FROM location_info";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data[$i]['id']				=	$row['id'];
-			$data[$i]['location_desc']	=	$row['location_desc'];
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['location_desc']	=	"";
-   }
-	return $data;	
-}
 
 
 //Function to get session values
@@ -1271,359 +688,9 @@ function get_user_session()
 }
 
 
-//Function for forgot password feature
-//April 15, 2016
-function forgot_password()
-{
-	$data= array();
-	$username=validate_input($_POST['username']);
-	//check whether this email id exist on database
-	$qry="SELECT clientid,firstname,lastname FROM client_info AS CI where CI.email='".$username."'";
-   $res=getData($qry);
-   $count_res=mysqli_num_rows($res);   
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-			$data['firstname']	=	$row['firstname'];
-			$data['lastname']		=	$row['lastname'];
-			$data['id']				=	$row['clientid'];      
-      }
-         	
-   	//if yes, start password reset process
-		  
-   	$fullname=$data['firstname'].' '.$data['lastname'];
-   	$password=generateRandomAlphaNumeric($length=8);
-   	ob_start();
-		include('email_templates/password_reset.php');
-		$order_placement_template = ob_get_contents();			
-		ob_end_clean();			
-
- 		$to='dominic@cliffsupport.com'; 
- 		//$to1='cs@vrush.ph'; 
- 		$strSubject="Password reset form";
- 		$message =  $order_placement_template;              
- 		$headers = 'MIME-Version: 1.0'."\r\n";
- 		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
- 		$headers .= "From: eprty@test.com"; 
- 
- 		$qry2="UPDATE client_info SET password='".md5($password)."' where email='".$username."' ";
-   	if(setData($qry2))
-   	{
-   	 	$mail_to_vrush=mail($to, $strSubject, $message, $headers);  			
-	 		if($mail_to_vrush)
-	 		{
-	 			$data['success'] 		= true;
-				$data['msg'] 			= 'An email has been sent to you with your new password - Please check your email';
-	 		}
-	 		else
-	 		{
-	 			$data['success'] 		= false;
-				$data['msg'] 			= 'We did not recognize that email';
-	 		}
-   	}
-   	else
-   	{
-   		$data['success'] 		= false;
-			$data['msg'] 			= 'We did not recognize that email';
-   	}
-   }
-   else
-   {
-   	//if no, show them a message
-   	$data['success'] 		= false;
-		$data['msg'] 			= 'We did not recognize that email';
-   }
-	return $data;
-}
-
-//Function to generate random alpha numeric string
-//April 19,2016
-function generateRandomAlphaNumeric($length = 4) 
-{
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) 
-    {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
-
-//Function to login
-//April 15, 2016
-function login()
-{
-	$data= array();
-	$username=validate_input($_POST['username']);
-	$password=validate_input($_POST['password']);
-	
-	$qry="SELECT * FROM client_info where email='".$username."' AND password='".md5($password)."' ";
-   $res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data['firstname']	=	$row['firstname'];
-			$data['lastname']		=	$row['lastname'];
-			$data['id']				=	$row['clientid'];
-			$data['success'] 		= true;
-			$data['msg'] 			= 'Valid User';
-			
-			//generate a client token
-			$client_session_token=generate_login_token();
-			
-			//set session
-			session_start();
-			$_SESSION['id'] 				= $data['id'];
-			$_SESSION['firstname'] 		= $data['firstname'];
-			$_SESSION['lastname'] 		= $data['lastname'];
-			$_SESSION['login_token'] 	= $client_session_token;
-
-			set_client_session_token($client_session_token,$row['clientid']);
-			
-		}
-   }
-   else
-   {
-   	$data['success'] = false;
-		$data['msg'] = 'Please check your credentials once again';
-   }
-   
-	return $data;
-	
-}
-
-//Function to set a login token
-function set_client_session_token($client_session_token,$clientid)
-{
-	$token_set_at=date("Y-m-d H:i:s");
-	$qry="INSERT INTO client_login_tokens(clientid,client_token,date_time) VALUES(".$clientid.",'".$client_session_token."','".$token_set_at."') ";
-   setData($qry);
-}
-
-//Function to generate a login token
-function generate_login_token()
-{
-	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 32 digit token
-   $qry = "SELECT id FROM client_login_tokens WHERE client_token = '".$token."' ";
-   $res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   if($count_res>0)
-   {
-		generate_login_token();
-   }
-   else
-   {
-   	return $token;
-   }	
-	
-
-}
-
-//Function to fetch members directory
-// April 13,2015
-function getMembers()
-{
-	$records=1;
-	$start=0;
-	$limit=12;
-	$end=12;
-	$member_default='member-default.jpg';
-	if(isset($_GET['page']))
-	{
-		$records=$_GET['page'];
-		if($records==1)
-		{
-			$start=0;
-			$end=12;
-		}
-		else if($records==1)
-		{
-			$start=$limit+$records;
-			$end=$end+$limit;
-		}
-		else
-		{
-			$start=($limit*$records)+1;
-			$end=$limit*$records;
-		}
-		
-	}
-	
-	
-	$limit=$start * $records;
-	$data= array();	
-	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
-	      FROM client_info AS CI 
-	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
-	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
-	      ORDER BY CI.clientid ASC 
-	      LIMIT $start ,$end
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	if(!empty($row['clientid']))
-      	{
-      		$data[$i]['id']				=	$row['clientid'];
-      	}
-      	else
-      	{
-      		$data[$i]['id']				=	"";
-      	}
-      	
-      	if(!empty($row['firstname']))
-      	{
-      		$data[$i]['firstName']		=	$row['firstname'];
-      	}
-      	else
-      	{
-      		$data[$i]['firstName']		=	"";
-      	}
-			
-			if(!empty($row['lastname']))
-      	{
-      		$data[$i]['lastName']		=	$row['lastname'];
-      	}
-      	else
-      	{
-      		$data[$i]['lastName']		=	"";
-      	}
-			
-			if(!empty($row['avatar']))
-      	{
-      		$data[$i]['avatar']			=	$row['avatar'];
-      	}
-      	else
-      	{
-      		$data[$i]['avatar']			=	$member_default;
-      	}
-			
-			if(!empty($row['designation']))
-      	{
-      		$data[$i]['position']		=	$row['designation'];
-      	}
-      	else
-      	{
-      		$data[$i]['position']		=	"";
-      	}
-			
-			if(!empty($row['company_name']))
-      	{
-      		$data[$i]['companyName']	=	$row['company_name'];
-      	}
-      	else
-      	{
-      		$data[$i]['companyName']	=	"";
-      	}
-			
-			if(!empty($row['city']))
-      	{
-      		$data[$i]['city']				=	$row['city'];
-      	}
-      	else
-      	{
-      		$data[$i]['city']				=	"";
-      	}
-      	
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['firstName']		=	"";
-		$data[$i]['lastName']		=	"";
-		$data[$i]['avatar']			=	"";
-		$data[$i]['position']		=	"";
-		$data[$i]['companyName']	=	"";
-		$data[$i]['city']				=	"";
-   }
-	return $data;
-}
 
 
 
-//Function to fetch company directory
-// April 13,2015
-function getCompanies()
-{	
-	$data= array();	
-	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,LI.location_desc AS city 
-			FROM company_profiles AS CP
-			LEFT JOIN location_info as LI ON LI.id=CP.client_location ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data[$i]['id']				=	$row['clientid'];
-			$data[$i]['companyName']	=	$row['company_name'];
-			$data[$i]['description']	=	$row['description'];
-			$data[$i]['avatar']			=	$row['avatar'];
-			$data[$i]['city']				=	$row['city'];
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['companyName']	=	"";
-		$data[$i]['description']	=	"";
-		$data[$i]['avatar']			=	"";
-		$data[$i]['city']				=	"";
-   }
-	return $data;	
-}
-
-
-
-//Function to fetch events directory
-// April 13,2015
-function getEvents()
-{
-	$data= array();
-	
-	$qry="SELECT * FROM entrp_events";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data[$i]['id']				=	$row['id'];
-			$data[$i]['eventName']		=	$row['eventName'];
-			$data[$i]['description']	=	$row['description'];
-			$data[$i]['poster']			=	$row['poster'];
-			$data[$i]['city']				=	$row['city'];
-			$data[$i]['date']				=	$row['event_date'];
-			$data[$i]['time']				=	$row['event_time'];
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['eventName']		=	"";
-		$data[$i]['description']	=	"";
-		$data[$i]['poster']			=	"";
-		$data[$i]['city']				=	"";
-		$data[$i]['date']				=	"";
-		$data[$i]['time']				=	"";
-   }
-	
-	return $data;
-}
 
 
 //Function to validate inputs
