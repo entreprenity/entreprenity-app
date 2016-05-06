@@ -32,6 +32,11 @@ angular
 				templateUrl: 'app/components/modal/imageUpload.html',
 				controller: 'ImageUploadController',
 				size: size,
+				resolve: {
+					id: function () {
+						return id;
+					}
+				}
 			});
 			
 			modalInstance.result.then(function (myCroppedImage) {

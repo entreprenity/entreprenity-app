@@ -2,7 +2,7 @@
 
 	angular
 		.module('entreprenityApp.imageUpload', [])
-		.controller('ImageUploadController', function($scope, $uibModalInstance) {
+		.controller('ImageUploadController', function($scope, $uibModalInstance, id) {
 			$scope.text = '12312312312';
 			$scope.myImage='';
 			$scope.myCroppedImage='';

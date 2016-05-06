@@ -1,15 +1,23 @@
-<div style="max-width: 1000px; margin: 0 auto;">
-	<div class="home">
+<div id="home">
+	<div class="container">
 		<div class="row">
 			<div class="col-md-3">
-				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
-					<a ng-href="#/myprofile/{{vm.id}}">MY PROFILE</a>
+				<div class="card">
+					<a ng-href="#/myprofile/{{vm.id}}">MY PROFILE
+						<img class="img-circle" ng-src="assets/img/members/member01.jpg">
+						<h3>Liza Uy</h3>
+						<p>Freelance Web Developer</p>
+					</a>
 					</br>	
-					<a ng-href="#/mycompany/1">MY COMPANY PROFILE</a>	
+				<a ng-href="#/mycompany/1">MY COMPANY PROFILE</a>	
+			</div>
+			</div>
+			<div class="col-md-5">
+				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
+					TIMELINE MODULE				
 				</div>
 			</div>
-
-			<div class="col-md-9">
+			<div class="col-md-4">
 				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
 					TIMELINE MODULE				
 				</div>
@@ -17,6 +25,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 
