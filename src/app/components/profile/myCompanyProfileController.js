@@ -25,17 +25,20 @@
 		.controller('MyCompanyProfileController', function($routeParams, myCompanyProfileService, $scope, $uibModal) {
 		var vm = this;
 
-		vm.open = function (size) {
-			//alert('modal');
+		vm.open = function () {
 			var modalInstance = $uibModal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'app/components/modal/imageUpload.html',
 				controller: 'ImageUploadController',
-				size: size,
+				resolve: {
+					id: function () {
+						return 5;
+					}
+				}
 			});
 
 			modalInstance.result.then(function (myCroppedImage) {
-				vm.company.avatar = myCroppedImage;
+				vm.company.profilePhoto = myCroppedImage;
 			}, function () {
 				$log.info('Modal dismissed at: ' + new Date());
 			});

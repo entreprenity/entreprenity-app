@@ -2,12 +2,12 @@
 	<h3 class="modal-title">I'm a modal!</h3>
 </div>
 <div class="modal-body">
-<div>{{text}}</div>
-	<div><img class="img-circle" ng-src="{{myCroppedImage}}"></div>
-	<div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(this)"/></div>
-	<div class="cropArea" ng-style="{{imageSize}}">
-		<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
-	</div>
+		<div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(this)"/></div>
+		<div class="cropArea" style="width:150px; height: 150px;">
+			<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+		</div>
+		<div>Cropped Image:</div>
+		<div><img ng-src="{{myCroppedImage}}"/></div>
 </div>
 <div class="modal-footer">
 	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>

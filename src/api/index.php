@@ -194,6 +194,20 @@ Flight::route('/update_my_company_profile', function()
 
 });
 
+
+//Route to update user's profile avatar
+//May 06,2016
+Flight::route('/update_member_avatar', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=updateMyProfileAvatar();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
 
 
@@ -205,6 +219,7 @@ function services_included()
 	require_once 'services/userIDBasedServices.php'; 
 	require_once 'services/myProfileServices.php'; 
 	require_once 'services/directoryServices.php'; 
+	require_once 'services/imageUploadServices.php'; 
 	
 }
 
@@ -497,50 +512,9 @@ function viewUserProfile()
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
 		}
-		
-		//To fetch user interest list
-		$qry2="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
-   			 FROM entrp_user_interests 
-   			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
-   			 WHERE entrp_user_interests.user_id=".$clientid."
-   			 ";
-   	$res2=getData($qry2);
-   	$count_res2=mysqli_num_rows($res2);
-   	$j=0;
-   	if($count_res2>0)
-   	{
-   		while($row2=mysqli_fetch_array($res2))
-	   	{
-	   		$data['interests'][$j] 		= $row2['interest'];
-	   		$j++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['interests'][$j] 		= '';
-   	}
-   	
-   	//To fetch user skill set
-   	$qry3="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
-   			 FROM entrp_user_skills 
-   			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
-   			 WHERE entrp_user_skills.user_id=".$clientid."
-   			";
-   	$res3=getData($qry3);
-   	$count_res3=mysqli_num_rows($res3);
-   	$k=0;
-   	if($count_res3>0)
-   	{
-   		while($row3=mysqli_fetch_array($res3))
-	   	{
-	   		$data['skills'][$k] 		= $row3['skills'];
-	   		$k++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['skills'][$k] 		= '';
-   	}
+		   	
+   	$data['skills'] 		= get_user_skill_sets($clientid);
+   	$data['interests'] 	= get_user_interest_sets($clientid);
    	
    	//Function to get total followers of a user
 		$data['followers'] 	= user_followers($clientid);

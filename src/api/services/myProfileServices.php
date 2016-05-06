@@ -1,12 +1,53 @@
 <?php
 
 
+//Function to update user skills
+//May 06,2016
+function update_user_skills($my_session_id,$skills_json)
+{
+	$qry1="SELECT id FROM entrp_user_skills WHERE user_id=".$my_session_id."";
+	$res=getData($qry1);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+   {
+   	$qry2="UPDATE entrp_user_skills SET skills='".$skills_json."' WHERE user_id=".$my_session_id." ";
+		setData($qry2); 
+   }
+   else
+   {
+   	$qry3="INSERT INTO entrp_user_skills ( user_id, skills) VALUES (".$my_session_id.", '".$skills_json."')";
+		setData($qry3);  
+   }
+}
+
+//Function to update user interests
+//May 06,2016
+function update_user_interests($my_session_id,$interests_json)
+{
+	$qry1="SELECT id FROM entrp_user_interests WHERE user_id=".$my_session_id."";
+	$res=getData($qry1);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+   {
+   	$qry2="UPDATE entrp_user_interests SET interests='".$interests_json."' WHERE user_id=".$my_session_id." ";
+		setData($qry2); 
+   }
+   else
+   {
+   	$qry3="INSERT INTO entrp_user_interests ( user_id, interests) VALUES (".$my_session_id.", '".$interests_json."')";
+		setData($qry3);  
+   }
+}
+
+
 //Function to update a user's profile information
 //May 03,2016
 function updateMyProfileDetails()
 {
 
 	$data= array();
+	$user_interests=array();
+	$user_skills=array();
 	
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
@@ -19,11 +60,37 @@ function updateMyProfileDetails()
 	$mobile			=validate_input($_POST['mobile']);
 	$tel				=validate_input($_POST['tel']);
 	
+	
+	if(!empty($_POST['skills']))
+	{
+		$count_skills=count($_POST['skills']);
+		for($i=0;$i<$count_skills;$i++)	
+		{
+			$user_skills[$i]=$_POST['skills'][$i]['text'];
+		}
+	}	
+	
+	if(!empty($_POST['interests']))
+	{
+		$count_interests=count($_POST['interests']);
+		for($i=0;$i<$count_interests;$i++)	
+		{
+			$user_interests[$i]=$_POST['interests'][$i]['text'];
+		}
+	}	
+
+	$skills_json		= json_encode($user_skills);
+	update_user_skills($my_session_id,$skills_json); 
+
+	$interests_json	= json_encode($user_interests);
+	update_user_interests($my_session_id,$interests_json);
+	
 	$qry="UPDATE client_profile SET designation='".$position."', mobile='".$mobile."', secondary_mobile='".$tel."',website='".$website."',about_me='".$aboutMe."' WHERE clientid=".$my_session_id." ";
 	$qry2="UPDATE client_info SET firstname='".$firstName."', lastname='".$lastName."' WHERE clientid=".$my_session_id." ";
    if(setData($qry) && setData($qry2))
    {
    	//updation successful
+   	
    	$data=fetch_user_information_from_id($my_session_id);
 		$data['success'] 		= true;
 		$data['msg'] 			= 'User Profile updated.'; 
@@ -107,17 +174,16 @@ function getMyProfileDetails()
 		   	}
 		   	
 		   	 //fetch user skills
-		   	 $data['userSkills'] 		= get_user_skill_sets($userid);
-		   	 $data['skills']				= $data['userSkills'];
+		   	 $data['skills']				= get_user_skill_sets($userid);
+		   	 
 		   	 //fetch user interests
-		   	 $data['userInterests'] 	= get_user_interest_sets($userid);
-		   	 $data['interests']			= $data['userInterests'];
+		   	 $data['interests']			= get_user_interest_sets($userid);
 		   	 
 		   	 //Function to get total followers of a user
-				 $data['followers'] 	= user_followers($userid);
+				 $data['followers'] 			= user_followers($userid);
 		
 				 //Function to get total followings of a user
-				 $data['following'] 	= user_following($userid);
+				 $data['following'] 			= user_following($userid);
 		   	   
 		   }
 		   else
@@ -136,10 +202,10 @@ function getMyProfileDetails()
 		   
 		   }
 		   //fetch all skills
-		   $data['allSkills'] 		= get_all_skill_sets();
+		   //$data['allSkills'] 		= get_all_skill_sets();
 		   	
 		   //fetch all interests
-		   $data['allInterests'] 	= get_all_interest_sets();	
+		   //$data['allInterests'] 	= get_all_interest_sets();	
 	
 	}
 	return $data;

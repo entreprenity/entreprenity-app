@@ -11,9 +11,11 @@
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
-							<!-- <a class="btn btn-default" ng-click="vm.open()">Upload Photo</a> -->
-							<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
-							<!-- <img class="img-circle" ng-src="{{vm.member.avatar}}"> -->
+							<div>
+								<!--<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">-->
+								<img class="img-circle" ng-src="{{vm.member.avatar}}">
+								<a class="btn btn-default uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">Edit</a>
+							</div>
 						</div>
 						<h3 ng-hide="vm.editState">{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
 						<div>
