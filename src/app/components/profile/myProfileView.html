@@ -12,11 +12,17 @@
 					<div class="info">
 						<div class="profilePhoto">
 							<div>
+<<<<<<< HEAD
 								<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
 								<img class="img-circle" ng-src="{{vm.member.avatar}}">
 								<a class="uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">
 									<img class="img-circle" src="assets/img/icon-edit.png">
 								</a>
+=======
+								<!--<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">-->
+								<img class="img-circle" ng-src="{{vm.member.avatar}}">
+								<a class="btn btn-default uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">Edit</a>
+>>>>>>> refs/remotes/origin/dominic-branch
 							</div>
 						</div>
 						<h3 ng-hide="vm.editState">{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>

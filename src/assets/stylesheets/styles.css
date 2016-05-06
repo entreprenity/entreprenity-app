@@ -8938,43 +8938,43 @@ a {
   text-decoration: none;
   color: inherit;
 }
-/* line 8, ../sass/partials/_home.scss */
+/* line 9, ../sass/partials/_home.scss */
 #home .card {
   text-align: center;
   border: 1px solid #b5b5b5;
   margin-bottom: 15px;
 }
-/* line 14, ../sass/partials/_home.scss */
+/* line 15, ../sass/partials/_home.scss */
 #home #myProfile {
   padding: 10px 15px;
 }
-/* line 16, ../sass/partials/_home.scss */
+/* line 17, ../sass/partials/_home.scss */
 #home #myProfile img {
   max-width: 100px;
   width: 100%;
   height: auto;
 }
-/* line 24, ../sass/partials/_home.scss */
+/* line 25, ../sass/partials/_home.scss */
 #home #sideNav li {
   border-bottom: 1px solid #b5b5b5;
   padding: 10px 15px;
 }
-/* line 27, ../sass/partials/_home.scss */
+/* line 28, ../sass/partials/_home.scss */
 #home #sideNav li:last-child {
   border-bottom: 1px solid transparent;
 }
-/* line 29, ../sass/partials/_home.scss */
+/* line 30, ../sass/partials/_home.scss */
 #home #sideNav li a:hover {
   color: #f29b13;
 }
-/* line 35, ../sass/partials/_home.scss */
+/* line 36, ../sass/partials/_home.scss */
 #home #topNav {
   height: 150px;
   text-align: center;
   margin-left: 5px;
   margin-bottom: 15px;
 }
-/* line 40, ../sass/partials/_home.scss */
+/* line 41, ../sass/partials/_home.scss */
 #home #topNav div {
   width: 33%;
   height: 150px;
@@ -8983,18 +8983,18 @@ a {
   border: 1px solid #b5b5b5;
   padding: 15px;
 }
-/* line 47, ../sass/partials/_home.scss */
+/* line 48, ../sass/partials/_home.scss */
 #home #topNav div margin-right
 img {
   width: 40px;
   height: 40px;
 }
-/* line 57, ../sass/partials/_home.scss */
+/* line 58, ../sass/partials/_home.scss */
 #home #newMembers h3 {
   border-bottom: 1px solid #b5b5b5;
   padding: 10px 15px;
 }
-/* line 61, ../sass/partials/_home.scss */
+/* line 62, ../sass/partials/_home.scss */
 #home #newMembers img {
   max-width: 100px;
   width: 100%;

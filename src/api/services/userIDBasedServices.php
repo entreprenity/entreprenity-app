@@ -92,51 +92,42 @@ function fetch_company_information_from_userid($clientid)
 //May 02, 2016
 function get_user_skill_sets($userid)
 {
-	//To fetch user skill set
+	
 	$data= array();
-	$qry="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
-			 FROM entrp_user_skills 
-			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
-			 WHERE entrp_user_skills.user_id=".$userid."
-			";
+	$qry="SELECT * FROM entrp_user_skills  
+			WHERE user_id=".$userid." ";
 	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	$k=0;
+   $count_res=mysqli_num_rows($res);
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
-   	{
-   		$data[$k] 		= $row['skills'];
-   		$k++;
-   	}
-	}
-	return $data;
+		{
+			$data		=	json_decode($row['skills']);  					
+		}
+	}   
+	return $data;	
+	
+	
 }
 
 
 //Function to fetch a user's interest set
 //May 02, 2016
 function get_user_interest_sets($userid)
-{
-	//To fetch user interest list
+{	
 	$data= array();
-	$qry="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
-			 FROM entrp_user_interests 
-			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
-			 WHERE entrp_user_interests.user_id=".$userid."
-			 ";
+	$qry="SELECT * FROM entrp_user_interests  
+			WHERE user_id=".$userid." ";
 	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	$j=0;
+   $count_res=mysqli_num_rows($res);
 	if($count_res>0)
 	{
-	  while($row=mysqli_fetch_array($res))
-     {
-   	 $data[$j] 		= $row['interest'];
-   	 $j++;
-     }
-	}
-	return $data;
+		while($row=mysqli_fetch_array($res))
+		{
+			$data		=	json_decode($row['interests']);  					
+		}
+	}   
+	return $data;		
 }
 
 //Function to get total (count) followings of a user
@@ -250,50 +241,9 @@ function fetch_user_information_from_id($clientid)
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
 		}
-		
-		//To fetch user interest list
-		$qry2="SELECT entrp_user_interests.interest_id,entrp_interests.interest 
-   			 FROM entrp_user_interests 
-   			 LEFT JOIN entrp_interests ON entrp_interests.id=entrp_user_interests.interest_id 
-   			 WHERE entrp_user_interests.user_id=".$clientid."
-   			 ";
-   	$res2=getData($qry2);
-   	$count_res2=mysqli_num_rows($res2);
-   	$j=0;
-   	if($count_res2>0)
-   	{
-   		while($row2=mysqli_fetch_array($res2))
-	   	{
-	   		$data['interests'][$j] 		= $row2['interest'];
-	   		$j++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['interests'][$j] 		= '';
-   	}
-   	
-   	//To fetch user skill set
-   	$qry3="SELECT entrp_user_skills.skill_id,entrp_skills.skills 
-   			 FROM entrp_user_skills 
-   			 LEFT JOIN entrp_skills ON entrp_user_skills.skill_id=entrp_skills.id 
-   			 WHERE entrp_user_skills.user_id=".$clientid."
-   			";
-   	$res3=getData($qry3);
-   	$count_res3=mysqli_num_rows($res3);
-   	$k=0;
-   	if($count_res3>0)
-   	{
-   		while($row3=mysqli_fetch_array($res3))
-	   	{
-	   		$data['skills'][$k] 		= $row3['skills'];
-	   		$k++;
-	   	}
-   	}
-   	else
-   	{
-   		$data['skills'][$k] 		= '';
-   	}
+
+   	$data['skills'] 		= get_user_skill_sets($clientid);
+   	$data['interests'] 	= get_user_interest_sets($clientid);
    	
    	//Function to get total followers of a user
 		$data['followers'] 	= user_followers($clientid);

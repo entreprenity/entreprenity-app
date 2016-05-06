@@ -18,11 +18,15 @@ angular
 									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 								});
 			}
+			/*,
+			getUserSessInfo: function() {
+					return $http.get(baseUrl+ 'get_user_session');
+			}*/
 			
 		};
 	})
 
-	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal) {
+	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal,$http) {
 		var vm = this;
 	
 		vm.open = function () {
@@ -31,8 +35,23 @@ angular
 				templateUrl: 'app/components/modal/imageUpload.html',
 				controller: 'ImageUploadController',
 				resolve: {
-					id: function () {
-						return 5;
+					id: function () 
+					{
+						var myid;
+						var baseUrl = 'api/';
+						$http.get(baseUrl+ 'get_user_session')
+					    .then(function(response) {
+					        myid = response.id;
+					        return myid;
+					    });
+					     
+					    /*
+						//return 1;
+						myProfileService.getUserSessInfo().success(function(data) {
+							vm.id = data.id;
+							
+						});
+						*/
 					}
 				}
 			});
