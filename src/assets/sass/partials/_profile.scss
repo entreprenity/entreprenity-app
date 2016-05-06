@@ -27,8 +27,12 @@
 					}
 					.uploadPhoto {
 						position: absolute;
-						bottom: -20px;
 						z-index: 100;
+						opacity: .8;
+						&:hover {
+							opacity: 1;
+						}
+						img {width: 50px;}
 					}
 				}
 
