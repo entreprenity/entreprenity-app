@@ -207,6 +207,31 @@ Flight::route('/update_member_avatar', function()
 
 });
 
+//Route to fetch latest events
+//May 09,2016
+Flight::route('/getLatestEvents', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getLatestEvents();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch basic user information
+//May 09,2016
+Flight::route('/getBasicUserInformation', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getBasicUserInformation();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 
 Flight::start();
 
@@ -225,8 +250,201 @@ function services_included()
 
 
 
+//Function to fetch basic user information
+//May 09,2016
+function getBasicUserInformation()
+{
+	$data= array();
+	$member_default_cover			='assets/img/members/member-default.jpg';
+   $member_default_avatar			='assets/img/members/member-default.jpg';
+  
+	//$userid=validate_input($_GET['id']);
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	$userid=$my_session_id;
+	if($userid)
+	{
+			$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,
+					 		 client_profile.avatar,client_profile.designation,client_profile.company_name
+					FROM entrp_login
+					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+					WHERE entrp_login.clientid=".$userid."
+			      ";
+			$res=getData($qry);
+		   $count_res=mysqli_num_rows($res);
+		   if($count_res>0)
+		   {
+		   	while($row=mysqli_fetch_array($res))
+		   	{
+		   		$data['id']			=	$row['clientid'];
+		   		
+		   		if($row['avatar']!='')
+   				{
+   					$data['avatar']				=	$row['avatar'];
+   				}
+   				else
+   				{
+   					$data['avatar']				=	$member_default_avatar;
+   				}
+   				
+   				if($row['firstname']!='')
+   				{
+   					$data['firstName']			=	$row['firstname'];
+   				}
+   				else
+   				{
+   					$data['firstName']			=	'';
+   				}
+   				
+   				if($row['lastname']!='')
+   				{
+   					$data['lastName']				=	$row['lastname'];
+   				}
+   				else
+   				{
+   					$data['lastName']				=	'';
+   				}
+   				
+   				if($row['username']!='')
+   				{
+   					$data['userName']				=	$row['username'];
+   				}
+   				else
+   				{
+   					$data['userName']				=	'';
+   				}
+   				
+   				if($row['designation']!='')
+   				{
+   					$data['position']				=	$row['designation'];
+   				}
+   				else
+   				{
+   					$data['position']				=	'';
+   				}
+   				
+   				if($row['company_name']!='')
+   				{
+   					$data['myOffice']				=	$row['company_name'];
+   				}
+   				else
+   				{
+   					$data['myOffice']				=	'';
+   				}
+		   	}		   	   
+		   }
+		   else
+		   {
+					$data['id']					=	'';
+					$data['avatar']			=	'';
+					$data['firstName']		=	'';
+					$data['lastName']			=	'';
+					$data['userName']			=	'';
+					$data['position']			=	'';
+					$data['myOffice']			=	'';		   
+		   }	
+	}
+	return $data;
+
+}
 
 
+
+//Function to fetch latest events
+//May 09, 2016
+function getLatestEvents()
+{
+	$event_default_poster		='assets/img/events/events-default.jpg';
+	
+	$today=date('Y-m-d H:i:s');
+	$to_day = new DateTime($today);
+	$to_day->modify('+14 day');
+	$tothatday= $to_day->format('Y-m-d H:i:s');
+	
+	$data= array();	
+	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
+			FROM entrp_events 
+			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
+	      WHERE entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
+	      ORDER BY entrp_events.event_date_time 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['id']))
+      	{
+      		$data[$i]['id']					=	$row['id'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']					=	"";
+      	}
+      	
+      	if(!empty($row['eventName']))
+      	{
+      		$data[$i]['name']					=	$row['eventName'];
+      	}
+      	else
+      	{
+      		$data[$i]['name']					=	"";
+      	}
+			
+			if(!empty($row['poster']))
+      	{
+      		$data[$i]['poster']				=	$row['poster'];
+      	}
+      	else
+      	{
+      		$data[$i]['poster']				=	$event_default_poster;
+      	}
+      	
+      	if(!empty($row['event_date']))
+      	{
+      		$data[$i]['date']					=	$row['event_date'];
+      	}
+      	else
+      	{
+      		$data[$i]['date']					=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']		=	"";
+		$data[$i]['name']		=	"";
+		$data[$i]['date']		=	"";
+		$data[$i]['poster']	=	"";
+   }
+	return $data;	
+	
+	
+	
+	 /*
+	 vm.latestEvents = data = {
+			"profilePhoto": "member01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"companyName": "vOffice",
+			"location": "Fort Legend Tower",
+			"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
+			"email": "info@voffice.com",
+			"website": "voffice.com.ph",
+			"mobile": "6322242000",
+			"category": [
+				"Virtual Office",
+				"Serviced Office",
+				"Coworking Space"
+			],
+			"allCategory" : []
+		};
+		*/
+
+}
 
 //Function to fetch a company profile
 //April 25,2016
@@ -268,9 +486,10 @@ function viewCompanyProfile()
 
 	$companyid=validate_input($_GET['id']);
 	$data= array();	
-	$company_default_profile='company-default.jpg';
-	$company_default_cover='company-default.jpg';
-	$member_default='member-default.jpg';
+	//$company_default_profile='company-default.jpg';
+	//$company_default_cover='company-default.jpg';
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
 	
 	$qry="SELECT  CP.*,LI.location_desc AS city 
 			FROM company_profiles AS CP
@@ -302,7 +521,7 @@ function viewCompanyProfile()
    		}
    		else
    		{
-   			$data['profilePhoto']	=	$company_default_profile;
+   			$data['profilePhoto']	=	$company_default_avatar;
    		}     				
    		$data['website']			=	$row['avatar'];
    		$data['email']				=	$row['email'];
@@ -405,10 +624,10 @@ function viewEventDetail()
    	
    	$i=0;
    	$data2= array();
-   	$qry2="SELECT entrp_event_attendees.clientid,client_info.firstname,client_info.lastname,client_profile.avatar 
+   	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,client_profile.avatar 
 				 FROM entrp_event_attendees 
-				 LEFT JOIN client_info ON client_info.clientid=entrp_event_attendees.clientid 
-				 LEFT JOIN client_profile ON client_profile.clientid=client_info.clientid
+				 LEFT JOIN entrp_login ON entrp_login.clientid=entrp_event_attendees.clientid 
+				 LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
 				 WHERE entrp_event_attendees.eventid=".$eventid."
 				";
 	   $res2=getData($qry2);
@@ -435,18 +654,19 @@ function viewEventDetail()
 	}
 	else
 	{
-		$data['id']				=	'';
-		$data['name']			=	'';
-		$data['address']		=	'';
-		$data['gmapLong']		=	'';
-		$data['gmapLat']		=	'';
-		$data['date']			=	'';
-		$data['startTime']	=	'';
-		$data['endTime']		=	'';
-		$data['eventPhoto']	=	'';
-		$data['poster']		=	'';
-		$data['about']			=	'';
-   	$data['category']		=	'';		
+		$data['id']										=	'';
+		$data['name']									=	'';
+		$data['address']								=	'';
+		$data['map']['center']['latitude']		=	'';
+		$data['map']['center']['longitude']		=	'';
+		$data['map']['zoom']							=	8;
+		$data['date']									=	'';
+		$data['startTime']							=	'';
+		$data['endTime']								=	'';
+		$data['eventPhoto']							=	'';
+		$data['poster']								=	'';
+		$data['about']									=	'';
+   	$data['category']								=	'';		
 	}
 	return $data;
 }
@@ -471,18 +691,19 @@ function viewUserProfile()
 	LEFT JOIN location_info ON location_info.id=client_profile.client_location
 	LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
 	*/
+  $member_default_cover			='assets/img/members/member-default.jpg';
+  $member_default_avatar		='assets/img/members/member-default.jpg';
 
-
-  $qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+  $qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 		 client_profile.secondary_mobile,
 			 		 location_info.location_desc,
 			 		 company_profiles.company_name,company_profiles.description
-			FROM client_info
-			LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+			FROM entrp_login
+			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 			LEFT JOIN location_info ON location_info.id=client_profile.client_location
-			LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-			WHERE client_info.clientid=".$clientid."
+			LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+			WHERE entrp_login.clientid=".$clientid."
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -492,10 +713,29 @@ function viewUserProfile()
    	while($row=mysqli_fetch_array($res))
       {
       	$data['id']				=	$row['clientid'];
-			$data['avatar']		=	$row['avatar'];
-			$data['coverPhoto']	=	$row['cover_pic'];
+      	
+      	
+   		if($row['avatar']!='')
+   		{
+   			$data['avatar']	=	$row['avatar'];
+   		}
+   		else
+   		{
+   			$data['avatar']	=	$member_default_avatar;
+   		}  
+   		   		
+   		if($row['cover_pic']!='')
+   		{
+   			$data['coverPhoto']	=	$row['cover_pic'];
+   		}
+   		else
+   		{
+   			$data['coverPhoto']	=	$member_default_cover;
+   		}  
+
 			$data['firstName'] 	= 	$row['firstname'];
 			$data['lastName'] 	= 	$row['lastname'];
+			$data['userName'] 	= 	$row['username'];
 			$data['position'] 	= 	$row['designation'];
 			
 			$data['city'] 			= 	$row['city'];
@@ -507,7 +747,7 @@ function viewUserProfile()
 			$data['tel'] 			=  $row['secondary_mobile'];
 			
 			$data['company']['companyName'] 		= $row['company_name'];
-			$data['company']['companyDesc'] 		= $row['company_name'];
+			$data['company']['companyDesc'] 		= $row['description'];
 
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
@@ -539,14 +779,17 @@ function viewUserProfile()
 //April 21,2016
 function getNewMembers()
 {
+	$member_default_cover			='assets/img/members/member-default.jpg';
+  	$member_default_avatar			='assets/img/members/member-default.jpg';
+  
 	$today=date('Y-m-d H:i:s');
 	$to_day = new DateTime($today);
 	$to_day->modify('-14 day');
 	$fromday= $to_day->format('Y-m-d H:i:s');
 	
 	$data= array();	
-	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
-	      FROM client_info AS CI 
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."'
@@ -585,6 +828,15 @@ function getNewMembers()
       	{
       		$data[$i]['lastName']		=	"";
       	}
+      	
+      	if(!empty($row['username']))
+      	{
+      		$data[$i]['userName']		=	$row['username'];
+      	}
+      	else
+      	{
+      		$data[$i]['userName']		=	"";
+      	}
 			
 			if(!empty($row['avatar']))
       	{
@@ -592,7 +844,7 @@ function getNewMembers()
       	}
       	else
       	{
-      		$data[$i]['avatar']			=	"img-member.jpg";
+      		$data[$i]['avatar']			=	$member_default_avatar;
       	}
 			
 			if(!empty($row['designation']))
@@ -606,11 +858,11 @@ function getNewMembers()
 			
 			if(!empty($row['company_name']))
       	{
-      		$data[$i]['companyName']	=	$row['company_name'];
+      		$data[$i]['company']	=	$row['company_name'];
       	}
       	else
       	{
-      		$data[$i]['companyName']	=	"";
+      		$data[$i]['company']	=	"";
       	}
 			
 			if(!empty($row['city']))
@@ -632,11 +884,41 @@ function getNewMembers()
 		$data[$i]['lastName']		=	"";
 		$data[$i]['avatar']			=	"";
 		$data[$i]['position']		=	"";
-		$data[$i]['companyName']	=	"";
+		$data[$i]['company']			=	"";
 		$data[$i]['city']				=	"";
+		$data[$i]['userName']		=	"";
    }
 	return $data;
 
+
+	/*
+	vm.newMembers = data = [
+		{
+			"id": "1",
+			"avatar": "member01.jpg",
+			"firstName": "Kurt",
+			"lastName": "Megan",
+			"position": "Office Assistant",
+			"company": "Pet Studio.com",
+		},
+		{
+			"id": "2",
+			"avatar": "member02.jpg",
+			"firstName": "Will",
+			"lastName": "Ferrel",
+			"position": "CEO",
+			"company": "Clever Sheep",
+		},
+		{
+			"id": "3",
+			"avatar": "member03.jpg",
+			"firstName": "Will",
+			"lastName": "Ferrel",
+			"position": "CEO",
+			"company": "Clever Sheep",
+		},
+	];
+	*/
 }
 
 

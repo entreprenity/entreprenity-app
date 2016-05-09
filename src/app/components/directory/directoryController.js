@@ -139,7 +139,7 @@
 			directoryService.getLocations().success(function(data) {
 				vm.locations = data;
 				//console.log(vm.location);
-			})
+			});
 		});
 	
 	$(function() {
