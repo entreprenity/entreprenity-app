@@ -4,10 +4,10 @@
 			<div class="col-md-2">
 				<div id="myProfile" class="card">
 					<a ng-href="#/myprofile/{{vm.id}}">
-						<img class="img-circle" ng-src="assets/img/members/member05.jpg">
-						<h3>Liza Uy</h3>
-						<p>Freelance Web Developer</p>
-						<p>vOffice</p>
+						<img class="img-circle" ng-src="{{vm.avatar}}">
+						<h3>{{vm.firstName + vm.lastName}}</h3>
+						<p>{{vm.position}}</p>
+						<p>{{vm.myOffice}}</p>
 					</a>
 				</div>
 				
@@ -50,7 +50,7 @@
 					<ul>
 						<li ng-repeat="newMember in vm.newMembers">
 							<a ng-href="#/members/{{newMember.id}}">
-								<img class="img-circle" ng-src="assets/img/members/{{newMember.avatar}}">
+								<img class="img-circle" ng-src="{{newMember.avatar}}">
 								<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
 								<p>{{newMember.position + ' / ' + newMember.company}}</p>
 						 	</a>
