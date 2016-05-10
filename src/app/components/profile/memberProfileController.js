@@ -10,12 +10,15 @@
 				getMemberProfile: function(id) {
 					return $http.get(baseUrl+ 'view_user_profile?id='+id);
 				}
+				//postMemberFollow,
+				//postMemberUnFollow
 			};
 		})
 
 		.controller('MemberProfileController', function($routeParams, memberProfileService) {
 			var vm = this;
-			vm.memberId = $routeParams.memberId;
+			vm.memberUserName = $routeParams.memberUserName;
+			
 			
 			/*
 			data = {
@@ -51,10 +54,24 @@
 			vm.member = data;
 			*/
 			
-			memberProfileService.getMemberProfile(vm.memberId).success(function(data) {
+		memberProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 				vm.member = data;
+				vm.member.followed = false;
 			});	
-			
+		
+			//when user click follow, will post data to follow member and update in backend
+			vm.follow = function(memberUserName) {
+				memberProfileService.postMemberFollow(memberUserName).success(function(data) {
+					vm.member.followed = data; //boolean = true
+				});	
+			};
+
+			//when user click unfollow, will post data to unfollow member and update in backend
+			vm.unFollow = function(memberUserName) {
+				memberProfileService.postMemberUnFollow(memberUserName).success(function(data) {
+					vm.member.followed = data; //boolean = false
+				});	
+			};
 		});			
 })();
 

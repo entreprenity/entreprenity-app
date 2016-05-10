@@ -8928,6 +8928,12 @@ a {
   height: auto;
   margin: 20px 0px;
 }
+/* line 20, ../sass/partials/_login.scss */
+#loginPage .formContainer .errorMessage {
+  color: #a94442;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
 
 /* line 1, ../sass/partials/_home.scss */
 #home {
