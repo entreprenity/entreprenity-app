@@ -19,6 +19,10 @@
 				getLocations:function() {
 					return $http.get(baseUrl + 'getLocations');
 				}
+				//service for follow_user,
+				//service for follow_company,
+				//service for unFollow_user,
+				//service for unFollow_company
 			};
 		})
 		
@@ -47,6 +51,7 @@
 					var itemData = data;
 					
 					for (var i = 0; i < itemData.length; i++) {
+						itemData[i].followed = false;
 						this.items.push(itemData[i]);
 					}
 					
@@ -123,7 +128,7 @@
 		})
 		*/
 
-		.controller('DirectoryController', function(Members, Companies, Events, directoryService) {
+		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter) {
 			/*, 
 			Session.then(function(response){
 				$rootScope.session = response;
@@ -142,16 +147,34 @@
 				//console.log(vm.location);
 			});
 			
-			/*
-			vm.follow = function(memberIndex) {
-				alert(memberIndex);
-				var followedmember = vm.members.items[memberIndex];
-				alert(followedmember);
-				memberProfileService.postMemberUnFollow(sessionId, memberId).success(function(data) {
-					vm.member.items[memberIndex].followed = data; //boolean = false
-				});	
+			
+			vm.follow_member = function(memberId) {
+				var index = returnIndexOfCLicked(vm.members.items, memberId);
+				vm.members.items[index].followed = true;
 			}
-			*/
+			
+			vm.unFollow_member = function(memberId) {
+				var index = returnIndexOfCLicked(vm.members.items, memberId);
+				vm.members.items[index].followed = false;
+			}
+			
+			vm.follow_company = function(companyId) {
+				var index = returnIndexOfCLicked(vm.companies.items, companyId);
+				vm.companies.items[index].followed = true;
+			}
+
+			vm.unFollow_company = function(companyId) {
+				var index = returnIndexOfCLicked(vm.companies.items, companyId);
+				vm.companies.items[index].followed = false;
+			}
+			
+			function returnIndexOfCLicked(itemsArray, id) {
+				var items = itemsArray;
+				var clickedObject = $filter('filter')(items, { id: id  }, true)[0];
+				var index = items.indexOf(clickedObject);
+				return index;
+			}
+			
 		});
 	
 	$(function() {

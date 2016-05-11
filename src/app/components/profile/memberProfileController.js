@@ -60,16 +60,16 @@
 			});	
 		
 			//when user click follow, will post data to follow member and update in backend
-			vm.follow = function(memberUserName) {
+			vm.follow_this_member = function(memberUserName) {
 				memberProfileService.postMemberFollow(memberUserName).success(function(data) {
-					vm.member.followed = data; //boolean = true
+					vm.member = data; //return user_info, with updated followers and followed status
 				});	
 			};
 
 			//when user click unfollow, will post data to unfollow member and update in backend
-			vm.unFollow = function(memberUserName) {
+			vm.unFollow_this_member = function(memberUserName) {
 				memberProfileService.postMemberUnFollow(memberUserName).success(function(data) {
-					vm.member.followed = data; //boolean = false
+					vm.member = data; //return user_info, with updated followers and followed status
 				});	
 			};
 		});			
