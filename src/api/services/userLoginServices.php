@@ -7,7 +7,7 @@ function forgot_password()
 	$data= array();
 	$username=validate_input($_POST['username']);
 	//check whether this email id exist on database
-	$qry="SELECT clientid,firstname,lastname FROM client_info AS CI where CI.email='".$username."'";
+	$qry="SELECT clientid,firstname,lastname FROM entrp_login AS CI where CI.email='".$username."'";
    $res=getData($qry);
    $count_res=mysqli_num_rows($res);   
    if($count_res>0)
@@ -36,7 +36,7 @@ function forgot_password()
  		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
  		$headers .= "From: eprty@test.com"; 
  
- 		$qry2="UPDATE client_info SET password='".md5($password)."' where email='".$username."' ";
+ 		$qry2="UPDATE entrp_login SET password='".md5($password)."' where email='".$username."' ";
    	if(setData($qry2))
    	{
    	 	$mail_to_vrush=mail($to, $strSubject, $message, $headers);  			
@@ -88,7 +88,7 @@ function login()
 	$username=validate_input($_POST['username']);
 	$password=validate_input($_POST['password']);
 	
-	$qry="SELECT * FROM client_info where email='".$username."' AND password='".md5($password)."' ";
+	$qry="SELECT * FROM entrp_login where email='".$username."' AND password='".md5($password)."' ";
    $res=getData($qry);
    $count_res=mysqli_num_rows($res);
    if($count_res>0)

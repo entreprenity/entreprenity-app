@@ -63,11 +63,11 @@ angular
 			});
 		};
 	
-		vm.memberId = $routeParams.memberId;
+		vm.memberUserName = $routeParams.memberUserName;
 		vm.editState = false;
 		
 		//get initial data
-		myProfileService.getMemberProfile(vm.memberId).success(function(data) {
+		myProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 			vm.member = data;
 			console.log(vm.member);
 		});	
@@ -83,7 +83,7 @@ angular
 		
 		//when user click cancel, will reload data and cancel all changes to the model
 		vm.reloadData = function() {
-			myProfileService.getMemberProfile(vm.memberId).success(function(data) {
+			myProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 				vm.member = data;
 				vm.editState = false;
 			});	

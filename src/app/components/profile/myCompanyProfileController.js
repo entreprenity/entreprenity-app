@@ -44,13 +44,13 @@
 			});
 		};
 
-		vm.companyId = $routeParams.companyId;
+		vm.companyUserName = $routeParams.companyUserName;
 		
 		//alert(vm.companyId);
 		vm.editState = false;
 
 		//get initial data
-		myCompanyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
+		myCompanyProfileService.getCompanyProfile(vm.companyUserName).success(function(data) {
 			//alert(data);
 			vm.company = data;
 		});	
@@ -66,7 +66,7 @@
 
 		//when user click cancel, will reload data and cancel all changes to the model
 		vm.reloadData = function() {
-			myCompanyProfileService.getCompanyProfile(vm.companyId).success(function(data) {
+			myCompanyProfileService.getCompanyProfile(vm.companyUserName).success(function(data) {
 				vm.company = data;
 				vm.editState = false;
 			});	

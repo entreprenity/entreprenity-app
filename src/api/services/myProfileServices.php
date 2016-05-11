@@ -59,6 +59,7 @@ function updateMyProfileDetails()
 	$website			=validate_input($_POST['website']);
 	$mobile			=validate_input($_POST['mobile']);
 	$tel				=validate_input($_POST['tel']);
+	$contact_email	=validate_input($_POST['email']);
 	
 	
 	if(!empty($_POST['skills']))
@@ -85,8 +86,8 @@ function updateMyProfileDetails()
 	$interests_json	= json_encode($user_interests);
 	update_user_interests($my_session_id,$interests_json);
 	
-	$qry="UPDATE client_profile SET designation='".$position."', mobile='".$mobile."', secondary_mobile='".$tel."',website='".$website."',about_me='".$aboutMe."' WHERE clientid=".$my_session_id." ";
-	$qry2="UPDATE client_info SET firstname='".$firstName."', lastname='".$lastName."' WHERE clientid=".$my_session_id." ";
+	$qry="UPDATE client_profile SET designation='".$position."', mobile='".$mobile."',contact_email='".$contact_email."',secondary_mobile='".$tel."',website='".$website."',about_me='".$aboutMe."' WHERE clientid=".$my_session_id." ";
+	$qry2="UPDATE entrp_login SET firstname='".$firstName."', lastname='".$lastName."' WHERE clientid=".$my_session_id." ";
    if(setData($qry) && setData($qry2))
    {
    	//updation successful
@@ -138,21 +139,23 @@ function getMyProfileDetails()
 
 */	
 	$data= array();
-	//$userid=validate_input($_GET['id']);
+	$member_default_cover			='assets/img/members/member-default.jpg';
+   $member_default_avatar			='assets/img/members/member-default.jpg';
+   
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	$userid=$my_session_id;
 	if($userid)
 	{
-			$qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+			$qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
 					 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.secondary_mobile,client_profile.website,client_profile.about_me,
 					 		 location_info.location_desc,
 					 		 company_profiles.company_name,company_profiles.description
-					FROM client_info
-					LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+					FROM entrp_login
+					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 					LEFT JOIN location_info ON location_info.id=client_profile.client_location
-					LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-					WHERE client_info.clientid=".$userid."
+					LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+					WHERE entrp_login.clientid=".$userid."
 			      ";
 			$res=getData($qry);
 		   $count_res=mysqli_num_rows($res);
@@ -160,16 +163,25 @@ function getMyProfileDetails()
 		   {
 		   	while($row=mysqli_fetch_array($res))
 		   	{
-		   		$data['avatar']			=	$row['avatar'];
+		   		if($row['avatar']!='')
+   				{
+   					$data['avatar']				=	$row['avatar'];
+   				}
+   				else
+   				{
+   					$data['avatar']				=	$member_default_avatar;
+   				}
+   				
 		   		$data['coverPhoto']		=	$row['cover_pic'];
 		   		$data['firstName']		=	$row['firstname'];
 		   		$data['lastName']			=	$row['lastname'];
 		   		$data['position']			=	$row['designation'];
 		   		$data['Location']			=	$row['location_desc'];
 		   		$data['aboutMe']			=	$row['about_me'];
-		   		$data['email']				=	$row['email'];
+		   		$data['email']				=	$row['contact_email'];
 		   		$data['website']			=	$row['website'];
 		   		$data['mobile']			=	$row['mobile'];
+		   		$data['userName']			=	$row['username'];
 		   		$data['tel']				=	$row['secondary_mobile'];
 		   	}
 		   	
@@ -199,6 +211,7 @@ function getMyProfileDetails()
 				$data['website']			=	'';
 				$data['mobile']			=	'';
 				$data['tel']				=	'';
+				$data['userName']				=	'';
 		   
 		   }
 		   //fetch all skills

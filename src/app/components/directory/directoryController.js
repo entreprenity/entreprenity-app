@@ -55,6 +55,7 @@
 				}.bind(this));
 			};
 			return Members;
+			console.log(vm.members);
 		})
 	
 		.factory('Companies', function(directoryService) {
@@ -140,6 +141,17 @@
 				vm.locations = data;
 				//console.log(vm.location);
 			});
+			
+			/*
+			vm.follow = function(memberIndex) {
+				alert(memberIndex);
+				var followedmember = vm.members.items[memberIndex];
+				alert(followedmember);
+				memberProfileService.postMemberUnFollow(sessionId, memberId).success(function(data) {
+					vm.member.items[memberIndex].followed = data; //boolean = false
+				});	
+			}
+			*/
 		});
 	
 	$(function() {

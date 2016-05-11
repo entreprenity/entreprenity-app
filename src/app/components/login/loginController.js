@@ -35,13 +35,15 @@
 				    	else
 				    	{
 				    		//alert('invalid 1');
-				    		alert(data.msg);
+				    		//alert(data.msg);
+								vm.errorMessage = data.msg;
 				    	}
 		    		}).
 		    		error(function(data, status, headers, config) 
 		    		{
 		    			//alert('invalid 2');
-		    			alert(data.msg);
+		    			//alert(data.msg);
+							vm.errorMessage = data.msg;
 		    		});
 				}
 			};

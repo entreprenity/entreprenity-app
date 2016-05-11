@@ -20,7 +20,7 @@
 				<div class="col-md-9">
 					<ul class="directory-members" infinite-scroll='vm.members.nextPage()' infinite-scroll-disabled='vm.members.busy'  infinite-scroll-distance='0'>
 						<li class="item" ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
-							<a ng-href="#/members/{{member.id}}">
+							<a ng-href="#/members/{{member.userName}}">
 								<div>
 									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
 									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
@@ -28,9 +28,9 @@
 									<p>{{member.companyName}}</p>
 									<p>{{member.city}}</p>
 									<hr>
-									<button class="btn btn-default">FOLLOW</button>
 								</div>
 							</a>
+							<a class="btn btn-default" ng-click="vm.follow()">FOLLOW</a>
 						</li>
 						<div ng-show='vm.members.busy'>Loading data...</div>
 					</ul>		
@@ -55,7 +55,7 @@
 				<div class="col-md-9">
 					<ul class="directory-companies" infinite-scroll='vm.companies.nextPage()' infinite-scroll-disabled='vm.companies.busy'  infinite-scroll-distance='0'>
 						<li ng-repeat="company in vm.companies.items | filter:searchedCompany | filter:selectedCity2">
-							<a ng-href="#/companies/{{company.id}}">
+							<a ng-href="#/companies/{{company.userName}}">
 								<div>
 									<div class="top-part">
 										<img ng-src="assets/img/companies/{{company.avatar}}">
@@ -64,9 +64,9 @@
 									<p>{{company.city}}</p>
 									<p>{{company.description}}</p>
 									<hr>
-									<button class="btn btn-default">FOLLOW</button>
 								</div>
 							</a>
+							<a class="btn btn-default" ng-click="vm.follow()">FOLLOW</a>
 						</li>
 						<div ng-show='vm.companies.busy'>Loading data...</div>
 					</ul>
@@ -99,8 +99,8 @@
 								<p>{{event.city}}</p>
 								<p>{{event.description}}</p>
 								<hr>
-								<button class="btn btn-default">JOIN</button>
 							</a>
+							<button class="btn btn-default">JOIN</button>
 						</li>
 						<div ng-show='vm.events.busy'>Loading data...</div>
 					</ul>					

@@ -484,7 +484,9 @@ function viewCompanyProfile()
 		}
 		*/
 
-	$companyid=validate_input($_GET['id']);
+	$companyUserName=validate_input($_GET['id']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+	
 	$data= array();	
 	//$company_default_profile='company-default.jpg';
 	//$company_default_cover='company-default.jpg';
@@ -679,11 +681,14 @@ function viewEventDetail()
 //Updated on May 03, 2016: to fetch secondary mobile and designation
 function viewUserProfile()
 {
-	$clientid=validate_input($_GET['id']);
+	//$clientid=validate_input($_GET['id']);
+	
+	$userName=validate_input($_GET['id']);
+	$clientid=getUserIdfromUserName($userName);	
 	
 	$data= array();		
 	/*
-	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+	SELECT  .clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
 			 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 location_info.location_desc,company_profiles.company_name,company_profiles.description
 	FROM client_info

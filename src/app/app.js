@@ -48,22 +48,22 @@
 			templateUrl: 'app/components/home/homeView.html',
 			controllerAs: 'vm'
 		})
-		.when('/myprofile/:memberId', {
+		.when('/myprofile/:memberUserName', {
 			controller: 'MyProfileController',
 			templateUrl: 'app/components/profile/myProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/members/:memberId', {
+		.when('/members/:memberUserName', {
 			controller: 'MemberProfileController',
 			templateUrl: 'app/components/profile/memberProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/mycompany/:companyId', {
+		.when('/mycompany/:companyUserName', {
 			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/myCompanyProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/companies/:companyId', {
+		.when('/companies/:companyUserName', {
 			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/companyProfileView.html',
 			controllerAs: 'vm'

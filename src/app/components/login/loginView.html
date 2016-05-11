@@ -32,11 +32,12 @@
 					<input type="password" name="password" id="password" class="form-control" ng-model="vm.password" placeholder="Password" required />
 					<span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" class="help-block">{{getError(loginForm.password.$error, 'password')}}</span>
 				</div>
-
+				<div class="errorMessage">
+					<span ng-show="loginForm.password.$dirty">{{vm.errorMessage}}</span>
+				</div>
 				<div class="form-actions">
 					<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" ng-class="{ 'disabled': loginForm.$invalid || vm.dataLoading }" class="btn btn-primary">LOGIN</button>
 					<br>
-					<a href="#/register" class="btn btn-link">Register</a>
 					<a href="#/forgotpassword" class="btn btn-link">Forgot Password</a>
 				</div>
 			</form>

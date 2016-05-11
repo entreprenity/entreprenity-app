@@ -19,7 +19,10 @@
 						<div class="followers">
 							<a><span>{{vm.company.followers}}</span>Followers</a>
 						</div>
-						<a class="btn btn-default">FOLLOW</a>
+						<div class="btn-group">
+							<a class="btn btn-default" ng-click="vm.follow()" ng-hide="vm.company.followed">FOLLOW</a>
+							<a class="btn btn-primary" ng-click="vm.unFollow()" ng-show="vm.company.followed">UNFOLLOW</a>
+						</div>
 					</div>		
 				</div>
 			</div>

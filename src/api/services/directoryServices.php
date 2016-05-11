@@ -33,8 +33,8 @@ function getMembers()
 		
 	$limit=$start * $records;
 	$data= array();	
-	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
-	      FROM client_info AS CI 
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      ORDER BY CI.clientid ASC 
@@ -63,6 +63,15 @@ function getMembers()
       	else
       	{
       		$data[$i]['firstName']		=	"";
+      	}
+      	
+      	if(!empty($row['username']))
+      	{
+      		$data[$i]['userName']		=	$row['username'];
+      	}
+      	else
+      	{
+      		$data[$i]['userName']		=	"";
       	}
 			
 			if(!empty($row['lastname']))
@@ -122,6 +131,7 @@ function getMembers()
 		$data[$i]['position']		=	"";
 		$data[$i]['companyName']	=	"";
 		$data[$i]['city']				=	"";
+		$data[$i]['userName']		=	"";
    }
 	return $data;
 }
@@ -133,7 +143,7 @@ function getMembers()
 function getCompanies()
 {	
 	$data= array();	
-	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,LI.location_desc AS city 
+	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,CP.company_username,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location ";
 	$res=getData($qry);
@@ -148,6 +158,7 @@ function getCompanies()
 			$data[$i]['description']	=	$row['description'];
 			$data[$i]['avatar']			=	$row['avatar'];
 			$data[$i]['city']				=	$row['city'];
+			$data[$i]['userName']		=	$row['company_username'];
 			$i++;
       }	
    }
@@ -158,6 +169,7 @@ function getCompanies()
 		$data[$i]['description']	=	"";
 		$data[$i]['avatar']			=	"";
 		$data[$i]['city']				=	"";
+		$data[$i]['userName']		=	"";
    }
 	return $data;	
 }

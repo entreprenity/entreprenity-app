@@ -3,6 +3,48 @@
 /* Functions and services based on userid begins */
 
 
+//Function to fetch user id from username
+//May 10,2016
+function getUserIdfromUserName($userName)
+{
+	
+	$qry="SELECT clientid FROM entrp_login  
+			WHERE username='".$userName."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['clientid'];  					
+		}
+	}   
+	return $id;
+}
+
+
+
+
+//Function to fetch company user id from company username
+//May 10,2016
+function getCompanyIdfromCompanyUserName($companyUserName)
+{
+	
+	$qry="SELECT id FROM entrp_company_categories  
+			WHERE company_username='".$companyUserName."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['id'];  					
+		}
+	}   
+	return $id;
+}
+
+
 //Function to fetch company categories based on company id
 //May 05,2016
 function fetch_company_categories($company_id)
@@ -29,6 +71,8 @@ function fetch_company_categories($company_id)
 function fetch_company_information_from_userid($clientid)
 {
 	$data= array();
+	$member_default_cover			='assets/img/members/member-default.jpg';
+   $member_default_avatar			='assets/img/members/member-default.jpg';
 	
 	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
 	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
@@ -51,7 +95,15 @@ function fetch_company_information_from_userid($clientid)
 		while($row=mysqli_fetch_array($res))
 		{
 			$data['id']					=	$row['id'];  			
-			$data['profilePhoto']	=	$row['avatar'];  			
+			//$data['profilePhoto']	=	$row['avatar']; 
+			if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']				=	$row['avatar'];
+   		}
+			else
+			{
+				$data['profilePhoto']				=	$member_default_avatar;
+			} 			
 			$data['coverPhoto']		=	$row['cover_photo'];  			
 			$data['companyName']		=	$row['company_name'];  			
 			$data['location']			=	$row['location_desc'];  			
@@ -203,16 +255,16 @@ function fetch_user_information_from_id($clientid)
 	*/
 
 
-  $qry="SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
+  $qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 		 client_profile.secondary_mobile,
 			 		 location_info.location_desc,
 			 		 company_profiles.company_name,company_profiles.description
-			FROM client_info
-			LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
+			FROM entrp_login
+			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 			LEFT JOIN location_info ON location_info.id=client_profile.client_location
-			LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-			WHERE client_info.clientid=".$clientid."
+			LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+			WHERE entrp_login.clientid=".$clientid."
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -230,11 +282,11 @@ function fetch_user_information_from_id($clientid)
 			$data['city'] 			= 	$row['city'];
 			
 			$data['aboutMe'] 		=  $row['about_me'];
-			$data['email'] 		=  $row['email'];
+			$data['email'] 		=  $row['contact_email'];
 			$data['website'] 		=  $row['website'];
 			$data['mobile'] 		=  $row['mobile'];
 			$data['tel'] 			=  $row['secondary_mobile'];
-			
+			$data['userName']			=	$row['username'];
 			$data['company']['companyName'] 		= $row['company_name'];
 			$data['company']['companyDesc'] 		= $row['company_name'];
 

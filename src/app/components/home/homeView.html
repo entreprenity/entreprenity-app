@@ -3,7 +3,7 @@
 		<div class="row">
 			<div class="col-md-2">
 				<div id="myProfile" class="card">
-					<a ng-href="#/myprofile/{{vm.id}}">
+					<a ng-href="#/myprofile/{{vm.userName}}">
 						<img class="img-circle" ng-src="{{vm.avatar}}">
 						<h3>{{vm.firstName + vm.lastName}}</h3>
 						<p>{{vm.position}}</p>
@@ -49,7 +49,7 @@
 					<h3>NEW MEMBERS</h3>
 					<ul>
 						<li ng-repeat="newMember in vm.newMembers">
-							<a ng-href="#/members/{{newMember.id}}">
+							<a ng-href="#/members/{{newMember.userName}}">
 								<img class="img-circle" ng-src="{{newMember.avatar}}">
 								<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
 								<p>{{newMember.position + ' / ' + newMember.company}}</p>
