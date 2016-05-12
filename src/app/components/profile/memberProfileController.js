@@ -7,54 +7,42 @@
 		
 			var baseUrl = 'api/';
 			return {
-				getMemberProfile: function(id) {
+				getMemberProfile: function(id) 
+				{
 					return $http.get(baseUrl+ 'view_user_profile?id='+id);
-				}
-				//postMemberFollow,
-				//postMemberUnFollow
+				},
+				postMemberFollow: function(memberUserName) 
+				{
+					var dataContent = {
+			            'user' : memberUserName
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'followThisUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postMemberUnFollow: function(memberUserName) 
+				{
+					var dataContent = {
+			            'user' : memberUserName
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'unfollowThisUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				}				
 			};
 		})
 
 		.controller('MemberProfileController', function($routeParams, memberProfileService) {
 			var vm = this;
 			vm.memberUserName = $routeParams.memberUserName;
-			
-			
-			/*
-			data = {
-				"id": 1,
-				"avatar": "member01.jpg",
-				"coverPhoto": "memberCover01.jpg",
-				"firstName": "Ken",
-				"lastName": "Sia",
-				"position": "Front-end Web Developer",
-				"city": "Taguig",
-				"followers": "2",
-				"following": "10",
-				"aboutMe": "Front-end Web Developer who loves listening to music, surfing, and traveling",
-				"email": "ken.voffice@gmail.com",
-				"website": "ken.com.ph",
-				"mobile": "09175296299",
-				"company": {
-					"companyName": "voffice",
-					"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore"
-				},
-				"skills": [
-					{"item": "Programming"},
-					{"item": "Public Speaking"}
-				],
-				"interests": [
-					{"item": "Design"},
-					{"item": "Surf"},
-					{"item": "Basketball"}
-				]
-			};
 
-		
-			vm.member = data;
-			*/
-			
-		memberProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
+			memberProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 				vm.member = data;
 				vm.member.followed = false;
 			});	

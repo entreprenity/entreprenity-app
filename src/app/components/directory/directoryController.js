@@ -18,6 +18,54 @@
 				},	
 				getLocations:function() {
 					return $http.get(baseUrl + 'getLocations');
+				},
+				postMemberFollow: function(memberId) 
+				{
+					var dataContent = {
+			            'user' : memberId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'followUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postMemberUnFollow: function(memberId) 
+				{
+					var dataContent = {
+			            'user' : memberId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'unfollowUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postCompanyFollow: function(companyId) 
+				{
+					var dataContent = {
+			            'company' : companyId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'followCompany',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postCompanyUnFollow: function(companyId) 
+				{
+					var dataContent = {
+			            'company' : companyId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'unfollowCompany',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
 				}
 				//service for follow_user,
 				//service for follow_company,
@@ -51,7 +99,6 @@
 					var itemData = data;
 					
 					for (var i = 0; i < itemData.length; i++) {
-						itemData[i].followed = false;
 						this.items.push(itemData[i]);
 					}
 					
@@ -112,21 +159,6 @@
 			};
 			return Events;
 		})
-	
-	/*
-		.factory('Location', function(directoryService) {
-			var Location = function() {
-				this.items = [];
-			};
-			
-			directoryService.getLocations().success(function(data) {
-				this.items = data;
-				console.log(this.items);
-			}.bind(this));
-
-			return Location;
-		})
-		*/
 
 		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter) {
 			/*, 
@@ -149,26 +181,35 @@
 			
 			
 			vm.follow_member = function(memberId) {
-				var index = returnIndexOfCLicked(vm.members.items, memberId);
-				vm.members.items[index].followed = true;
+				var index = returnIndexOfCLicked(vm.members.items, memberId);				
+				directoryService.postMemberFollow(memberId).success(function(data) {
+					vm.members.items[index].followed = data; //return user_info, with updated followers and followed status
+				});
 			}
+
 			
 			vm.unFollow_member = function(memberId) {
 				var index = returnIndexOfCLicked(vm.members.items, memberId);
-				vm.members.items[index].followed = false;
+				directoryService.postMemberUnFollow(memberId).success(function(data) {
+					vm.members.items[index].followed = data; //return user_info, with updated followers and followed status
+				});
 			}
 			
 			vm.follow_company = function(companyId) {
 				var index = returnIndexOfCLicked(vm.companies.items, companyId);
-				vm.companies.items[index].followed = true;
+				directoryService.postCompanyFollow(companyId).success(function(data) {
+					vm.companies.items[index].followed = data; //return user_info, with updated followers and followed status
+				});
 			}
 
 			vm.unFollow_company = function(companyId) {
 				var index = returnIndexOfCLicked(vm.companies.items, companyId);
-				vm.companies.items[index].followed = false;
+				directoryService.postCompanyUnFollow(companyId).success(function(data) {
+					vm.companies.items[index].followed = data; //return user_info, with updated followers and followed status
+				});
 			}
 			
-			function returnIndexOfCLicked(itemsArray, id) {
+			function returnIndexOfCLicked(itemsArray,id ) {
 				var items = itemsArray;
 				var clickedObject = $filter('filter')(items, { id: id  }, true)[0];
 				var index = items.indexOf(clickedObject);

@@ -10,8 +10,30 @@
 			getCompanyProfile: function(id) {
 				return $http.get(baseUrl+ 'view_company_profile?id='+id);
 			},
-			//postCompanyFollow,
-			//postCompanyUnFollow
+			postCompanyFollow: function(companyUserName) 
+			{
+				var dataContent = {
+		            'company' : companyUserName
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'followThisCompany',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			},
+			postCompanyUnFollow: function(companyUserName) 
+			{
+				var dataContent = {
+		            'company' : companyUserName
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'unfollowThisCompany',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			}
 		};
 	})
 
