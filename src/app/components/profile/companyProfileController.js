@@ -34,8 +34,6 @@
 								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 							});
 			}
-			//postCompanyFollow,
-			//postCompanyUnFollow
 		};
 	})
 
@@ -44,6 +42,7 @@
 		vm.companyUserName = $routeParams.companyUserName;
 		
 		companyProfileService.getCompanyProfile(vm.companyUserName).success(function(data) {
+			console.log(data);
 			vm.company = data;
 		});
 		

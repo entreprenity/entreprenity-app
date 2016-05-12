@@ -1,0 +1,31 @@
+.followers {
+	a {
+		text-decoration: none;
+		color:inherit;
+	}
+	
+	li {
+		text-align: center;
+		border: 1px solid $divider-color;
+		margin: 2px;
+		width: 32%;
+		float: left;
+		padding: 10px 15px;
+
+		img{
+			width: 100px;
+			height: auto;
+		}
+
+		.button-group {
+			position: relative;
+			height: 40px;
+			.btn {
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+		}
+	}
+}

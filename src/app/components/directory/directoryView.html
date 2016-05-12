@@ -30,7 +30,7 @@
 									<hr>
 								</div>
 							</a>
-							<div>
+							<div class="button-group">
 								<a class="btn btn-default" ng-click="vm.follow_member(member.id)" ng-hide="vm.members.items[{{$index}}].followed">FOLLOW</a>
 								<a class="btn btn-primary" ng-click="vm.unFollow_member(member.id)" ng-show="vm.members.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
@@ -69,7 +69,7 @@
 									<hr>
 								</div>
 							</a>
-							<div>
+							<div class="button-group">
 								<a class="btn btn-default" ng-click="vm.follow_company(company.id)" ng-hide="vm.companies.items[{{$index}}].followed">FOLLOW</a>
 								<a class="btn btn-primary" ng-click="vm.unFollow_company(company.id)" ng-show="vm.companies.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
