@@ -9388,3 +9388,35 @@ img {
 .angular-google-map-container {
   height: 400px;
 }
+
+/* line 2, ../sass/partials/_followers.scss */
+.followers a {
+  text-decoration: none;
+  color: inherit;
+}
+/* line 7, ../sass/partials/_followers.scss */
+.followers li {
+  text-align: center;
+  border: 1px solid #b5b5b5;
+  margin: 2px;
+  width: 32%;
+  float: left;
+  padding: 10px 15px;
+}
+/* line 15, ../sass/partials/_followers.scss */
+.followers li img {
+  width: 100px;
+  height: auto;
+}
+/* line 20, ../sass/partials/_followers.scss */
+.followers li .button-group {
+  position: relative;
+  height: 40px;
+}
+/* line 23, ../sass/partials/_followers.scss */
+.followers li .button-group .btn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}

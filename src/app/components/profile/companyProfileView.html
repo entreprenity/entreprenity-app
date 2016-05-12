@@ -17,7 +17,7 @@
 						<p>{{vm.company.location}}</p>
 						<br>
 						<div class="followers">
-							<a><span>{{vm.company.followers}}</span>Followers</a>
+							<a ng-href="#/companies/{{vm.company.companyUserName}}/followers"><span>{{vm.company.followers}}</span>Followers</a>
 						</div>
 						<div class="btn-group">
 							<a class="btn btn-default" ng-click="vm.follow_this_company(vm.company.companyUserName)" ng-hide="vm.company.followed">FOLLOW</a>

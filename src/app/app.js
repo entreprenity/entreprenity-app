@@ -18,7 +18,10 @@
 		'entreprenityApp.myCompanyProfile',
 		'entreprenityApp.companyProfile',
 		'entreprenityApp.eventsPage',
-		'entreprenityApp.imageUpload'
+		'entreprenityApp.imageUpload',
+		'entreprenityApp.memberFollowers',
+		'entreprenityApp.memberFollowing',
+		'entreprenityApp.companyFollowers'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -71,6 +74,21 @@
 		.when('/events/:eventId', {
 			controller: 'EventsPageController',
 			templateUrl: 'app/components/events/eventsPageView.html',
+			controllerAs: 'vm'
+		})
+		.when('/members/:memberUserName/followers', {
+			controller: 'MemberFollowersController',
+			templateUrl: 'app/components/followers/memberFollowers.html',
+			controllerAs: 'vm'
+		})
+		.when('/members/:memberUserName/following', {
+			controller: 'MemberFollowingController',
+			templateUrl: 'app/components/followers/memberFollowing.html',
+			controllerAs: 'vm'
+		})
+		.when('/companies/:companyUserName/followers', {
+			controller: 'CompanyFollowersController',
+			templateUrl: 'app/components/followers/companyFollowers.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

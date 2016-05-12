@@ -42,6 +42,7 @@
 		vm.companyUserName = $routeParams.companyUserName;
 		
 		companyProfileService.getCompanyProfile(vm.companyUserName).success(function(data) {
+			console.log(data);
 			vm.company = data;
 			vm.company.followed = false;
 		});
