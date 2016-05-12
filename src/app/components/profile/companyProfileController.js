@@ -45,7 +45,6 @@
 		
 		companyProfileService.getCompanyProfile(vm.companyUserName).success(function(data) {
 			vm.company = data;
-			vm.company.followed = false;
 		});
 		
 		//when user click follow, will post data to follow member and update in backend
