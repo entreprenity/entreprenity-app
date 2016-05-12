@@ -47,6 +47,7 @@
 					vm.myOffice 	= data.myOffice;
 					vm.avatar 		= data.avatar;
 					vm.userName 	= data.userName;
+					vm.companyUserName 	= data.companyUserName;
 				});
 
 		});

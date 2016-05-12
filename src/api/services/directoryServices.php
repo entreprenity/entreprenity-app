@@ -151,7 +151,10 @@ function getMembers()
 // April 13,2015
 function getCompanies()
 {	
-	$data= array();	
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+			
 	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,CP.company_username,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location ";
@@ -168,6 +171,8 @@ function getCompanies()
 			$data[$i]['avatar']			=	$row['avatar'];
 			$data[$i]['city']				=	$row['city'];
 			$data[$i]['userName']		=	$row['company_username'];
+			
+			$data[$i]['followed']=doIFollowThisCompany($my_session_id,$data[$i]['id']);
 			$i++;
       }	
    }

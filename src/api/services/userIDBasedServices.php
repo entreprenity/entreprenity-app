@@ -8,18 +8,10 @@
 function fetch_company_information_from_companyid($companyid)
 {
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
-	
-	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-	//location_info.location_desc
-	//FROM company_profiles
-	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
-	//WHERE company_profiles.clientid=1
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
-	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
+	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
 			FROM company_profiles
 			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
@@ -31,28 +23,38 @@ function fetch_company_information_from_companyid($companyid)
 	{
 		while($row=mysqli_fetch_array($res))
 		{
-			$data['id']					=	$row['id'];  			
-			//$data['profilePhoto']	=	$row['avatar']; 
+			$data['id']					=	$row['id']; 
+			$data['name']		=	$row['company_name'];  	
+			$data['companyUserName']=	$row['company_username'];		
+			$data['location']			=	$row['located_at'];  			
+			
 			if($row['avatar']!='')
    		{
    			$data['profilePhoto']				=	$row['avatar'];
    		}
 			else
 			{
-				$data['profilePhoto']				=	$member_default_avatar;
-			} 			
-			$data['coverPhoto']		=	$row['cover_photo'];  			
-			$data['companyName']		=	$row['company_name'];  	
-			$data['companyUserName']=	$row['company_username'];		
-			$data['location']			=	$row['location_desc'];  			
-			$data['companyDesc']		=	$row['description'];  			
-			$data['email']				=	$row['email'];  			
-			$data['website']			=	$row['website'];  			
+				$data['profilePhoto']				=	$company_default_avatar;
+			} 
+			
+			if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']				=	$row['cover_photo'];
+   		}
+			else
+			{
+				$data['coverPhoto']				=	$company_default_cover;
+			}			 			
+			 						 			 			
+			$data['website']			=	$row['website'];
+			$data['email']				=	$row['email'];   			
 			$data['mobile']			=	$row['mobile'];  			
 			$data['tel']				=	$row['telephone'];  			
-			$data['fax']				=	$row['fax'];  
-			//$company_id=$data['id'];	
-			//$data['categories']			= fetch_company_categories($company_id);			
+			$data['fax']				=	$row['fax'];
+			$data['desc']				=	$row['description'];   
+			
+			$data['followers']		=	entrp_company_follows($companyid);
+			$data['categories']		= fetch_company_categories($companyid);			
 		}
 	}
 	else 
@@ -184,18 +186,10 @@ function fetch_company_categories($company_id)
 function fetch_company_information_from_userid($clientid)
 {
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
-	
-	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-	//location_info.location_desc
-	//FROM company_profiles
-	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
-	//WHERE company_profiles.clientid=1
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
-	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
+	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
 			FROM company_profiles
 			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
@@ -207,32 +201,39 @@ function fetch_company_information_from_userid($clientid)
 	{
 		while($row=mysqli_fetch_array($res))
 		{
-			$data['id']					=	$row['id'];  			
-			//$data['profilePhoto']	=	$row['avatar']; 
+			$data['id']					=	$row['id']; 
+			$data['companyName']		=	$row['company_name'];  	
+			$data['companyUserName']=	$row['company_username'];		
+			$data['location']			=	$row['located_at'];  			
+			
 			if($row['avatar']!='')
    		{
    			$data['profilePhoto']				=	$row['avatar'];
    		}
 			else
 			{
-				$data['profilePhoto']				=	$member_default_avatar;
-			} 			
-			$data['coverPhoto']		=	$row['cover_photo'];  			
-			$data['companyName']		=	$row['company_name'];  	
-			$data['companyUserName']=	$row['company_username'];		
-			$data['location']			=	$row['location_desc'];  			
-			$data['companyDesc']		=	$row['description'];  			
-			$data['email']				=	$row['email'];  			
-			$data['website']			=	$row['website'];  			
+				$data['profilePhoto']				=	$company_default_avatar;
+			} 
+			
+			if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']				=	$row['cover_photo'];
+   		}
+			else
+			{
+				$data['coverPhoto']				=	$company_default_cover;
+			}			 			
+			 						 			 			
+			$data['website']			=	$row['website'];
+			$data['email']				=	$row['email'];   			
 			$data['mobile']			=	$row['mobile'];  			
 			$data['tel']				=	$row['telephone'];  			
-			$data['fax']				=	$row['fax'];  
-			//$company_id=$data['id'];	
-			//$data['categories']			= fetch_company_categories($company_id);			
+			$data['fax']				=	$row['fax'];
+			$data['companyDesc']		=	$row['description'];   
+			
+			$data['followers']		=	entrp_company_follows($data['id']);
+			$data['categories']		= fetch_company_categories($data['id']);			
 		}
-		
-			
-			
 	}
 	else 
 	{

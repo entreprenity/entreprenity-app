@@ -350,271 +350,11 @@ function services_included()
 	require_once 'services/myProfileServices.php'; 
 	require_once 'services/directoryServices.php'; 
 	require_once 'services/imageUploadServices.php'; 
+	require_once 'services/followUnfollowServices.php'; 
 }
 
 
 
-//Function to check whether the current user follows this company or not
-//May 12,2016
-function doIFollowThisCompany($my_session_id,$companyid)
-{
-	$qry="SELECT id FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-	if($count_res>0)
-   {
-   	return true;
-   }
-   else
-	{
-		return false;
-	}
-
-}
-
-
-//Function to follow a company from company profile
-//May 12,2016
-function followThisCompany()
-{
-	$data= array();
-	   
-   $companyUserName=validate_input($_POST['company']);
-	$companyid=getCompanyIdfromCompanyUserName($companyUserName);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];	
-	
-	$timeofaction=date('Y-m-d H:i:s');
-	
-	$qry="INSERT INTO entrp_company_follows(clientid,companyid,date_time) VALUES(".$my_session_id.",".$companyid.",'".$timeofaction."')
-	      ";
-	if(setData($qry))
-	{
-		$data=fetch_company_information_from_companyid($companyid);
-		$data['followed']=true;
-	}
-	else
-	{
-		$data=fetch_company_information_from_companyid($companyid);
-		$data['followed']=false;
-	}
-	return $data;
-
-}
-
-
-//Function to un-follow a company from company profile
-//May 12,2016
-function unfollowThisCompany()
-{
-	$data= array();
-   
-   $companyUserName=validate_input($_POST['company']);
-	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$qry="DELETE FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
-	      
-	if(setData($qry))
-	{
-		$data=fetch_company_information_from_companyid($companyid);
-		$data['followed']=false;
-	}
-	else
-	{
-		$data=fetch_company_information_from_companyid($companyid);
-		$data['followed']=true;
-	}
-	return $data;
-
-}
-
-
-//Function to un-follow a company from company directory
-//May 12,2016
-function unfollowCompany()
-{
-	$data= array();
-   
-   $companyid=validate_input($_POST['company']);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$qry="DELETE FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
-	      
-	if(setData($qry))
-	{
-		$data['followed']=false;
-	}
-	else
-	{
-		$data['followed']=true;
-	}
-	return $data;
-
-}
-
-
-//Function to follow a company from company directory
-//May 12,2016
-function followCompany()
-{
-	$data= array();
-	   
-   $companyid=validate_input($_POST['company']);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];	
-	
-	$timeofaction=date('Y-m-d H:i:s');
-	
-	$qry="INSERT INTO entrp_company_follows(clientid,companyid,date_time) VALUES(".$my_session_id.",".$companyid.",'".$timeofaction."')
-	      ";
-	if(setData($qry))
-	{
-		$data['followed']=true;
-	}
-	else
-	{
-		$data['followed']=false;
-	}
-	return $data;
-
-}
-
-
-//Function to unfollow a user from member directory
-//May 11,2016
-function unfollowUser()
-{
- 	$data= array();
-   
-   $clientid=validate_input($_POST['user']);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$qry="DELETE FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
-	      
-	if(setData($qry))
-	{
-		$data['followed']=false;
-	}
-	else
-	{
-		$data['followed']=true;
-	}
-	return $data;
-
-}
-
-
-//Function to follow a user from member directory
-//May 11,2016
-function followUser()
-{
-	$data= array();
-	   
-   $clientid=validate_input($_POST['user']);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];	
-	
-	$timeofaction=date('Y-m-d H:i:s');
-	
-	$qry="INSERT INTO entrp_user_follows(clientid,follows,follow_date_time) VALUES(".$my_session_id.",".$clientid.",'".$timeofaction."')
-	      ";
-	if(setData($qry))
-	{
-		$data['followed']=true;
-	}
-	else
-	{
-		$data['followed']=false;
-	}
-	return $data;
-}
-
-
-//Function to check whether the current user follows the other user or not
-//May 11,2016
-function doIFollowThisUser($my_session_id,$clientid)
-{
-  	$qry="SELECT id FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-	if($count_res>0)
-   {
-   	return true;
-   }
-   else
-	{
-		return false;
-	}
-}
-
-
-//Function to follow a user from his/her profile view
-//May 11,2016
-function followThisUser()
-{
-	$data= array();
-	   
-   $userName=validate_input($_POST['user']);
-	$clientid=getUserIdfromUserName($userName);
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];	
-	
-	$timeofaction=date('Y-m-d H:i:s');
-	
-	$qry="INSERT INTO entrp_user_follows(clientid,follows,follow_date_time) VALUES(".$my_session_id.",".$clientid.",'".$timeofaction."')
-	      ";
-	if(setData($qry))
-	{
-		$data=fetch_user_information_from_id($clientid);
-		$data['followed']=true;
-	}
-	else
-	{
-		$data=fetch_user_information_from_id($clientid);
-		$data['followed']=false;
-	}
-	return $data;
-}
-
-
-//Function to un-follow a user from his/her profile view
-//May 11,2016
-function unfollowThisUser()
-{
-	$data= array();
-   
-   $userName=validate_input($_POST['user']);
-	$clientid=getUserIdfromUserName($userName);	
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	$qry="DELETE FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
-	      
-	if(setData($qry))
-	{
-		$data=fetch_user_information_from_id($clientid);
-		$data['followed']=false;
-	}
-	else
-	{
-		$data=fetch_user_information_from_id($clientid);
-		$data['followed']=true;
-	}
-	return $data;
-
-}
 
 
 //Function to fetch basic user information
@@ -632,9 +372,11 @@ function getBasicUserInformation()
 	if($userid)
 	{
 			$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,
-					 		 client_profile.avatar,client_profile.designation,client_profile.company_name
+					 		 client_profile.avatar,client_profile.designation,client_profile.company_name,
+					 		 company_profiles.company_username
 					FROM entrp_login
 					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+					LEFT JOIN company_profiles ON entrp_login.clientid=company_profiles.clientid
 					WHERE entrp_login.clientid=".$userid."
 			      ";
 			$res=getData($qry);
@@ -697,6 +439,15 @@ function getBasicUserInformation()
    				else
    				{
    					$data['myOffice']				=	'';
+   				}
+   				
+   				if($row['company_username']!='')
+   				{
+   					$data['companyUserName']				=	$row['company_username'];
+   				}
+   				else
+   				{
+   					$data['companyUserName']				=	'';
    				}
 		   	}		   	   
 		   }
@@ -864,10 +615,7 @@ function viewCompanyProfile()
 	{
 		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
 	}
-	
-	$data= array();	
-	//$company_default_profile='company-default.jpg';
-	//$company_default_cover='company-default.jpg';
+
 	$company_default_cover		='assets/img/companies/company-default.jpg';
 	$company_default_avatar		='assets/img/companies/company-default.jpg';
 	
@@ -885,7 +633,7 @@ function viewCompanyProfile()
    		$data['id']					=	$row['id'];
    		$data['name']				=	$row['company_name'];
    		$data['companyUserName']=	$row['company_username'];
-   		$data['location']			=	$row['client_location'];
+   		$data['location']			=	$row['located_at'];
    		
    		if($row['cover_photo']!='')
    		{
@@ -904,13 +652,15 @@ function viewCompanyProfile()
    		{
    			$data['profilePhoto']	=	$company_default_avatar;
    		}     				
-   		$data['website']			=	$row['avatar'];
+   		$data['website']			=	$row['website'];
    		$data['email']				=	$row['email'];
    		$data['mobile']			=	$row['mobile'];
    		$data['tel']				=	$row['telephone'];
    		$data['fax']				=	$row['fax'];
    		$data['desc']				=	$row['description'];
+   		
    		$data['followers']		=	entrp_company_follows($companyid);
+   		$data['categories']		=  fetch_company_categories($companyid);
 
    	}
    	
