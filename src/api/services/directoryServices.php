@@ -30,13 +30,19 @@ function getMembers()
 		}
 		
 	}
-		
+	
 	$limit=$start * $records;
+	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
 	$data= array();	
 	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CI.clientid!=".$my_session_id." 
 	      ORDER BY CI.clientid ASC 
 	      LIMIT $start ,$end
 	      ";
@@ -118,6 +124,9 @@ function getMembers()
       	{
       		$data[$i]['city']				=	"";
       	}
+      	
+      	$data[$i]['followed']=doIFollowThisUser($my_session_id,$data[$i]['id']);
+      	
       	
 			$i++;
       }	

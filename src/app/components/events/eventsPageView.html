@@ -12,8 +12,9 @@
 						<p>{{vm.event.startTime}} to {{vm.event.endTime}}</p>
 						<p>{{vm.event.location}}</p>
 						<div class="btn-group">
-							<a class="btn btn-default">JOIN</a>
-							<a class="btn btn-default">INVITE</a>
+							<a class="btn btn-default" ng-click="vm.joinEvent()" ng-hide="vm.event.joining">JOIN</a>
+							<a class="btn btn-primary" ng-click="vm.unJoinEvent()" ng-show="vm.event.joining">NOT JOINING ANYMORE</a>
+							<a class="btn btn-default">SHARE EVENT</a>
 						</div>
 					</div>		
 				</div>
@@ -47,7 +48,7 @@
 						<ul>
 							<li ng-repeat="attendee in vm.event.attendees">
 								<a ng-href="#/members/{{attendee.id}}">
-									<img class="img-circle" ng-src="assets/img/members/{{attendee.profilePhoto}}">
+									<img class="img-circle" ng-src="assets/img/members/{{attendee.avatar}}">
 								</a>
 							</li>
 						</ul>

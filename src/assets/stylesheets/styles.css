@@ -9006,6 +9006,16 @@ img {
   width: 100%;
   height: auto;
 }
+/* line 70, ../sass/partials/_home.scss */
+#home #latestEvents h3 {
+  border-bottom: 1px solid #b5b5b5;
+  padding: 10px 15px;
+}
+/* line 74, ../sass/partials/_home.scss */
+#home #latestEvents img {
+  width: 100%;
+  height: auto;
+}
 
 /* line 8, ../sass/partials/_directory.scss */
 .directory {

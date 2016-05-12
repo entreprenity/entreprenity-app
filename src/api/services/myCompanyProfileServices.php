@@ -3,43 +3,7 @@
 /* My Company Profile Services Begins  */
 
 
-//Function to fetch total (count) users following a company
-//May 05,2016
-function entrp_company_follows($company_id)
-{
-	//To fetch user followers
-	//SELECT COUNT(entrp_user_follows.clientid) AS followers FROM entrp_user_follows WHERE entrp_user_follows.follows=1
-	$qry="SELECT COUNT(entrp_company_follows.clientid) AS followers 
-			 FROM entrp_company_follows 
-			 WHERE entrp_company_follows.companyid=".$company_id."
-			";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
-	{
-		while($row=mysqli_fetch_array($res))
-   	{
-   		$count_followers 		= $row['followers'];
-   	}
-	}
-	else
-	{
-		$count_followers 			= 0;
-	}
-	return $count_followers;
-}
 
-
-
-//Function to delete company categories
-//May 05,2016 (Not in use now)
-function delete_company_categories($company_id)
-{
-	$qry="DELETE FROM entrp_company_categories  
-			WHERE companyid=".$company_id." ";
-   setData($qry);
-
-}
 
 //Function to insert company categories
 //May 05,2016
@@ -135,7 +99,7 @@ function getMyCompanyProfileDetails()
 	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
 	//WHERE company_profiles.clientid=1
 
-	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
+	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
 			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
 			 		 location_info.location_desc
 			FROM company_profiles
@@ -149,7 +113,8 @@ function getMyCompanyProfileDetails()
 		while($row=mysqli_fetch_array($res))
 		{
 			$data['id']					=	$row['id'];  			
-			$data['profilePhoto']	=	$row['avatar'];  			
+			$data['profilePhoto']	=	$row['avatar'];  
+			$data['companyUserName']=	$row['company_username'];			
 			$data['coverPhoto']		=	$row['cover_photo'];  			
 			$data['companyName']		=	$row['company_name'];  			
 			$data['location']			=	$row['location_desc'];  			
@@ -157,7 +122,7 @@ function getMyCompanyProfileDetails()
 			$data['email']				=	$row['email'];  			
 			$data['website']			=	$row['website'];  			
 			$data['mobile']			=	$row['mobile'];  			
-			$data['tel']		=	$row['telephone'];  			
+			$data['tel']				=	$row['telephone'];  			
 			$data['fax']				=	$row['fax'];  			
 		}
 		$company_id=$data['id'];
@@ -175,8 +140,9 @@ function getMyCompanyProfileDetails()
 		$data['email']				=	''; 			
 		$data['website']			=	'';  			
 		$data['mobile']			=	''; 	
-		$data['tel']		=	'';  			
+		$data['tel']				=	'';  			
 		$data['fax']				=	''; 
+		$data['companyUserName']='';
 	}
 	
 	return $data;

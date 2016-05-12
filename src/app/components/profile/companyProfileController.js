@@ -10,6 +10,30 @@
 			getCompanyProfile: function(id) {
 				return $http.get(baseUrl+ 'view_company_profile?id='+id);
 			},
+			postCompanyFollow: function(companyUserName) 
+			{
+				var dataContent = {
+		            'company' : companyUserName
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'followThisCompany',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			},
+			postCompanyUnFollow: function(companyUserName) 
+			{
+				var dataContent = {
+		            'company' : companyUserName
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'unfollowThisCompany',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			}
 			//postCompanyFollow,
 			//postCompanyUnFollow
 		};
@@ -25,16 +49,16 @@
 		});
 		
 		//when user click follow, will post data to follow member and update in backend
-		vm.follow = function(companyUserName) {
+		vm.follow_this_company = function(companyUserName) {
 			companyProfileService.postCompanyFollow(companyUserName).success(function(data) {
-				vm.company.followed = data; //boolean = true
+				vm.company = data; //return company info, with updated followers and followed status
 			});	
 		};
 
 		//when user click unfollow, will post data to unfollow member and update in backend
-		vm.unFollow = function(companyUserName) {
+		vm.unFollow_this_company = function(companyUserName) {
 			companyProfileService.postCompanyUnFollow(companyUserName).success(function(data) {
-				vm.company.followed = data; //boolean = false
+				vm.company = data; //return company info, with updated followers and followed status
 			});	
 		};
 	});			

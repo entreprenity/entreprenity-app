@@ -57,8 +57,17 @@
 						</li>
 					</ul>
 				</div>
-				<div class="card">
-					<h3>LATEST EVENTS</h3>
+				<div id="latestEvents" class="card">
+					<h3>UPCOMING EVENTS</h3>
+					<ul>
+						<li ng-repeat="	latestEvent in vm.latestEvents">
+							<a ng-href="#/events/{{latestEvent.id}}">
+								<img ng-src="assets/img/events/{{latestEvent.poster}}">
+								<p>{{latestEvent.name}}</p>
+								<p>{{latestEvent.date}}</p>
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>

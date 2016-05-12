@@ -233,6 +233,111 @@ Flight::route('/getBasicUserInformation', function()
 });
 
 
+//Route to follow a user from his profile
+//May 11,2016
+Flight::route('/followThisUser', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=followThisUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to un-follow a user from his profile
+//May 11,2016
+Flight::route('/unfollowThisUser', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unfollowThisUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to follow a user from member directory
+//May 11,2016
+Flight::route('/followUser', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=followUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to un-follow a user from member directory
+//May 11,2016
+Flight::route('/unfollowUser', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unfollowUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to follow a company from company directory
+//May 12,2016
+Flight::route('/followCompany', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=followCompany();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to un-follow a company from company directory
+//May 12,2016
+Flight::route('/unfollowCompany', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unfollowCompany();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to follow a company from company profile
+//May 12,2016
+Flight::route('/followThisCompany', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=followThisCompany();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to un-follow a company from company profile
+//May 12,2016
+Flight::route('/unfollowThisCompany', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unfollowThisCompany();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+
 Flight::start();
 
 
@@ -245,9 +350,271 @@ function services_included()
 	require_once 'services/myProfileServices.php'; 
 	require_once 'services/directoryServices.php'; 
 	require_once 'services/imageUploadServices.php'; 
-	
 }
 
+
+
+//Function to check whether the current user follows this company or not
+//May 12,2016
+function doIFollowThisCompany($my_session_id,$companyid)
+{
+	$qry="SELECT id FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	return true;
+   }
+   else
+	{
+		return false;
+	}
+
+}
+
+
+//Function to follow a company from company profile
+//May 12,2016
+function followThisCompany()
+{
+	$data= array();
+	   
+   $companyUserName=validate_input($_POST['company']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_company_follows(clientid,companyid,date_time) VALUES(".$my_session_id.",".$companyid.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data=fetch_company_information_from_companyid($companyid);
+		$data['followed']=true;
+	}
+	else
+	{
+		$data=fetch_company_information_from_companyid($companyid);
+		$data['followed']=false;
+	}
+	return $data;
+
+}
+
+
+//Function to un-follow a company from company profile
+//May 12,2016
+function unfollowThisCompany()
+{
+	$data= array();
+   
+   $companyUserName=validate_input($_POST['company']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$qry="DELETE FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
+	      
+	if(setData($qry))
+	{
+		$data=fetch_company_information_from_companyid($companyid);
+		$data['followed']=false;
+	}
+	else
+	{
+		$data=fetch_company_information_from_companyid($companyid);
+		$data['followed']=true;
+	}
+	return $data;
+
+}
+
+
+//Function to un-follow a company from company directory
+//May 12,2016
+function unfollowCompany()
+{
+	$data= array();
+   
+   $companyid=validate_input($_POST['company']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$qry="DELETE FROM entrp_company_follows WHERE clientid=".$my_session_id." AND companyid=".$companyid."";
+	      
+	if(setData($qry))
+	{
+		$data['followed']=false;
+	}
+	else
+	{
+		$data['followed']=true;
+	}
+	return $data;
+
+}
+
+
+//Function to follow a company from company directory
+//May 12,2016
+function followCompany()
+{
+	$data= array();
+	   
+   $companyid=validate_input($_POST['company']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_company_follows(clientid,companyid,date_time) VALUES(".$my_session_id.",".$companyid.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data['followed']=true;
+	}
+	else
+	{
+		$data['followed']=false;
+	}
+	return $data;
+
+}
+
+
+//Function to unfollow a user from member directory
+//May 11,2016
+function unfollowUser()
+{
+ 	$data= array();
+   
+   $clientid=validate_input($_POST['user']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$qry="DELETE FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
+	      
+	if(setData($qry))
+	{
+		$data['followed']=false;
+	}
+	else
+	{
+		$data['followed']=true;
+	}
+	return $data;
+
+}
+
+
+//Function to follow a user from member directory
+//May 11,2016
+function followUser()
+{
+	$data= array();
+	   
+   $clientid=validate_input($_POST['user']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_user_follows(clientid,follows,follow_date_time) VALUES(".$my_session_id.",".$clientid.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data['followed']=true;
+	}
+	else
+	{
+		$data['followed']=false;
+	}
+	return $data;
+}
+
+
+//Function to check whether the current user follows the other user or not
+//May 11,2016
+function doIFollowThisUser($my_session_id,$clientid)
+{
+  	$qry="SELECT id FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	return true;
+   }
+   else
+	{
+		return false;
+	}
+}
+
+
+//Function to follow a user from his/her profile view
+//May 11,2016
+function followThisUser()
+{
+	$data= array();
+	   
+   $userName=validate_input($_POST['user']);
+	$clientid=getUserIdfromUserName($userName);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_user_follows(clientid,follows,follow_date_time) VALUES(".$my_session_id.",".$clientid.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data=fetch_user_information_from_id($clientid);
+		$data['followed']=true;
+	}
+	else
+	{
+		$data=fetch_user_information_from_id($clientid);
+		$data['followed']=false;
+	}
+	return $data;
+}
+
+
+//Function to un-follow a user from his/her profile view
+//May 11,2016
+function unfollowThisUser()
+{
+	$data= array();
+   
+   $userName=validate_input($_POST['user']);
+	$clientid=getUserIdfromUserName($userName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$qry="DELETE FROM entrp_user_follows WHERE clientid=".$my_session_id." AND follows=".$clientid."";
+	      
+	if(setData($qry))
+	{
+		$data=fetch_user_information_from_id($clientid);
+		$data['followed']=false;
+	}
+	else
+	{
+		$data=fetch_user_information_from_id($clientid);
+		$data['followed']=true;
+	}
+	return $data;
+
+}
 
 
 //Function to fetch basic user information
@@ -367,6 +734,7 @@ function getLatestEvents()
 			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
 	      WHERE entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
 	      ORDER BY entrp_events.event_date_time 
+	      LIMIT 3
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -487,6 +855,16 @@ function viewCompanyProfile()
 	$companyUserName=validate_input($_GET['id']);
 	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
 	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	if($my_session_id)
+	{
+		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
+	}
+	
 	$data= array();	
 	//$company_default_profile='company-default.jpg';
 	//$company_default_cover='company-default.jpg';
@@ -506,6 +884,7 @@ function viewCompanyProfile()
    	{
    		$data['id']					=	$row['id'];
    		$data['name']				=	$row['company_name'];
+   		$data['companyUserName']=	$row['company_username'];
    		$data['location']			=	$row['client_location'];
    		
    		if($row['cover_photo']!='')
@@ -531,7 +910,7 @@ function viewCompanyProfile()
    		$data['tel']				=	$row['telephone'];
    		$data['fax']				=	$row['fax'];
    		$data['desc']				=	$row['description'];
-   		$data['followers']		=	20;
+   		$data['followers']		=	entrp_company_follows($companyid);
 
    	}
    	
@@ -540,6 +919,7 @@ function viewCompanyProfile()
 	{
 		$data['id']				=	'';
 		$data['name']			=	'';
+		$data['companyUserName']='';
 		$data['location']		=	'';
 		$data['coverPhoto']		=	'';
 		$data['profilePhoto']		=	'';
@@ -679,6 +1059,7 @@ function viewEventDetail()
 //Function to fetch a user profile
 //April 22,2016
 //Updated on May 03, 2016: to fetch secondary mobile and designation
+//Updated May 11, 2016: To check if I follow this user or not
 function viewUserProfile()
 {
 	//$clientid=validate_input($_GET['id']);
@@ -686,16 +1067,17 @@ function viewUserProfile()
 	$userName=validate_input($_GET['id']);
 	$clientid=getUserIdfromUserName($userName);	
 	
-	$data= array();		
-	/*
-	SELECT  .clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
-			 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
-			 location_info.location_desc,company_profiles.company_name,company_profiles.description
-	FROM client_info
-	LEFT JOIN client_profile ON client_info.clientid=client_profile.clientid
-	LEFT JOIN location_info ON location_info.id=client_profile.client_location
-	LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
-	*/
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	if($my_session_id)
+	{
+		$data['followed']= doIFollowThisUser($my_session_id,$clientid);
+	}
+	
+
   $member_default_cover			='assets/img/members/member-default.jpg';
   $member_default_avatar		='assets/img/members/member-default.jpg';
 
@@ -792,13 +1174,19 @@ function getNewMembers()
 	$to_day->modify('-14 day');
 	$fromday= $to_day->format('Y-m-d H:i:s');
 	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	
 	$data= array();	
 	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
-	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."'
+	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."' 
+	      AND CI.clientid!=".$my_session_id."
 	      ORDER BY CI.clientid DESC 
+	      LIMIT 3 
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
