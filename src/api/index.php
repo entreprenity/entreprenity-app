@@ -337,6 +337,57 @@ Flight::route('/unfollowThisCompany', function()
 });
 
 
+//Route to mark going for an event (from event details)
+//May 12,2016
+Flight::route('/goingForEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=goingForEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark not going for an event (from event details)
+//May 12,2016
+Flight::route('/notGoingForEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=notGoingForEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark going for an event (from event directory)
+//May 13,2016
+Flight::route('/goingToEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=goingToEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark not going for an event (from event directory)
+//May 13,2016
+Flight::route('/notGoingToEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=notGoingToEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 
 Flight::start();
 
@@ -717,8 +768,8 @@ function viewEventDetail()
 
 	$eventid=validate_input($_GET['id']);
 	$data= array();	
-	$events_default='events-default.jpg';
-	$member_default='member-default.jpg';
+	$events_default='assets/img/events/events-default.jpg';
+	$member_default='assets/img/members/member-default.jpg';
 	
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
@@ -754,35 +805,8 @@ function viewEventDetail()
 			$data['map']['zoom']	=	8;
    	}
    	
-   	$i=0;
-   	$data2= array();
-   	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,client_profile.avatar 
-				 FROM entrp_event_attendees 
-				 LEFT JOIN entrp_login ON entrp_login.clientid=entrp_event_attendees.clientid 
-				 LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
-				 WHERE entrp_event_attendees.eventid=".$eventid."
-				";
-	   $res2=getData($qry2);
-		$count_res2=mysqli_num_rows($res2);
-		if($count_res2>0)
-		{
-			while($row2=mysqli_fetch_array($res2))
-   		{
-   			$data2[$i]['id']				=	$row2['clientid'];
-   			$data2[$i]['firstName']		=	$row2['firstname'];
-   			$data2[$i]['lastName']		=	$row2['lastname'];
-   			if($row2['avatar']!='')
-   			{
-   				$data2[$i]['profilePhoto']	=	$row2['avatar'];
-   			}
-   			else
-   			{
-   				$data2[$i]['profilePhoto']	=	$member_default;
-   			}   			
-   			$i++;
-   		}		
-		}
-		$data['attendees']=$data2;
+		$data['joining']			=	goingForThisEventorNot($eventid);
+		$data['attendees']		=	getEventAttendeesFromEventID($eventid);
 	}
 	else
 	{

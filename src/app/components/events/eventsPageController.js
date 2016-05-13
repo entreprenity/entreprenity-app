@@ -9,7 +9,29 @@
 		return {
 			getEventProfile: function(id) {
 				return $http.get(baseUrl+ 'view_event_detail?id='+id);
-			}
+			},
+			postGoingtoEvent: function(eventId) {
+				var dataContent = {
+		            'event' : eventId
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'goingForEvent',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			},
+			postNotGoingtoEvent: function(eventId) {
+				var dataContent = {
+		            'event' : eventId
+		        };
+		        
+				return $http({ method: 'post',
+								url: baseUrl+'notGoingForEvent',
+								data: $.param(dataContent),
+								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							});
+			}	
 			//post service for joinEvent()
 			//post service for unJoinEvent()
 		};
@@ -23,32 +45,19 @@
 
 		eventsPageService.getEventProfile(vm.eventId).success(function(data) {
 			vm.event = data;
-			vm.event.joining = false;
 		});
 		
-		vm.joinEvent = function() {
+		vm.joinEvent = function(eventId) {
 			//post service
-			var attendees = [{
-				"id": 1,
-				"avatar": "member01.jpg",
-				"coverPhoto": "memberCover01.jpg",
-				"firstName": "Ken",
-				"lastName": "Sia",
-				"position": "Front-end Web Developer",
-				"city": "Taguig",
-			}];
-			
-			vm.event.joining = true;
-			vm.event.attendees = attendees;
-		}
-		
-		
-		vm.unJoinEvent = function() {
+			eventsPageService.postGoingtoEvent(eventId).success(function(data) {
+					vm.event = data;
+				});
+		};
+		vm.unJoinEvent = function(eventId) {
 			//post service
-			var attendees = [];
-
-			vm.event.joining = false;
-			vm.event.attendees = attendees;
-		}
+			eventsPageService.postNotGoingtoEvent(eventId).success(function(data) {
+					vm.event = data;
+				});
+		};
 	});			
 })();
