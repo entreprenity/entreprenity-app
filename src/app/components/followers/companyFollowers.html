@@ -8,7 +8,7 @@
 					<div class="info">
 						<div class="profilePhoto">
 							<div>
-								<img class="img-circle" ng-src="assets/img/companies/{{vm.company.profilePhoto}}">
+								<img class="img-circle" ng-src="{{vm.company.profilePhoto}}">
 							</div>
 						</div>
 						<h3>{{vm.company.name}}</h3>
@@ -27,7 +27,7 @@
 					<li ng-repeat="follower in vm.company.followersObjects">
 						<a ng-href="#/members/{{follower.username}}">
 							<div>
-								<img class="img-circle" ng-src="assets/img/members/{{follower.avatar}}">
+								<img class="img-circle" ng-src="{{follower.avatar}}">
 								<h3>{{follower.firstName + ' ' + follower.lastName}}</h3>
 								<p>{{follower.position}}</p>
 								<p>{{follower.company[$index].companyName}}</p>

@@ -389,6 +389,44 @@ Flight::route('/notGoingToEvent', function()
 });
 
 
+//Route to fetch a member's following list
+//May 13,2016
+Flight::route('/getMemberFollowing', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getMemberFollowing();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch a member's follower list
+//May 13,2016
+Flight::route('/getMemberFollowers', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getMemberFollowers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to fetch a company's follower list
+//May 13,2016
+Flight::route('/getCompanyFollowers', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getCompanyFollowers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 Flight::start();
 
 
@@ -405,6 +443,152 @@ function services_included()
 }
 
 
+//Function to fetch a company's follower list
+//May 13,2016
+function getCompanyFollowers()
+{
+	$companyUserName=validate_input($_GET['company']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
+	
+	$data=fetch_company_information_from_companyid($companyid);
+	
+	if($my_session_id)
+	{
+		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
+	}
+	
+	$data['followersObjects']		= getThisCompanyfollowerObjects($companyid);
+	
+	return $data;
+	/*	
+	data = {
+			"id": 1,
+			"companyUserName": "nbbit",
+			"profilePhoto": "company01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"name": "Pet Studio.com",
+			"location": "Fort Legend Tower",
+			"followed": true,
+			"followers": "1",
+			"following": "1",
+			"followersObjects": [
+				{
+					"id": 1,
+					"username": "jordan",
+					"avatar": "member01.jpg",
+					"coverPhoto": "memberCover01.jpg",
+					"firstName": "Jordan",
+					"lastName": "Rains",
+					"position": "Office Assistant",
+					"company": [{
+						"companyName": "Pet Studio.com",
+						"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+					}]
+				}
+			]
+		};	
+	*/
+
+}
+
+//Function to fetch a member's follower list
+//May 13,2016
+function getMemberFollowers()
+{
+	$member_default_cover		='assets/img/members/member-default.jpg';
+   $member_default_avatar		='assets/img/members/member-default.jpg';
+
+	$userName=validate_input($_GET['user']);
+	$clientid=getUserIdfromUserName($userName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	$data									= fetch_user_information_from_id($clientid);
+	if($my_session_id)
+	{
+		$data['followed']				= doIFollowThisUser($my_session_id,$clientid);
+	}
+	
+	$data['followersObjects']		= getThisUserfollowerObjects($clientid);
+	
+	return $data;
+
+}
+
+
+//Function to fetch a member's following list
+//May 13, 2016
+function getMemberFollowing()
+{
+	$member_default_cover		='assets/img/members/member-default.jpg';
+   $member_default_avatar		='assets/img/members/member-default.jpg';
+
+	$userName=validate_input($_GET['user']);
+	$clientid=getUserIdfromUserName($userName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	$data									= fetch_user_information_from_id($clientid);
+	if($my_session_id)
+	{
+		$data['followed']				= doIFollowThisUser($my_session_id,$clientid);
+	}
+	
+	$data['followingObjects']		= getThisUserfollowingObjects($clientid);
+	
+	return $data;		
+
+		/*
+		data = {
+			"id": 1,
+			"userName": "jordan",
+			"avatar": "member01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"firstName": "Jordan",
+			"lastName": "Rains",
+			"position": "Office Assistant",
+			"company": [
+				{
+					"companyName": "Pet Studio.com",
+					"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+				}
+			],
+			"followed": true,
+			"followers": "1",
+			"following": "1",
+			"followingObjects": [
+				{
+					"id": 1,
+					"username": "jordan",
+					"avatar": "member01.jpg",
+					"coverPhoto": "memberCover01.jpg",
+					"firstName": "Jordan",
+					"lastName": "Rains",
+					"position": "Office Assistant",
+					"company": [{
+						"companyName": "Pet Studio.com",
+						"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+					}]
+				}
+			]
+		};
+	 */
+
+}
 
 
 

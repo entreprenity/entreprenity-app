@@ -3,6 +3,187 @@
 /* Functions and services based on userid begins */
 
 
+//Function to get a company's follower list
+//May 13,.2016
+function getThisCompanyfollowerObjects($companyid)
+{
+	$i=0;
+	$member_default='assets/img/members/member-default.jpg';
+	$data= array();
+	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
+			FROM entrp_company_follows AS ECF
+			LEFT JOIN entrp_login AS EL ON EL.clientid=ECF.clientid
+			LEFT JOIN client_profile AS CP ON CP.clientid=ECF.clientid
+			WHERE ECF.companyid=".$companyid."";
+   $res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[$i]['id']				=	$row['clientid'];
+			
+			$data[$i]['username']		=	$row['username'];
+			
+			if($row['avatar']!='')
+			{
+				$data[$i]['avatar']	=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['avatar']	=	$member_default;
+			} 
+			
+			if($row['cover_pic']!='')
+			{
+				$data[$i]['coverPhoto']	=	$row['cover_pic'];
+			}
+			else
+			{
+				$data[$i]['coverPhoto']	=	$member_default;
+			} 
+			
+			$data[$i]['firstName']						=	$row['firstname'];
+			$data[$i]['lastName']						=	$row['lastname'];
+			 
+			
+			$data[$i]['position']						=	$row['designation'];
+			$data[$i]['company']['companyName']		=	$row['company_name'];
+			 			
+			$i++;
+		}		
+	}
+	return $data;
+}
+
+
+
+//Function to get a user's follower objects
+//May 13,2016
+function getThisUserfollowerObjects($clientid)
+{
+	$i=0;
+	$member_default='assets/img/members/member-default.jpg';
+	$data= array();
+	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
+			FROM entrp_user_follows AS EUF
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUF.clientid
+			LEFT JOIN client_profile AS CP ON CP.clientid=EUF.clientid
+			WHERE EUF.follows=".$clientid."";
+   $res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[$i]['id']				=	$row['clientid'];
+			
+			$data[$i]['username']		=	$row['username'];
+			
+			if($row['avatar']!='')
+			{
+				$data[$i]['avatar']	=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['avatar']	=	$member_default;
+			} 
+			
+			if($row['cover_pic']!='')
+			{
+				$data[$i]['coverPhoto']	=	$row['cover_pic'];
+			}
+			else
+			{
+				$data[$i]['coverPhoto']	=	$member_default;
+			} 
+			
+			$data[$i]['firstName']						=	$row['firstname'];
+			$data[$i]['lastName']						=	$row['lastname'];
+			 
+			
+			$data[$i]['position']						=	$row['designation'];
+			$data[$i]['company']['companyName']		=	$row['company_name'];
+			 			
+			$i++;
+		}		
+	}
+	return $data;
+
+}
+
+//Function to get a user's following objects
+//May 13,2016
+function getThisUserfollowingObjects($clientid)
+{
+	/*
+	"followingObjects": [
+		{
+			"id": 1,
+			"username": "jordan",
+			"avatar": "member01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"firstName": "Jordan",
+			"lastName": "Rains",
+			"position": "Office Assistant",
+			"company": [{
+				"companyName": "Pet Studio.com",
+				"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+			}]
+		}
+	]
+	*/
+
+	$i=0;
+	$member_default='assets/img/members/member-default.jpg';
+	$data= array();
+	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
+			FROM entrp_user_follows AS EUF
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUF.follows
+			LEFT JOIN client_profile AS CP ON CP.clientid=EUF.follows
+			WHERE EUF.clientid=".$clientid."";
+   $res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[$i]['id']				=	$row['clientid'];
+			
+			$data[$i]['username']		=	$row['username'];
+			
+			if($row['avatar']!='')
+			{
+				$data[$i]['avatar']	=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['avatar']	=	$member_default;
+			} 
+			
+			if($row['cover_pic']!='')
+			{
+				$data[$i]['coverPhoto']	=	$row['cover_pic'];
+			}
+			else
+			{
+				$data[$i]['coverPhoto']	=	$member_default;
+			} 
+			
+			$data[$i]['firstName']						=	$row['firstname'];
+			$data[$i]['lastName']						=	$row['lastname'];
+			 
+			
+			$data[$i]['position']						=	$row['designation'];
+			$data[$i]['company']['companyName']		=	$row['company_name'];
+			 			
+			$i++;
+		}		
+	}
+	return $data;
+}
+
+
 //Function to check going for this event or not
 //May 13,2016
 function goingForThisEventorNot($eventid)
@@ -191,6 +372,7 @@ function fetch_company_information_from_companyid($companyid)
 			$data['tel']				=	$row['telephone'];  			
 			$data['fax']				=	$row['fax'];
 			$data['desc']				=	$row['description'];   
+			$data['location']				=	$row['located_at'];   
 			
 			$data['followers']		=	entrp_company_follows($companyid);
 			$data['categories']		= fetch_company_categories($companyid);			
@@ -497,7 +679,8 @@ function user_followers($clientid)
 //Sibling to viewUserProfile
 function fetch_user_information_from_id($clientid)
 {
-	
+	$member_default_cover			='assets/img/members/member-default.jpg';
+   $member_default_avatar		='assets/img/members/member-default.jpg';
 	$data= array();		
 	/*
 	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,
@@ -529,8 +712,25 @@ function fetch_user_information_from_id($clientid)
    	while($row=mysqli_fetch_array($res))
       {
       	$data['id']				=	$row['clientid'];
-			$data['avatar']		=	$row['avatar'];
-			$data['coverPhoto']	=	$row['cover_pic'];
+      	
+			if(!empty($row['avatar']))
+      	{
+      		$data['avatar']				=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data['avatar']				=	$member_default_avatar;
+      	}
+      	
+			if(!empty($row['cover_pic']))
+      	{
+      		$data['coverPhoto']			=	$row['cover_pic'];
+      	}
+      	else
+      	{
+      		$data['coverPhoto']			=	$member_default_cover;
+      	}
+      	
 			$data['firstName'] 	= 	$row['firstname'];
 			$data['lastName'] 	= 	$row['lastname'];
 			$data['position'] 	= 	$row['designation'];

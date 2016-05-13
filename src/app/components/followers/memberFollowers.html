@@ -4,12 +4,12 @@
 			<div class="col-md-12 ">
 				<div class="profile-top">
 					<div class="coverPhoto">
-						<img ng-src="assets/img/members/">
+						<img ng-src="">
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
 							<div>
-								<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
+								<img class="img-circle" ng-src="{{vm.member.avatar}}">
 							</div>
 						</div>
 						<h3>{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
@@ -29,7 +29,7 @@
 					<li ng-repeat="follower in vm.member.followersObjects">
 						<a ng-href="#/members/{{follower.username}}">
 							<div>
-								<img class="img-circle" ng-src="assets/img/members/{{follower.avatar}}">
+								<img class="img-circle" ng-src="{{follower.avatar}}">
 								<h3>{{follower.firstName + ' ' + follower.lastName}}</h3>
 								<p>{{follower.position}}</p>
 								<p>{{follower.company[$index].companyName}}</p>

@@ -12,7 +12,7 @@
 					<div class="info">
 						<div class="profilePhoto">
 							<div>
-								<img class="img-circle" ng-src="assets/img/members/{{vm.member.avatar}}">
+								<img class="img-circle" ng-src="{{vm.member.avatar}}">
 								<img class="img-circle" ng-src="{{vm.member.avatar}}">
 								<a class="uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">
 									<img class="img-circle" src="assets/img/icon-edit.png">
@@ -28,8 +28,8 @@
 						<input type="text" name="position" ng-model="vm.member.position" ng-show="vm.editState">
 						<br>
 						<div class="followers">
-							<a><span>{{vm.member.followers}}</span>Followers</a>
-							<a><span>{{vm.member.following}}</span>Following</a>
+							<a ng-href="#/members/{{vm.member.userName}}/followers"><span>{{vm.member.followers}}</span>Followers</a>
+							<a ng-href="#/members/{{vm.member.userName}}/following"><span>{{vm.member.following}}</span>Following</a>
 						</div>
 						<div class="btn-group">
 							<a class="btn btn-default" ng-hide="vm.editState" ng-click="vm.editState = true">EDIT PROFILE</a>
