@@ -337,6 +337,95 @@ Flight::route('/unfollowThisCompany', function()
 });
 
 
+//Route to mark going for an event (from event details)
+//May 12,2016
+Flight::route('/goingForEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=goingForEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark not going for an event (from event details)
+//May 12,2016
+Flight::route('/notGoingForEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=notGoingForEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark going for an event (from event directory)
+//May 13,2016
+Flight::route('/goingToEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=goingToEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to mark not going for an event (from event directory)
+//May 13,2016
+Flight::route('/notGoingToEvent', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=notGoingToEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch a member's following list
+//May 13,2016
+Flight::route('/getMemberFollowing', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getMemberFollowing();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch a member's follower list
+//May 13,2016
+Flight::route('/getMemberFollowers', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getMemberFollowers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to fetch a company's follower list
+//May 13,2016
+Flight::route('/getCompanyFollowers', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getCompanyFollowers();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 
 Flight::start();
 
@@ -354,6 +443,152 @@ function services_included()
 }
 
 
+//Function to fetch a company's follower list
+//May 13,2016
+function getCompanyFollowers()
+{
+	$companyUserName=validate_input($_GET['company']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
+	
+	$data=fetch_company_information_from_companyid($companyid);
+	
+	if($my_session_id)
+	{
+		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
+	}
+	
+	$data['followersObjects']		= getThisCompanyfollowerObjects($companyid);
+	
+	return $data;
+	/*	
+	data = {
+			"id": 1,
+			"companyUserName": "nbbit",
+			"profilePhoto": "company01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"name": "Pet Studio.com",
+			"location": "Fort Legend Tower",
+			"followed": true,
+			"followers": "1",
+			"following": "1",
+			"followersObjects": [
+				{
+					"id": 1,
+					"username": "jordan",
+					"avatar": "member01.jpg",
+					"coverPhoto": "memberCover01.jpg",
+					"firstName": "Jordan",
+					"lastName": "Rains",
+					"position": "Office Assistant",
+					"company": [{
+						"companyName": "Pet Studio.com",
+						"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+					}]
+				}
+			]
+		};	
+	*/
+
+}
+
+//Function to fetch a member's follower list
+//May 13,2016
+function getMemberFollowers()
+{
+	$member_default_cover		='assets/img/members/member-default.jpg';
+   $member_default_avatar		='assets/img/members/member-default.jpg';
+
+	$userName=validate_input($_GET['user']);
+	$clientid=getUserIdfromUserName($userName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	$data									= fetch_user_information_from_id($clientid);
+	if($my_session_id)
+	{
+		$data['followed']				= doIFollowThisUser($my_session_id,$clientid);
+	}
+	
+	$data['followersObjects']		= getThisUserfollowerObjects($clientid);
+	
+	return $data;
+
+}
+
+
+//Function to fetch a member's following list
+//May 13, 2016
+function getMemberFollowing()
+{
+	$member_default_cover		='assets/img/members/member-default.jpg';
+   $member_default_avatar		='assets/img/members/member-default.jpg';
+
+	$userName=validate_input($_GET['user']);
+	$clientid=getUserIdfromUserName($userName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	$data									= fetch_user_information_from_id($clientid);
+	if($my_session_id)
+	{
+		$data['followed']				= doIFollowThisUser($my_session_id,$clientid);
+	}
+	
+	$data['followingObjects']		= getThisUserfollowingObjects($clientid);
+	
+	return $data;		
+
+		/*
+		data = {
+			"id": 1,
+			"userName": "jordan",
+			"avatar": "member01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"firstName": "Jordan",
+			"lastName": "Rains",
+			"position": "Office Assistant",
+			"company": [
+				{
+					"companyName": "Pet Studio.com",
+					"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+				}
+			],
+			"followed": true,
+			"followers": "1",
+			"following": "1",
+			"followingObjects": [
+				{
+					"id": 1,
+					"username": "jordan",
+					"avatar": "member01.jpg",
+					"coverPhoto": "memberCover01.jpg",
+					"firstName": "Jordan",
+					"lastName": "Rains",
+					"position": "Office Assistant",
+					"company": [{
+						"companyName": "Pet Studio.com",
+						"companyDesc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+					}]
+				}
+			]
+		};
+	 */
+
+}
 
 
 
@@ -717,8 +952,8 @@ function viewEventDetail()
 
 	$eventid=validate_input($_GET['id']);
 	$data= array();	
-	$events_default='events-default.jpg';
-	$member_default='member-default.jpg';
+	$events_default='assets/img/events/events-default.jpg';
+	$member_default='assets/img/members/member-default.jpg';
 	
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
@@ -754,35 +989,8 @@ function viewEventDetail()
 			$data['map']['zoom']	=	8;
    	}
    	
-   	$i=0;
-   	$data2= array();
-   	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,client_profile.avatar 
-				 FROM entrp_event_attendees 
-				 LEFT JOIN entrp_login ON entrp_login.clientid=entrp_event_attendees.clientid 
-				 LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
-				 WHERE entrp_event_attendees.eventid=".$eventid."
-				";
-	   $res2=getData($qry2);
-		$count_res2=mysqli_num_rows($res2);
-		if($count_res2>0)
-		{
-			while($row2=mysqli_fetch_array($res2))
-   		{
-   			$data2[$i]['id']				=	$row2['clientid'];
-   			$data2[$i]['firstName']		=	$row2['firstname'];
-   			$data2[$i]['lastName']		=	$row2['lastname'];
-   			if($row2['avatar']!='')
-   			{
-   				$data2[$i]['profilePhoto']	=	$row2['avatar'];
-   			}
-   			else
-   			{
-   				$data2[$i]['profilePhoto']	=	$member_default;
-   			}   			
-   			$i++;
-   		}		
-		}
-		$data['attendees']=$data2;
+		$data['joining']			=	goingForThisEventorNot($eventid);
+		$data['attendees']		=	getEventAttendeesFromEventID($eventid);
 	}
 	else
 	{

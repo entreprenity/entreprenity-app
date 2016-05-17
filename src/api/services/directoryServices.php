@@ -211,6 +211,7 @@ function getEvents()
 			$data[$i]['city']				=	$row['city'];
 			$data[$i]['date']				=	$row['event_date'];
 			$data[$i]['time']				=	$row['event_time'];
+			$data[$i]['joining']			=	goingForThisEventorNot($data[$i]['id']);
 			$i++;
       }	
    }

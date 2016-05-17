@@ -35,16 +35,17 @@
 									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 								});
 				}				
+				
 			};
 		})
 
 		.controller('MemberProfileController', function($routeParams, memberProfileService) {
 			var vm = this;
 			vm.memberUserName = $routeParams.memberUserName;
-
+			
+			
 			memberProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 				vm.member = data;
-				vm.member.followed = false;
 			});	
 		
 			//when user click follow, will post data to follow member and update in backend

@@ -91,13 +91,8 @@ function getMyCompanyProfileDetails()
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
-	
-	//SELECT company_profiles.id,company_profiles.company_name,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
-	//company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
-	//location_info.location_desc
-	//FROM company_profiles
-	//LEFT JOIN location_info on location_info.id=company_profiles.client_location
-	//WHERE company_profiles.clientid=1
+	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
 	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
 			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
@@ -112,10 +107,8 @@ function getMyCompanyProfileDetails()
 	{
 		while($row=mysqli_fetch_array($res))
 		{
-			$data['id']					=	$row['id'];  			
-			$data['profilePhoto']	=	$row['avatar'];  
-			$data['companyUserName']=	$row['company_username'];			
-			$data['coverPhoto']		=	$row['cover_photo'];  			
+			$data['id']					=	$row['id'];  						
+			$data['companyUserName']=	$row['company_username'];								
 			$data['companyName']		=	$row['company_name'];  			
 			$data['location']			=	$row['location_desc'];  			
 			$data['companyDesc']		=	$row['description'];  			
@@ -123,7 +116,27 @@ function getMyCompanyProfileDetails()
 			$data['website']			=	$row['website'];  			
 			$data['mobile']			=	$row['mobile'];  			
 			$data['tel']				=	$row['telephone'];  			
-			$data['fax']				=	$row['fax'];  			
+			$data['fax']				=	$row['fax'];  	
+			
+			if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']				=	$row['avatar'];
+   		}
+			else
+			{
+				$data['profilePhoto']				=	$company_default_avatar;
+			} 
+			
+			if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']				=	$row['cover_photo'];
+   		}
+			else
+			{
+				$data['coverPhoto']				=	$company_default_cover;
+			}			
+			
+					
 		}
 		$company_id=$data['id'];
 		$data['categories']	= fetch_company_categories($company_id);	

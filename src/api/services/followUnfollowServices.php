@@ -1,6 +1,123 @@
 <?php
 
 
+
+//***** EVENT GOING/NOT GOING From EVENT DIRECTORY PAGE *****
+
+//Function to mark going for an event (from event directory)
+//May 13,2016
+function goingToEvent()
+{
+	$data= array();  
+   $eventId=validate_input($_POST['event']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_event_attendees(eventid,clientid,date_time) VALUES(".$eventId.",".$my_session_id.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data['joining']=true;
+	}
+	else
+	{
+		$data['joining']=false;
+	}
+	return $data;
+
+}
+
+//Function to mark going for an event (from event directory)
+//May 13,2016
+function notGoingToEvent()
+{
+	$data= array();  
+   $eventId=validate_input($_POST['event']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="DELETE FROM entrp_event_attendees WHERE eventid=".$eventId." AND clientid=".$my_session_id."
+	      ";
+	if(setData($qry))
+	{
+		$data['joining']=false;
+	}
+	else
+	{
+		$data['joining']=true;
+	}
+	return $data;
+}
+
+
+//***** EVENT GOING/NOT GOING From EVENT DETAILS PAGE *****
+
+
+//Function to mark going for an event
+//May 12,2016
+function goingForEvent()
+{
+	$data= array();
+	   
+   $eventId=validate_input($_POST['event']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="INSERT INTO entrp_event_attendees(eventid,clientid,date_time) VALUES(".$eventId.",".$my_session_id.",'".$timeofaction."')
+	      ";
+	if(setData($qry))
+	{
+		$data=getEventFromEventID($eventId);
+		$data['joining']=true;
+	}
+	else
+	{
+		$data=getEventFromEventID($eventId);
+		$data['joining']=false;
+	}
+	return $data;
+
+}
+
+//Function to mark not going for an event
+//May 12,2016
+function notGoingForEvent()
+{
+	$data= array();
+	   
+   $eventId=validate_input($_POST['event']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	$timeofaction=date('Y-m-d H:i:s');
+	
+	$qry="DELETE FROM entrp_event_attendees WHERE eventid=".$eventId." AND clientid=".$my_session_id."
+	      ";
+	if(setData($qry))
+	{
+		$data=getEventFromEventID($eventId);
+		$data['joining']=false;
+	}
+	else
+	{
+		$data=getEventFromEventID($eventId);
+		$data['joining']=true;
+	}
+	return $data;
+
+}
+
+
 //***** CHECK USER/COMPANY FOLLOW*****
 
 //Function to check whether the current user follows this company or not
@@ -18,7 +135,6 @@ function doIFollowThisCompany($my_session_id,$companyid)
 	{
 		return false;
 	}
-
 }
 
 //Function to check whether the current user follows the other user or not
@@ -68,7 +184,6 @@ function followThisCompany()
 		$data['followed']=false;
 	}
 	return $data;
-
 }
 
 //Function to un-follow a company from company profile
@@ -96,7 +211,6 @@ function unfollowThisCompany()
 		$data['followed']=true;
 	}
 	return $data;
-
 }
 
 
