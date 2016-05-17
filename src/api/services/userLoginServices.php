@@ -1,5 +1,55 @@
 <?php
 
+
+//Function to destroy a user login token
+//May 17,2016
+function destroyUserToken()
+{
+	$resp= array();
+	$data = json_decode(file_get_contents("php://input"));
+	$token = $data->token;
+	$qry="DELETE FROM client_login_tokens WHERE client_token='".$token."'";
+	if( setData($qry))
+	{
+		session_destroy();
+		$resp['msg']				=	"Logged out";    
+	} 
+	else 
+	{
+		$resp['msg']				=	"Active Session";   
+	}
+	return $resp;
+
+
+}
+
+
+
+//Function to validate a user token
+//May 17,2016
+function validateUserToken()
+{
+	$resp= array();
+	$data = json_decode(file_get_contents("php://input"));
+	$token = $data->token;
+	$qry="SELECT * FROM client_login_tokens WHERE client_token='".$token."' AND status=1";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res); 
+	if($count_res==1)
+	{
+		$resp['msg']				=	"authorized";   
+		//$resp['msg']				=	$qry;   
+	} 
+	else 
+	{
+		session_destroy();
+		$resp['msg']				=	"unauthorized";   
+		//$resp['msg']				=	$qry;  
+	}
+	return $resp;
+}
+
+
 //Function for forgot password feature
 //April 15, 2016
 function forgot_password()
@@ -112,6 +162,7 @@ function login()
 			$_SESSION['login_token'] 	= $client_session_token;
 
 			set_client_session_token($client_session_token,$row['clientid']);
+			$data['login_token'] 			= $client_session_token;
 			
 		}
    }

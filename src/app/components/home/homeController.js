@@ -21,8 +21,28 @@
 			};
 		})
 		
-		.controller('HomeController', function($routeParams, myHomeService) {
+		.controller('HomeController', function($scope,$routeParams, myHomeService,AuthService) {
 				var vm = this;		
+
+			    //If user is not logged in
+				var token;
+				if (localStorage['entrp_token'])
+				{
+			    	token = JSON.parse(localStorage['entrp_token']);
+				} 
+				else 
+				{
+					token = "something stupid";
+				}
+				AuthService.checkToken(token);
+				
+				$scope.logout = function(){
+					var data = {
+						token: token
+					}
+					AuthService.logOut(token);
+				}
+
 				
 				//To get user session value
 				myHomeService.getUserSessInfo().success(function(data) {
