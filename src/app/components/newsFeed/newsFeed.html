@@ -1,0 +1,31 @@
+
+<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4">
+	<div id="newsFeed">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				News Feed
+			</div>
+			<div class="panel-body">
+				<textarea class="form-control" placeholder="Type text here..." rows="3" ng-model="vm.currentPost.content"></textarea>
+				<br>
+				<a class="btn btn-primary btn-sm pull-right" ng-click="vm.addPost()">Post</a>
+				<div class="clearfix"></div>
+				<hr>
+				<ul class="media-list">
+					<li class="media" ng-repeat="post in vm.posts">
+						<a href="#" class="pull-left">
+							<img ng-src="assets/img/members/{{post.post_author.avatar}}" alt="" class="img-circle" width="50px">
+						</a>
+						<div class="media-body">
+							<span class="text-muted pull-right">
+								<small class="text-muted">{{post.created_at}}</small>
+							</span>
+							<strong class="text-success">{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong>
+							<p>{{post.content}}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

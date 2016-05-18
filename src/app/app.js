@@ -22,6 +22,7 @@
 		'entreprenityApp.memberFollowers',
 		'entreprenityApp.memberFollowing',
 		'entreprenityApp.companyFollowers',
+		'entreprenityApp.newsFeed',
 		'entreprenityApp.AuthenticationService',
 		'entreprenityApp.logout'
 	])
@@ -96,6 +97,11 @@
 		.when('/logout', {
 			controller: 'LogoutController',
 			templateUrl: 'app/components/login/loginView.html',
+			controllerAs: 'vm'
+		})
+		.when('/newsfeed', {
+			controller: 'NewsFeedController',
+			templateUrl: 'app/components/newsFeed/newsFeed.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
