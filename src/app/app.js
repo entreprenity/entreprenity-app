@@ -21,7 +21,8 @@
 		'entreprenityApp.imageUpload',
 		'entreprenityApp.memberFollowers',
 		'entreprenityApp.memberFollowing',
-		'entreprenityApp.companyFollowers'
+		'entreprenityApp.companyFollowers',
+		'entreprenityApp.newsFeed'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -89,6 +90,11 @@
 		.when('/companies/:companyUserName/followers', {
 			controller: 'CompanyFollowersController',
 			templateUrl: 'app/components/followers/companyFollowers.html',
+			controllerAs: 'vm'
+		})
+		.when('/newsfeed', {
+			controller: 'NewsFeedController',
+			templateUrl: 'app/components/newsFeed/newsFeed.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
