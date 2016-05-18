@@ -427,6 +427,33 @@ Flight::route('/getCompanyFollowers', function()
 });
 
 
+//Route to check validity of a user token
+//May 17,2016
+Flight::route('/validateUserToken', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=validateUserToken();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to check validity of a user token
+//May 17,2016
+Flight::route('/destroyUserToken', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=destroyUserToken();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+
 Flight::start();
 
 
