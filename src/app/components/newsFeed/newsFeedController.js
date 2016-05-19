@@ -24,13 +24,15 @@
 
 		.controller('NewsFeedController', function($routeParams,newsFeedService) {
 			var vm = this;
+
 			/*
 			//to get basic user information
-			myHomeService.getBasicUserInfo().success(function(data) {
+			newsFeedService.getBasicUserInfo().success(function(data) {
+				vm.currentPost.post_author.id 	= data.id;
 				vm.currentPost.post_author.firstName 	= data.firstName;
 				vm.currentPost.post_author.lastName 	= data.lastName;
 				vm.currentPost.post_author.position 	= data.position;
-				vm.currentPost.post_author.myOffice 	= data.myOffice;
+				vm.currentPost.post_author.companyName 	= data.companyName;
 				vm.currentPost.post_author.avatar 		= data.avatar;
 				vm.currentPost.post_author.userName 	= data.userName;
 				vm.currentPost.post_author.companyUserName 	= data.companyUserName;
@@ -51,6 +53,7 @@
 					"companyName": "Clever Sheep",
 					"userName": "will"
 				},
+				"isLiked": false,
 				"likes_count": 0,
 				"likers": [],
 				"comments_count": 0,
@@ -67,9 +70,9 @@
 			// Add TODO
 			vm.addPost = function (newPost) {
 				var currentPost = vm.currentPost;
-				vm.currentPost.created_at = new Date();
+				currentPost.created_at = new Date();
 				//vm.posts.unshift(currentPost);
-				vm.currentPost.content = ""; //clear textarea
+				currentPost.content = ""; //clear post textarea
 				
 				newsFeedService.postCurrentPost(newPost).success(function(data) {
 					vm.posts = data;
@@ -77,14 +80,81 @@
 				
 				vm.getPosts();
 			};
-		
+			
 			vm.getPosts = function () {
-				
 					newsFeedService.getPosts().success(function(data) {
 						vm.posts = data;
 					});	
 			};
-		/*
+
+			vm.likePost = function(post) {
+				alert('LIKE POST');
+				var likedPost = post;
+				likedPost.isLiked = true;
+				likedPost.likes_count++;
+				//this will come from the session userobject
+				var userObject = {
+					"id": "2",
+					"firstName": "Will",
+					"lastName": "Ferrel",
+					"avatar": "member-default.jpg",
+					"position": "CEO",
+					"companyName": "Clever Sheep",
+					"userName": "will"
+				};
+				likedPost.likers.push(userObject);
+				/*
+				newsFeedService.postLike(likedPost).success(function(data) {
+					alert(Post Like Success);
+				});	
+				*/
+			};
+		
+			vm.unLikePost = function(post) {
+				alert('UNLIKE POST');
+				var unLikedPost = post;
+				unLikedPost.isLiked = false;
+				unLikedPost.likes_count--;
+				unLikedPost.likers.pop();
+				/*
+				newsFeedService.postLike(unLikedPost).success(function(data) {
+					alert(Post Unlike Success);
+					unLikedPost.likes_count--;
+					unLikedPost.likers.pop();
+				});	
+				*/
+			};
+		
+			vm.addComment = function(post) {
+				alert('ADD COMMENT');
+				var commentedPost = post;
+				//this will come from the session userobject
+				var userObject = {
+					"id": "2",
+					"firstName": "Will",
+					"lastName": "Ferrel",
+					"avatar": "member-default.jpg",
+					"position": "CEO",
+					"companyName": "Clever Sheep",
+					"userName": "will"
+				};
+				
+				var currentComment = {};
+				currentComment.content = vm.currentComment.content;
+				currentComment.created_at = new Date();
+				currentComment.comment_author = userObject;
+				
+				commentedPost.comments_count++;
+				commentedPost.comments.push(currentComment);
+				vm.currentComment.content = ""; //clear comment textarea
+				/*
+				newsFeedService.postComment(commentedPost).success(function(data) {
+					alert(Post Commnent Success);
+				});	
+				*/
+			};
+			
+			//dummy data
 			var posts = [
 				{
 					"post_id": "123456",
@@ -100,7 +170,8 @@
 						"companyName": "Pet Studio.com",
 						"userName": "jordan"
 					},
-					"likes_count": 1,
+					"isLiked": false,
+					"likes_count": 2,
 					"likers": [
 						{
 							"id": "3",
@@ -110,6 +181,15 @@
 							"position": "Creative Director",
 							"companyName": "Wendy Skelton",
 							"userName": "John"
+						},
+						{
+							"id": "1",
+							"firstName": "Jordan",
+							"lastName": "Rains",
+							"avatar": "member-default.jpg",
+							"position": "Office Assistant",
+							"companyName": "Pet Studio.com",
+							"userName": "jordan"
 						}
 					],
 					"comments_count": 1,
@@ -213,11 +293,10 @@
 						},
 					]
 				}
-				
 			];
 		
 			vm.posts = posts;
-*/
+
 
 		});			
 })();
