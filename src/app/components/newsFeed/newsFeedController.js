@@ -3,11 +3,26 @@
 		.module('entreprenityApp.newsFeed', [])
 
 		.factory('newsFeedService', function($http) {
-		//getPosts SERVICE,
-		//postCurrentPost SERVICE
+			var baseUrl = 'api/';
+			
+			return {
+				getPosts: function() {
+					return $http.get(baseUrl+ 'getMyNewsFeed');
+				},			
+				postCurrentPost: function(newPost) 
+				{
+					var dataPost = {newPost: newPost};														
+					return $http({ method: 'post',
+										url: baseUrl+'postCurrentPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				}
+				
+			};
 		})
 
-		.controller('NewsFeedController', function($routeParams) {
+		.controller('NewsFeedController', function($routeParams,newsFeedService) {
 			var vm = this;
 			/*
 			//to get basic user information
@@ -21,8 +36,8 @@
 				vm.currentPost.post_author.companyUserName 	= data.companyUserName;
 			});
 			*/
-		
-		var myPost = {
+			
+			var myPost = {
 				"post_id": "",
 				"content": "",
 				"image": "",
@@ -42,98 +57,33 @@
 				"commenters": [],
 				"comments": []
 			};
+			
 		
+			//vm.currentPost = myPost;
 			vm.currentPost = myPost;
 		
-			console.log(vm.currentPost);
-		
+			//console.log(vm.currentPost);
 			
 			// Add TODO
-			vm.addPost = function () {
+			vm.addPost = function (newPost) {
 				var currentPost = vm.currentPost;
 				vm.currentPost.created_at = new Date();
 				//vm.posts.unshift(currentPost);
 				vm.currentPost.content = ""; //clear textarea
 				
-				alert('ADD POST TO DB');
-				/*
-				newsFeedService.postCurrentPost(vm.currentPost).success(function(data) {
+				newsFeedService.postCurrentPost(newPost).success(function(data) {
 					vm.posts = data;
 				});	
-				*/
+				
 				vm.getPosts();
 			};
 		
 			vm.getPosts = function () {
-				alert('RELOAD UPDATED POSTS');
-				/*
+				
 					newsFeedService.getPosts().success(function(data) {
 						vm.posts = data;
 					});	
-				*/
 			};
-		
-			var posts = [
-				{
-					"post_id": "123456",
-					"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
-					"image": "jpg01.jpg",
-					"created_at": "2015-05-12T14:54:31.566Z",
-					"post_author": {
-						"id": "1",
-						"firstName": "Jordan",
-						"lastName": "Rains",
-						"avatar": "member-default.jpg",
-						"position": "Office Assistant",
-						"companyName": "Pet Studio.com",
-						"userName": "jordan"
-					},
-					"likes_count": 1,
-					"likers": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments_count": 1,
-					"commenters": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments": [
-						{
-							"content": "congrats Albert!",
-							"created_at": "2015-05-12T15:06:51.457Z",
-							"likes_count": 0,
-							"likers": [],
-							"comment_author": {
-								"id": "3",
-								"firstName": "John",
-								"lastName": "Smith",
-								"avatar": "member-default.jpg",
-								"position": "Creative Director",
-								"companyName": "Wendy Skelton",
-								"userName": "John"
-							}
-						}
-					]
-				}
-			];
-		
-			vm.posts = posts;
-
 			
 
 		});			

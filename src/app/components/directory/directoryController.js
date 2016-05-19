@@ -93,16 +93,6 @@
 				}
 			};
 		})
-		
-		/*
-		.factory('Session', function($http) 
-		{   
-			 var baseUrl = 'api/'; 
-		    return $http.get(baseUrl + 'get_user_session').then(function(result) {       
-		        return result.data; 
-		    });
-		}) 
-		*/
 	
 		.factory('Members', function(directoryService) {
 			var Members = function() {
@@ -182,11 +172,7 @@
 		})
 
 		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter) {
-			/*, 
-			Session.then(function(response){
-				$rootScope.session = response;
-			});
-			*/
+			
 			var vm = this;
 		
 			vm.members = new Members();
