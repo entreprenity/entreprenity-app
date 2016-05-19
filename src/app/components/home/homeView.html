@@ -1,20 +1,81 @@
-<div style="max-width: 1000px; margin: 0 auto;">
-	<div class="home">
+<div id="home">
+	<div class="container">
 		<div class="row">
-			<div class="col-md-3">
-				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
-					<a ng-href="#/myprofile/{{vm.id}}">MY PROFILE</a>	
+			<div class="col-md-2">
+				<div id="myProfile" class="card">
+					<a ng-href="#/myprofile/{{vm.userName}}">
+						<img class="img-circle" ng-src="{{vm.avatar}}">
+						<h3>{{vm.firstName + vm.lastName}}</h3>
+						<p>{{vm.position}}</p>
+						<p>{{vm.myOffice}}</p>
+					</a>
+				</div>
+				
+				<div id="sideNav" class="card">
+					<ul>
+						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">MY COMPANY</a></li>
+						<li><a ng-href="#/directory">MEMBERS DIRECTORY</a></li>
+						<li><a ng-href="#/directory">EVENTS</a></li>
+						<li><a href="http://callanswering.me/app/login.html" target="_blank">RECEPTIONIST</a></li>
+						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">MEETING ROOM</a></li>
+						<li><a ng-href="#/home">OTHER SERVICES</a></li>
+					</ul>
 				</div>
 			</div>
-
-			<div class="col-md-9">
-				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
-					TIMELINE MODULE				
+			<div class="col-md-6">
+				<div id="topNav">
+					<div>
+						<img ng-src="assets/img/icon-recep.png">
+						<span class="up-arrow"></span>
+						<a  ng-href="http://callanswering.me/app/login.html" class="btn btn-default" target="_blank">RECEPTIONIST</a>
+					</div>
+					<div>
+						<img ng-src="assets/img/icon-meeting.png">
+						<span class="up-arrow"></span>
+						<a ng-href="http://myvoffice.me/spaces/login.html" class="btn btn-default" target="_blank">MEETING ROOM</a>
+					</div>
+					<div>
+						<img ng-src="assets/img/icon-services.png">
+						<span class="up-arrow"></span>
+						<a ng-href="#/home" class="btn btn-default">OTHER SERVICES</a>
+					</div>
+				</div>
+				<div class="card" style="font-size: 30px; height: 70vh;">
+					<div ng-controller="NewsFeedController">
+						<div ng-include="'app/components/newsFeed/newsFeed.html'"></div>	
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div id="newMembers" class="card">
+					<h3>NEW MEMBERS</h3>
+					<ul>
+						<li ng-repeat="newMember in vm.newMembers">
+							<a ng-href="#/members/{{newMember.userName}}">
+								<img class="img-circle" ng-src="{{newMember.avatar}}">
+								<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
+								<p>{{newMember.position + ' / ' + newMember.company}}</p>
+						 	</a>
+						</li>
+					</ul>
+				</div>
+				<div id="latestEvents" class="card">
+					<h3>UPCOMING EVENTS</h3>
+					<ul>
+						<li ng-repeat="	latestEvent in vm.latestEvents">
+							<a ng-href="#/events/{{latestEvent.id}}">
+								<img ng-src="assets/img/events/{{latestEvent.poster}}">
+								<p>{{latestEvent.name}}</p>
+								<p>{{latestEvent.date}}</p>
+							</a>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+
 
 
 

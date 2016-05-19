@@ -30,18 +30,22 @@
 				    	if(data.success)
 				    	{
 				    		//alert(data.msg);
+				    		localStorage.removeItem('entrp_token');
+				    		localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
 				    		$location.path('/directory');
 				    	}
 				    	else
 				    	{
 				    		//alert('invalid 1');
-				    		alert(data.msg);
+				    		localStorage.removeItem('entrp_token');
+							vm.errorMessage = data.msg;
 				    	}
 		    		}).
 		    		error(function(data, status, headers, config) 
 		    		{
 		    			//alert('invalid 2');
-		    			alert(data.msg);
+		    			localStorage.removeItem('entrp_token');
+						vm.errorMessage = data.msg;
 		    		});
 				}
 			};

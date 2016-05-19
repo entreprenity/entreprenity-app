@@ -5,62 +5,77 @@ angular
 
 	.factory('myProfileService', function($http) {
 		var baseUrl = 'api/';
+		
 		return {
 			getMemberProfile: function(id) {
-				return $http.get(baseUrl+ 'view_company_profile?id='+id);
-			},
-			postMemberProfile: function(id) {
-				return $http.post(baseUrl+ 'view_company_profile?id='+id);
+				return $http.get(baseUrl+ 'get_my_details');
+			},			
+			postMemberProfile: function(userdata) 
+			{
+				return $http({ method: 'post',
+									url: baseUrl+'update_my_profile',
+									data: $.param(userdata),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
 			}
+			/*,
+			getUserSessInfo: function() {
+					return $http.get(baseUrl+ 'get_user_session');
+			}*/
+			
 		};
 	})
 
-	.controller('MyProfileController', function($routeParams, myProfileService) {
+	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal,$http) {
 		var vm = this;
-		vm.id = $routeParams.memberId;
-		vm.editState = true;
 	
-		data = {
-			"id": 1,
-			"avatar": "member01.jpg",
-			"coverPhoto": "memberCover01.jpg",
-			"firstName": "Ken",
-			"lastName": "Sia",
-			"position": "Front-end Web Developer",
-			"city": "Taguig",
-			"followers": "2",
-			"following": "10",
-			"aboutMe": "Front-end Web Developer who loves listening to music, surfing, and traveling",
-			"email": "ken.voffice@gmail.com",
-			"website": "ken.com.ph",
-			"mobile": "09175296299",
-			"company": {
-				"companyName": "voffice",
-				"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore"
-			},
-			"skills": [
-				"Programming",
-				"Public Speaking"
-			],
-			"interests": [
-				"Design",
-				"Surf",
-				"Basketball"
-			]
+		vm.open = function () {
+			var modalInstance = $uibModal.open({
+				animation: $scope.animationsEnabled,
+				templateUrl: 'app/components/modal/imageUpload.html',
+				controller: 'ImageUploadController',
+				resolve: {
+					id: function () 
+					{
+						var myid;
+						var baseUrl = 'api/';
+						$http.get(baseUrl+ 'get_user_session')
+					    .then(function(response) {
+					        myid = response.id;
+					        return myid;
+					    });
+					     
+					    /*
+						//return 1;
+						myProfileService.getUserSessInfo().success(function(data) {
+							vm.id = data.id;
+							
+						});
+						*/
+					}
+				}
+			});
+			
+			modalInstance.result.then(function (myCroppedImage) {
+				vm.member.avatar = myCroppedImage;
+			}, function () {
+				$log.info('Modal dismissed at: ' + new Date());
+			});
 		};
-
-		vm.member = data;
 	
-		/*
+		vm.memberUserName = $routeParams.memberUserName;
+		vm.editState = false;
 		
 		//get initial data
-		myProfileService.getMemberProfile(vm.memberId).success(function(data) {
+		myProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 			vm.member = data;
+			console.log(vm.member);
 		});	
-		
+
+	
 		//when user click save, will post data to update in backend
-		vm.updateData = function() {
-			myProfileService.postMemberProfile(vm.memberId).success(function(data) {
+		vm.updateData = function(userdata) {
+			myProfileService.postMemberProfile(userdata).success(function(data) {
 				vm.member = data;
 				vm.editState = false;
 			});	
@@ -68,15 +83,10 @@ angular
 		
 		//when user click cancel, will reload data and cancel all changes to the model
 		vm.reloadData = function() {
-			myProfileService.getMemberProfile(vm.memberId).success(function(data) {
+			myProfileService.getMemberProfile(vm.memberUserName).success(function(data) {
 				vm.member = data;
 				vm.editState = false;
 			});	
 		};
-		
-		*/
-	
-
 	});
-		
 })();

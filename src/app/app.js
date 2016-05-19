@@ -8,14 +8,23 @@
 		'infinite-scroll',
 		'uiGmapgoogle-maps',
 		'ngTagsInput',
+		'ngImgCrop',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
 		'entreprenityApp.forgotpassword',
 		'entreprenityApp.myProfile',
 		'entreprenityApp.memberProfile',
+		'entreprenityApp.myCompanyProfile',
 		'entreprenityApp.companyProfile',
-		'entreprenityApp.eventsPage'
+		'entreprenityApp.eventsPage',
+		'entreprenityApp.imageUpload',
+		'entreprenityApp.memberFollowers',
+		'entreprenityApp.memberFollowing',
+		'entreprenityApp.companyFollowers',
+		'entreprenityApp.newsFeed',
+		'entreprenityApp.AuthenticationService',
+		'entreprenityApp.logout'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -45,17 +54,22 @@
 			templateUrl: 'app/components/home/homeView.html',
 			controllerAs: 'vm'
 		})
-		.when('/myprofile/:memberId', {
+		.when('/myprofile/:memberUserName', {
 			controller: 'MyProfileController',
 			templateUrl: 'app/components/profile/myProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/members/:memberId', {
+		.when('/members/:memberUserName', {
 			controller: 'MemberProfileController',
 			templateUrl: 'app/components/profile/memberProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/companies/:companyId', {
+		.when('/mycompany/:companyUserName', {
+			controller: 'MyCompanyProfileController',
+			templateUrl: 'app/components/profile/myCompanyProfileView.html',
+			controllerAs: 'vm'
+		})
+		.when('/companies/:companyUserName', {
 			controller: 'CompanyProfileController',
 			templateUrl: 'app/components/profile/companyProfileView.html',
 			controllerAs: 'vm'
@@ -63,6 +77,31 @@
 		.when('/events/:eventId', {
 			controller: 'EventsPageController',
 			templateUrl: 'app/components/events/eventsPageView.html',
+			controllerAs: 'vm'
+		})
+		.when('/members/:memberUserName/followers', {
+			controller: 'MemberFollowersController',
+			templateUrl: 'app/components/followers/memberFollowers.html',
+			controllerAs: 'vm'
+		})
+		.when('/members/:memberUserName/following', {
+			controller: 'MemberFollowingController',
+			templateUrl: 'app/components/followers/memberFollowing.html',
+			controllerAs: 'vm'
+		})
+		.when('/companies/:companyUserName/followers', {
+			controller: 'CompanyFollowersController',
+			templateUrl: 'app/components/followers/companyFollowers.html',
+			controllerAs: 'vm'
+		})
+		.when('/logout', {
+			controller: 'LogoutController',
+			templateUrl: 'app/components/login/loginView.html',
+			controllerAs: 'vm'
+		})
+		.when('/newsfeed', {
+			controller: 'NewsFeedController',
+			templateUrl: 'app/components/newsFeed/newsFeed.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

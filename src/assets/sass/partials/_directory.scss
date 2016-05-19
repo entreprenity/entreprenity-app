@@ -88,6 +88,17 @@ $tabs-text-color: $primary-text-color;
 				width: 100px;
 				height: auto;
 			}
+			
+			.button-group {
+				position: relative;
+				height: 40px;
+				.btn {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: auto;
+				}
+			}
 		}
 	}
 	
@@ -104,6 +115,17 @@ $tabs-text-color: $primary-text-color;
 			img{
 				width: 100px;
 				height: auto;
+			}
+			
+			.button-group {
+				position: relative;
+				height: 40px;
+				.btn {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: auto;
+				}
 			}
 		}
 	}
@@ -124,6 +146,17 @@ $tabs-text-color: $primary-text-color;
 			
 			a {
 				padding: 10px 15px;
+			}
+			
+			.button-group {
+				position: relative;
+				height: 40px;
+				.btn {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: auto;
+				}
 			}
 			
 		}

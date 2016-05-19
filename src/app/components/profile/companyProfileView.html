@@ -9,15 +9,20 @@
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
-							<img class="img-circle" ng-src="assets/img/companies/{{vm.company.profilePhoto}}">
+							<div>
+								<img class="img-circle" ng-src="assets/img/companies/{{vm.company.profilePhoto}}">
+							</div>
 						</div>
 						<h3>{{vm.company.name}}</h3>
 						<p>{{vm.company.location}}</p>
 						<br>
 						<div class="followers">
-							<a><span>{{vm.company.followers}}</span>Followers</a>
+							<a ng-href="#/companies/{{vm.company.companyUserName}}/followers"><span>{{vm.company.followers}}</span>Followers</a>
 						</div>
-						<a class="btn btn-default">FOLLOW</a>
+						<div class="btn-group">
+							<a class="btn btn-default" ng-click="vm.follow_this_company(vm.company.companyUserName)" ng-hide="vm.company.followed">FOLLOW</a>
+							<a class="btn btn-primary" ng-click="vm.unFollow_this_company(vm.company.companyUserName)" ng-show="vm.company.followed">UNFOLLOW</a>
+						</div>
 					</div>		
 				</div>
 			</div>

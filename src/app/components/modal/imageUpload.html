@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<h3 class="modal-title">Upload your photo</h3>
+</div>
+<div class="modal-body">
+		<div>Select an image file: <input type="file" id="fileInput" onchange="angular.element(this).scope().handleFileSelect(this)"/></div>
+		<div class="cropArea" style="width:150px; height: 150px;">
+			<img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+		</div>
+		<div>Cropped Image:</div>
+		<div><img ng-src="{{myCroppedImage}}"/></div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>

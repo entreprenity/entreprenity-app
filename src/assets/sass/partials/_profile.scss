@@ -17,10 +17,25 @@
 				position: absolute;
 				top: -50%;
 				left: 40px;
-
-				img {
-					width: 150px;
+				div {
+					position: relative;
+					img {
+						position: absolute;
+						left: 0px;
+						width: 150px;
+						z-index: 99;
+					}
+					.uploadPhoto {
+						position: absolute;
+						z-index: 100;
+						opacity: .8;
+						&:hover {
+							opacity: 1;
+						}
+						img {width: 50px;}
+					}
 				}
+
 			}
 			
 			.followers {

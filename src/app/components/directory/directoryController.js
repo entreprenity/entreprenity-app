@@ -18,19 +18,81 @@
 				},	
 				getLocations:function() {
 					return $http.get(baseUrl + 'getLocations');
+				},
+				postMemberFollow: function(memberId) 
+				{
+					var dataContent = {
+			            'user' : memberId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'followUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postMemberUnFollow: function(memberId) 
+				{
+					var dataContent = {
+			            'user' : memberId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'unfollowUser',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postCompanyFollow: function(companyId) 
+				{
+					var dataContent = {
+			            'company' : companyId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'followCompany',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postCompanyUnFollow: function(companyId) 
+				{
+					var dataContent = {
+			            'company' : companyId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'unfollowCompany',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postGoingEvent: function(eventId) 
+				{
+					var dataContent = {
+			            'event' : eventId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'goingToEvent',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
+				},
+				postNotGoingEvent: function(eventId) 
+				{
+					var dataContent = {
+			            'event' : eventId
+			        };
+			        
+					return $http({ method: 'post',
+									url: baseUrl+'notGoingToEvent',
+									data: $.param(dataContent),
+									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								});
 				}
 			};
 		})
-		
-		/*
-		.factory('Session', function($http) 
-		{   
-			 var baseUrl = 'api/'; 
-		    return $http.get(baseUrl + 'get_user_session').then(function(result) {       
-		        return result.data; 
-		    });
-		}) 
-		*/
 	
 		.factory('Members', function(directoryService) {
 			var Members = function() {
@@ -47,6 +109,7 @@
 					var itemData = data;
 					
 					for (var i = 0; i < itemData.length; i++) {
+						//itemData[i].followed = false;
 						this.items.push(itemData[i]);
 					}
 					
@@ -55,6 +118,7 @@
 				}.bind(this));
 			};
 			return Members;
+			console.log(vm.members);
 		})
 	
 		.factory('Companies', function(directoryService) {
@@ -106,28 +170,9 @@
 			};
 			return Events;
 		})
-	
-	/*
-		.factory('Location', function(directoryService) {
-			var Location = function() {
-				this.items = [];
-			};
+
+		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter) {
 			
-			directoryService.getLocations().success(function(data) {
-				this.items = data;
-				console.log(this.items);
-			}.bind(this));
-
-			return Location;
-		})
-		*/
-
-		.controller('DirectoryController', function(Members, Companies, Events, directoryService) {
-			/*, 
-			Session.then(function(response){
-				$rootScope.session = response;
-			});
-			*/
 			var vm = this;
 		
 			vm.members = new Members();
@@ -139,7 +184,59 @@
 			directoryService.getLocations().success(function(data) {
 				vm.locations = data;
 				//console.log(vm.location);
-			})
+			});
+			
+			
+			vm.follow_member = function(memberId) {
+				var index = returnIndexOfCLicked(vm.members.items, memberId);				
+				directoryService.postMemberFollow(memberId).success(function(data) {
+					vm.members.items[index].followed = data.followed; //return user_info, with updated followers and followed status
+				});
+			}
+
+			
+			vm.unFollow_member = function(memberId) {
+				var index = returnIndexOfCLicked(vm.members.items, memberId);
+				directoryService.postMemberUnFollow(memberId).success(function(data) {
+					vm.members.items[index].followed = data.followed; //return user_info, with updated followers and followed status
+				});
+			}
+			
+			vm.follow_company = function(companyId) {
+				var index = returnIndexOfCLicked(vm.companies.items, companyId);
+				directoryService.postCompanyFollow(companyId).success(function(data) {
+					vm.companies.items[index].followed = data.followed; //return user_info, with updated followers and followed status
+				});
+			}
+
+			vm.unFollow_company = function(companyId) {
+				var index = returnIndexOfCLicked(vm.companies.items, companyId);
+				directoryService.postCompanyUnFollow(companyId).success(function(data) {
+					vm.companies.items[index].followed = data.followed; //return user_info, with updated followers and followed status
+				});
+			}
+			
+			vm.going_event = function(eventId) {
+				var index = returnIndexOfCLicked(vm.events.items, eventId);
+				directoryService.postGoingEvent(eventId).success(function(data) {
+					vm.events.items[index].joining = data.joining; //return user_info, with updated followers and followed status
+				});
+			}
+
+			vm.notGoing_event = function(eventId) {
+				var index = returnIndexOfCLicked(vm.events.items, eventId);
+				directoryService.postNotGoingEvent(eventId).success(function(data) {
+					vm.events.items[index].joining = data.joining; //return user_info, with updated followers and followed status
+				});
+			}
+			
+			function returnIndexOfCLicked(itemsArray,id ) {
+				var items = itemsArray;
+				var clickedObject = $filter('filter')(items, { id: id  }, true)[0];
+				var index = items.indexOf(clickedObject);
+				return index;
+			}
+			
 		});
 	
 	$(function() {
