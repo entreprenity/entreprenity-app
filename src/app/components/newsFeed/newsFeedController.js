@@ -3,11 +3,26 @@
 		.module('entreprenityApp.newsFeed', [])
 
 		.factory('newsFeedService', function($http) {
-		//getPosts SERVICE,
-		//postCurrentPost SERVICE
+			var baseUrl = 'api/';
+			
+			return {
+				getPosts: function() {
+					return $http.get(baseUrl+ 'getMyNewsFeed');
+				},			
+				postCurrentPost: function(newPost) 
+				{
+					var dataPost = {newPost: newPost};														
+					return $http({ method: 'post',
+										url: baseUrl+'postCurrentPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				}
+				
+			};
 		})
 
-		.controller('NewsFeedController', function($routeParams) {
+		.controller('NewsFeedController', function($routeParams,newsFeedService) {
 			var vm = this;
 			/*
 			//to get basic user information
@@ -21,8 +36,8 @@
 				vm.currentPost.post_author.companyUserName 	= data.companyUserName;
 			});
 			*/
-		
-		var myPost = {
+			
+			var myPost = {
 				"post_id": "",
 				"content": "",
 				"image": "",
@@ -42,34 +57,34 @@
 				"commenters": [],
 				"comments": []
 			};
+			
 		
+			//vm.currentPost = myPost;
 			vm.currentPost = myPost;
+		
+			//console.log(vm.currentPost);
 			
 			// Add TODO
-			vm.addPost = function () {
+			vm.addPost = function (newPost) {
 				var currentPost = vm.currentPost;
 				vm.currentPost.created_at = new Date();
 				//vm.posts.unshift(currentPost);
 				vm.currentPost.content = ""; //clear textarea
 				
-				alert('ADD POST TO DB');
-				/*
-				newsFeedService.postCurrentPost(vm.currentPost).success(function(data) {
+				newsFeedService.postCurrentPost(newPost).success(function(data) {
 					vm.posts = data;
 				});	
-				*/
+				
 				vm.getPosts();
 			};
 		
 			vm.getPosts = function () {
-				alert('RELOAD UPDATED POSTS');
-				/*
+				
 					newsFeedService.getPosts().success(function(data) {
 						vm.posts = data;
 					});	
-				*/
 			};
-		
+		/*
 			var posts = [
 				{
 					"post_id": "123456",
@@ -202,8 +217,7 @@
 			];
 		
 			vm.posts = posts;
-
-			
+*/
 
 		});			
 })();

@@ -8,13 +8,13 @@
 			<div class="panel-body">
 				<textarea class="form-control" placeholder="Type post here..." rows="3" ng-model="vm.currentPost.content"></textarea>
 				<br>
-				<a class="btn btn-primary btn-sm pull-right" ng-click="vm.addPost()">Post</a>
+				<a class="btn btn-primary btn-sm pull-right" ng-click="vm.addPost(vm.currentPost.content)">Post</a>
 				<div class="clearfix"></div>
 				<ul class="media-list">
 					<li class="media" ng-repeat="post in vm.posts">
 						<hr>
 						<a href="#" class="pull-left">
-							<img ng-src="assets/img/members/{{post.post_author.avatar}}" alt="" class="img-circle" width="50px">
+							<img ng-src="{{post.post_author.avatar}}" alt="" class="img-circle" width="50px">
 						</a>
 						<div class="media-body">
 							<span class="text-muted pull-right">
