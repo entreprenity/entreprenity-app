@@ -6,13 +6,13 @@
 				News Feed
 			</div>
 			<div class="panel-body">
-				<textarea class="form-control" placeholder="Type text here..." rows="3" ng-model="vm.currentPost.content"></textarea>
+				<textarea class="form-control" placeholder="Type post here..." rows="3" ng-model="vm.currentPost.content"></textarea>
 				<br>
 				<a class="btn btn-primary btn-sm pull-right" ng-click="vm.addPost()">Post</a>
 				<div class="clearfix"></div>
-				<hr>
 				<ul class="media-list">
 					<li class="media" ng-repeat="post in vm.posts">
+						<hr>
 						<a href="#" class="pull-left">
 							<img ng-src="assets/img/members/{{post.post_author.avatar}}" alt="" class="img-circle" width="50px">
 						</a>
@@ -20,8 +20,36 @@
 							<span class="text-muted pull-right">
 								<small class="text-muted">{{post.created_at}}</small>
 							</span>
-							<strong class="text-success">{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong>
+							<a><strong class="text-success">{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
+							<a><p>{{post.post_author.companyName}}</p></a>
 							<p>{{post.content}}</p>
+							<div>
+								<a>Like</a>
+								<a>Comment</a>
+							</div>
+						</div>
+						<ul class="media-list comments">
+							<li class="media" ng-repeat="comment in post.comments">
+								<a href="#" class="pull-left">
+									<img ng-src="assets/img/members/{{comment.comment_author.avatar}}" alt="" class="img-circle" width="30px">
+								</a>
+								<div class="media-body">
+									<a><strong class="text-success">{{comment.comment_author.firstName + ' ' + comment.comment_author.lastName}}</strong></a>
+									<a><p>{{comment.comment_author.companyName}}</p></a>
+									<p>{{comment.content}}</p>
+									<div>
+										<a>Like</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="media">
+							<a href="#" class="pull-left">
+								<img ng-src="assets/img/members/{{vm.currentPost.post_author.avatar}}" alt="" class="img-circle" width="30px">
+							</a>
+							<div class="media-body">
+								<textarea class="form-control" placeholder="Type comment here..." rows="3" ng-model="vm.currentPost.content"></textarea>
+							</div>
 						</div>
 					</li>
 				</ul>
