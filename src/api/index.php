@@ -477,8 +477,45 @@ Flight::route('/getMyNewsFeed', function()
 });
 
 
+//Route to post a new comment for a timeline post
+//May 20,2016
+Flight::route('/postThisComment', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=postThisComment();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//Route to like a timeline post
+//May 20,2016
+Flight::route('/likeThisPost', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=likeThisPost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//Route to unlike a timeline post
+//May 20,2016
+Flight::route('/unlikeThisPost', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unlikeThisPost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
 //Route to test timeline posts
 //November 31,2016
+/*
 Flight::route('/testTimelinePosts', function()
 {
    enable_cors();
@@ -487,6 +524,9 @@ Flight::route('/testTimelinePosts', function()
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 });
+*/
+
+
 
 
 Flight::start();
@@ -502,179 +542,11 @@ function services_included()
 	require_once 'services/directoryServices.php'; 
 	require_once 'services/imageUploadServices.php'; 
 	require_once 'services/followUnfollowServices.php'; 
+	require_once 'services/timelineServices.php'; 
 }
 
 
-//Function to test time-line module
-//November 31,2016
-function testTimelinePosts()
-{
 
-	$resp= array();
-	$data = json_decode(file_get_contents("php://input"));
-	$email = $data->name;
-	$pass = $data->date;
-	$qry="INSERT INTO users(email,password) VALUES('".$email."','".$pass."')";
-	if( setData($qry))
-	{
-		$resp['msg']				=	"saved";    
-	} 
-	else 
-	{
-		$resp['msg']				=	"notsaved";   
-	}
-	return $resp;
-
-}
-
-//Function to get my news feed to timeline
-//May 18,2016
-function getMyNewsFeed()
-{
-	$data= array();
-	$member_default_cover		='assets/img/members/member-default.jpg';
-   $member_default_avatar		='assets/img/members/member-default.jpg';
-   
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
-			FROM entrp_user_timeline AS EUT
-			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
-			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
-			WHERE EUT.posted_by=".$my_session_id." AND EUT.status=1 
-			ORDER BY EUT.created_at DESC";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$data[$i]['post_id']										=	$row['post_id'];
-			$data[$i]['content']										=	$row['content'];
-			$data[$i]['image']										=	$row['post_img'];
-			$data[$i]['created_at']									=	$row['created_at'];
-			$data[$i]['post_author']['id']						=	$row['clientid'];
-			$data[$i]['post_author']['firstName']				=	$row['firstname'];
-			$data[$i]['post_author']['lastName']				=	$row['lastname'];
-			if($row['avatar']!='')
-			{
-				$data[$i]['post_author']['avatar']				=	$row['avatar'];
-			}
-			else
-			{
-				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
-			}
-   				
-			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
-			$data[$i]['post_author']['userName']				=	$row['username'];
-			
-			$i++;
-      }	
-   }
-	return $data;	
-
-	
-	/*
-	var posts = [
-		{
-			"post_id": "123456",
-			"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
-			"image": "jpg01.jpg",
-			"created_at": "2015-05-12T14:54:31.566Z",
-			"post_author": {
-				"id": "1",
-				"firstName": "Jordan",
-				"lastName": "Rains",
-				"avatar": "member-default.jpg",
-				"position": "Office Assistant",
-				"companyName": "Pet Studio.com",
-				"userName": "jordan"
-			},
-			"likes_count": 1,
-			"likers": [
-				{
-					"id": "3",
-					"firstName": "John",
-					"lastName": "Smith",
-					"avatar": "member-default.jpg",
-					"position": "Creative Director",
-					"companyName": "Wendy Skelton",
-					"userName": "John"
-				}
-			],
-			"comments_count": 1,
-			"commenters": [
-				{
-					"id": "3",
-					"firstName": "John",
-					"lastName": "Smith",
-					"avatar": "member-default.jpg",
-					"position": "Creative Director",
-					"companyName": "Wendy Skelton",
-					"userName": "John"
-				}
-			],
-			"comments": [
-				{
-					"content": "congrats Albert!",
-					"created_at": "2015-05-12T15:06:51.457Z",
-					"likes_count": 0,
-					"likers": [],
-					"comment_author": {
-						"id": "3",
-						"firstName": "John",
-						"lastName": "Smith",
-						"avatar": "member-default.jpg",
-						"position": "Creative Director",
-						"companyName": "Wendy Skelton",
-						"userName": "John"
-					}
-				}
-			]
-		}
-	];
-
-	vm.posts = posts;
-	*/
-
-}
-
-//Function to add new feed to timeline
-//May 18,2016
-function postCurrentPost()
-{
-	$data= array();
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
-	
-	if($my_session_id)
-	{
-		$requestData = json_decode(file_get_contents("php://input"));
-		
-		$newPost = $requestData->newPost;
-		$content=validate_input($newPost);
-		
-		$post_img='';
-		$created_at=date('Y-m-d H:i:s');
-		$posted_by=$my_session_id;
-		
-		$qry="INSERT INTO entrp_user_timeline(content,post_img,created_at,posted_by) VALUES('".$content."','".$post_img."','".$created_at."',".$posted_by.")";
-		if(setData($qry))
-		{
-			$data['response']='success';
-		}
-		else
-		{
-			$data['response']='failed';
-		}
-	
-	}
-	return $data;
-
-}
 
 //Function to fetch a company's follower list
 //May 13,2016
