@@ -52,7 +52,7 @@
 			};
 		})
 
-		.controller('NewsFeedController', function($routeParams,newsFeedService) {
+		.controller('NewsFeedController', function($routeParams, newsFeedService) {
 			var vm = this;
 			var userObject;
 			
@@ -172,5 +172,13 @@
 			};
 			
 
-		});			
+
+		})
+		.directive('newsFeed', function() {
+			return {
+				restrict: 'E',
+				scope: false,
+				templateUrl: 'app/components/newsFeed/newsFeed.html'
+			};
+		});		
 })();
