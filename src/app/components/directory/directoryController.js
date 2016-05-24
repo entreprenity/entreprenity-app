@@ -114,7 +114,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Members;
@@ -140,7 +140,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Companies;
@@ -165,7 +165,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Events;
