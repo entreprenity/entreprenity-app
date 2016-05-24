@@ -22,7 +22,7 @@
 						<li class="item" ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
 							<a ng-href="#/members/{{member.userName}}">
 								<div>
-									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
+									<img class="img-circle" ng-src="{{member.avatar}}">
 									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
 									<p>{{member.position}}</p>
 									<p>{{member.companyName}}</p>
@@ -35,7 +35,7 @@
 								<a class="btn btn-primary" ng-click="vm.unFollow_member(member.id)" ng-show="vm.members.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
 						</li>
-						<div ng-show='vm.members.busy'>Loading data...</div>
+						<!-- <div ng-show='vm.members.busy'>Loading data...</div> -->
 					</ul>		
 				</div>
 			</uib-tab>
@@ -64,7 +64,7 @@
 										<img ng-src="assets/img/companies/{{company.avatar}}">
 									</div>
 									<h3>{{company.companyName}}</h3>
-									<p>{{company.city}}</p>
+									<p>{{company.city}}</p>	
 									<p>{{company.description}}</p>
 									<hr>
 								</div>
@@ -74,7 +74,7 @@
 								<a class="btn btn-primary" ng-click="vm.unFollow_company(company.id)" ng-show="vm.companies.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
 						</li>
-						<div ng-show='vm.companies.busy'>Loading data...</div>
+						<!-- <div ng-show='vm.companies.busy'>Loading data...</div> -->
 					</ul>
 				</div>
 			</uib-tab>
@@ -111,7 +111,7 @@
 								<a class="btn btn-primary" ng-click="vm.notGoing_event(event.id)" ng-show="vm.events.items[{{$index}}].followed">NOT JOINING ANYMORE</a>
 							</div>
 						</li>
-						<div ng-show='vm.events.busy'>Loading data...</div>
+						<!-- <div ng-show='vm.events.busy'>Loading data...</div> -->
 					</ul>					
 				</div>
 			</uib-tab>

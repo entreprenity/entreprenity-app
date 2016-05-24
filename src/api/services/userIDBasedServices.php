@@ -135,7 +135,8 @@ function getThisUserfollowingObjects($clientid)
 	*/
 
 	$i=0;
-	$member_default='assets/img/members/member-default.jpg';
+	$member_default_cover			='assets/img/members/member-default.jpg';
+   $member_default_avatar			='assets/img/members/member-default.jpg';
 	$data= array();
 	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
 			FROM entrp_user_follows AS EUF
@@ -158,7 +159,7 @@ function getThisUserfollowingObjects($clientid)
 			}
 			else
 			{
-				$data[$i]['avatar']	=	$member_default;
+				$data[$i]['avatar']	=	$member_default_avatar;
 			} 
 			
 			if($row['cover_pic']!='')
@@ -167,7 +168,7 @@ function getThisUserfollowingObjects($clientid)
 			}
 			else
 			{
-				$data[$i]['coverPhoto']	=	$member_default;
+				$data[$i]['coverPhoto']	=	$member_default_cover;
 			} 
 			
 			$data[$i]['firstName']						=	$row['firstname'];

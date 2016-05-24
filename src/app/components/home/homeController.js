@@ -21,7 +21,7 @@
 			};
 		})
 		
-		.controller('HomeController', function($scope,$routeParams, myHomeService,AuthService) {
+		.controller('HomeController', function($scope, $routeParams, myHomeService, AuthService) {
 				var vm = this;		
 
 			    //If user is not logged in

@@ -13,7 +13,10 @@
 							<div class="profilePhoto">
 								<div>
 									<img class="img-circle" ng-src="{{vm.company.profilePhoto}}">
-									<a class="btn btn-default uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">Edit</a>
+									<img class="img-circle" ng-src="{{vm.company.profilePhoto}}">
+									<a class="uploadPhoto" ng-click="vm.open()" ng-show="vm.editState">
+										<img class="img-circle" src="assets/img/icon-edit.png">
+									</a>
 								</div>
 							</div>
 							<h3 ng-hide="vm.editState">{{vm.company.companyName}}</h3>
@@ -43,7 +46,7 @@
 						<div class="content">
 							<p ng-hide="vm.editState">{{vm.company.companyDesc}}</p>
 							<textarea type="text" name="desc" ng-model="vm.company.companyDesc" ng-show="vm.editState"></textarea>
-							<ul>
+							<ul ng-hide="vm.editState">
 								<li ng-repeat="category in vm.company.categories"><a href="#" class="badge">{{category.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
@@ -91,9 +94,9 @@
 			</div>
 
 			<div class="col-md-8">
-				<div class="profile-timeline center" style="text-align: center; font-size: 30px; border: 1px solid black; height: 70vh;">
-					TIMELINE MODULE				
-				</div>
+				<div ng-controller="NewsFeedController as vm">
+					<news-feed></news-feed>
+				</div>	
 			</div>
 		</div>
 	</div>

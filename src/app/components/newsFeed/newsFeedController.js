@@ -17,25 +17,54 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				getBasicUserInfo:function() {
+					return $http.get(baseUrl + 'getBasicUserInformation');
+				},
+				postComment: function(commentedPost,newComment) 
+				{
+					var dataPost = {postId: commentedPost.post_id,postComment:newComment};														
+					return $http({ method: 'post',
+										url: baseUrl+'postThisComment',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},				
+				postLike: function(likedPost) 
+				{
+					var dataPost = {likedPostId: likedPost.post_id};														
+					return $http({ method: 'post',
+										url: baseUrl+'likeThisPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},
+				postUnLike: function(unLikedPost) 
+				{
+					var dataPost = {unlikedPostId: unLikedPost.post_id};														
+					return $http({ method: 'post',
+										url: baseUrl+'unlikeThisPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 				
 			};
 		})
 
-		.controller('NewsFeedController', function($routeParams,newsFeedService) {
+		.controller('NewsFeedController', function($routeParams, newsFeedService) {
 			var vm = this;
-			/*
-			//to get basic user information
-			myHomeService.getBasicUserInfo().success(function(data) {
-				vm.currentPost.post_author.firstName 	= data.firstName;
-				vm.currentPost.post_author.lastName 	= data.lastName;
-				vm.currentPost.post_author.position 	= data.position;
-				vm.currentPost.post_author.myOffice 	= data.myOffice;
-				vm.currentPost.post_author.avatar 		= data.avatar;
-				vm.currentPost.post_author.userName 	= data.userName;
-				vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+			var userObject;
+			
+			vm.getPosts = function () {
+					newsFeedService.getPosts().success(function(data) {
+						vm.posts = data;
+					});	
+			};
+			
+			newsFeedService.getPosts().success(function(data) {
+				vm.posts = data;
 			});
-			*/
 			
 			var myPost = {
 				"post_id": "",
@@ -51,6 +80,7 @@
 					"companyName": "Clever Sheep",
 					"userName": "will"
 				},
+				"isLiked": false,
 				"likes_count": 0,
 				"likers": [],
 				"comments_count": 0,
@@ -58,18 +88,34 @@
 				"comments": []
 			};
 			
-		
-			//vm.currentPost = myPost;
 			vm.currentPost = myPost;
-		
-			//console.log(vm.currentPost);
 			
-			// Add TODO
+		
+			//to get basic user information
+			vm.basicInfo = function () {
+				newsFeedService.getBasicUserInfo().success(function(data) {
+					vm.currentPost.post_author.id 	= data.id;
+					vm.currentPost.post_author.firstName 	= data.firstName;
+					vm.currentPost.post_author.lastName 	= data.lastName;
+					vm.currentPost.post_author.position 	= data.position;
+					vm.currentPost.post_author.companyName 	= data.companyName;
+					vm.currentPost.post_author.avatar 		= data.avatar;
+					vm.currentPost.post_author.userName 	= data.userName;
+					vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+
+					userObject = data;
+					console.log(vm.currentPost.post_author);
+				});	
+			};
+			vm.basicInfo();
+
+			
+			// Add a time-line post
 			vm.addPost = function (newPost) {
 				var currentPost = vm.currentPost;
-				vm.currentPost.created_at = new Date();
+				currentPost.created_at = new Date();
 				//vm.posts.unshift(currentPost);
-				vm.currentPost.content = ""; //clear textarea
+				currentPost.content = ""; //clear post textarea
 				
 				newsFeedService.postCurrentPost(newPost).success(function(data) {
 					vm.posts = data;
@@ -77,147 +123,65 @@
 				
 				vm.getPosts();
 			};
-		
-			vm.getPosts = function () {
+			
+			//Like a time-line post
+			vm.likePost = function(post) {
+				var likedPost = post;
 				
-					newsFeedService.getPosts().success(function(data) {
-						vm.posts = data;
-					});	
+				//this will come from the session userobject
+				vm.basicInfo();
+				likedPost.likers.push(userObject);
+				newsFeedService.postLike(likedPost).success(function(data) {
+					likedPost.isLiked = true;
+					likedPost.likes_count++;
+					vm.posts = data;
+				});	
+				vm.getPosts();
 			};
-		/*
-			var posts = [
-				{
-					"post_id": "123456",
-					"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
-					"image": "jpg01.jpg",
-					"created_at": "2015-05-12T14:54:31.566Z",
-					"post_author": {
-						"id": "1",
-						"firstName": "Jordan",
-						"lastName": "Rains",
-						"avatar": "member-default.jpg",
-						"position": "Office Assistant",
-						"companyName": "Pet Studio.com",
-						"userName": "jordan"
-					},
-					"likes_count": 1,
-					"likers": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments_count": 1,
-					"commenters": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments": [
-						{
-							"content": "congrats Albert!",
-							"created_at": "2015-05-12T15:06:51.457Z",
-							"likes_count": 0,
-							"likers": [],
-							"comment_author": {
-								"id": "3",
-								"firstName": "John",
-								"lastName": "Smith",
-								"avatar": "member-default.jpg",
-								"position": "Creative Director",
-								"companyName": "Wendy Skelton",
-								"userName": "John"
-							}
-						}
-					]
-				},
-				{
-					"post_id": "123456",
-					"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
-					"image": "jpg01.jpg",
-					"created_at": "2015-05-12T14:54:31.566Z",
-					"post_author": {
-						"id": "1",
-						"firstName": "Jordan",
-						"lastName": "Rains",
-						"avatar": "member-default.jpg",
-						"position": "Office Assistant",
-						"companyName": "Pet Studio.com",
-						"userName": "jordan"
-					},
-					"likes_count": 1,
-					"likers": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments_count": 1,
-					"commenters": [
-						{
-							"id": "3",
-							"firstName": "John",
-							"lastName": "Smith",
-							"avatar": "member-default.jpg",
-							"position": "Creative Director",
-							"companyName": "Wendy Skelton",
-							"userName": "John"
-						}
-					],
-					"comments": [
-						{
-							"content": "congrats Albert!",
-							"created_at": "2015-05-12T15:06:51.457Z",
-							"likes_count": 0,
-							"likers": [],
-							"comment_author": {
-								"id": "3",
-								"firstName": "John",
-								"lastName": "Smith",
-								"avatar": "member-default.jpg",
-								"position": "Creative Director",
-								"companyName": "Wendy Skelton",
-								"userName": "John"
-							}
-						},
-						{
-							"content": "congrats Albert!",
-							"created_at": "2015-05-12T15:06:51.457Z",
-							"likes_count": 0,
-							"likers": [],
-							"comment_author": {
-								"id": "3",
-								"firstName": "John",
-								"lastName": "Smith",
-								"avatar": "member-default.jpg",
-								"position": "Creative Director",
-								"companyName": "Wendy Skelton",
-								"userName": "John"
-							}
-						},
-					]
-				}
-				
-			];
 		
-			vm.posts = posts;
-*/
+			//unlike a time-line post
+			vm.unLikePost = function(post) {
+				var unLikedPost = post;
+				
+				//this will come from the session userobject
+				vm.basicInfo();
+				newsFeedService.postUnLike(unLikedPost).success(function(data) {
+					unLikedPost.isLiked = false;
+					unLikedPost.likes_count--;
+					unLikedPost.likers.pop();
+					vm.posts = data;
+				});
+				vm.getPosts();	
+			};
 
-		});			
+			//Add a comment to time-line post
+			vm.addComment = function(post,newComment) {
+				var commentedPost = post;
+				//this will come from the session userobject
+         	vm.basicInfo();
+				var currentComment = {};
+				currentComment.content = vm.currentComment.content;
+				currentComment.created_at = new Date();
+				currentComment.comment_author = userObject;
+				
+				commentedPost.comments_count++;
+				commentedPost.comments.push(currentComment);
+				vm.currentComment.content = ""; //clear comment textarea
+
+				newsFeedService.postComment(commentedPost,newComment).success(function(data) {
+					vm.posts = data;
+				});	
+				vm.getPosts();
+			};
+			
+
+
+		})
+		.directive('newsFeed', function() {
+			return {
+				restrict: 'E',
+				scope: false,
+				templateUrl: 'app/components/newsFeed/newsFeed.html'
+			};
+		});		
 })();

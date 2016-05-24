@@ -1,0 +1,70 @@
+<div style="max-width: 1000px; margin: 0 auto;">
+	<div id="settingsPage">
+		<h1>Entreprenity: Preferences and Settings</h1>
+		<ul>
+			<li>
+				<div class="settings-header">
+					<div class="info">Language Settings</div>
+					<div class="label"></div>
+				</div>
+				<div class="setting-content">
+					<div class="info">
+						Select your preferred language
+					</div>
+					<div class="selection">
+						<select ng-options="option.text for option in vm.settings.languages track by option.id" ng-model="vm.settings.selectedLanguage"></select>
+					</div>
+				</div>
+			</li>
+			<hr>
+			<li>
+				<div class="settings-header">
+					<div class="info">Timezone Settings</div>
+					<div class="label"></div>
+				</div>
+				<div class="setting-content">
+					<div class="info">
+						Select your preferred timezone
+					</div>
+					<div class="selection">
+						<select ng-options="option.text for option in vm.settings.timezones track by option.id" ng-model="vm.settings.selectedTimezone"></select>
+					</div>
+				</div>
+			</li>
+			<hr>
+			<li>
+				<div class="settings-header">
+					<div class="info">Notification Settings</div>
+					<div class="label">Email</div>	
+				</div>
+				<div class="setting-content">
+					<div class="info">New Followers</div>
+					<div class="selection">	
+						<input type="checkbox" ng-model="vm.settings.followers">
+					</div>
+				</div>
+				<div class="setting-content">
+					<div class="info">New Comments</div>
+					<div class="selection">
+						<input type="checkbox" ng-model="vm.settings.comments">
+					</div>
+				</div>
+				<div class="setting-content">
+					<div class="info">New Likes</div>
+					<div class="selection">
+						<input type="checkbox" ng-model="vm.settings.likes">
+					</div>
+				</div>
+				<div class="setting-content">
+					<div class="info">New Mentions</div>
+					<div class="selection">
+						<input type="checkbox" ng-model="vm.settings.mentions">
+					</div>
+				</div>
+			</li>
+		</ul>
+		<div>
+			<a class="btn btn-default" ng-click="vm.submitSettings()">SAVE SETTINGS</a>
+		</div>	
+	</div>
+</div>

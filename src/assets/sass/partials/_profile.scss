@@ -1,5 +1,22 @@
 .profile {
-	
+	input[type="text"] {
+		padding: 5px;
+		border: none;
+		border-bottom: dotted 1.5px #c9c9c9;
+		transition: border 0.3s;
+	}
+	input[type="text"]:focus,
+	input[type="text"].focus {
+		border-bottom: solid 1px #969696;
+	}
+	textarea {
+		width: 100%;
+		border: none;
+		border-bottom: dotted 1.5px  #c9c9c9;
+		transition: border 0.3s;
+		overflow: auto;
+		resize: none;
+	}
 	.profile-top {
 		padding: 0 !important;
 		border: 1px solid $divider-color;
@@ -70,15 +87,29 @@
 			border-top: 1px solid $divider-color;
 			border-bottom: 1px solid $divider-color;
 		}
+		.about-me li {
+			display: inline-block;
+			padding-right: 5px;
+		}
+		
 		.content {
 			padding: 15px;
-			span {padding-right: 5px;}
+			span {width: 20px; padding-right: 5px;}
 		}
 		
 		.team li {
 			display: inline-block;
 			margin-right: 5px;
 			img {max-width: 80px;}
+		}
+		
+		.skills li {
+			display: inline-block;
+			padding-right: 5px;
+		}
+		.interests li {
+			display: inline-block;
+			padding-right: 5px;
 		}
 	}
 }

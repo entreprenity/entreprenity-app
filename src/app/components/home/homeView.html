@@ -10,12 +10,16 @@
 						<p>{{vm.myOffice}}</p>
 					</a>
 				</div>
-				
 				<div id="sideNav" class="card">
 					<ul>
 						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">MY COMPANY</a></li>
 						<li><a ng-href="#/directory">MEMBERS DIRECTORY</a></li>
 						<li><a ng-href="#/directory">EVENTS</a></li>
+					</ul>
+				</div>
+
+				<div id="sideNav" class="card">
+					<ul>
 						<li><a href="http://callanswering.me/app/login.html" target="_blank">RECEPTIONIST</a></li>
 						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">MEETING ROOM</a></li>
 						<li><a ng-href="#/home">OTHER SERVICES</a></li>
@@ -40,15 +44,15 @@
 						<a ng-href="#/home" class="btn btn-default">OTHER SERVICES</a>
 					</div>
 				</div>
-				<div class="card" style="font-size: 30px; height: 70vh;">
-					<div ng-controller="NewsFeedController">
-						<div ng-include="'app/components/newsFeed/newsFeed.html'"></div>	
+				<div>
+					<div ng-controller="NewsFeedController as vm">
+						<news-feed></news-feed>
 					</div>
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div id="newMembers" class="card">
-					<h3>NEW MEMBERS</h3>
+					<h4>NEW MEMBERS</h4>
 					<ul>
 						<li ng-repeat="newMember in vm.newMembers">
 							<a ng-href="#/members/{{newMember.userName}}">
@@ -60,7 +64,7 @@
 					</ul>
 				</div>
 				<div id="latestEvents" class="card">
-					<h3>UPCOMING EVENTS</h3>
+					<h4>UPCOMING EVENTS</h4>
 					<ul>
 						<li ng-repeat="	latestEvent in vm.latestEvents">
 							<a ng-href="#/events/{{latestEvent.id}}">

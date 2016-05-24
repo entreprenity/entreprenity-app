@@ -114,7 +114,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Members;
@@ -140,7 +140,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Companies;
@@ -165,7 +165,7 @@
 					}
 					
 					this.pageNumber++;
-					this.busy = false;
+					//this.busy = false;
 				}.bind(this));
 			};
 			return Events;
@@ -177,6 +177,7 @@
 		
 			vm.members = new Members();
 			vm.companies = new Companies();
+			console.log(vm.companies);
 			vm.events = new Events();
 			//vm.location = new Location();
 			console.log(vm.members);
@@ -207,7 +208,7 @@
 				directoryService.postCompanyFollow(companyId).success(function(data) {
 					vm.companies.items[index].followed = data.followed; //return user_info, with updated followers and followed status
 				});
-			}
+			}	
 
 			vm.unFollow_company = function(companyId) {
 				var index = returnIndexOfCLicked(vm.companies.items, companyId);
