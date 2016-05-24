@@ -8853,12 +8853,12 @@ a {
 /* line 12, ../sass/partials/_button.scss */
 .btn-default {
   border-color: #f29b13 !important;
-  color: #f29b13;
+  color: #f29b13 !important;
   background-color: transparent;
 }
 /* line 17, ../sass/partials/_button.scss */
 .btn-default:hover {
-  color: #fff;
+  color: #fff !important;
   background-color: #f29b13;
   transition: background 100ms ease-in-out;
 }
@@ -8867,12 +8867,12 @@ a {
 .btn-primary {
   border-color: #f29b13 !important;
   background-color: #f29b13;
-  color: #fff;
-  border-width: 2px;
+  color: #fff !important;
+  border-width: 1px;
 }
 /* line 30, ../sass/partials/_button.scss */
 .btn-primary:hover {
-  color: #f29b13;
+  color: #f29b13 !important;
   background-color: transparent !important;
   transition: background 100ms ease-in-out;
 }
@@ -8996,23 +8996,31 @@ img {
   height: 40px;
 }
 /* line 58, ../sass/partials/_home.scss */
-#home #newMembers h3 {
+#home #newMembers h4 {
   border-bottom: 1px solid #b5b5b5;
   padding: 10px 15px;
 }
 /* line 62, ../sass/partials/_home.scss */
-#home #newMembers img {
+#home #newMembers ul {
+  padding: 15px;
+}
+/* line 64, ../sass/partials/_home.scss */
+#home #newMembers ul img {
   max-width: 100px;
   width: 100%;
   height: auto;
 }
-/* line 70, ../sass/partials/_home.scss */
-#home #latestEvents h3 {
+/* line 74, ../sass/partials/_home.scss */
+#home #latestEvents h4 {
   border-bottom: 1px solid #b5b5b5;
   padding: 10px 15px;
 }
-/* line 74, ../sass/partials/_home.scss */
-#home #latestEvents img {
+/* line 78, ../sass/partials/_home.scss */
+#home #latestEvents ul {
+  padding: 15px;
+}
+/* line 80, ../sass/partials/_home.scss */
+#home #latestEvents ul img {
   width: 100%;
   height: auto;
 }
@@ -9419,4 +9427,74 @@ img {
   left: 0;
   right: 0;
   margin: auto;
+}
+
+/* line 2, ../sass/partials/_newsfeed.scss */
+#newsFeed textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+  resize: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+/* line 13, ../sass/partials/_newsfeed.scss */
+#newsFeed hr {
+  margin: 5px 0px !important;
+}
+/* line 17, ../sass/partials/_newsfeed.scss */
+#newsFeed .post-textarea {
+  border: 1px solid #b5b5b5;
+  margin-bottom: 10px;
+}
+/* line 20, ../sass/partials/_newsfeed.scss */
+#newsFeed .post-textarea .button-container {
+  position: relative;
+  background-color: #e9e9eb;
+  height: 35px;
+}
+/* line 24, ../sass/partials/_newsfeed.scss */
+#newsFeed .post-textarea .button-container .btn-post {
+  position: absolute;
+  right: 0px;
+}
+/* line 31, ../sass/partials/_newsfeed.scss */
+#newsFeed .post {
+  border: 1px solid #b5b5b5;
+  margin-bottom: 10px;
+}
+/* line 35, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main {
+  padding: 15px;
+}
+/* line 38, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-header a {
+  padding-right: 10px;
+}
+/* line 40, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-content {
+  padding: 5px 10px;
+}
+/* line 41, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-buttonGroup {
+  padding: 5px 10px;
+}
+/* line 43, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-buttonGroup a {
+  padding-right: 20px;
+}
+/* line 45, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-likers {
+  padding: 0px 10px;
+}
+/* line 48, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .comment {
+  border-top: 1px solid #b5b5b5;
+  background-color: #e9e9eb;
+  padding: 15px;
+}
+/* line 52, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .comment .comment-content {
+  padding: 5px 10px;
 }

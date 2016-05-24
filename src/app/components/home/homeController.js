@@ -21,7 +21,7 @@
 			};
 		})
 		
-		.controller('HomeController', function($scope,$routeParams, myHomeService,AuthService) {
+		.controller('HomeController', function($scope, $routeParams, myHomeService, AuthService) {
 				var vm = this;		
 
 			    //If user is not logged in
@@ -51,11 +51,13 @@
 				
 				//To get new members
 				myHomeService.getNewMembers().success(function(data) {
+					console.log(data);
 					vm.newMembers = data;
 				});
 				
 				//to get latest events
 				myHomeService.getLatestEvents().success(function(data) {
+					console.log(data);
 					vm.latestEvents = data;
 				});
 				

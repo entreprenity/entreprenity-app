@@ -11,11 +11,11 @@ $secondary-color: $secondary-color; //orange
 // Button Default Style
 .btn-default {
 	border-color: $secondary-color !important;
-	color: $secondary-color;
+	color: $secondary-color !important;
 	background-color: transparent;
 	
 	&:hover {
-		color: #fff;
+		color: #fff !important;
 		background-color: $secondary-color;
 		transition: background 100ms ease-in-out;
 	}
@@ -25,10 +25,10 @@ $secondary-color: $secondary-color; //orange
 .btn-primary {
 	border-color: $secondary-color !important;
 	background-color: $secondary-color;
-	color: #fff;
-	border-width: 2px;
+	color: #fff !important;
+	border-width: 1px;
 	&:hover {
-		color: $secondary-color;
+		color: $secondary-color !important;
 		background-color: transparent !important;
 		
 		transition: background 100ms ease-in-out;

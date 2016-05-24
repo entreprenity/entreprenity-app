@@ -9,6 +9,7 @@
 		'uiGmapgoogle-maps',
 		'ngTagsInput',
 		'ngImgCrop',
+		'angularMoment',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
@@ -24,7 +25,8 @@
 		'entreprenityApp.companyFollowers',
 		'entreprenityApp.newsFeed',
 		'entreprenityApp.AuthenticationService',
-		'entreprenityApp.logout'
+		'entreprenityApp.logout',
+		'entreprenityApp.settings'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -102,6 +104,11 @@
 		.when('/newsfeed', {
 			controller: 'NewsFeedController',
 			templateUrl: 'app/components/newsFeed/newsFeed.html',
+			controllerAs: 'vm'
+		})
+		.when('/settings', {
+			controller: 'SettingsPageController',
+			templateUrl: 'app/components/settings/settingsPage.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
