@@ -62,27 +62,10 @@
 					});	
 			};
 			
-			vm.basicInfo = function () {
-					//to get basic user information
-					newsFeedService.getBasicUserInfo().success(function(data) {
-						vm.currentPost.post_author.id 	= data.id;
-						vm.currentPost.post_author.firstName 	= data.firstName;
-						vm.currentPost.post_author.lastName 	= data.lastName;
-						vm.currentPost.post_author.position 	= data.position;
-						vm.currentPost.post_author.companyName 	= data.companyName;
-						vm.currentPost.post_author.avatar 		= data.avatar;
-						vm.currentPost.post_author.userName 	= data.userName;
-						vm.currentPost.post_author.companyUserName 	= data.companyUserName;
-						
-						userObject = data;
-					});	
-			};
-			
 			newsFeedService.getPosts().success(function(data) {
 				vm.posts = data;
 			});
-		
-					
+			
 			var myPost = {
 				"post_id": "",
 				"content": "",
@@ -106,6 +89,26 @@
 			};
 			
 			vm.currentPost = myPost;
+			
+		
+			//to get basic user information
+			vm.basicInfo = function () {
+				newsFeedService.getBasicUserInfo().success(function(data) {
+					vm.currentPost.post_author.id 	= data.id;
+					vm.currentPost.post_author.firstName 	= data.firstName;
+					vm.currentPost.post_author.lastName 	= data.lastName;
+					vm.currentPost.post_author.position 	= data.position;
+					vm.currentPost.post_author.companyName 	= data.companyName;
+					vm.currentPost.post_author.avatar 		= data.avatar;
+					vm.currentPost.post_author.userName 	= data.userName;
+					vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+
+					userObject = data;
+					console.log(vm.currentPost.post_author);
+				});	
+			};
+			vm.basicInfo();
+
 			
 			// Add a time-line post
 			vm.addPost = function (newPost) {

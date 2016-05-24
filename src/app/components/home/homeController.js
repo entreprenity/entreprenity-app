@@ -51,13 +51,11 @@
 				
 				//To get new members
 				myHomeService.getNewMembers().success(function(data) {
-					console.log(data);
 					vm.newMembers = data;
 				});
 				
 				//to get latest events
 				myHomeService.getLatestEvents().success(function(data) {
-					console.log(data);
 					vm.latestEvents = data;
 				});
 				

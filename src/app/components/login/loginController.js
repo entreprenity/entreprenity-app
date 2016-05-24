@@ -32,7 +32,7 @@
 				    		//alert(data.msg);
 				    		localStorage.removeItem('entrp_token');
 				    		localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
-				    		$location.path('/directory');
+				    		$location.path('/home');
 				    	}
 				    	else
 				    	{
