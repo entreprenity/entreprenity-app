@@ -768,6 +768,40 @@ function fetch_user_information_from_id($clientid)
    return $data;
 }
 
+//Function to get user information based on id
+//May 25, 2016
+//Arshad
+function fetch_info_from_entrp_login($clientid)
+{
+	$data = array();		
+	
+	$qry="SELECT *
+			FROM entrp_login as L
+			WHERE L.clientid=".$clientid."
+	      ";
+	$res = getData($qry);
+   $count_res = mysqli_num_rows($res);
+	if($count_res > 0)
+   {
+
+   	while($row = mysqli_fetch_array($res))
+      {
+      	$data['clientid'] = $row['clientid'];
+      	$data['username'] = $row['username'];
+      	$data['email'] = $row['email'];
+			      	
+			
+			$data['success'] = 'true';
+		}
+
+   }
+   else
+   {
+   	$data['success'] = 'false';
+	}
+   return $data;
+}
+
 
 
 /* Functions and services based on userid ends */
