@@ -60,18 +60,21 @@
 											</table>
 										</td>
 									</tr>
+									<?php if(isset($type) && $type === 'follow'){ ?>
 									<tr>
 										<td align="center" style="padding-top: 10px; padding-left: 15%; padding-right: 15%; text-align: center;">
 											<table cellpadding="0" cellspacing="0">
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
-														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@will</strong>!</h1>
-														<p><a href="#">@jason</a> started following you!</p>
+														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@<?php echo (isset($followed_username) && $followed_username != '' ? $followed_username : ''); ?></strong>!</h1>
+														<p><a href="#">@<?php echo (isset($following_username) && $following_username != '' ? $following_username : ''); ?></a> started following you!</p>
 													</td>
 												</tr>
 											</table>
 										</td>
 									</tr>
+									<?php } ?>
+									<?php if(isset($type) && $type === 'like'){ ?>
 									<tr>
 										<td align="center" style="padding-top: 10px; padding-left: 15%; padding-right: 15%; text-align: center;">
 											<table cellpadding="0" cellspacing="0">
@@ -84,6 +87,8 @@
 											</table>
 										</td>
 									</tr>
+									<?php } ?>
+									<?php if(isset($type) && $type === 'comment'){ ?>
 									<tr>
 										<td align="center" style="padding-top: 10px; padding-left: 15%; padding-right: 15%; text-align: center;">
 											<table cellpadding="0" cellspacing="0">
@@ -96,6 +101,8 @@
 											</table>
 										</td>
 									</tr>
+									<?php } ?>
+									<?php if(isset($type) && $type === 'mention'){ ?>
 									<tr>
 										<td align="center" style="padding-top: 10px; padding-left: 15%; padding-right: 15%; text-align: center;">
 											<table cellpadding="0" cellspacing="0">
@@ -107,7 +114,8 @@
 												</tr>
 											</table>
 										</td>
-									</tr>																					
+									</tr>
+									<?php } ?>																					
 									<tr>
 										<td class="footer" align="center" valign="center" style="height: 56px; border-top-color: #C9CBCD; border-top-width: 1px; border-top-style: solid; padding-left: 15%; padding-right: 15%;">
 											<span style="color: #C9CBCD; font-size: 12px; ">If you don't want to receive notifications you can change your settings <a href="#">here</a>.</span> 
