@@ -4,12 +4,13 @@
 		text-decoration: none;
 		color:inherit;
 	}
-	
 
 	.card {
 		text-align: center;
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin-bottom: 15px;
+		background-color: #ffffff;
 	}
 	
 	#myProfile {
@@ -18,12 +19,18 @@
 			max-width: 100px;
 			width: 100%; 
 			height: auto;
+			margin-bottom: 5px;
+		}
+		p {color: $secondary-text-color;}
+		
+		a:hover {
+			opacity: 0.8;
 		}
 	}
 	
 	#sideNav {
 		li {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 			&:last-child {border-bottom: 1px solid transparent;}
 			
@@ -39,24 +46,28 @@
 		margin-left: 5px;
 		margin-bottom: 15px;
 		div {
+			background-color: #ffffff;	
 			width: 33%;
 			height: 150px;
 			float:left;
 			display: inline-block;
-			border: 1px solid $divider-color;
+			border: 1px solid $primary-divider-color;
 			padding: 15px;
-			margin-right
 			
 			img{
-				width: 40px;
-				height: 40px;
+				width: 70px;
+				height: 70px;
+			}
+			
+			.btn {
+				padding: 6px 10px;	
 			}
 		}
 	}
 	
 	#newMembers {
 		h4 {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 		}
 		ul{
@@ -72,7 +83,7 @@
 	
 	#latestEvents {
 		h4 {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 		}
 		ul{
