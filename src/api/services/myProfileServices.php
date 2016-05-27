@@ -224,5 +224,106 @@ function getMyProfileDetails()
 	return $data;
 }
 
+//Function to fetch a user's preferences
+//May 24,2016
+//Arshad
+function getMyPreferences()
+{
+	
+	$data = array();
+	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	$userid = $my_session_id;
+	if($userid)
+	{
+			$qry = "SELECT *
+					  FROM entrp_user_notification_preferences as UP
+					  LEFT JOIN entrp_languages as L ON L.lang_id = UP.language
+					  LEFT JOIN entrp_timezones as T ON T.timezone_id = UP.timezone
+					  WHERE UP.clientid = ".$userid."
+			       ";
+			$res = getData($qry);
+		   $count_res = mysqli_num_rows($res);
+		   if($count_res > 0)
+		   {
+		   	while($row = mysqli_fetch_array($res))
+		   	{
+		   		$data['languages'] = get_all_languages();
+		   		$data['timezones'] = get_all_timezones();
+		   		
+		   		$data['selectedLanguage'] = array('id' => $row['lang_id'], 'text' => $row['lang_name'], 'image' => $row['lang_image']);
+		   		$data['selectedTimezone'] = array('id' => $row['timezone_id'], 'text' => $row['timezone_name']);
+		   		
+		   		
+		   		$data['followers'] = ($row['follow'] == 1 ? true : false);
+		   		$data['comments'] = ($row['comment'] == 1 ? true : false);
+		   		$data['likes'] = ($row['likes'] == 1 ? true : false);
+		   		$data['mentions'] = ($row['mention'] == 1 ? true : false);
+		   	}
+		   	
+		   }
+		   else
+		   {
+				$data['languages'] = '';
+	   		$data['timezones'] = '';
+	   		
+	   		$data['selectedLanguage'] = '';
+	   		$data['selectedTimezone'] = '';
+	   		
+	   		
+	   		$data['followers'] = '';
+	   		$data['comments'] = '';
+	   		$data['likes'] = '';
+	   		$data['mentions'] = '';
+		   
+		   }
+		   //fetch all skills
+		   //$data['allSkills'] 		= get_all_skill_sets();
+		   	
+		   //fetch all interests
+		   //$data['allInterests'] 	= get_all_interest_sets();	
+	
+	}
+	return $data;
+}
+
+//Function to fetch a user's preferences
+//May 24,2016
+//Arshad
+function updateMyPreferences()
+{
+	
+	$data = array();
+	
+	$language = validate_input($_POST['selectedLanguage']['id']);
+	$timezone = validate_input($_POST['selectedTimezone']['id']);
+	$follow = ($_POST['followers'] == 'true'  ? 1 : 0);
+	$comment = ($_POST['comments'] == 'true'  ? 1 : 0 );
+	$likes = ($_POST['likes'] == 'true'  ? 1 : 0);
+	$mention = ($_POST['mentions'] == 'true' ? 1 : 0);
+	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	$userid = $my_session_id;
+	
+	if($userid)
+	{
+		$qry = "UPDATE entrp_user_notification_preferences SET language='".$language."', timezone='".$timezone."', follow='".$follow."', mention='".$mention."', comment='".$comment."', likes='".$likes."'  
+				  WHERE clientid=".$my_session_id." ";
+		if(setData($qry)){
+			$data = getMyPreferences();
+			$data['success'] 		= true;
+			$data['msg'] 			= 'Prefences has been updated.'; 
+		}else{
+			$data['success'] 		= false;
+			$data['msg'] 			= 'Something went wrong. Could not update preferences. Please try again'; 
+		} 
+	}else{
+		
+	}
+	return $data;
+}
+
 
 ?>
