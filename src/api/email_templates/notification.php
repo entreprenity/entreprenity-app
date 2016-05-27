@@ -67,7 +67,7 @@
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
 														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@<?php echo (isset($followed_username) && $followed_username != '' ? $followed_username : ''); ?></strong>!</h1>
-														<p><a href="#">@<?php echo (isset($following_username) && $following_username != '' ? $following_username : ''); ?></a> started following you!</p>
+														<p><a href="<?php echo (isset($following_username) && $following_username != '' ? base_url().'members/'.$following_username : ''); ?>">@<?php echo (isset($following_username) && $following_username != '' ? $following_username : ''); ?></a> started following you!</p>
 													</td>
 												</tr>
 											</table>
@@ -80,8 +80,8 @@
 											<table cellpadding="0" cellspacing="0">
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
-														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@will</strong>!</h1>
-														<p><a href="#">@jason</a> liked your <a href="#">post</a></p>
+														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@<?php echo (isset($postAuthorUsername) && $postAuthorUsername != '' ? $postAuthorUsername : ''); ?></strong>!</h1>
+														<p><a href="#">@<?php echo (isset($likerUsername) && $likerUsername != '' ? $likerUsername : ''); ?></a> liked your <a href="#">post</a></p>
 													</td>
 												</tr>
 											</table>
@@ -94,8 +94,8 @@
 											<table cellpadding="0" cellspacing="0">
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
-														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@will</strong>!</h1>
-														<p><a href="#">@jason</a> commented on your <a href="#">post</a></p>
+														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@<?php echo (isset($postAuthorUsername) && $postAuthorUsername != '' ? $postAuthorUsername : ''); ?></strong>!</h1>
+														<p><a href="#">@<?php echo (isset($commentAuthorUsername) && $commentAuthorUsername != '' ? $commentAuthorUsername : ''); ?></a> commented on your <a href="#">post</a></p>
 													</td>
 												</tr>
 											</table>
