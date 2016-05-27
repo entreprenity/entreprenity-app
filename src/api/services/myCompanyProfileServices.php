@@ -91,7 +91,7 @@ function getMyCompanyProfileDetails()
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
-	$company_default_cover		='assets/img/companies/company-default.jpg';
+	$company_default_cover		='';
 	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
 	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,

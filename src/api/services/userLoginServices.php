@@ -75,7 +75,7 @@ function forgot_password()
 		$fullname=$data['firstname'].' '.$data['lastname'];
 		$password=generateRandomAlphaNumeric($length=8);
 		ob_start();
-		include('email_templates/password_reset.php');
+		include('email_templates/forgot_password.php');
 		$order_placement_template = ob_get_contents();			
 		ob_end_clean();			
 

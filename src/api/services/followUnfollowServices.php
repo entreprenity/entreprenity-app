@@ -270,6 +270,10 @@ function unfollowCompany()
 
 //Function to follow a user from member directory
 //May 11,2016
+
+//Edited on May 25, 2016
+//Arshad
+//To add email notification functionality
 function followUser()
 {
 	$data = array();	   
@@ -288,14 +292,19 @@ function followUser()
 	if(setData($qry))
 	{
 		$data['followed']=true;
-		$notification_array = array(
-										'type' => 'follow',
-										'following_user_id' => $my_session_id,
-										'following_username' => $userName,
-										'followed_email' => $followed_user_details['email'],
-										'followed_username' => $followed_user_details['username']
-									);
-		$data['mail_send'] = send_notification_mail($notification_array);
+		
+		$data['myPreferences'] = getMyPreferences();
+		
+		if($myPreferences['followers'] == 'true'){
+			$notification_array = array(
+											'type' => 'follow',
+											'following_user_id' => $my_session_id,
+											'following_username' => $userName,
+											'followed_email' => $followed_user_details['email'],
+											'followed_username' => $followed_user_details['username']
+										);
+			$data['mail_send'] = send_notification_mail($notification_array);
+		}
 	}
 	else
 	{
