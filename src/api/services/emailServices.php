@@ -5,18 +5,23 @@ function send_notification_mail($notification_array){
 	
 	$type = $notification_array['type'];
 	
+	//To send follow notification email	
 	if($type === 'follow'){
 		
 		$following_username = $notification_array['following_username'];
 		$followed_username = $notification_array['followed_username'];
 		$to_email = $followed_email = $notification_array['followed_email'];
 	
-	}elseif($type === 'comment'){
+	}
+	//To send comment notification email	
+	elseif($type === 'comment'){
 		
 		$commentAuthorUsername = $notification_array['commentAuthorUsername'];
 		$postAuthorUsername = $notification_array['postAuthorUsername'];
 		$to_email = $postAuthorEmail = $notification_array['postAuthorEmail'];
-	}elseif($type === 'like'){
+	}
+	//To send like notification email	
+	elseif($type === 'like'){
 		
 		$likerUsername = $notification_array['likerUsername'];
 		$postAuthorUsername = $notification_array['postAuthorUsername'];
