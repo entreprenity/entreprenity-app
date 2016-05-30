@@ -9314,118 +9314,139 @@ a {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
   margin: 15px 0px;
+  background-color: #ffffff;
 }
-/* line 26, ../sass/partials/_profile.scss */
+/* line 27, ../sass/partials/_profile.scss */
 .profile .profile-top .coverPhoto {
   height: 150px;
   background-color: lightseagreen;
 }
-/* line 30, ../sass/partials/_profile.scss */
+/* line 31, ../sass/partials/_profile.scss */
 .profile .profile-top .info {
   position: relative;
   padding: 15px;
   padding-left: 200px;
 }
-/* line 35, ../sass/partials/_profile.scss */
+/* line 36, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto {
   position: absolute;
   top: -50%;
   left: 40px;
 }
-/* line 39, ../sass/partials/_profile.scss */
+/* line 40, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto div {
   position: relative;
 }
-/* line 41, ../sass/partials/_profile.scss */
+/* line 42, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto div img {
   position: absolute;
   left: 0px;
   width: 150px;
   z-index: 99;
 }
-/* line 47, ../sass/partials/_profile.scss */
+/* line 48, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto div .uploadPhoto {
   position: absolute;
   z-index: 100;
   opacity: .8;
 }
-/* line 51, ../sass/partials/_profile.scss */
+/* line 52, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto div .uploadPhoto:hover {
   opacity: 1;
 }
-/* line 54, ../sass/partials/_profile.scss */
+/* line 55, ../sass/partials/_profile.scss */
 .profile .profile-top .info .profilePhoto div .uploadPhoto img {
   width: 50px;
 }
-/* line 61, ../sass/partials/_profile.scss */
+/* line 62, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a {
   text-decoration: none;
   color: #202020;
 }
-/* line 65, ../sass/partials/_profile.scss */
+/* line 66, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a span {
   color: #f29b13;
   font-size: 20px;
   font-weight: bold;
   padding-right: 4px;
 }
-/* line 72, ../sass/partials/_profile.scss */
+/* line 73, ../sass/partials/_profile.scss */
 .profile .profile-top .info .followers a:last-child {
   margin-left: 20px;
 }
-/* line 75, ../sass/partials/_profile.scss */
+/* line 76, ../sass/partials/_profile.scss */
 .profile .profile-top .info .btn-group {
   position: absolute;
   bottom: 15px;
   right: 40px;
 }
-/* line 80, ../sass/partials/_profile.scss */
+/* line 81, ../sass/partials/_profile.scss */
 .profile .profile-top .info .btn-group .btn {
   margin: 0px 10px;
 }
-/* line 85, ../sass/partials/_profile.scss */
+/* line 86, ../sass/partials/_profile.scss */
 .profile .profile-sidenav {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  background-color: #ffffff;
 }
-/* line 88, ../sass/partials/_profile.scss */
+/* line 90, ../sass/partials/_profile.scss */
 .profile .profile-sidenav h4 {
   padding: 10px 15px;
   border-top: 1px solid #E5E5E5;
   border-bottom: 1px solid #E5E5E5;
 }
-/* line 93, ../sass/partials/_profile.scss */
+/* line 95, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .about-me li {
   display: inline-block;
   padding-right: 5px;
 }
-/* line 98, ../sass/partials/_profile.scss */
+/* line 100, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .content {
   padding: 15px;
 }
-/* line 100, ../sass/partials/_profile.scss */
+/* line 102, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .content span {
   width: 20px;
   padding-right: 5px;
 }
-/* line 103, ../sass/partials/_profile.scss */
+/* line 105, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .team li {
   display: inline-block;
   margin-right: 5px;
 }
-/* line 106, ../sass/partials/_profile.scss */
+/* line 108, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .team li img {
   max-width: 80px;
 }
-/* line 109, ../sass/partials/_profile.scss */
+/* line 111, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .skills li {
   display: inline-block;
   padding-right: 5px;
 }
-/* line 113, ../sass/partials/_profile.scss */
+/* line 115, ../sass/partials/_profile.scss */
 .profile .profile-sidenav .interests li {
   display: inline-block;
   padding-right: 5px;
+}
+/* line 119, ../sass/partials/_profile.scss */
+.profile .profile-sidenav .tags-item {
+  margin: 2px;
+  padding: 0 5px;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  height: 26px;
+  line-height: 25px;
+  color: #fff;
+  /*background: #428bca;*/
+  background: #f29b13;
+  border: 1px solid #df8d0c;
+  border-radius: 4px;
+}
+/* line 135, ../sass/partials/_profile.scss */
+.profile #newsFeed a {
+  color: inherit;
 }
 
 /* line 4, ../sass/partials/_eventsPage.scss */

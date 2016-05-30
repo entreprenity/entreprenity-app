@@ -76,6 +76,7 @@
 								console.log('run getMemberPosts service');
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
+									console.log(vm.posts);
 								});
 								/*
 								newsFeedService.getMemberPosts(username).success(function(data) {
@@ -91,6 +92,7 @@
 								});	
 								*/
 						};
+						
 				};
 				
 				vm.getPosts();
