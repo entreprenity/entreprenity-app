@@ -1,8 +1,72 @@
+@import "compass/css3/border-radius";
+
+$tabs-underline-color: $secondary-color;
+$tabs-bg-color: #ffffff;
+$tabs-text-color: $primary-text-color;
+
 #home {
 	margin-top: 10px;
 	a {
 		text-decoration: none;
 		color:inherit;
+	}
+	
+	/*-- Tabs --*/
+	.nav-tabs {
+		position: relative;
+		width: 100%;
+		height: 36px;
+		border: 0px;
+		margin: 10px 0;
+		@media (max-width: 1000px) {
+			padding: 0px 20px;
+		}
+
+		li {
+			text-align: center;
+			height: 100%;
+			width: 33%;
+			&.active, {
+				border-bottom: 5px solid $tabs-underline-color;
+			}
+			a {
+				background-color: $tabs-bg-color;
+				border: 0px;
+				color: $tabs-text-color;
+				display: block;
+				width: 100%;
+				height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				transition: color .28s ease;
+				&:hover {
+					border: 0px;
+					/*background-color: darken($tabs-bg-color, 10%);*/
+					color: lighten($tabs-text-color, 20%);
+				}
+				&:focus, &:active {
+					border: 0px;
+				}
+				will-change: left, right;
+				@include border-radius(0px 0px, 0px 0px);
+
+				i {
+					display: none;
+
+					@media (max-width: 600px) {
+						display: block;
+					}
+				}
+
+				span {
+					display: block;
+
+					@media (max-width: 600px) {
+						display: none;
+					}
+				}
+			}
+		}
 	}
 
 	.card {

@@ -45,9 +45,18 @@
 					</div>
 				</div>
 				<div>
-					<div ng-controller="NewsFeedController as vm">
-						<news-feed postsType="1"></news-feed>
-					</div>
+				
+					<uib-tabset active="active">
+						<uib-tab index="0" heading="My Posts">
+							<news-feed poststype="2" username="vm.userName"></news-feed>
+						</uib-tab>
+						<uib-tab index="1" heading="Followed Posts">
+							<news-feed poststype="3" username="vm.userName"></news-feed>
+						</uib-tab>
+						<uib-tab index="2" heading="All Posts">
+							<news-feed poststype="1" username="vm.userName"></news-feed>
+						</uib-tab>
+					</uib-tabset>
 				</div>
 			</div>
 			<div class="col-md-4">
