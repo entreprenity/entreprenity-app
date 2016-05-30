@@ -65,8 +65,8 @@
 											<table cellpadding="0" cellspacing="0">
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
-														<h1 style="font-size: 18px;">Hi <strong class="name" style="color: #f29b13;">@will</strong>!</h1>
-														<p>We got a request to reset you Entreprenity password.</p>
+														<h1 style="font-size: 18px;">Hi <?php echo (isset($fullname))?$fullname:'';?><!--<strong class="name" style="color: #f29b13;">@will</strong>!--></h1>
+														<p>We got a request to reset your Entreprenity password.</p>
 													</td>
 												</tr>
 											</table>
@@ -74,7 +74,8 @@
 									</tr>
 									<tr>
 										<td align="center" style="height: 50px; padding-left: 10px;  padding-right: 10px;">
-											<span style="color: #f29b13; padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #f29b13; border-width: 2px; border-style: solid; cursor: pointer;"><a href="#" style="color: inherit; text-decoration: none;">Reset your password</a></span>
+											Your new password is: <?php echo (isset($password))?$password:'';?>
+											<!--<span style="color: #f29b13; padding-top: 10px; padding-bottom: 10px; padding-left: 10px; padding-right: 10px; border-color: #f29b13; border-width: 2px; border-style: solid; cursor: pointer;"><a href="#" style="color: inherit; text-decoration: none;">Reset your password</a></span>-->
 										</td>
 									</tr>
 									<tr>
@@ -82,7 +83,7 @@
 											<table cellpadding="0" cellspacing="0">
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
-														<p>If you ignore this message, your password won't be changed.</p>
+														<!--<p>If you ignore this message, your password won't be changed.</p>-->
 														<p>If you didn't request a password reset, <a>let us know</a>.</p>
 													</td>
 												</tr>	

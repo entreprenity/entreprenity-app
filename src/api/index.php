@@ -573,7 +573,17 @@ function services_included()
 }
 
 
-
+//Arshad
+//For base_url()
+function base_url(){
+	$base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+	$base_url .= "://".$_SERVER['HTTP_HOST'].'/'; //will give : http(s)://somewebsite.com/
+	
+	/*----- Want to change something then change it here ------*/
+	$base_url .= 'projects/entreprenity/#/'; 
+	
+	return $base_url;
+}
 
 //Function to fetch a company's follower list
 //May 13,2016

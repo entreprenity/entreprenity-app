@@ -278,12 +278,6 @@ function getMyPreferences()
 	   		$data['mentions'] = '';
 		   
 		   }
-		   //fetch all skills
-		   //$data['allSkills'] 		= get_all_skill_sets();
-		   	
-		   //fetch all interests
-		   //$data['allInterests'] 	= get_all_interest_sets();	
-	
 	}
 	return $data;
 }
