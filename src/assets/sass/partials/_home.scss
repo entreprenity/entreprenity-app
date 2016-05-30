@@ -1,3 +1,9 @@
+@import "compass/css3/border-radius";
+
+$tabs-underline-color: $secondary-color;
+$tabs-bg-color: #ffffff;
+$tabs-text-color: $primary-text-color;
+
 #home {
 	margin-top: 10px;
 	a {
@@ -5,11 +11,70 @@
 		color:inherit;
 	}
 	
+	/*-- Tabs --*/
+	.nav-tabs {
+		position: relative;
+		width: 100%;
+		height: 36px;
+		border: 0px;
+		margin: 10px 0;
+		@media (max-width: 1000px) {
+			padding: 0px 20px;
+		}
+
+		li {
+			text-align: center;
+			height: 100%;
+			width: 33%;
+			&.active, {
+				border-bottom: 5px solid $tabs-underline-color;
+			}
+			a {
+				background-color: $tabs-bg-color;
+				border: 0px;
+				color: $tabs-text-color;
+				display: block;
+				width: 100%;
+				height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				transition: color .28s ease;
+				&:hover {
+					border: 0px;
+					/*background-color: darken($tabs-bg-color, 10%);*/
+					color: lighten($tabs-text-color, 20%);
+				}
+				&:focus, &:active {
+					border: 0px;
+				}
+				will-change: left, right;
+				@include border-radius(0px 0px, 0px 0px);
+
+				i {
+					display: none;
+
+					@media (max-width: 600px) {
+						display: block;
+					}
+				}
+
+				span {
+					display: block;
+
+					@media (max-width: 600px) {
+						display: none;
+					}
+				}
+			}
+		}
+	}
 
 	.card {
 		text-align: center;
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin-bottom: 15px;
+		background-color: #ffffff;
 	}
 	
 	#myProfile {
@@ -18,12 +83,18 @@
 			max-width: 100px;
 			width: 100%; 
 			height: auto;
+			margin-bottom: 5px;
+		}
+		p {color: $secondary-text-color;}
+		
+		a:hover {
+			opacity: 0.8;
 		}
 	}
 	
 	#sideNav {
 		li {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 			&:last-child {border-bottom: 1px solid transparent;}
 			
@@ -39,24 +110,28 @@
 		margin-left: 5px;
 		margin-bottom: 15px;
 		div {
+			background-color: #ffffff;	
 			width: 33%;
 			height: 150px;
 			float:left;
 			display: inline-block;
-			border: 1px solid $divider-color;
+			border: 1px solid $primary-divider-color;
 			padding: 15px;
-			margin-right
 			
 			img{
-				width: 40px;
-				height: 40px;
+				width: 70px;
+				height: 70px;
+			}
+			
+			.btn {
+				padding: 6px 10px;	
 			}
 		}
 	}
 	
 	#newMembers {
 		h4 {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 		}
 		ul{
@@ -72,7 +147,7 @@
 	
 	#latestEvents {
 		h4 {
-			border-bottom: 1px solid $divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 		}
 		ul{

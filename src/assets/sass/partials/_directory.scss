@@ -78,7 +78,8 @@ $tabs-text-color: $primary-text-color;
 	.directory-members {
 		li {
 			text-align: center;
-			border: 1px solid $divider-color;
+			border: 1px solid;
+			border-color: $primary-border-color;
 			margin: 2px;
 			width: 32%;
 			float: left;
@@ -106,7 +107,8 @@ $tabs-text-color: $primary-text-color;
 	.directory-companies {
 		li {
 			text-align: center;
-			border: 1px solid $divider-color;
+			border: 1px solid;
+			border-color: $primary-border-color;
 			margin: 2px;
 			width: 49%;
 			float: left;
@@ -134,7 +136,8 @@ $tabs-text-color: $primary-text-color;
 	.directory-events {
 		li {
 			text-align: center;
-			border: 1px solid $divider-color;
+			border: 1px solid;
+			border-color: $primary-border-color;
 			margin: 2px;
 			width: 49%;
 			float: left;
@@ -164,7 +167,8 @@ $tabs-text-color: $primary-text-color;
 	
 	/*-- Side Filters and Search --*/
 	.side-filters {
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		padding: 15px;
 	}
 }

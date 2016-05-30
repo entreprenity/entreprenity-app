@@ -7,13 +7,13 @@
 						<img class="img-circle" ng-src="{{vm.avatar}}">
 						<h3>{{vm.firstName + vm.lastName}}</h3>
 						<p>{{vm.position}}</p>
-						<p>{{vm.myOffice}}</p>
+						<p>at {{vm.myOffice}}</p>
 					</a>
 				</div>
 				<div id="sideNav" class="card">
 					<ul>
 						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">MY COMPANY</a></li>
-						<li><a ng-href="#/directory">MEMBERS DIRECTORY</a></li>
+						<li><a ng-href="#/directory">DIRECTORY</a></li>
 						<li><a ng-href="#/directory">EVENTS</a></li>
 					</ul>
 				</div>
@@ -45,9 +45,18 @@
 					</div>
 				</div>
 				<div>
-					<div ng-controller="NewsFeedController as vm">
-						<news-feed></news-feed>
-					</div>
+				
+					<uib-tabset active="active">
+						<uib-tab index="0" heading="My Posts">
+							<news-feed poststype="2" username="vm.userName"></news-feed>
+						</uib-tab>
+						<uib-tab index="1" heading="Followed Posts">
+							<news-feed poststype="3" username="vm.userName"></news-feed>
+						</uib-tab>
+						<uib-tab index="2" heading="All Posts">
+							<news-feed poststype="1" username="vm.userName"></news-feed>
+						</uib-tab>
+					</uib-tabset>
 				</div>
 			</div>
 			<div class="col-md-4">

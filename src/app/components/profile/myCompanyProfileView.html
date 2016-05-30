@@ -1,7 +1,5 @@
 <div style="max-width: 1000px; margin: 0 auto;">
 	<div class="profile memberProfile">
-
-
 		<form name="myProfileForm" novalidate>
 			<div class="row">
 				<div class="col-md-12 ">
@@ -94,9 +92,7 @@
 			</div>
 
 			<div class="col-md-8">
-				<div ng-controller="NewsFeedController as vm">
-					<news-feed></news-feed>
-				</div>	
+				<news-feed poststype="2" username="vm.memberUserName"></news-feed>
 			</div>
 		</div>
 	</div>

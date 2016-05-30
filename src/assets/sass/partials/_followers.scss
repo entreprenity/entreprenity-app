@@ -6,7 +6,8 @@
 	
 	li {
 		text-align: center;
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin: 2px;
 		width: 32%;
 		float: left;
