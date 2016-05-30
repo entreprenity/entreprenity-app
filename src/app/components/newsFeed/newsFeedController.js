@@ -6,9 +6,11 @@
 			var baseUrl = 'api/';
 			
 			return {
-				getPosts: function() {
+				getMemberPosts: function(username) {
 					return $http.get(baseUrl+ 'getMyNewsFeed');
-				},			
+				},	
+				//getAllPosts,
+				//getFollowedMembersPosts,
 				postCurrentPost: function(newPost) 
 				{
 					var dataPost = {newPost: newPost};														
@@ -173,14 +175,11 @@
 				});	
 				vm.getPosts();
 			};
-			
-
-
 		})
 		.directive('newsFeed', function() {
 			return {
 				restrict: 'E',
-				scope: false,
+				scope: {postsType: '@'},
 				templateUrl: 'app/components/newsFeed/newsFeed.html'
 			};
 		});		

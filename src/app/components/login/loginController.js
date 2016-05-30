@@ -19,6 +19,7 @@
 				// check to make sure the form is completely valid
 				if (isValid) 
 				{
+						alert('isValid');
 				    $http({
 				      method: 'post',
 				      url: baseUrl+'login',
@@ -29,16 +30,17 @@
 				    {
 				    	if(data.success)
 				    	{
-				    		//alert(data.msg);
+				    		alert(data.msg);
 				    		localStorage.removeItem('entrp_token');
 				    		localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
 				    		$location.path('/home');
 				    	}
 				    	else
 				    	{
-				    		//alert('invalid 1');
+				    		alert('invalid 1');
+								alert(data.msg);
 				    		localStorage.removeItem('entrp_token');
-							vm.errorMessage = data.msg;
+								vm.errorMessage = data.msg;
 				    	}
 		    		}).
 		    		error(function(data, status, headers, config) 
