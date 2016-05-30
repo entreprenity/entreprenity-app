@@ -56,15 +56,16 @@
 			var controller = function($routeParams, newsFeedService) {
 				var vm = this;
 				var userObject;
-				console.log(vm.poststype);
-				console.log(vm.username);
+				console.log('postsType is ' + vm.poststype);
+				console.log('username is ' + vm.username);
 
 				vm.getPosts = function () {
 						var postsType = vm.poststype;
-						alert(postsType);
+						var username = vm.username;
+
 						switch(postsType){
 							case '1':
-								alert('getAllPosts');
+								console.log('run getAllPosts service');
 								/*
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
@@ -72,8 +73,8 @@
 								*/
 							break
 							case '2':
-								alert('getMemberPosts');
-								newsFeedService.getMemberPosts(vm.username).success(function(data) {
+								console.log('run getMemberPosts service');
+								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 								/*
@@ -83,7 +84,7 @@
 								*/
 							break
 							case '3':
-							alert('getFollowedPosts');
+								console.log('run getFollowedPosts service');
 								/*
 								newsFeedService.getFollowedPosts(username).success(function(data) {
 									vm.posts = data;
@@ -136,9 +137,7 @@
 						vm.currentPost.post_author.avatar 		= data.avatar;
 						vm.currentPost.post_author.userName 	= data.userName;
 						vm.currentPost.post_author.companyUserName 	= data.companyUserName;
-
 						userObject = data;
-						console.log(vm.currentPost.post_author);
 					});	
 				};
 				vm.basicInfo();
