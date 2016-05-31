@@ -84,15 +84,19 @@ $tabs-text-color: $primary-text-color;
 			width: 32%;
 			float: left;
 			padding: 10px 15px;
+			background-color: #ffffff;	
 			
 			img{
 				width: 100px;
 				height: auto;
 			}
 			
+			p {color: $secondary-text-color;}
+			
 			.button-group {
 				position: relative;
 				height: 40px;
+				margin: 0px 20px;
 				.btn {
 					position: absolute;
 					left: 0;
@@ -113,15 +117,19 @@ $tabs-text-color: $primary-text-color;
 			width: 49%;
 			float: left;
 			padding: 10px 15px;
+			background-color: #ffffff;	
 			
 			img{
 				width: 100px;
 				height: auto;
 			}
 			
+			p {color: $secondary-text-color;}
+			
 			.button-group {
 				position: relative;
 				height: 40px;
+				margin: 0px 20px;
 				.btn {
 					position: absolute;
 					left: 0;
@@ -141,19 +149,25 @@ $tabs-text-color: $primary-text-color;
 			margin: 2px;
 			width: 49%;
 			float: left;
+			background-color: #ffffff;	
 			
 			img {
 				width: 100%;
 				height: auto;
 			}
 			
+			
 			a {
-				padding: 10px 15px;
+				width: 100%;
 			}
+			
+			p {color: $secondary-text-color;}
 			
 			.button-group {
 				position: relative;
 				height: 40px;
+				margin: 0px 20px;
+				margin-bottom: 15px;
 				.btn {
 					position: absolute;
 					left: 0;
@@ -170,5 +184,6 @@ $tabs-text-color: $primary-text-color;
 		border: 1px solid;
 		border-color: $primary-border-color;
 		padding: 15px;
+		background-color: #ffffff;
 	}
 }

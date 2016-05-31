@@ -6,6 +6,7 @@
 		border: 1px solid;
 		border-color: $primary-border-color;
 		margin: 15px 0px;
+		background-color: #ffffff;
 		.coverPhoto {
 			height: 150px;
 			background-color: palevioletred;
@@ -13,6 +14,8 @@
 		.info {
 			position: relative;
 			padding: 15px;
+			
+			p {color: $secondary-text-color;}
 
 			.followers {
 				a {
@@ -41,6 +44,7 @@
 	.profile-sidenav {
 		border: 1px solid;
 		border-color: $primary-border-color;
+		background-color: #ffffff;
 		h4 {
 			padding: 10px 15px;
 			border-top: 1px solid $primary-divider-color;
@@ -56,6 +60,7 @@
 		border: 1px solid;
 		border-color: $primary-border-color;
 		margin-bottom: 10px;
+		background-color: #ffffff;
 		h4 {
 			padding: 10px 15px;
 			border-top: 1px solid $primary-divider-color;

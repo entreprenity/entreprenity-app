@@ -26,7 +26,8 @@
 		'entreprenityApp.newsFeed',
 		'entreprenityApp.AuthenticationService',
 		'entreprenityApp.logout',
-		'entreprenityApp.settings'
+		'entreprenityApp.settings',
+		'entreprenityApp.notifications'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -109,6 +110,11 @@
 		.when('/settings', {
 			controller: 'SettingsPageController',
 			templateUrl: 'app/components/settings/settingsPage.html',
+			controllerAs: 'vm'
+		})
+		.when('/notifications', {
+			controller: 'NotificationsController',
+			templateUrl: 'app/components/notifications/notificationsView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
