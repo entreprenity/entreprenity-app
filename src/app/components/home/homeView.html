@@ -84,6 +84,18 @@
 						</li>
 					</ul>
 				</div>
+				<div id="newMembers" class="card">
+					<h4>TOP CONTRIBUTORS</h4>
+					<ul>
+						<li ng-repeat="topContributor in vm.topContributors">
+							<a ng-href="#/members/{{topContributor.userName}}">
+								<img class="img-circle" ng-src="{{topContributor.avatar}}">
+								<p>{{topContributor.firstName + ' ' + topContributor.lastName}}</p>
+								<p>{{topContributor.position + ' / ' + topContributor.company}}</p>
+						 	</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,0 +1,677 @@
+<?php
+
+
+//Function to get most timeline commenter s (not comments received, but comments posted)
+//June 02,2016
+function getMostTimeLineCommenters()
+{
+	//SELECT count(post_comments_id) AS comment_count,commented_by FROM entrp_user_timeline_post_comments WHERE status=1 GROUP BY commented_by ORDER BY commented_by ASC
+	$data= array();
+	$i=0;
+	$qry="SELECT count(post_comments_id) AS comment_count,commented_by 
+			FROM entrp_user_timeline_post_comments 
+			WHERE status=1 
+			GROUP BY commented_by 
+			ORDER BY commented_by ASC
+			LIMIT 5";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[$i]['user']		=	$row['commented_by'];
+			$data[$i]['points']	=	$row['comment_count'];
+			$i++;			
+		}	
+		
+		foreach ($data as $key => $row) 
+		{
+    		// replace 0 with the field's index/key
+    		$commentSort[$key]  = $row['points'];
+		}
+
+		array_multisort($commentSort, SORT_DESC, $data);		
+	}
+	return $data;
+}
+
+//Function to get most timeline like receivers
+//June 02,2016
+function getMostTimelineLikeReceivers()
+{
+	//SELECT EUTPL.post_id,EUTPL.liked_user_ids,EUT.posted_by FROM entrp_user_timeline_post_likes AS EUTPL LEFT JOIN entrp_user_timeline AS EUT ON EUT.post_id=EUTPL.post_id WHERE EUT.status=1
+	
+	$data= array();
+	$i=0;
+	$qry="SELECT EUTPL.post_id,EUTPL.liked_user_ids,EUT.posted_by 
+			FROM entrp_user_timeline_post_likes AS EUTPL 
+			LEFT JOIN entrp_user_timeline AS EUT ON EUT.post_id=EUTPL.post_id 
+			WHERE EUT.status=1
+			LIMIT 5";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			/*
+			$data[$i]['post_id']				=	$row['post_id'];
+			$data[$i]['posted_by']			=	$row['posted_by'];
+			$like_array							=	json_decode($row['liked_user_ids']);
+			$data[$i]['total_likes']		=	sizeof($like_array);
+			*/
+			
+			$data['post_id'][$i]				=	$row['post_id'];
+			$data['user'][$i]			=	$row['posted_by'];
+			$like_array							=	json_decode($row['liked_user_ids'],TRUE);
+			$data['total_likes'][$i]		=	sizeof($like_array);			
+			
+			$i++;			
+		}	
+		
+		$users = array_unique($data['user']);
+		$listUserLike = [];
+		
+		foreach($users as $user) 
+		{
+		    $indexes = array_keys($data['user'], $user);
+		    $likes = array_intersect_key($data['total_likes'], array_flip($indexes));
+		    $listUserLike[] = ['user' => $user, 'points' => array_sum($likes)];
+		}
+		
+		foreach ($listUserLike as $key => $row) 
+		{
+    		// replace 0 with the field's index/key
+    		$likeSort[$key]  = $row['points'];
+		}
+
+		array_multisort($likeSort, SORT_DESC, $listUserLike);	
+
+
+	}
+	return $listUserLike;
+}
+
+
+//Function to fetch most timeline post publishers
+//June 02,2016 (incomplete)
+function getMostTimelinePostPublishers()
+{
+	//SELECT COUNT(post_id) AS total_posts, posted_by FROM entrp_user_timeline WHERE status=1  GROUP BY posted_by ORDER BY posted_by ASC
+	
+	$data= array();
+	$i=0;
+	$qry="SELECT COUNT(post_id) AS total_posts, posted_by 
+			FROM entrp_user_timeline 
+			WHERE status=1  
+			GROUP BY posted_by 
+			ORDER BY posted_by ASC
+			LIMIT 5";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[$i]['user']		=	$row['posted_by'];
+			$data[$i]['points']	=	$row['total_posts'];
+			$i++;			
+		}	
+		
+		foreach ($data as $key => $row) 
+		{
+    		// replace 0 with the field's index/key
+    		$postSort[$key]  = $row['points'];
+		}
+
+		array_multisort($postSort, SORT_DESC, $data);		
+	}
+	return $data;
+}
+
+
+//Function to fetch top contributors from the community
+//June 02,2016
+function getTopContributors()
+{
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
+	
+	$posts_array= array();
+	$likes_array= array();
+	$comment_array= array();
+	$data4= array();
+	$data= array();
+	$uniqueUsers = array();
+	
+	$points = 0;
+	$votes = 0;
+	$users = 0;
+	
+	//timeline post
+	$posts_array= 	getMostTimelinePostPublishers();
+
+	//timeline likes
+	$likes_array= 	getMostTimelineLikeReceivers();	
+	
+	//timeline comments (not comments received, but comments posted)
+	$comment_array= 	getMostTimeLineCommenters();
+	
+	//timeline comment likes
+	//$data4=	getMostTimelineCommentLikeReceivers();
+	
+	/*
+	//THIS METHOD IS ALSO CORRECT BUT ARRAY COLUMN FUNCTION
+	//IS NOT AVAILABLE IN EVERY PHP VERSION
+	$comments = array_column($comment_array, 'points', 'user');
+	$likes = array_column($like_array, 'points', 'user');
+	$posts = array_column($post_array, 'points', 'user');
+	
+	$list = [$comments, $likes, $posts];
+	$result = [];
+	
+	array_walk_recursive($list, function($v, $k) use(&$result)
+	{
+	    if (key_exists($k, $result))
+	    {
+	        $result[$k]['points'] += $v;
+	    } 
+	    else 
+	    {
+	        $result[$k] = ['user' => $k, 'points' => $v];
+	    }
+	});
+	
+	$result = array_values($result);
+	
+	foreach ($result as $key => $row) 
+	{
+    	// replace 0 with the field's index/key
+    	$pointsSort[$key]  = $row['points'];
+	}
+
+	array_multisort($pointsSort, SORT_DESC, $result);
+		
+	//print_r($result);
+	
+	for($i=0; $i< sizeof($result) ;$i++)
+	{
+		$topContributorsUserIDArray[] =  $result[$i]['user'];
+	}
+	
+	$topContributorsUserIDString = implode(",", array_slice($topContributorsUserIDArray, 0, 3));
+	*/
+	
+	//Comments
+	if (!empty($comment_array)) 
+	{
+	    foreach ($comment_array as $item) 
+	    {
+	        if (!in_array($item['user'], $uniqueUsers)) 
+	        {
+	            array_push($uniqueUsers, $item['user']);
+	            $result[$item['user']] = 0;
+	        }
+	        $votes ++;
+	        $result[$item['user']] += $item['points'];
+	    }
+	}
+	
+	// Likes
+	if (!empty($like_array)) 
+	{
+	    foreach ($like_array as $item) 
+	    {
+	
+	        if (!in_array($item['user'], $uniqueUsers)) 
+	        {
+	            array_push($uniqueUsers, $item['user']);
+	            $result[$item['user']] = 0;
+	        }
+	        $votes ++;
+	        $result[$item['user']] += $item['points'];
+	    }
+	}
+	
+	// Posts
+	if (!empty($post_array)) 
+	{
+	    foreach ($post_array as $item) 
+	    {
+	
+	        if (!in_array($item['user'], $uniqueUsers)) 
+	        {
+	            array_push($uniqueUsers, $item['user']);
+	            $result[$item['user']] = 0;
+	        }
+	        $votes ++;
+	        $result[$item['user']] += $item['points'];
+	    }
+	}
+	
+	$i=0;
+	foreach ($result as $idUser=>$points) 
+	{
+		$resultArray[$i]['user']=  $idUser;
+		$resultArray[$i]['points']=  $points;
+		$i++;
+	}
+	
+	foreach ($resultArray as $key => $row) 
+	{
+	    $pointsSort[$key]  = $row['points'];
+	}
+	
+	array_multisort($pointsSort, SORT_DESC, $resultArray);
+		
+	for($i=0; $i< sizeof($resultArray) ;$i++)
+	{
+		$topContributorsUserIDArray[] =  $resultArray[$i]['user'];
+	}
+		
+	$topContributorsUserIDString = implode(",", array_slice($topContributorsUserIDArray, 0, 7));
+	
+	//echo'<pre>';
+	//print_r($resultArray);
+	//echo'</pre>';
+	
+	//echo $topContributorsUserIDString;
+		
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM entrp_login AS CI 
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CI.clientid IN (".$topContributorsUserIDString.") 
+	      LIMIT 3 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+      	
+      	if(!empty($row['username']))
+      	{
+      		$data[$i]['userName']		=	$row['username'];
+      	}
+      	else
+      	{
+      		$data[$i]['userName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	$member_default_avatar;
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+			
+			if(!empty($row['company_name']))
+      	{
+      		$data[$i]['company']	=	$row['company_name'];
+      	}
+      	else
+      	{
+      		$data[$i]['company']	=	"";
+      	}
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	/*
+   	$data[$i]['id']				=	"";
+		$data[$i]['firstName']		=	"";
+		$data[$i]['lastName']		=	"";
+		$data[$i]['avatar']			=	"";
+		$data[$i]['position']		=	"";
+		$data[$i]['company']			=	"";
+		$data[$i]['city']				=	"";
+		$data[$i]['userName']		=	"";
+		*/
+		
+		//$data['message']="No Top Contributors.";
+   }
+	return $data;		
+
+}
+
+
+
+//Function to fetch latest events
+//May 09, 2016
+function getLatestEvents()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$today=date('Y-m-d H:i:s');
+	$to_day = new DateTime($today);
+	$to_day->modify('+14 day');
+	$tothatday= $to_day->format('Y-m-d H:i:s');
+	
+	$data= array();	
+	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
+			FROM entrp_events 
+			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
+	      WHERE entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
+	      ORDER BY entrp_events.event_date_time 
+	      LIMIT 3
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['id']))
+      	{
+      		$data[$i]['id']					=	$row['id'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']					=	"";
+      	}
+      	
+      	if(!empty($row['eventName']))
+      	{
+      		$data[$i]['name']					=	$row['eventName'];
+      	}
+      	else
+      	{
+      		$data[$i]['name']					=	"";
+      	}
+			
+			if(!empty($row['poster']))
+      	{
+      		$data[$i]['poster']				=	$row['poster'];
+      	}
+      	else
+      	{
+      		$data[$i]['poster']				=	$event_default_poster;
+      	}
+      	
+      	if(!empty($row['event_date']))
+      	{
+      		$data[$i]['date']					=	$row['event_date'];
+      	}
+      	else
+      	{
+      		$data[$i]['date']					=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	/*
+   	$data[$i]['id']		=	"";
+		$data[$i]['name']		=	"";
+		$data[$i]['date']		=	"";
+		$data[$i]['poster']	=	"";
+		*/	
+		//$data['message']="No Upcoming Members.";	
+   }
+	return $data;	
+	
+	
+	
+	 /*
+	 vm.latestEvents = data = {
+			"profilePhoto": "member01.jpg",
+			"coverPhoto": "memberCover01.jpg",
+			"companyName": "vOffice",
+			"location": "Fort Legend Tower",
+			"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
+			"email": "info@voffice.com",
+			"website": "voffice.com.ph",
+			"mobile": "6322242000",
+			"category": [
+				"Virtual Office",
+				"Serviced Office",
+				"Coworking Space"
+			],
+			"allCategory" : []
+		};
+		*/
+
+}
+
+
+
+//Function to fetch newly registered members list
+//April 21,2016
+function getNewMembers()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+  
+	$today=date('Y-m-d H:i:s');
+	$to_day = new DateTime($today);
+	$to_day->modify('-14 day');
+	$fromday= $to_day->format('Y-m-d H:i:s');
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	
+	
+	$data= array();	
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM entrp_login AS CI 
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."' 
+	      AND CI.clientid!=".$my_session_id."
+	      ORDER BY CI.clientid DESC 
+	      LIMIT 3 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+      	
+      	if(!empty($row['username']))
+      	{
+      		$data[$i]['userName']		=	$row['username'];
+      	}
+      	else
+      	{
+      		$data[$i]['userName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	$member_default_avatar;
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+			
+			if(!empty($row['company_name']))
+      	{
+      		$data[$i]['company']	=	$row['company_name'];
+      	}
+      	else
+      	{
+      		$data[$i]['company']	=	"";
+      	}
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+   else
+   {
+   	/*
+   	$data[$i]['id']				=	"";
+		$data[$i]['firstName']		=	"";
+		$data[$i]['lastName']		=	"";
+		$data[$i]['avatar']			=	"";
+		$data[$i]['position']		=	"";
+		$data[$i]['company']			=	"";
+		$data[$i]['city']				=	"";
+		$data[$i]['userName']		=	"";
+		*/
+		//$data['message']="No New Members.";
+   }
+	return $data;
+
+
+	/*
+	vm.newMembers = data = [
+		{
+			"id": "1",
+			"avatar": "member01.jpg",
+			"firstName": "Kurt",
+			"lastName": "Megan",
+			"position": "Office Assistant",
+			"company": "Pet Studio.com",
+		},
+		{
+			"id": "2",
+			"avatar": "member02.jpg",
+			"firstName": "Will",
+			"lastName": "Ferrel",
+			"position": "CEO",
+			"company": "Clever Sheep",
+		},
+		{
+			"id": "3",
+			"avatar": "member03.jpg",
+			"firstName": "Will",
+			"lastName": "Ferrel",
+			"position": "CEO",
+			"company": "Clever Sheep",
+		},
+	];
+	*/
+}
+
+?>

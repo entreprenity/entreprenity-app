@@ -138,9 +138,20 @@ function getMyProfileDetails()
 }
 
 */	
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
    
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];

@@ -99,7 +99,7 @@ $tabs-text-color: $primary-text-color;
 			&:last-child {border-bottom: 1px solid transparent;}
 			
 			a:hover {
-				color: $secondary-color;
+				color: $secondary-color !important;
 			}
 		}
 	}

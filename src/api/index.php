@@ -1,34 +1,8 @@
 <?php
 
 require_once ('Query.php'); 
-
+require_once 'constants.php';
 require 'flight/Flight.php';
-
-//Route to prfile settings
-// May 24,2016
-//Arshad
-Flight::route('/getMyPreferences', function()
-{
-   enable_cors();	
-   services_included();	
-	$returnarray=getMyPreferences();
-	header('Content-type:application/json;charset=utf-8');
-	echo json_encode($returnarray);
-
-});
-
-//Route to update preferences
-// May 25,2016
-//Arshad
-Flight::route('/updateMyPreferences', function()
-{
-   enable_cors();	
-   services_included();	
-	$returnarray=updateMyPreferences();
-	header('Content-type:application/json;charset=utf-8');
-	echo json_encode($returnarray);
-
-});
 
 
 //Route to events directory
@@ -445,7 +419,7 @@ Flight::route('/getMemberFollowers', function()
 Flight::route('/getCompanyFollowers', function()
 {
    enable_cors();
-   services_included();	
+   services_included();
 	$returnarray=getCompanyFollowers();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
@@ -493,7 +467,7 @@ Flight::route('/postCurrentPost', function()
 
 //Route to get my Feed to timeline
 //May 18,2016
-Flight::route('/getMyNewsFeed', function()
+Flight::route('/getMembersPost', function()
 {
    enable_cors();
    services_included();	
@@ -502,6 +476,28 @@ Flight::route('/getMyNewsFeed', function()
 	echo json_encode($returnarray);
 });
 
+
+//Route to get timeline feeds of users I follow
+//May 30,2016
+Flight::route('/getFollowedMembersPosts', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getFollowedMembersPosts();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//Route to get timeline feeds of all users
+//May 30,2016
+Flight::route('/getAllPosts', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getAllPosts();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
 
 //Route to post a new comment for a timeline post
 //May 20,2016
@@ -539,6 +535,47 @@ Flight::route('/unlikeThisPost', function()
 });
 
 
+//Route to prfile settings
+// May 24,2016
+//Arshad
+Flight::route('/getMyPreferences', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getMyPreferences();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to update preferences
+// May 25,2016
+//Arshad
+Flight::route('/updateMyPreferences', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=updateMyPreferences();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//Route to fetch top contributors
+//June 02,2016
+Flight::route('/getTopContributors', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getTopContributors();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -560,6 +597,7 @@ Flight::start();
 
 function services_included()
 {
+	
 	require_once 'services/myCompanyProfileServices.php'; 
 	require_once 'services/readOnlyServices.php'; 
 	require_once 'services/userLoginServices.php'; 
@@ -570,6 +608,8 @@ function services_included()
 	require_once 'services/followUnfollowServices.php'; 
 	require_once 'services/timelineServices.php'; 
 	require_once 'services/emailServices.php'; 
+	require_once 'services/sectionServices.php'; 
+	require_once 'services/notificationServices.php'; 
 }
 
 
@@ -585,10 +625,26 @@ function base_url(){
 	return $base_url;
 }
 
+
+
+
+
 //Function to fetch a company's follower list
 //May 13,2016
 function getCompanyFollowers()
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+		
 	$companyUserName=validate_input($_GET['company']);
 	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
 	
@@ -596,9 +652,6 @@ function getCompanyFollowers()
 	$my_session_id	= $session_values['id'];
 	
 	$data= array();	
-
-	$company_default_cover		='assets/img/companies/company-default.jpg';
-	$company_default_avatar		='assets/img/companies/company-default.jpg';
 	
 	$data=fetch_company_information_from_companyid($companyid);
 	
@@ -645,8 +698,18 @@ function getCompanyFollowers()
 //May 13,2016
 function getMemberFollowers()
 {
-	$member_default_cover		='assets/img/members/member-default.jpg';
-   $member_default_avatar		='assets/img/members/member-default.jpg';
+	
+   //the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 
 	$userName=validate_input($_GET['user']);
 	$clientid=getUserIdfromUserName($userName);	
@@ -673,8 +736,18 @@ function getMemberFollowers()
 //May 13, 2016
 function getMemberFollowing()
 {
-	$member_default_cover		='assets/img/members/member-default.jpg';
-   $member_default_avatar		='assets/img/members/member-default.jpg';
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 
 	$userName=validate_input($_GET['user']);
 	$clientid=getUserIdfromUserName($userName);	
@@ -738,9 +811,19 @@ function getMemberFollowing()
 //May 09,2016
 function getBasicUserInformation()
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data= array();
-	$member_default_cover			='';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
   
 	//$userid=validate_input($_GET['id']);
 	$session_values=get_user_session();
@@ -853,103 +936,6 @@ function getBasicUserInformation()
 
 
 
-//Function to fetch latest events
-//May 09, 2016
-function getLatestEvents()
-{
-	$event_default_poster		='assets/img/events/events-default.jpg';
-	
-	$today=date('Y-m-d H:i:s');
-	$to_day = new DateTime($today);
-	$to_day->modify('+14 day');
-	$tothatday= $to_day->format('Y-m-d H:i:s');
-	
-	$data= array();	
-	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
-			FROM entrp_events 
-			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
-	      WHERE entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
-	      ORDER BY entrp_events.event_date_time 
-	      LIMIT 3
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	if(!empty($row['id']))
-      	{
-      		$data[$i]['id']					=	$row['id'];
-      	}
-      	else
-      	{
-      		$data[$i]['id']					=	"";
-      	}
-      	
-      	if(!empty($row['eventName']))
-      	{
-      		$data[$i]['name']					=	$row['eventName'];
-      	}
-      	else
-      	{
-      		$data[$i]['name']					=	"";
-      	}
-			
-			if(!empty($row['poster']))
-      	{
-      		$data[$i]['poster']				=	$row['poster'];
-      	}
-      	else
-      	{
-      		$data[$i]['poster']				=	$event_default_poster;
-      	}
-      	
-      	if(!empty($row['event_date']))
-      	{
-      		$data[$i]['date']					=	$row['event_date'];
-      	}
-      	else
-      	{
-      		$data[$i]['date']					=	"";
-      	}
-      	
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']		=	"";
-		$data[$i]['name']		=	"";
-		$data[$i]['date']		=	"";
-		$data[$i]['poster']	=	"";
-   }
-	return $data;	
-	
-	
-	
-	 /*
-	 vm.latestEvents = data = {
-			"profilePhoto": "member01.jpg",
-			"coverPhoto": "memberCover01.jpg",
-			"companyName": "vOffice",
-			"location": "Fort Legend Tower",
-			"companyDesc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
-			"email": "info@voffice.com",
-			"website": "voffice.com.ph",
-			"mobile": "6322242000",
-			"category": [
-				"Virtual Office",
-				"Serviced Office",
-				"Coworking Space"
-			],
-			"allCategory" : []
-		};
-		*/
-
-}
-
 //Function to fetch a company profile
 //April 25,2016
 function viewCompanyProfile()
@@ -987,7 +973,18 @@ function viewCompanyProfile()
 		  ]
 		}
 		*/
-
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$companyUserName=validate_input($_GET['id']);
 	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
 	
@@ -1000,9 +997,6 @@ function viewCompanyProfile()
 	{
 		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
 	}
-
-	$company_default_cover		='assets/img/companies/company-default.jpg';
-	$company_default_avatar		='assets/img/companies/company-default.jpg';
 	
 	$qry="SELECT  CP.*,LI.location_desc AS city 
 			FROM company_profiles AS CP
@@ -1099,11 +1093,21 @@ function viewEventDetail()
 	  ]
 	  }
 	  */
-
+	  
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$eventid=validate_input($_GET['id']);
-	$data= array();	
-	$events_default='assets/img/events/events-default.jpg';
-	$member_default='assets/img/members/member-default.jpg';
+	$data= array();		
 	
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
@@ -1185,9 +1189,17 @@ function viewUserProfile()
 		$data['followed']= doIFollowThisUser($my_session_id,$clientid);
 	}
 	
-
-  $member_default_cover			='';
-  $member_default_avatar		='assets/img/members/member-default.jpg';
+  //the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 
   $qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
@@ -1264,162 +1276,6 @@ function viewUserProfile()
 		$data['msg'] = 'Please check your credentials once again';
    }
    return $data;
-}
-
-
-
-
-
-//Function to fetch newly registered members list
-//April 21,2016
-function getNewMembers()
-{
-	$member_default_cover			='assets/img/members/member-default.jpg';
-  	$member_default_avatar			='assets/img/members/member-default.jpg';
-  
-	$today=date('Y-m-d H:i:s');
-	$to_day = new DateTime($today);
-	$to_day->modify('-14 day');
-	$fromday= $to_day->format('Y-m-d H:i:s');
-	
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];	
-	
-	
-	$data= array();	
-	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
-	      FROM entrp_login AS CI 
-	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
-	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
-	      WHERE CP.join_date >= '".$fromday."' AND CP.join_date <= '".$today."' 
-	      AND CI.clientid!=".$my_session_id."
-	      ORDER BY CI.clientid DESC 
-	      LIMIT 3 
-	      ";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	if(!empty($row['clientid']))
-      	{
-      		$data[$i]['id']				=	$row['clientid'];
-      	}
-      	else
-      	{
-      		$data[$i]['id']				=	"";
-      	}
-      	
-      	if(!empty($row['firstname']))
-      	{
-      		$data[$i]['firstName']		=	$row['firstname'];
-      	}
-      	else
-      	{
-      		$data[$i]['firstName']		=	"";
-      	}
-			
-			if(!empty($row['lastname']))
-      	{
-      		$data[$i]['lastName']		=	$row['lastname'];
-      	}
-      	else
-      	{
-      		$data[$i]['lastName']		=	"";
-      	}
-      	
-      	if(!empty($row['username']))
-      	{
-      		$data[$i]['userName']		=	$row['username'];
-      	}
-      	else
-      	{
-      		$data[$i]['userName']		=	"";
-      	}
-			
-			if(!empty($row['avatar']))
-      	{
-      		$data[$i]['avatar']			=	$row['avatar'];
-      	}
-      	else
-      	{
-      		$data[$i]['avatar']			=	$member_default_avatar;
-      	}
-			
-			if(!empty($row['designation']))
-      	{
-      		$data[$i]['position']		=	$row['designation'];
-      	}
-      	else
-      	{
-      		$data[$i]['position']		=	"";
-      	}
-			
-			if(!empty($row['company_name']))
-      	{
-      		$data[$i]['company']	=	$row['company_name'];
-      	}
-      	else
-      	{
-      		$data[$i]['company']	=	"";
-      	}
-			
-			if(!empty($row['city']))
-      	{
-      		$data[$i]['city']				=	$row['city'];
-      	}
-      	else
-      	{
-      		$data[$i]['city']				=	"";
-      	}
-      	
-			$i++;
-      }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['firstName']		=	"";
-		$data[$i]['lastName']		=	"";
-		$data[$i]['avatar']			=	"";
-		$data[$i]['position']		=	"";
-		$data[$i]['company']			=	"";
-		$data[$i]['city']				=	"";
-		$data[$i]['userName']		=	"";
-   }
-	return $data;
-
-
-	/*
-	vm.newMembers = data = [
-		{
-			"id": "1",
-			"avatar": "member01.jpg",
-			"firstName": "Kurt",
-			"lastName": "Megan",
-			"position": "Office Assistant",
-			"company": "Pet Studio.com",
-		},
-		{
-			"id": "2",
-			"avatar": "member02.jpg",
-			"firstName": "Will",
-			"lastName": "Ferrel",
-			"position": "CEO",
-			"company": "Clever Sheep",
-		},
-		{
-			"id": "3",
-			"avatar": "member03.jpg",
-			"firstName": "Will",
-			"lastName": "Ferrel",
-			"position": "CEO",
-			"company": "Clever Sheep",
-		},
-	];
-	*/
 }
 
 

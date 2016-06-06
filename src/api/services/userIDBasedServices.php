@@ -3,12 +3,46 @@
 /* Functions and services based on userid begins */
 
 
+//Function to get users (list of user id) I follow
+//May 31,2016
+function getAllUserIDsIFollow($myUserId)
+{
+	//SELECT follows FROM `entrp_user_follows` where clientid=1
+	$data= array();
+	
+	$qry="SELECT follows FROM entrp_user_follows WHERE clientid=".$myUserId."";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]			=	$row['follows'];
+		}		
+	}
+	return $data;
+
+
+}
+
 //Function to get a company's follower list
 //May 13,.2016
 function getThisCompanyfollowerObjects($companyid)
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$i=0;
-	$member_default='assets/img/members/member-default.jpg';
+	
 	$data= array();
 	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
 			FROM entrp_company_follows AS ECF
@@ -62,8 +96,19 @@ function getThisCompanyfollowerObjects($companyid)
 //May 13,2016
 function getThisUserfollowerObjects($clientid)
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$i=0;
-	$member_default='assets/img/members/member-default.jpg';
 	$data= array();
 	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
 			FROM entrp_user_follows AS EUF
@@ -133,10 +178,20 @@ function getThisUserfollowingObjects($clientid)
 		}
 	]
 	*/
-
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$i=0;
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
 	$data= array();
 	$qry="SELECT CP.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,CP.cover_pic 
 			FROM entrp_user_follows AS EUF
@@ -210,8 +265,19 @@ function goingForThisEventorNot($eventid)
 //May 12,2016
 function getEventAttendeesFromEventID($eventid)
 {
+		//the defaults starts
+		global $myStaticVars;
+		extract($myStaticVars);  // make static vars local
+		$member_default_avatar 		= $member_default_avatar;
+		$member_default_cover		= $member_default_cover;
+		$member_default				= $member_default;
+		$company_default_cover		= $company_default_cover;
+		$company_default_avatar		= $company_default_avatar;
+		$events_default				= $events_default;
+		$event_default_poster		= $event_default_poster;
+		//the defaults ends
+	
    	$i=0;
-   	$member_default='assets/img/members/member-default.jpg';
    	$data2= array();
    	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,client_profile.avatar,client_profile.designation,client_profile.city,client_profile.cover_pic 
 				 FROM entrp_event_attendees 
@@ -260,10 +326,19 @@ function getEventAttendeesFromEventID($eventid)
 //May 12,2016
 function getEventFromEventID($eventid)
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 
 	$data= array();	
-	$events_default='assets/img/events/events-default.jpg';
-	$member_default='assets/img/members/member-default.jpg';
 	
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
@@ -328,9 +403,19 @@ function getEventFromEventID($eventid)
 //May 12,2016
 function fetch_company_information_from_companyid($companyid)
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data= array();
-	$company_default_cover		='assets/img/companies/company-default.jpg';
-	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
 	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
@@ -507,9 +592,19 @@ function fetch_company_categories($company_id)
 //May 03,2016
 function fetch_company_information_from_userid($clientid)
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data= array();
-	$company_default_cover		='assets/img/companies/company-default.jpg';
-	$company_default_avatar		='assets/img/companies/company-default.jpg';
 
 	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
@@ -680,8 +775,18 @@ function user_followers($clientid)
 //Sibling to viewUserProfile
 function fetch_user_information_from_id($clientid)
 {
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar		='assets/img/members/member-default.jpg';
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data= array();		
 	/*
 	SELECT client_info.clientid,client_info.firstname,client_info.lastname,client_info.city,client_info.country,client_info.email,

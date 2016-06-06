@@ -17,13 +17,15 @@
 				},
 				getBasicUserInfo:function() {
 					return $http.get(baseUrl + 'getBasicUserInformation');
+				},
+				getTopContributors:function() {
+					return $http.get(baseUrl + 'getTopContributors');
 				}
 			};
 		})
 		
 		.controller('HomeController', function($scope, $routeParams, myHomeService, AuthService) {
 				var vm = this;		
-
 			    //If user is not logged in
 				var token;
 				if (localStorage['entrp_token'])
@@ -47,6 +49,7 @@
 				//To get user session value
 				myHomeService.getUserSessInfo().success(function(data) {
 					vm.id 			= data.id;
+					//vm.userName 	= data.username;
 				});
 				
 				//To get new members
@@ -59,6 +62,11 @@
 					vm.latestEvents = data;
 				});
 				
+				//to get top contributors
+				myHomeService.getTopContributors().success(function(data) {
+					vm.topContributors = data;
+				});
+				
 				//to get basic user information
 				myHomeService.getBasicUserInfo().success(function(data) {
 					vm.firstName 	= data.firstName;
@@ -68,8 +76,10 @@
 					vm.avatar 		= data.avatar;
 					vm.userName 	= data.userName;
 					vm.companyUserName 	= data.companyUserName;
+					
+					$scope.userName= data.userName;
 				});
-
+				
 		});
 	
 		

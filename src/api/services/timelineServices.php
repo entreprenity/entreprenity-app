@@ -1,5 +1,280 @@
 <?php
 
+//Route to get timeline feeds of users I follow
+//May 30,2016
+function getFollowedMembersPosts()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+   
+   $username=validate_input($_GET['user']);
+	$myUserId	= getUserIdfromUserName($username);
+	
+	$usersIFollow= getAllUserIDsIFollow($myUserId);
+	$usersIFollowString = implode(",", $usersIFollow);
+		
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;	
+
+	
+	/*
+	var posts = [
+		{
+			"post_id": "123456",
+			"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
+			"image": "jpg01.jpg",
+			"created_at": "2015-05-12T14:54:31.566Z",
+			"post_author": {
+				"id": "1",
+				"firstName": "Jordan",
+				"lastName": "Rains",
+				"avatar": "member-default.jpg",
+				"position": "Office Assistant",
+				"companyName": "Pet Studio.com",
+				"userName": "jordan"
+			},
+			"isLiked": false,
+			"likes_count": 1,
+			"likers": [
+				{
+					"id": "3",
+					"firstName": "John",
+					"lastName": "Smith",
+					"avatar": "member-default.jpg",
+					"position": "Creative Director",
+					"companyName": "Wendy Skelton",
+					"userName": "John"
+				}
+			],
+			"comments_count": 1,
+			"commenters": [
+				{
+					"id": "3",
+					"firstName": "John",
+					"lastName": "Smith",
+					"avatar": "member-default.jpg",
+					"position": "Creative Director",
+					"companyName": "Wendy Skelton",
+					"userName": "John"
+				}
+			],
+			"comments": [
+				{
+					"content": "congrats Albert!",
+					"created_at": "2015-05-12T15:06:51.457Z",
+					"likes_count": 0,
+					"likers": [],
+					"comment_author": {
+						"id": "3",
+						"firstName": "John",
+						"lastName": "Smith",
+						"avatar": "member-default.jpg",
+						"position": "Creative Director",
+						"companyName": "Wendy Skelton",
+						"userName": "John"
+					}
+				}
+			]
+		}
+	];
+
+	vm.posts = posts;
+	*/
+
+}
+
+
+//Route to get timeline feeds of all users
+//May 30,2016
+function getAllPosts()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+		
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			WHERE EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;	
+
+	
+	/*
+	var posts = [
+		{
+			"post_id": "123456",
+			"content": "Hi, we recently noticed an increased sign up for our eVoiceMail.net service particularly from users from US. Anyone know why and is interested to help us to market our service to even more peeps?",
+			"image": "jpg01.jpg",
+			"created_at": "2015-05-12T14:54:31.566Z",
+			"post_author": {
+				"id": "1",
+				"firstName": "Jordan",
+				"lastName": "Rains",
+				"avatar": "member-default.jpg",
+				"position": "Office Assistant",
+				"companyName": "Pet Studio.com",
+				"userName": "jordan"
+			},
+			"isLiked": false,
+			"likes_count": 1,
+			"likers": [
+				{
+					"id": "3",
+					"firstName": "John",
+					"lastName": "Smith",
+					"avatar": "member-default.jpg",
+					"position": "Creative Director",
+					"companyName": "Wendy Skelton",
+					"userName": "John"
+				}
+			],
+			"comments_count": 1,
+			"commenters": [
+				{
+					"id": "3",
+					"firstName": "John",
+					"lastName": "Smith",
+					"avatar": "member-default.jpg",
+					"position": "Creative Director",
+					"companyName": "Wendy Skelton",
+					"userName": "John"
+				}
+			],
+			"comments": [
+				{
+					"content": "congrats Albert!",
+					"created_at": "2015-05-12T15:06:51.457Z",
+					"likes_count": 0,
+					"likers": [],
+					"comment_author": {
+						"id": "3",
+						"firstName": "John",
+						"lastName": "Smith",
+						"avatar": "member-default.jpg",
+						"position": "Creative Director",
+						"companyName": "Wendy Skelton",
+						"userName": "John"
+					}
+				}
+			]
+		}
+	];
+
+	vm.posts = posts;
+	*/
+
+}
+
 
 //To fetch user data from entrp_login using postId
 //Arshad
@@ -263,11 +538,21 @@ function postThisComment()
 function usersWhoLikedThisComment($commentId)
 {
 
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+
 	$data0= array();
 	$data= array();
 	$likes_count= 0;
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
 	
 	$qry0="SELECT liked_user_ids FROM entrp_user_timeline_comments_likes  
 			WHERE comment_id=".$commentId." ";
@@ -433,11 +718,21 @@ function usersWhoCommentedThisPost($post_id)
 			}
 		]
 		*/
+
+   //the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 		
 	$data0= array();
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
 	
 	//SELECT commented_by FROM entrp_user_timeline_post_comments WHERE post_id=1
 	$qry0="SELECT DISTINCT commented_by FROM entrp_user_timeline_post_comments  
@@ -551,10 +846,20 @@ function userCommentsForThisPost($post_id)
 	//LEFT JOIN entrp_login AS EP ON EP.clientid=ETC.commented_by 
 	//LEFT JOIN client_profile AS CP ON EP.clientid=CP.clientid
 	//WHERE ETC.post_id=1 AND ETC.status=1
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
 	
 	$i=0;
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
    
 	$data= array();
 	$qry="SELECT ETC.post_comments_id,ETC.post_id,ETC.comment,ETC.commented_by,ETC.commented_at,
@@ -668,11 +973,22 @@ function usersWhoLikesThisPost($post_id)
 {
 	//SELECT liked_user_ids FROM entrp_user_timeline_post_likes WHERE post_id=1
 	
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data0= array();
 	$data= array();
 	$likes_count= 0;
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
 	
 	$qry0="SELECT liked_user_ids FROM entrp_user_timeline_post_likes  
 			WHERE post_id=".$post_id." ";
@@ -803,18 +1119,28 @@ function howManyLikesThisPostReceived($post_id)
 //May 18,2016
 function getMyNewsFeed()
 {
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
 	$data= array();
-	$member_default_cover		='assets/img/members/member-default.jpg';
-   $member_default_avatar		='assets/img/members/member-default.jpg';
    
-	$session_values=get_user_session();
-	$my_session_id	= $session_values['id'];
+   $username=validate_input($_GET['user']);
+	$my_id	= getUserIdfromUserName($username);
 		
 	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
-			WHERE EUT.posted_by=".$my_session_id." AND EUT.status=1 
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);

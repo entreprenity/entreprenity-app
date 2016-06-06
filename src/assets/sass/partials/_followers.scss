@@ -12,11 +12,14 @@
 		width: 32%;
 		float: left;
 		padding: 10px 15px;
+		background-color: #ffffff;
 
 		img{
 			width: 100px;
 			height: auto;
-		}
+		}	
+		
+		p {color: $secondary-text-color;}
 
 		.button-group {
 			position: relative;

@@ -8836,6 +8836,14 @@ a {
   text-transform: uppercase;
 }
 
+/* line 28, ../sass/partials/_global.scss */
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* line 6, ../sass/partials/_button.scss */
 .btn {
   padding: 6px 32px;
@@ -9048,7 +9056,7 @@ a {
 }
 /* line 101, ../sass/partials/_home.scss */
 #home #sideNav li a:hover {
-  color: #f29b13;
+  color: #f29b13 !important;
 }
 /* line 107, ../sass/partials/_home.scss */
 #home #topNav {
@@ -9204,25 +9212,31 @@ a {
   width: 32%;
   float: left;
   padding: 10px 15px;
+  background-color: #ffffff;
 }
-/* line 88, ../sass/partials/_directory.scss */
+/* line 89, ../sass/partials/_directory.scss */
 .directory .directory-members li img {
   width: 100px;
   height: auto;
 }
-/* line 93, ../sass/partials/_directory.scss */
+/* line 94, ../sass/partials/_directory.scss */
+.directory .directory-members li p {
+  color: #717171;
+}
+/* line 96, ../sass/partials/_directory.scss */
 .directory .directory-members li .button-group {
   position: relative;
   height: 40px;
+  margin: 0px 20px;
 }
-/* line 96, ../sass/partials/_directory.scss */
+/* line 100, ../sass/partials/_directory.scss */
 .directory .directory-members li .button-group .btn {
   position: absolute;
   left: 0;
   right: 0;
   margin: auto;
 }
-/* line 108, ../sass/partials/_directory.scss */
+/* line 112, ../sass/partials/_directory.scss */
 .directory .directory-companies li {
   text-align: center;
   border: 1px solid;
@@ -9231,25 +9245,31 @@ a {
   width: 49%;
   float: left;
   padding: 10px 15px;
+  background-color: #ffffff;
 }
-/* line 117, ../sass/partials/_directory.scss */
+/* line 122, ../sass/partials/_directory.scss */
 .directory .directory-companies li img {
   width: 100px;
   height: auto;
 }
-/* line 122, ../sass/partials/_directory.scss */
+/* line 127, ../sass/partials/_directory.scss */
+.directory .directory-companies li p {
+  color: #717171;
+}
+/* line 129, ../sass/partials/_directory.scss */
 .directory .directory-companies li .button-group {
   position: relative;
   height: 40px;
+  margin: 0px 20px;
 }
-/* line 125, ../sass/partials/_directory.scss */
+/* line 133, ../sass/partials/_directory.scss */
 .directory .directory-companies li .button-group .btn {
   position: absolute;
   left: 0;
   right: 0;
   margin: auto;
 }
-/* line 137, ../sass/partials/_directory.scss */
+/* line 145, ../sass/partials/_directory.scss */
 .directory .directory-events li {
   text-align: center;
   border: 1px solid;
@@ -9257,33 +9277,41 @@ a {
   margin: 2px;
   width: 49%;
   float: left;
+  background-color: #ffffff;
 }
-/* line 145, ../sass/partials/_directory.scss */
+/* line 154, ../sass/partials/_directory.scss */
 .directory .directory-events li img {
   width: 100%;
   height: auto;
 }
-/* line 150, ../sass/partials/_directory.scss */
+/* line 160, ../sass/partials/_directory.scss */
 .directory .directory-events li a {
-  padding: 10px 15px;
+  width: 100%;
 }
-/* line 154, ../sass/partials/_directory.scss */
+/* line 164, ../sass/partials/_directory.scss */
+.directory .directory-events li p {
+  color: #717171;
+}
+/* line 166, ../sass/partials/_directory.scss */
 .directory .directory-events li .button-group {
   position: relative;
   height: 40px;
+  margin: 0px 20px;
+  margin-bottom: 15px;
 }
-/* line 157, ../sass/partials/_directory.scss */
+/* line 171, ../sass/partials/_directory.scss */
 .directory .directory-events li .button-group .btn {
   position: absolute;
   left: 0;
   right: 0;
   margin: auto;
 }
-/* line 169, ../sass/partials/_directory.scss */
+/* line 183, ../sass/partials/_directory.scss */
 .directory .side-filters {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
   padding: 15px;
+  background-color: #ffffff;
 }
 
 /* line 2, ../sass/partials/_profile.scss */
@@ -9455,88 +9483,95 @@ a {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
   margin: 15px 0px;
+  background-color: #ffffff;
 }
-/* line 9, ../sass/partials/_eventsPage.scss */
+/* line 10, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .coverPhoto {
   height: 150px;
   background-color: palevioletred;
 }
-/* line 13, ../sass/partials/_eventsPage.scss */
+/* line 14, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info {
   position: relative;
   padding: 15px;
 }
 /* line 18, ../sass/partials/_eventsPage.scss */
+.eventsPage .profile-top .info p {
+  color: #717171;
+}
+/* line 21, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info .followers a {
   text-decoration: none;
   color: #202020;
 }
-/* line 22, ../sass/partials/_eventsPage.scss */
+/* line 25, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info .followers a span {
   color: #f29b13;
   font-size: 20px;
   font-weight: bold;
   padding-right: 4px;
 }
-/* line 29, ../sass/partials/_eventsPage.scss */
+/* line 32, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info .followers a:last-child {
   margin-left: 20px;
 }
-/* line 31, ../sass/partials/_eventsPage.scss */
+/* line 34, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info .btn-group {
   position: absolute;
   bottom: 15px;
   right: 40px;
 }
-/* line 36, ../sass/partials/_eventsPage.scss */
+/* line 39, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-top .info .btn-group .btn {
   margin: 0px 10px;
 }
-/* line 41, ../sass/partials/_eventsPage.scss */
+/* line 44, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-sidenav {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  background-color: #ffffff;
 }
-/* line 44, ../sass/partials/_eventsPage.scss */
+/* line 48, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-sidenav h4 {
   padding: 10px 15px;
   border-top: 1px solid #E5E5E5;
   border-bottom: 1px solid #E5E5E5;
 }
-/* line 49, ../sass/partials/_eventsPage.scss */
+/* line 53, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-sidenav .content {
   padding: 15px;
 }
-/* line 51, ../sass/partials/_eventsPage.scss */
+/* line 55, ../sass/partials/_eventsPage.scss */
 .eventsPage .profile-sidenav .content span {
   padding-right: 5px;
 }
-/* line 55, ../sass/partials/_eventsPage.scss */
+/* line 59, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees {
   border: 1px solid;
   border-color: #e5e6e9 #dfe0e4 #d0d1d5;
   margin-bottom: 10px;
+  background-color: #ffffff;
 }
-/* line 59, ../sass/partials/_eventsPage.scss */
+/* line 64, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees h4 {
   padding: 10px 15px;
   border-top: 1px solid #E5E5E5;
   border-bottom: 1px solid #E5E5E5;
 }
-/* line 64, ../sass/partials/_eventsPage.scss */
+/* line 69, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees .content {
   padding: 15px;
 }
-/* line 66, ../sass/partials/_eventsPage.scss */
+/* line 71, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees .content span {
   padding-right: 5px;
 }
-/* line 67, ../sass/partials/_eventsPage.scss */
+/* line 72, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees .content li {
   display: inline-block;
   margin-right: 5px;
 }
-/* line 70, ../sass/partials/_eventsPage.scss */
+/* line 75, ../sass/partials/_eventsPage.scss */
 .eventsPage .attendees .content li img {
   max-width: 80px;
 }
@@ -9560,18 +9595,23 @@ a {
   width: 32%;
   float: left;
   padding: 10px 15px;
+  background-color: #ffffff;
 }
-/* line 16, ../sass/partials/_followers.scss */
+/* line 17, ../sass/partials/_followers.scss */
 .followers li img {
   width: 100px;
   height: auto;
 }
-/* line 21, ../sass/partials/_followers.scss */
+/* line 22, ../sass/partials/_followers.scss */
+.followers li p {
+  color: #717171;
+}
+/* line 24, ../sass/partials/_followers.scss */
 .followers li .button-group {
   position: relative;
   height: 40px;
 }
-/* line 24, ../sass/partials/_followers.scss */
+/* line 27, ../sass/partials/_followers.scss */
 .followers li .button-group .btn {
   position: absolute;
   left: 0;
@@ -9716,4 +9756,92 @@ a {
 #newsFeed .post .comment .post-likers:hover {
   background-color: #ffffff;
   border: 1px solid #E1E2E3;
+}
+
+/* line 2, ../sass/partials/_notifications.scss */
+#notifications .title {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 20px;
+}
+/* line 7, ../sass/partials/_notifications.scss */
+#notifications .title h4 {
+  padding: 10px 15px;
+}
+/* line 12, ../sass/partials/_notifications.scss */
+#notifications ul {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 10px;
+}
+/* line 17, ../sass/partials/_notifications.scss */
+#notifications ul li {
+  border-bottom: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 10px 15px;
+}
+
+/* line 1, ../sass/partials/_settings.scss */
+#settings {
+  margin: 0 auto;
+  max-width: 600px;
+}
+/* line 5, ../sass/partials/_settings.scss */
+#settings .title {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 20px;
+}
+/* line 10, ../sass/partials/_settings.scss */
+#settings .title h4 {
+  padding: 10px 10px;
+}
+/* line 15, ../sass/partials/_settings.scss */
+#settings ul {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 10px;
+}
+/* line 20, ../sass/partials/_settings.scss */
+#settings ul li {
+  border-bottom: 1px solid #E5E5E5;
+  margin: 0;
+  padding: 10px 10px;
+}
+/* line 25, ../sass/partials/_settings.scss */
+#settings ul li .setting-header {
+  position: relative;
+  border-bottom: 1px solid #E5E5E5;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+/* line 31, ../sass/partials/_settings.scss */
+#settings ul li .setting-header .desc {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+/* line 38, ../sass/partials/_settings.scss */
+#settings ul li .setting-content {
+  height: 40px;
+}
+/* line 40, ../sass/partials/_settings.scss */
+#settings ul li .setting-content .info {
+  float: left;
+  padding: 10px 15px;
+}
+/* line 44, ../sass/partials/_settings.scss */
+#settings ul li .setting-content .selection {
+  float: right;
+  padding: 10px 15px;
+}
+/* line 51, ../sass/partials/_settings.scss */
+#settings ul .button-container {
+  padding: 15px;
+  text-align: center;
 }
