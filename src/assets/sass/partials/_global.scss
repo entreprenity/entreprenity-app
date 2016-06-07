@@ -1,25 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:300);
-@font-face {
-	font-family: 'HelveticaNeueThin';
-	src: url('../fonts/HelveticaNeueLTStd-Th.eot'); /* IE9 Compat Modes */
-	src: url('../fonts/HelveticaNeueLTStd-Th.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-		url('../fonts/HelveticaNeueLTStd-Th.woff2') format('woff2'), /* Super Modern Browsers */
-		url('../fonts/HelveticaNeueLTStd-Th.woff') format('woff'), /* Pretty Modern Browsers */
-		url('../fonts/HelveticaNeueLTStd-Th.ttf')  format('truetype'), /* Safari, Android, iOS */
-		url('../fonts/HelveticaNeueLTStd-Th.svg#svgFontName') format('svg'); /* Legacy iOS */
-}
 
 body {
 	padding-top: 70px;
-	font-family: 'Roboto Condensed', sans-serif;
+	font-family: 'Lato', sans-serif;
 	margin-bottom: 20px;
+	background-color: $primary-bg-color;
 }
 
 p, h1, h2, h3, h4, h5 {
 	margin: 0;
 }
 
-/*-- reset a, ul and li --*/
+/*-- reset a, ul and li --*/	
 ul {
 	list-style: none;
 }
@@ -32,3 +24,10 @@ a {
 }
 
 .uppercase {text-transform: uppercase;}
+
+.truncate {
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

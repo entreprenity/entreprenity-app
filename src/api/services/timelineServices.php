@@ -1,6 +1,31 @@
 <?php
 
 
+//To fetch user data from entrp_login using postId
+//Arshad
+function fetchLoginInfoUsingPostid($postId){
+	$data = array();
+	
+	$qry = "
+				SELECT L.* 
+				FROM entrp_login as L 
+				JOIN entrp_user_timeline as UT ON UT.posted_by = L.clientid
+				WHERE UT.post_id = ".$postId."
+			 ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data['clientid'] = $row['clientid'];
+      	$data['username'] = $row['username'];
+      	$data['email'] = $row['email'];					
+		}
+	}
+	return $data;
+}
+
 //Function to unlike a timeline post\
 //May 20,2016
 function unlikeThisPost()
@@ -90,6 +115,8 @@ function likeThisPost()
 	$data1= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
+	$my_session_username	= $session_values['username'];
+	
 	
 	if($my_session_id)
 	{
@@ -112,7 +139,25 @@ function likeThisPost()
 				$qry="UPDATE entrp_user_timeline_post_likes SET liked_user_ids='".$likedUsersIDJSON."' WHERE  post_id=".$postId."";
 				if(setData($qry))
 				{
-					$data['response']='success';
+					
+					$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
+			
+					if($my_session_id !== $postAuthorDetails['clientid']){
+					
+						$myPreferences = getMyPreferences();
+					
+						if($myPreferences['likes'] == 'true'){
+							$notification_array = array(
+															'type' => 'like',
+															'postAuthorEmail' => $postAuthorDetails['email'],
+															'postAuthorUsername' => $postAuthorDetails['username'],
+															'likerUsername' => $my_session_username
+														 );
+							$data['mail_send'] = send_notification_mail($notification_array);
+						}
+					}
+			
+					$data['response']='successssss';
 				}
 				else
 				{
@@ -128,6 +173,24 @@ function likeThisPost()
 			$qry2="INSERT INTO entrp_user_timeline_post_likes(post_id,liked_user_ids) VALUES(".$postId.",'".$likedUsersIDJSON."')";
 			if(setData($qry2))
 			{
+				
+				$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
+			
+				if($my_session_id !== $postAuthorDetails['clientid']){
+				
+					$myPreferences = getMyPreferences();
+				
+					if($myPreferences['likes'] == 'true'){
+						$notification_array = array(
+														'type' => 'like',
+														'postAuthorEmail' => $postAuthorDetails['email'],
+														'postAuthorUsername' => $postAuthorDetails['username'],
+														'likerUsername' => $my_session_username
+													 );
+						$data['mail_send'] = send_notification_mail($notification_array);
+					}
+				}
+					
 				$data['response']='success';
 			}
 			else
@@ -148,6 +211,7 @@ function postThisComment()
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
+	$my_session_username	= $session_values['username'];
 	
 	if($my_session_id)
 	{
@@ -165,6 +229,23 @@ function postThisComment()
 		$qry="INSERT INTO entrp_user_timeline_post_comments(post_id,comment,commented_by,commented_at) VALUES(".$postId.",'".$comment."',".$posted_by.",'".$created_at."')";
 		if(setData($qry))
 		{
+			$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
+			
+			if($my_session_id !== $postAuthorDetails['clientid']){
+			
+				$myPreferences = getMyPreferences();
+			
+				if($myPreferences['comments'] == 'true'){
+					$notification_array = array(
+													'type' => 'comment',
+													'postAuthorEmail' => $postAuthorDetails['email'],
+													'postAuthorUsername' => $postAuthorDetails['username'],
+													'commentAuthorUsername' => $my_session_username
+												 );
+					$data['mail_send'] = send_notification_mail($notification_array);
+				}
+			}
+			
 			$data['response']='success';
 		}
 		else

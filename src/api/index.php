@@ -4,6 +4,32 @@ require_once ('Query.php');
 
 require 'flight/Flight.php';
 
+//Route to prfile settings
+// May 24,2016
+//Arshad
+Flight::route('/getMyPreferences', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getMyPreferences();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to update preferences
+// May 25,2016
+//Arshad
+Flight::route('/updateMyPreferences', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=updateMyPreferences();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 
 //Route to events directory
 // April 13,2016
@@ -543,10 +569,21 @@ function services_included()
 	require_once 'services/imageUploadServices.php'; 
 	require_once 'services/followUnfollowServices.php'; 
 	require_once 'services/timelineServices.php'; 
+	require_once 'services/emailServices.php'; 
 }
 
 
-
+//Arshad
+//For base_url()
+function base_url(){
+	$base_url = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
+	$base_url .= "://".$_SERVER['HTTP_HOST'].'/'; //will give : http(s)://somewebsite.com/
+	
+	/*----- Want to change something then change it here ------*/
+	$base_url .= 'projects/entreprenity/#/'; 
+	
+	return $base_url;
+}
 
 //Function to fetch a company's follower list
 //May 13,2016
@@ -702,7 +739,7 @@ function getMemberFollowing()
 function getBasicUserInformation()
 {
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
+	$member_default_cover			='';
    $member_default_avatar			='assets/img/members/member-default.jpg';
   
 	//$userid=validate_input($_GET['id']);
@@ -712,7 +749,7 @@ function getBasicUserInformation()
 	if($userid)
 	{
 			$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,
-					 		 client_profile.avatar,client_profile.designation,client_profile.company_name,
+					 		 client_profile.avatar,client_profile.designation,client_profile.company_name,client_profile.cover_pic,
 					 		 company_profiles.company_username
 					FROM entrp_login
 					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
@@ -734,6 +771,14 @@ function getBasicUserInformation()
    				else
    				{
    					$data['avatar']				=	$member_default_avatar;
+   				}
+   				if($row['cover_pic']!='')
+   				{
+   					$data['coverPhoto']				=	$row['cover_pic'];
+   				}
+   				else
+   				{
+   					$data['coverPhoto']				=	'';
    				}
    				
    				if($row['firstname']!='')
@@ -1141,7 +1186,7 @@ function viewUserProfile()
 	}
 	
 
-  $member_default_cover			='assets/img/members/member-default.jpg';
+  $member_default_cover			='';
   $member_default_avatar		='assets/img/members/member-default.jpg';
 
   $qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
@@ -1180,7 +1225,7 @@ function viewUserProfile()
    		}
    		else
    		{
-   			$data['coverPhoto']	=	$member_default_cover;
+   			$data['coverPhoto']	=	'';
    		}  
 
 			$data['firstName'] 	= 	$row['firstname'];
@@ -1395,6 +1440,7 @@ function get_user_session()
 	$sessions['firstname'] 		= $_SESSION['firstname'];
 	$sessions['lastname'] 		= $_SESSION['lastname'];
 	$sessions['id'] 				= $_SESSION['id'];
+	$sessions['username'] 		= $_SESSION['username'];
 	
 	return $sessions;
 }

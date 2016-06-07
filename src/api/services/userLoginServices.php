@@ -75,7 +75,7 @@ function forgot_password()
 		$fullname=$data['firstname'].' '.$data['lastname'];
 		$password=generateRandomAlphaNumeric($length=8);
 		ob_start();
-		include('email_templates/password_reset.php');
+		include('email_templates/forgot_password.php');
 		$order_placement_template = ob_get_contents();			
 		ob_end_clean();			
 
@@ -149,6 +149,7 @@ function login()
 			$data['firstname']	=	$row['firstname'];
 			$data['lastname']		=	$row['lastname'];
 			$data['id']				=	$row['clientid'];
+			$data['username']		=	$row['username'];
 			$data['success'] 		= true;
 			$data['msg'] 			= 'Valid User';
 
@@ -161,6 +162,7 @@ function login()
 			$_SESSION['firstname'] 		= $data['firstname'];
 			$_SESSION['lastname'] 		= $data['lastname'];
 			$_SESSION['login_token'] 	= $client_session_token;
+			$_SESSION['username'] 	   = $data['username']; //added by arshad
 
 			set_client_session_token($client_session_token,$row['clientid']);
 			$data['login_token'] 			= $client_session_token;

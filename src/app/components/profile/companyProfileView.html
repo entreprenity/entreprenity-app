@@ -1,11 +1,10 @@
 <div style="max-width: 1000px; margin: 0 auto;">
 	<div class="profile companyProfile">
-
 		<div class="row">
 			<div class="col-md-12 ">
 				<div class="profile-top">
 					<div class="coverPhoto">
-
+						<img ng-src="">
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
@@ -36,7 +35,7 @@
 						<div class="content">
 							<p>{{vm.company.desc}}</p>
 							<ul>
-								<li ng-repeat="category in vm.company.categories"><a href="#" class="badge">{{category}}</a></li>
+								<li ng-repeat="category in vm.company.categories"><a href="#" class="tags-item">{{category}}</a></li>
 							</ul>
 						</div>
 					</div>
@@ -66,9 +65,7 @@
 			</div>
 
 			<div class="col-md-8">
-				<div ng-controller="NewsFeedController as vm">
-					<news-feed></news-feed>
-				</div>	
+				<news-feed poststype="2" username="vm.memberUserName"></news-feed>
 			</div>
 		</div>
 	</div>

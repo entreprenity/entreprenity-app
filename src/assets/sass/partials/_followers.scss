@@ -6,16 +6,20 @@
 	
 	li {
 		text-align: center;
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin: 2px;
 		width: 32%;
 		float: left;
 		padding: 10px 15px;
+		background-color: #ffffff;
 
 		img{
 			width: 100px;
 			height: auto;
-		}
+		}	
+		
+		p {color: $secondary-text-color;}
 
 		.button-group {
 			position: relative;

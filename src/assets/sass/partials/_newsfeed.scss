@@ -4,7 +4,6 @@
 		overflow: auto;
 		outline: none;
 		resize: none;
-
 		-webkit-box-shadow: none;
 		-moz-box-shadow: none;
 		box-shadow: none;
@@ -13,43 +12,103 @@
 	hr {
 		margin: 5px 0px !important;
 	}
-	
+
+	a:hover {
+		text-decoration: underline;
+	}
 	.post-textarea {
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin-bottom: 10px;
 		.button-container {
 			position: relative;
-			background-color: #e9e9eb;
+			background-color: $secondary-bg-color;
 			height: 35px;
 			.btn-post {
 				position: absolute;
 				right: 0px;
 			}
+			.btn-addImage {
+				padding-left: 15px;
+				padding-right: 15px;
+				&:hover {color: lighten($primary-text-color, 20%);}
+			}
 		}
 	}
 	
 	.post {
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin-bottom: 10px;
 		
 		.post-main {
+			background-color: #ffffff;
 			padding: 15px;
 			.post-header {
-				a{padding-right: 10px;}
+				a {
+					padding-right: 10px;
+					display: block;
+				}	
+				a:hover {
+					text-decoration: underline;
+				}
+				.author-name {
+					color: $primary-text-color;
+					font-size: 16px;
+				}
 			}
 			.post-content {padding: 5px 10px;}
 			.post-buttonGroup {
 				padding: 5px 10px;
 				a {padding-right: 20px;}
 			}
-			.post-likers {padding: 0px 10px;}
 		}
 		
 		.comment {
-			border-top: 1px solid $divider-color;
-			background-color: #e9e9eb;
+			border-top: 1px solid $primary-divider-color;
+			background-color: $secondary-bg-color;
 			padding: 15px;
+			a:hover {
+				text-decoration: underline;
+			}	
 			.comment-content {padding: 5px 10px;}
+			.comment-textarea {
+				.media-body {
+					position: relative;
+					.btn-submit-comment {
+						position: absolute;
+						right: 0px;
+						top: 0px;
+						padding-left: 20px;
+						padding-right: 20px;
+						height: 32px;
+					}
+				}
+			}
+			.post-likers {
+				width: 155px;
+				border: 1px solid transparent;
+				.post-likers-container {
+					padding: 0px 10px;
+					position: relative;
+					i {color: $secondary-color}
+					.post-likers-list {
+						position: absolute;
+						top: 20px;
+						left: -1px;
+						background-color: #ffffff;
+						border: 1px solid $secondary-divider-color;
+						border-top: 1px solid transparent;
+						padding: 5px 10px;
+						margin: 0px;
+					}
+				}
+				&:hover {
+					background-color: #ffffff;
+					border: 1px solid $secondary-divider-color;
+				}
+				
+			}
 		}
 	}
 }

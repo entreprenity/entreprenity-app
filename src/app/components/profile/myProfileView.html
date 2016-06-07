@@ -1,13 +1,11 @@
 <div style="max-width: 1000px; margin: 0 auto;">
 	<div class="profile memberProfile">
-	
-		
 		<form name="myProfileForm" novalidate>
 		<div class="row">
 			<div class="col-md-12 ">
 				<div class="profile-top">
 					<div class="coverPhoto">
-						<img ng-src="assets/img/members/">
+						<img ng-src="">
 					</div>	
 					<div class="info">
 						<div class="profilePhoto">
@@ -77,7 +75,7 @@
 						<h4>SKILLS</h4>
 						<div class="content">
 							<ul ng-hide="vm.editState">
-								<li ng-repeat="skill in vm.member.skills"><a href="#" class="badge">{{skill.text}}</a></li>
+								<li ng-repeat="skill in vm.member.skills"><a href="#" class="tags-item">{{skill.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
 													ng-model="vm.member.skills"
@@ -91,7 +89,7 @@
 						<h4>INTERESTS</h4>
 						<div class="content">
 							<ul ng-hide="vm.editState">
-								<li ng-repeat="interest in vm.member.interests"><a href="#" class="badge">{{interest.text}}</a></li>
+								<li ng-repeat="interest in vm.member.interests"><a href="#" class="tags-item">{{interest.text}}</a></li>
 							</ul>
 							<tags-input class="bootstrap"
 													ng-model="vm.member.interests"
@@ -105,11 +103,9 @@
 			</div>
 
 			<div class="col-md-8">
-				<div ng-controller="NewsFeedController as vm">
-					<news-feed></news-feed>
-				</div>			
+				<news-feed poststype="2" username="vm.memberUserName"></news-feed>
 			</div>
-		</div>
+		</div> 
 	</div>
 </div>
 

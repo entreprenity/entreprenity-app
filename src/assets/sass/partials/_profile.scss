@@ -19,8 +19,11 @@
 	}
 	.profile-top {
 		padding: 0 !important;
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border: 1px solid;
+		border-color: $primary-border-color;
 		margin: 15px 0px;
+		background-color: #ffffff;
 		.coverPhoto {
 			height: 150px;
 			background-color: lightseagreen;
@@ -81,11 +84,13 @@
 	}
 	
 	.profile-sidenav {
-		border: 1px solid $divider-color;
+		border: 1px solid;
+		border-color: $primary-border-color;
+		background-color: #ffffff;
 		h4 {
 			padding: 10px 15px;
-			border-top: 1px solid $divider-color;
-			border-bottom: 1px solid $divider-color;
+			border-top: 1px solid $primary-divider-color;
+			border-bottom: 1px solid $primary-divider-color;
 		}
 		.about-me li {
 			display: inline-block;
@@ -111,5 +116,21 @@
 			display: inline-block;
 			padding-right: 5px;
 		}
+		.tags-item {
+			margin: 2px;
+			padding: 0 5px;
+			display: inline-block;
+			float: left;
+			font-size: 14px;
+			height: 26px;
+			line-height: 25px;
+			color: #fff;
+			/*background: #428bca;*/
+			background: $secondary-color;
+			border: 1px solid darken($secondary-color, 5%);
+			border-radius: 4px;
+		}
 	}
+	
+	#newsFeed a {color:inherit;}
 }
