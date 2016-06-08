@@ -20,6 +20,14 @@ function goingToEvent()
 	      ";
 	if(setData($qry))
 	{
+		$Host=getEventHostFromEVENTID($eventId);
+		$notify_type="attend";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=$eventId;
+		$notify_for="events";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
+		
 		$data['joining']=true;
 	}
 	else
@@ -46,6 +54,15 @@ function notGoingToEvent()
 	      ";
 	if(setData($qry))
 	{
+		
+		$Host=getEventHostFromEVENTID($eventId);
+		$notify_type="attend";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=$eventId;
+		$notify_for="events";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
+		
 		$data['joining']=false;
 	}
 	else
@@ -78,6 +95,14 @@ function goingForEvent()
 	{
 		$data=getEventFromEventID($eventId);
 		$data['joining']=true;
+		
+		$Host=getEventHostFromEVENTID($eventId);
+		$notify_type="attend";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=$eventId;
+		$notify_for="events";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -107,6 +132,14 @@ function notGoingForEvent()
 	{
 		$data=getEventFromEventID($eventId);
 		$data['joining']=false;
+		
+		$Host=getEventHostFromEVENTID($eventId);
+		$notify_type="attend";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=$eventId;
+		$notify_for="events";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -177,6 +210,14 @@ function followThisCompany()
 	{
 		$data=fetch_company_information_from_companyid($companyid);
 		$data['followed']=true;
+		
+		$Host=getCompanyOwnerFromCOMPANYID($companyid);
+		$notify_type="company";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="company";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -204,6 +245,14 @@ function unfollowThisCompany()
 	{
 		$data=fetch_company_information_from_companyid($companyid);
 		$data['followed']=false;
+		
+		$Host=getCompanyOwnerFromCOMPANYID($companyid);
+		$notify_type="company";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="company";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -233,6 +282,14 @@ function followCompany()
 	if(setData($qry))
 	{
 		$data['followed']=true;
+		
+		$Host=getCompanyOwnerFromCOMPANYID($companyid);
+		$notify_type="company";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="company";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -257,6 +314,14 @@ function unfollowCompany()
 	if(setData($qry))
 	{
 		$data['followed']=false;
+		
+		$Host=getCompanyOwnerFromCOMPANYID($companyid);
+		$notify_type="company";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="company";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -293,9 +358,17 @@ function followUser()
 	{
 		$data['followed']=true;
 		
+		$Host=$clientid;
+		$notify_type="follow";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="user";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
+		
 		$data['myPreferences'] = getMyPreferences();
 		
-		if($myPreferences['followers'] == 'true'){
+		if($data['myPreferences']['followers'] == 'true'){
 			$notification_array = array(
 											'type' => 'follow',
 											'following_user_id' => $my_session_id,
@@ -328,6 +401,14 @@ function unfollowUser()
 	if(setData($qry))
 	{
 		$data['followed']=false;
+		
+		$Host=$clientid;
+		$notify_type="follow";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="user";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{
@@ -358,6 +439,27 @@ function followThisUser()
 	{
 		$data=fetch_user_information_from_id($clientid);
 		$data['followed']=true;
+		
+		$Host=$clientid;
+		$notify_type="follow";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="user";
+		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
+		
+		$data['myPreferences'] = getMyPreferences();
+		
+		if($data['myPreferences']['followers'] == 'true'){
+			$notification_array = array(
+											'type' => 'follow',
+											'following_user_id' => $my_session_id,
+											'following_username' => $userName,
+											'followed_email' => $followed_user_details['email'],
+											'followed_username' => $followed_user_details['username']
+										);
+			$data['mail_send'] = send_notification_mail($notification_array);
+		}
 	}
 	else
 	{
@@ -386,6 +488,14 @@ function unfollowThisUser()
 	{
 		$data=fetch_user_information_from_id($clientid);
 		$data['followed']=false;
+		
+		$Host=$clientid;
+		$notify_type="follow";
+		$notify_to=$Host;
+		$notify_from=$my_session_id;
+		$post_id=0;
+		$notify_for="user";
+		deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 	}
 	else
 	{

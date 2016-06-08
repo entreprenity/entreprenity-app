@@ -575,6 +575,19 @@ Flight::route('/getTopContributors', function()
 });
 
 
+//Route to fetch user notifications
+//June 02,2016
+Flight::route('/getMyNotifications', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getMyNotifications();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 
 //Route to test timeline posts
 //November 31,2016

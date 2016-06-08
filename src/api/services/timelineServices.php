@@ -2,6 +2,7 @@
 
 //Route to get timeline feeds of users I follow
 //May 30,2016
+//June 06, 2016: Added location (client centre location)
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -24,10 +25,11 @@ function getFollowedMembersPosts()
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
 	$usersIFollowString = implode(",", $usersIFollow);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
-			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
@@ -59,6 +61,7 @@ function getFollowedMembersPosts()
 			$data[$i]['post_author']['position']				=	$row['designation'];
 			$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -143,6 +146,7 @@ function getFollowedMembersPosts()
 
 //Route to get timeline feeds of all users
 //May 30,2016
+//June 06,2016: Added user location (centre location)
 function getAllPosts()
 {
 	//the defaults starts
@@ -159,10 +163,11 @@ function getAllPosts()
 	
 	$data= array();
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
-			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE EUT.status=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
@@ -194,6 +199,7 @@ function getAllPosts()
 			$data[$i]['post_author']['position']				=	$row['designation'];
 			$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -836,6 +842,7 @@ function usersWhoCommentedThisPost($post_id)
 
 //Function to fetch comments made on this timeline post
 //May 19,2016
+//June 06,2016: Added user location (centre location)
 function userCommentsForThisPost($post_id)
 {
 	
@@ -864,10 +871,11 @@ function userCommentsForThisPost($post_id)
 	$data= array();
 	$qry="SELECT ETC.post_comments_id,ETC.post_id,ETC.comment,ETC.commented_by,ETC.commented_at,
 			EP.firstname,EP.lastname,EP.username,
-			CP.avatar,CP.designation,CP.company_name
+			CP.avatar,CP.designation,CP.company_name,LI.location_desc
 			FROM entrp_user_timeline_post_comments AS ETC
 			LEFT JOIN entrp_login AS EP ON EP.clientid=ETC.commented_by 
 			LEFT JOIN client_profile AS CP ON EP.clientid=CP.clientid
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE ETC.post_id=".$post_id." AND ETC.status=1
 			";
    $res=getData($qry);
@@ -895,6 +903,7 @@ function userCommentsForThisPost($post_id)
 				$data[$i]['comment_author']['avatar']		=	$member_default_avatar;
 			} 
 			
+			$data[$i]['comment_author']['location']				=	$row['location_desc'];
 			$data[$i]['comment_author']['position']		=	$row['designation'];
 			$data[$i]['comment_author']['companyName']	=	$row['company_name'];
 			$data[$i]['comment_author']['userName']		=	$row['username'];
@@ -1117,6 +1126,7 @@ function howManyLikesThisPostReceived($post_id)
 
 //Function to get my news feed to timeline
 //May 18,2016
+//June 06, 2016: Added location (client centre location)
 function getMyNewsFeed()
 {
 	//the defaults starts
@@ -1136,10 +1146,11 @@ function getMyNewsFeed()
    $username=validate_input($_GET['user']);
 	$my_id	= getUserIdfromUserName($username);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
@@ -1171,6 +1182,7 @@ function getMyNewsFeed()
 			$data[$i]['post_author']['position']				=	$row['designation'];
 			$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);

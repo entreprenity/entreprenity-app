@@ -2,6 +2,53 @@
 
 /* Functions and services based on userid begins */
 
+//Function to get company owner from company id
+//June 07,2016
+function getCompanyOwnerFromCOMPANYID($companyid)
+{
+	//SELECT clientid FROM company_profiles WHERE id=1;
+	$qry="SELECT clientid FROM company_profiles  
+			WHERE id='".$companyid."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['clientid'];  					
+		}
+		return $id;
+	}
+	else
+	{
+		return null;
+	} 
+}
+
+
+//Function to get event host id from event id
+//June 07.2016
+function getEventHostFromEVENTID($eventId)
+{
+	//SELECT clientid FROM entrp_events WHERE id=1
+	$qry="SELECT clientid FROM entrp_events  
+			WHERE id='".$eventId."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['clientid'];  					
+		}
+		return $id;
+	}
+	else
+	{
+		return null;
+	} 
+}
+
 
 //Function to get users (list of user id) I follow
 //May 31,2016
@@ -540,8 +587,13 @@ function getUserIdfromUserName($userName)
 		{
 			$id		=	$row['clientid'];  					
 		}
+		return $id;
+	}
+	else
+	{
+		return null;
 	}   
-	return $id;
+	
 }
 
 
