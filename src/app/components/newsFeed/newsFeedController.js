@@ -161,6 +161,11 @@
 
 				vm.currentPost = myPost;
 
+				/*
+				newsFeedService.post(vm.npostID).success(function(data) {
+					vm.npost = data;
+				});
+				*/
 
 				//to get basic user information
 				vm.basicInfo = function () {

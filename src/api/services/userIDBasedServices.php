@@ -2,6 +2,31 @@
 
 /* Functions and services based on userid begins */
 
+//Function to get the author id of this timeline post
+//June 08,2016
+function whoIsTheAuthorOfThisPost($postID)
+{
+	//SELECT posted_by FROM entrp_user_timeline WHERE post_id=1 AND status=1
+	$qry="SELECT posted_by FROM entrp_user_timeline   
+			WHERE post_id='".$postID."' AND status=1 ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$posted_by		=	$row['posted_by'];  					
+		}
+		return $posted_by;
+	}
+	else
+	{
+		return null;
+	}
+
+}
+
+
 //Function to get company owner from company id
 //June 07,2016
 function getCompanyOwnerFromCOMPANYID($companyid)

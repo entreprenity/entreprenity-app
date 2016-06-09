@@ -1,5 +1,88 @@
 <?php
 
+
+//Function to fetch a single timeline post
+//June 08,2016
+function getThisPost()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+	
+	//I represent this post
+	$post_id=validate_input($_GET['post']);
+	
+	//I am the logged in user.
+	$session_values=get_user_session();
+	$my_session_id	= (int)$session_values['id'];
+	
+	//Let me see to whom this post belongs
+	$posted_by= whoIsTheAuthorOfThisPost($post_id);
+	
+	if($posted_by==$my_session_id)
+	{
+		//This post is mine. I'm the author
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.post_id=".$post_id."";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {
+	      	//$post_id												=	$row['post_id'];	      	
+	      	$data['post_id']									=	$row['post_id'];      	
+				$data['content']									=	$row['content'];
+				$data['image']										=	$row['post_img'];
+				$data['created_at']								=	$row['created_at'];
+				
+				$data['post_author']['id']						=	$row['clientid'];
+				$data['post_author']['firstName']			=	$row['firstname'];
+				$data['post_author']['lastName']				=	$row['lastname'];
+				if($row['avatar']!='')
+				{
+					$data['post_author']['avatar']			=	$row['avatar'];
+				}
+				else
+				{
+					$data['post_author']['avatar']			=	$member_default_avatar;
+				}
+	   				
+				$data['post_author']['position']				=	$row['designation'];
+				$data['post_author']['companyName']			=	$row['company_name'];
+				$data['post_author']['userName']				=	$row['username'];
+				$data['post_author']['location']				=	$row['location_desc'];
+				
+				$data['isLiked']									= doILikeThisPost($post_id);
+				$data['likes_count']								= howManyLikesThisPostReceived($post_id);
+				$data['likers']									= usersWhoLikesThisPost($post_id);
+				$data['comments_count']							= howManyCommentsThisPostReceived($post_id);
+				$data['commenters']								= usersWhoCommentedThisPost($post_id);
+				$data['comments']									= userCommentsForThisPost($post_id);
+				
+	      }	
+	   }			
+	}
+	
+	return $data;	
+}
+
+
+
 //Route to get timeline feeds of users I follow
 //May 30,2016
 //June 06, 2016: Added location (client centre location)
@@ -342,6 +425,15 @@ function unlikeThisPost()
 					if(setData($qry))
 					{
 						$data['response']='success';
+						
+						//Let me see to whom this post belongs
+						$Host=whoIsTheAuthorOfThisPost($postId);
+						$notify_type="like";
+						$notify_to=$Host;
+						$notify_from=$my_session_id;
+						$post_id=$postId;
+						$notify_for="user";
+						deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 					}
 					else
 					{
@@ -354,6 +446,15 @@ function unlikeThisPost()
 					if(setData($qry2))
 					{
 						$data['response']='success';
+						
+						//Let me see to whom this post belongs
+						$Host=whoIsTheAuthorOfThisPost($postId);
+						$notify_type="like";
+						$notify_to=$Host;
+						$notify_from=$my_session_id;
+						$post_id=$postId;
+						$notify_for="user";
+						deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 					}
 					else
 					{
@@ -423,11 +524,12 @@ function likeThisPost()
 					
 					$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
 			
-					if($my_session_id !== $postAuthorDetails['clientid']){
-					
+					if($my_session_id !== $postAuthorDetails['clientid'])
+					{				
 						$myPreferences = getMyPreferences();
 					
-						if($myPreferences['likes'] == 'true'){
+						if($myPreferences['likes'] == 'true')
+						{
 							$notification_array = array(
 															'type' => 'like',
 															'postAuthorEmail' => $postAuthorDetails['email'],
@@ -436,9 +538,18 @@ function likeThisPost()
 														 );
 							$data['mail_send'] = send_notification_mail($notification_array);
 						}
+						
+						$Host=$postAuthorDetails['clientid'];
+						$notify_type="like";
+						$notify_to=$Host;
+						$notify_from=$my_session_id;
+						$post_id=$postId;
+						$notify_for="user";
+						addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 					}
 			
 					$data['response']='successssss';
+					
 				}
 				else
 				{
@@ -457,11 +568,12 @@ function likeThisPost()
 				
 				$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
 			
-				if($my_session_id !== $postAuthorDetails['clientid']){
-				
+				if($my_session_id !== $postAuthorDetails['clientid'])
+				{				
 					$myPreferences = getMyPreferences();
 				
-					if($myPreferences['likes'] == 'true'){
+					if($myPreferences['likes'] == 'true')
+					{
 						$notification_array = array(
 														'type' => 'like',
 														'postAuthorEmail' => $postAuthorDetails['email'],
@@ -470,6 +582,13 @@ function likeThisPost()
 													 );
 						$data['mail_send'] = send_notification_mail($notification_array);
 					}
+					$Host=$postAuthorDetails['clientid'];
+					$notify_type="like";
+					$notify_to=$Host;
+					$notify_from=$my_session_id;
+					$post_id=$postId;
+					$notify_for="user";
+					addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 				}
 					
 				$data['response']='success';
@@ -512,8 +631,8 @@ function postThisComment()
 		{
 			$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
 			
-			if($my_session_id !== $postAuthorDetails['clientid']){
-			
+			if($my_session_id !== $postAuthorDetails['clientid'])
+			{
 				$myPreferences = getMyPreferences();
 			
 				if($myPreferences['comments'] == 'true'){
@@ -525,6 +644,14 @@ function postThisComment()
 												 );
 					$data['mail_send'] = send_notification_mail($notification_array);
 				}
+				
+				$Host=$postAuthorDetails['clientid'];
+				$notify_type="comment";
+				$notify_to=$Host;
+				$notify_from=$my_session_id;
+				$post_id=$postId;
+				$notify_for="user";
+				addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 			}
 			
 			$data['response']='success';

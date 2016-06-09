@@ -48,7 +48,8 @@
 				"followers": true,	
 				"comments": true,
 				"likes": true,
-				"mentions": false
+				"mentions": false,
+				"businessOpportunities": false
 			}
 			vm.settings = data;*/
 		

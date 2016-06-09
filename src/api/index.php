@@ -588,6 +588,19 @@ Flight::route('/getMyNotifications', function()
 });
 
 
+//Route to fetch user notifications
+//June 08,2016
+Flight::route('/getThisPost', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getThisPost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 
 //Route to test timeline posts
 //November 31,2016
