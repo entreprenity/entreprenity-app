@@ -2,6 +2,26 @@
 
 /* Functions and services based on userid begins */
 
+//Function to fetch members of a company (fetch id only)
+//June 13,2016
+function getAllCompanyMemberIDs($companyId)
+{
+	$data= array();
+	
+	$qry="SELECT clientid FROM entrp_company_members WHERE companyid=".$companyId."";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]			=	$row['clientid'];
+		}		
+	}
+	return $data;
+}
+
+
 //Function to get the author id of this timeline post
 //June 08,2016
 function whoIsTheAuthorOfThisPost($postID)

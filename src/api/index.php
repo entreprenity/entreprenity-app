@@ -5,7 +5,7 @@ require_once 'constants.php';
 require 'flight/Flight.php';
 
 
-//Route to events directory
+//01 Route to events directory
 // April 13,2016
 Flight::route('/getEvents', function()
 {
@@ -17,7 +17,7 @@ Flight::route('/getEvents', function()
 
 });
 
-//Route to members directory
+//02 Route to members directory
 // April 13,2016
 Flight::route('/getMembers', function()
 {
@@ -29,7 +29,7 @@ Flight::route('/getMembers', function()
 
 });
 
-//Route to companies directory
+//03 Route to companies directory
 // April 13,2016
 Flight::route('/getCompanies', function()
 {
@@ -42,7 +42,7 @@ Flight::route('/getCompanies', function()
 });
 
 
-//Route to login and redirect
+//04 Route to login and redirect
 // April 15,2016
 Flight::route('/login', function()
 {
@@ -54,7 +54,7 @@ Flight::route('/login', function()
 
 });
 
-//Function for forgot password feature
+//05 Function for forgot password feature
 //April 15, 2016
 Flight::route('/forgotpassword', function()
 {
@@ -66,7 +66,7 @@ Flight::route('/forgotpassword', function()
 
 });
 
-//Function to get user session
+//06 Function to get user session
 //April 18,2016
 Flight::route('/get_user_session', function()
 {
@@ -78,7 +78,7 @@ Flight::route('/get_user_session', function()
 });
 
 
-//Function to get user session
+//07 Function to get user session
 //April 19,2016
 Flight::route('/getLocations', function()
 {
@@ -90,7 +90,7 @@ Flight::route('/getLocations', function()
 });
 
 
-//Route to fetch new members
+//08 Route to fetch new members
 // April 21,2016
 Flight::route('/getNewMembers', function()
 {
@@ -103,7 +103,7 @@ Flight::route('/getNewMembers', function()
 });
 
 
-//Route to fetch new members
+//09 Route to fetch new members
 // April 21,2016
 Flight::route('/view_user_profile', function()
 {
@@ -116,7 +116,7 @@ Flight::route('/view_user_profile', function()
 });
 
 
-//Route to fetch new members
+//10 Route to fetch new members
 // April 25,2016
 Flight::route('/view_company_profile', function()
 {
@@ -129,7 +129,7 @@ Flight::route('/view_company_profile', function()
 });
 
 
-//Route to fetch new members
+//11 Route to fetch new members
 // April 27,2016
 Flight::route('/view_event_detail', function()
 {
@@ -143,7 +143,7 @@ Flight::route('/view_event_detail', function()
 
 
 
-//Route to get a user's own details
+//12 Route to get a user's own details
 //April 28,2016
 Flight::route('/get_my_details', function()
 {
@@ -156,7 +156,7 @@ Flight::route('/get_my_details', function()
 });
 
 
-//Route to update user profile details
+//13 Route to update user profile details
 //May 03,2016
 Flight::route('/update_my_profile', function()
 {
@@ -169,7 +169,7 @@ Flight::route('/update_my_profile', function()
 });
 
 
-//Route to get a user's own company details
+//14 Route to get a user's own company details
 //May 03,2016
 Flight::route('/get_my_company_profile', function()
 {
@@ -182,7 +182,7 @@ Flight::route('/get_my_company_profile', function()
 });
 
 
-//Route to update user's company profile details
+//15 Route to update user's company profile details
 //May 03,2016
 Flight::route('/update_my_company_profile', function()
 {
@@ -195,7 +195,7 @@ Flight::route('/update_my_company_profile', function()
 });
 
 
-//Route to update user's profile avatar
+//16 Route to update user's profile avatar
 //May 06,2016
 Flight::route('/update_member_avatar', function()
 {
@@ -207,7 +207,7 @@ Flight::route('/update_member_avatar', function()
 
 });
 
-//Route to fetch latest events
+//17 Route to fetch latest events
 //May 09,2016
 Flight::route('/getLatestEvents', function()
 {
@@ -220,7 +220,7 @@ Flight::route('/getLatestEvents', function()
 });
 
 
-//Route to fetch basic user information
+//18 Route to fetch basic user information
 //May 09,2016
 Flight::route('/getBasicUserInformation', function()
 {
@@ -233,7 +233,7 @@ Flight::route('/getBasicUserInformation', function()
 });
 
 
-//Route to follow a user from his profile
+//19 Route to follow a user from his profile
 //May 11,2016
 Flight::route('/followThisUser', function()
 {
@@ -246,7 +246,7 @@ Flight::route('/followThisUser', function()
 });
 
 
-//Route to un-follow a user from his profile
+//20 Route to un-follow a user from his profile
 //May 11,2016
 Flight::route('/unfollowThisUser', function()
 {
@@ -259,7 +259,7 @@ Flight::route('/unfollowThisUser', function()
 });
 
 
-//Route to follow a user from member directory
+//21 Route to follow a user from member directory
 //May 11,2016
 Flight::route('/followUser', function()
 {
@@ -272,7 +272,7 @@ Flight::route('/followUser', function()
 });
 
 
-//Route to un-follow a user from member directory
+//22 Route to un-follow a user from member directory
 //May 11,2016
 Flight::route('/unfollowUser', function()
 {
@@ -285,7 +285,7 @@ Flight::route('/unfollowUser', function()
 });
 
 
-//Route to follow a company from company directory
+//23 Route to follow a company from company directory
 //May 12,2016
 Flight::route('/followCompany', function()
 {
@@ -298,7 +298,7 @@ Flight::route('/followCompany', function()
 });
 
 
-//Route to un-follow a company from company directory
+//24 Route to un-follow a company from company directory
 //May 12,2016
 Flight::route('/unfollowCompany', function()
 {
@@ -311,7 +311,7 @@ Flight::route('/unfollowCompany', function()
 });
 
 
-//Route to follow a company from company profile
+//25 Route to follow a company from company profile
 //May 12,2016
 Flight::route('/followThisCompany', function()
 {
@@ -324,7 +324,7 @@ Flight::route('/followThisCompany', function()
 });
 
 
-//Route to un-follow a company from company profile
+//26 Route to un-follow a company from company profile
 //May 12,2016
 Flight::route('/unfollowThisCompany', function()
 {
@@ -337,7 +337,7 @@ Flight::route('/unfollowThisCompany', function()
 });
 
 
-//Route to mark going for an event (from event details)
+//27 Route to mark going for an event (from event details)
 //May 12,2016
 Flight::route('/goingForEvent', function()
 {
@@ -350,7 +350,7 @@ Flight::route('/goingForEvent', function()
 });
 
 
-//Route to mark not going for an event (from event details)
+//28 Route to mark not going for an event (from event details)
 //May 12,2016
 Flight::route('/notGoingForEvent', function()
 {
@@ -363,7 +363,7 @@ Flight::route('/notGoingForEvent', function()
 });
 
 
-//Route to mark going for an event (from event directory)
+//29 Route to mark going for an event (from event directory)
 //May 13,2016
 Flight::route('/goingToEvent', function()
 {
@@ -376,7 +376,7 @@ Flight::route('/goingToEvent', function()
 });
 
 
-//Route to mark not going for an event (from event directory)
+//30 Route to mark not going for an event (from event directory)
 //May 13,2016
 Flight::route('/notGoingToEvent', function()
 {
@@ -389,7 +389,7 @@ Flight::route('/notGoingToEvent', function()
 });
 
 
-//Route to fetch a member's following list
+//31 Route to fetch a member's following list
 //May 13,2016
 Flight::route('/getMemberFollowing', function()
 {
@@ -402,7 +402,7 @@ Flight::route('/getMemberFollowing', function()
 });
 
 
-//Route to fetch a member's follower list
+//32 Route to fetch a member's follower list
 //May 13,2016
 Flight::route('/getMemberFollowers', function()
 {
@@ -414,7 +414,7 @@ Flight::route('/getMemberFollowers', function()
 
 });
 
-//Route to fetch a company's follower list
+//33 Route to fetch a company's follower list
 //May 13,2016
 Flight::route('/getCompanyFollowers', function()
 {
@@ -427,7 +427,7 @@ Flight::route('/getCompanyFollowers', function()
 });
 
 
-//Route to check validity of a user token
+//34 Route to check validity of a user token
 //May 17,2016
 Flight::route('/validateUserToken', function()
 {
@@ -440,7 +440,7 @@ Flight::route('/validateUserToken', function()
 });
 
 
-//Route to check validity of a user token
+//35 Route to check validity of a user token
 //May 17,2016
 Flight::route('/destroyUserToken', function()
 {
@@ -453,7 +453,7 @@ Flight::route('/destroyUserToken', function()
 });
 
 
-//Route to post new Feed to timeline
+//36 Route to post new Feed to timeline
 //May 18,2016
 Flight::route('/postCurrentPost', function()
 {
@@ -465,7 +465,7 @@ Flight::route('/postCurrentPost', function()
 });
 
 
-//Route to get my Feed to timeline
+//37 Route to get my Feed to timeline
 //May 18,2016
 Flight::route('/getMembersPost', function()
 {
@@ -477,7 +477,7 @@ Flight::route('/getMembersPost', function()
 });
 
 
-//Route to get timeline feeds of users I follow
+//38 Route to get timeline feeds of users I follow
 //May 30,2016
 Flight::route('/getFollowedMembersPosts', function()
 {
@@ -488,7 +488,7 @@ Flight::route('/getFollowedMembersPosts', function()
 	echo json_encode($returnarray);
 });
 
-//Route to get timeline feeds of all users
+//39 Route to get timeline feeds of all users
 //May 30,2016
 Flight::route('/getAllPosts', function()
 {
@@ -499,7 +499,7 @@ Flight::route('/getAllPosts', function()
 	echo json_encode($returnarray);
 });
 
-//Route to post a new comment for a timeline post
+//40 Route to post a new comment for a timeline post
 //May 20,2016
 Flight::route('/postThisComment', function()
 {
@@ -511,7 +511,7 @@ Flight::route('/postThisComment', function()
 });
 
 
-//Route to like a timeline post
+//41 Route to like a timeline post
 //May 20,2016
 Flight::route('/likeThisPost', function()
 {
@@ -523,7 +523,7 @@ Flight::route('/likeThisPost', function()
 });
 
 
-//Route to unlike a timeline post
+//42 Route to unlike a timeline post
 //May 20,2016
 Flight::route('/unlikeThisPost', function()
 {
@@ -535,7 +535,7 @@ Flight::route('/unlikeThisPost', function()
 });
 
 
-//Route to prfile settings
+//43 Route to prfile settings
 // May 24,2016
 //Arshad
 Flight::route('/getMyPreferences', function()
@@ -548,7 +548,7 @@ Flight::route('/getMyPreferences', function()
 
 });
 
-//Route to update preferences
+//44 Route to update preferences
 // May 25,2016
 //Arshad
 Flight::route('/updateMyPreferences', function()
@@ -562,7 +562,7 @@ Flight::route('/updateMyPreferences', function()
 });
 
 
-//Route to fetch top contributors
+//45 Route to fetch top contributors
 //June 02,2016
 Flight::route('/getTopContributors', function()
 {
@@ -575,7 +575,7 @@ Flight::route('/getTopContributors', function()
 });
 
 
-//Route to fetch user notifications
+//46 Route to fetch user notifications
 //June 02,2016
 Flight::route('/getMyNotifications', function()
 {
@@ -588,13 +588,26 @@ Flight::route('/getMyNotifications', function()
 });
 
 
-//Route to fetch user notifications
+//47 Route to fetch a single post from user notification
 //June 08,2016
 Flight::route('/getThisPost', function()
 {
    enable_cors();	
    services_included();	
 	$returnarray=getThisPost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//48 Route to fetch timeline posts of a company
+//June 13,2016
+Flight::route('/getCompanyPosts', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getCompanyPosts();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 

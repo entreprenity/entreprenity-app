@@ -19,6 +19,10 @@
 				{
 					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
 				},
+				getCompanyPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
+				},
 				postCurrentPost: function(newPost) 
 				{
 					var dataPost = {newPost: newPost};														
@@ -65,8 +69,8 @@
 			var controller = function($routeParams, newsFeedService) {
 				var vm = this;
 				var userObject;
-				console.log('postsType is ' + vm.poststype);
-				console.log('username is ' + vm.username);
+				//console.log('postsType is ' + vm.poststype);
+				//console.log('username is ' + vm.username);
 
 				
 				vm.getPosts = function () {
@@ -88,6 +92,11 @@
 							break
 							case '3':
 								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+									vm.posts = data;
+								});
+							break
+							case '4':
+								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
 								});	
 								
