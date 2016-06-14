@@ -66,12 +66,32 @@
 			};
 		})
 		.directive('newsFeed', function() {
-			var controller = function($routeParams, newsFeedService) {
+			var controller = function($routeParams, newsFeedService, $scope) {
 				var vm = this;
 				var userObject;
-				//console.log('postsType is ' + vm.poststype);
-				//console.log('username is ' + vm.username);
 
+				vm.busoppPost = false; // initial state is false, set to true on checkbox
+
+				$scope.loadTags = function(query) { //load tag Categories
+					/*
+					 newsFeedService.getTagCategories().success(function(data) {
+					 	vm.categories = data;
+					 });
+					 */
+					vm.categories = [
+						{ "text": "Programming" },
+						{ "text": "Design" },
+						{ "text": "Development" },
+						{ "text": "Community" },
+						{ "text": "Petshop" },
+						{ "text": "Sales" },
+						{ "text": "Coworking" },
+						{ "text": "Serviced Office" },
+						{ "text": "Bakery" },
+						{ "text": "Virtual Office" }
+					];
+					return vm.categories;
+				};
 				
 				vm.getPosts = function () {
 						var postsType = vm.poststype;
@@ -81,26 +101,28 @@
 							case '1':
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
-								});	
-								
-							break
+								});
+							break;
 							case '2':
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
-									console.log(vm.posts);
 								});
-							break
+							break;
 							case '3':
 								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
 									vm.posts = data;
 								});
-							break
+							break;
 							case '4':
 								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
-								});	
-								
-						};	
+								});
+							break;
+							case '5':
+								newsFeedService.getAllPosts().success(function(data) { //change to own service newsFeedService.getBusOppPosts().
+									vm.posts = data;
+								});
+						}
 				};
 				
 				 /*
@@ -203,6 +225,19 @@
 					newsFeedService.postCurrentPost(newPost).success(function(data) {
 						vm.posts = data;
 					});	
+
+					vm.getPosts();
+				};
+
+				// Add a time-line Business Opportunity post
+				vm.addBusoppPost = function (content, categories) {
+					console.log(content);
+					console.log(categories);
+					/*
+					newsFeedService.postBusoppPost(newPost).success(function(data) {
+						vm.posts = data;
+					});
+					*/
 
 					vm.getPosts();
 				};

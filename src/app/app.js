@@ -122,6 +122,11 @@
 			templateUrl: 'app/components/notifications/notificationPost.html',
 			controllerAs: 'vm'
 		})
+		.when('/business-opportunities', {
+			controller: 'NotificationsController',
+			templateUrl: 'app/components/busopp/busoppView.html',
+			controllerAs: 'vm'
+		})
 		.otherwise({
 			redirectTo: '/login'
 		});
