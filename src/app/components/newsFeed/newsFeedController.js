@@ -6,11 +6,23 @@
 			var baseUrl = 'api/';
 			
 			return {
-				//getAllPosts,
-				getMemberPosts: function(username) { // change to getMembersPost with username as param
-					return $http.get(baseUrl+ 'getMyNewsFeed');
+				
+				getAllPosts: function() 
+				{ 
+					return $http.get(baseUrl+ 'getAllPosts');
+				},
+				getMemberPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getMembersPost?user='+username);
 				},	
-				//getFollowedMembersPosts with username as param,
+				getFollowedMembersPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
+				},
+				getCompanyPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
+				},
 				postCurrentPost: function(newPost) 
 				{
 					var dataPost = {newPost: newPost};														
@@ -20,7 +32,8 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-				getBasicUserInfo:function() {
+				getBasicUserInfo:function() 
+				{
 					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
 				postComment: function(commentedPost,newComment) 
@@ -56,44 +69,74 @@
 			var controller = function($routeParams, newsFeedService) {
 				var vm = this;
 				var userObject;
-				console.log('postsType is ' + vm.poststype);
-				console.log('username is ' + vm.username);
+				//console.log('postsType is ' + vm.poststype);
+				//console.log('username is ' + vm.username);
 
+				
 				vm.getPosts = function () {
 						var postsType = vm.poststype;
 						var username = vm.username;
 
 						switch(postsType){
 							case '1':
-								console.log('run getAllPosts service');
-								/*
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
 								});	
-								*/
+								
 							break
 							case '2':
-								console.log('run getMemberPosts service');
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
 									console.log(vm.posts);
 								});
-								/*
-								newsFeedService.getMemberPosts(username).success(function(data) {
-									vm.posts = data;
-								});	
-								*/
 							break
 							case '3':
-								console.log('run getFollowedPosts service');
-								/*
-								newsFeedService.getFollowedPosts(username).success(function(data) {
+								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+									vm.posts = data;
+								});
+							break
+							case '4':
+								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
 								});	
-								*/
-						};
-						
+								
+						};	
 				};
+				
+				 /*
+			    vm.getPosts = function() 
+			    {
+				     var postsType = vm.poststype;
+				     var username = vm.username;
+				     console.log('postsType is ' + vm.poststype);
+						console.log('username is ' + vm.username);
+				
+				     if (typeof username != 'undefined') 
+				     {
+					      switch (postsType) {
+					       case '1':
+					        			newsFeedService.getAllPosts().success(function(data) {
+														vm.posts = data;
+										});
+					       break
+					       case '2':
+					        			newsFeedService.getMemberPosts(username).success(function(data) {
+														vm.posts = data;
+														console.log(vm.posts);
+										});
+					       break
+					       case '3':
+					        			newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+														vm.posts = data;
+										});
+					      };
+				     } 
+				     else 
+				     {
+				      window.setTimeout(vm.getPosts, 100); 
+				     }
+			    };
+			    */
 				
 				vm.getPosts();
 					
@@ -127,6 +170,11 @@
 
 				vm.currentPost = myPost;
 
+				/*
+				newsFeedService.post(vm.npostID).success(function(data) {
+					vm.npost = data;
+				});
+				*/
 
 				//to get basic user information
 				vm.basicInfo = function () {

@@ -19,7 +19,7 @@
 				// check to make sure the form is completely valid
 				if (isValid) 
 				{
-						alert('isValid');
+					 //alert('isValid');
 				    $http({
 				      method: 'post',
 				      url: baseUrl+'login',
@@ -30,23 +30,38 @@
 				    {
 				    	if(data.success)
 				    	{
-				    		alert(data.msg);
-				    		localStorage.removeItem('entrp_token');
-				    		localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
+				    		//alert(data.msg);
+				    		//localStorage.clear();
+					    	if (localStorage['entrp_token'])
+					    	{
+					    		localStorage.removeItem('entrp_token');
+					    	}					    		
+					    	localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
+				    		
 				    		$location.path('/home');
 				    	}
 				    	else
 				    	{
-				    		alert('invalid 1');
-								alert(data.msg);
-				    		localStorage.removeItem('entrp_token');
-								vm.errorMessage = data.msg;
+				    		//alert('invalid 1');
+							//alert(data.msg);
+							
+					    	if (localStorage['entrp_token'])
+					    	{
+					    		localStorage.removeItem('entrp_token');
+					    	}
+				    		
+				    		//localStorage.clear();
+							vm.errorMessage = data.msg;
 				    	}
 		    		}).
 		    		error(function(data, status, headers, config) 
 		    		{
 		    			//alert('invalid 2');
-		    			localStorage.removeItem('entrp_token');
+			    		if (localStorage['entrp_token'])
+				    	{
+				    		localStorage.removeItem('entrp_token');
+				    	}
+		    			//localStorage.clear();
 						vm.errorMessage = data.msg;
 		    		});
 				}

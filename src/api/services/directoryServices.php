@@ -9,7 +9,22 @@ function getMembers()
 	$start=0;
 	$limit=12;
 	$end=12;
-	$member_default='member-default.jpg';
+	
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
+	
+	
+	
 	if(isset($_GET['page']))
 	{
 		$records=$_GET['page'];
@@ -151,6 +166,20 @@ function getMembers()
 // April 13,2015
 function getCompanies()
 {	
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+
+
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
@@ -194,6 +223,19 @@ function getCompanies()
 // April 13,2015
 function getEvents()
 {
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
+	
 	$data= array();
 	
 	$qry="SELECT * FROM entrp_events";

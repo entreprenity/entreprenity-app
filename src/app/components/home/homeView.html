@@ -47,14 +47,14 @@
 				<div>
 				
 					<uib-tabset active="active">
-						<uib-tab index="0" heading="My Posts">
-							<news-feed poststype="2" username="vm.userName"></news-feed>
+						<uib-tab index="0" heading="All Posts">
+							<news-feed poststype="1" username="vm.userName"></news-feed>
 						</uib-tab>
 						<uib-tab index="1" heading="Followed Posts">
 							<news-feed poststype="3" username="vm.userName"></news-feed>
 						</uib-tab>
-						<uib-tab index="2" heading="All Posts">
-							<news-feed poststype="1" username="vm.userName"></news-feed>
+						<uib-tab index="2" heading="My Posts">							
+							<news-feed poststype="2" username="vm.userName"></news-feed>
 						</uib-tab>
 					</uib-tabset>
 				</div>
@@ -81,6 +81,18 @@
 								<p>{{latestEvent.name}}</p>
 								<p>{{latestEvent.date}}</p>
 							</a>
+						</li>
+					</ul>
+				</div>
+				<div id="newMembers" class="card">
+					<h4>TOP CONTRIBUTORS</h4>
+					<ul>
+						<li ng-repeat="topContributor in vm.topContributors">
+							<a ng-href="#/members/{{topContributor.userName}}">
+								<img class="img-circle" ng-src="{{topContributor.avatar}}">
+								<p>{{topContributor.firstName + ' ' + topContributor.lastName}}</p>
+								<p>{{topContributor.position + ' / ' + topContributor.company}}</p>
+						 	</a>
 						</li>
 					</ul>
 				</div>

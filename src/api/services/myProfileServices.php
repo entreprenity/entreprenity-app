@@ -138,9 +138,20 @@ function getMyProfileDetails()
 }
 
 */	
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+
 	$data= array();
-	$member_default_cover			='assets/img/members/member-default.jpg';
-   $member_default_avatar			='assets/img/members/member-default.jpg';
    
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
@@ -227,6 +238,7 @@ function getMyProfileDetails()
 //Function to fetch a user's preferences
 //May 24,2016
 //Arshad
+//Updated By Dominic: Added business opportunities (June 08,2016)
 function getMyPreferences()
 {
 	
@@ -260,6 +272,7 @@ function getMyPreferences()
 		   		$data['comments'] = ($row['comment'] == 1 ? true : false);
 		   		$data['likes'] = ($row['likes'] == 1 ? true : false);
 		   		$data['mentions'] = ($row['mention'] == 1 ? true : false);
+		   		$data['businessOpportunities'] = ($row['business_opportunity'] == 1 ? true : false);
 		   	}
 		   	
 		   }
@@ -285,6 +298,7 @@ function getMyPreferences()
 //Function to fetch a user's preferences
 //May 24,2016
 //Arshad
+//Updated By Dominic: Added business opportunities (June 08,2016)
 function updateMyPreferences()
 {
 	
@@ -296,6 +310,7 @@ function updateMyPreferences()
 	$comment = ($_POST['comments'] == 'true'  ? 1 : 0 );
 	$likes = ($_POST['likes'] == 'true'  ? 1 : 0);
 	$mention = ($_POST['mentions'] == 'true' ? 1 : 0);
+	$businessOpportunities = ($_POST['businessOpportunities'] == 'true' ? 1 : 0);
 	
 	$session_values = get_user_session();
 	$my_session_id	= $session_values['id'];
@@ -303,7 +318,7 @@ function updateMyPreferences()
 	
 	if($userid)
 	{
-		$qry = "UPDATE entrp_user_notification_preferences SET language='".$language."', timezone='".$timezone."', follow='".$follow."', mention='".$mention."', comment='".$comment."', likes='".$likes."'  
+		$qry = "UPDATE entrp_user_notification_preferences SET language='".$language."', timezone='".$timezone."', follow='".$follow."', mention='".$mention."', comment='".$comment."', likes='".$likes."',business_opportunity='".$businessOpportunities."'  
 				  WHERE clientid=".$my_session_id." ";
 		if(setData($qry)){
 			$data = getMyPreferences();

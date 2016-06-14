@@ -117,6 +117,11 @@
 			templateUrl: 'app/components/notifications/notificationsView.html',
 			controllerAs: 'vm'
 		})
+		.when('/posts/:postID', {
+			controller: 'NotificationsController',
+			templateUrl: 'app/components/notifications/notificationPost.html',
+			controllerAs: 'vm'
+		})
 		.otherwise({
 			redirectTo: '/login'
 		});

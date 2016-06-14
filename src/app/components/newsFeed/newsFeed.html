@@ -20,7 +20,8 @@
 							</a>
 							<a class="author-name"><strong >{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
 							<a class="author-company">{{post.post_author.companyName}}</a>
-							<small class="text-muted"><span am-time-ago="post.created_at"></span></small>
+							<small class="text-muted"><span am-time-ago="post.created_at"></span></small>,
+							<small class="text-muted">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>
 						<div class="post-content">{{post.content}}</div>
