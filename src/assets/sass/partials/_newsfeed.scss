@@ -34,6 +34,10 @@
 				&:hover {color: lighten($primary-text-color, 20%);}
 			}
 		}
+		tags-input {
+			background-color: #fff;
+			padding: 5px 10px;
+		}
 	}
 	
 	.post {

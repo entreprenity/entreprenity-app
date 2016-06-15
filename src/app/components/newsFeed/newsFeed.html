@@ -2,11 +2,21 @@
 	<div id="newsFeed">
 		<div class="post-textarea">
 			<textarea class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content"></textarea>
+			<tags-input class="bootstrap"
+						ng-model="vm.currentPost.categories"
+						placeholder="Add a category"
+						replace-spaces-with-dashes="false"
+						ng-show="vm.busoppPost">
+				<auto-complete source="loadTags($query)"></auto-complete>
+			</tags-input>
 			<div class="button-container">
-				<a class="btn btn-primary btn-sm btn-post" ng-click="vm.addPost(vm.currentPost.content)">Post</a>	
+				<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.addPost(vm.currentPost.content)">Post</a>
+				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost)">Post</a>
 				<a class="btn btn-addImage" ng-click="alert('addImageToPost')">
 					<i class="fa fa-camera fa-lg"></i>
-				</a>	
+				</a>
+				<input type="checkbox" ng-model="vm.busoppPost">
+				<span>Check if Business Opportunity Post</span>
 			</div>
 		</div>
 		<div class="clearfix"></div>

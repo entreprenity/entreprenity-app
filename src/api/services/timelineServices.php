@@ -1,5 +1,156 @@
 <?php
 
+//Function to fetch all business opportunities
+//June 15,2016
+function getAllBusinessOpportunities()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+		
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.status=1 AND EUT.business_opp=1
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;
+}
+
+//Function to get post id of last inserted timeline post
+//June 15,2016 (This can be temporary; Find another way- a better way)
+function getLastTimelinePostID($posted_by,$created_at,$content)
+{
+	$qry="SELECT post_id FROM entrp_user_timeline  
+			WHERE content='".$content."' AND created_at='".$created_at."' AND posted_by=".$posted_by." ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['post_id'];  					
+		}
+		return $id;
+	}
+	else
+	{
+		return null;
+	}  
+
+}
+
+//Function to post a business opportunity
+//June 15,2016
+function postABusinessOpportunity()
+{
+	$data= array();
+	$categories=array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$content	= validate_input($_POST['postContent']['content']);
+		
+		if(!empty($_POST['postContent']['categories']))
+		{
+			$business_op=1;
+			$count_category=count($_POST['postContent']['categories']);
+			for($i=0;$i<$count_category;$i++)	
+			{
+				$categories[$i]	=	$_POST['postContent']['categories'][$i]['text'];
+				$category_json		=  json_encode($categories);
+			}
+		}
+		else
+		{
+			$business_op=0;
+		}
+		
+		$post_img='';
+		$created_at=date('Y-m-d H:i:s');
+		$posted_by=$my_session_id;
+		
+		
+		//$data['postContent']=$content;
+		//$data['postCategories']=$categories;
+		
+		$qry="INSERT INTO entrp_user_timeline(content,post_img,created_at,posted_by,business_opp) VALUES('".$content."','".$post_img."','".$created_at."',".$posted_by.",".$business_op.")";
+		if(setData($qry))
+		{
+			$postID  = getLastTimelinePostID($posted_by,$created_at,$content);
+			if($business_op==1)
+			{
+				$qry2="INSERT INTO entrp_user_timeline_businessopp_tags ( postid, business_tags) VALUES (".$postID.", '".$category_json."')";
+				setData($qry2);  
+			}
+			
+			$data['response']='success';
+		}
+		else
+		{
+			$data['response']='failed';
+		}
+		
+	
+	}
+	return $data;
+
+}
 
 //Function to fetch a company timeline post based on company username
 //June 13,2016
@@ -29,8 +180,8 @@ function getCompanyPosts()
 	$companyId=getCompanyIdfromCompanyUserName($companyUserName);
 
 	$companyMembers= getAllCompanyMemberIDs($companyId);
-	$companyMembersString = implode(",", $companyMembers);
-	//$companyMembersString = '1,2,3';
+	//$companyMembersString = implode(",", $companyMembers);
+	$companyMembersString = '1,2,3';
 	
 	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
@@ -501,9 +652,13 @@ function unlikeThisPost()
 				}
 				
 				if(!empty($likedUsersID))
-				{				
-					$likedUsersIDJSON		= json_encode($likedUsersID);
-					
+				{	
+					//$likedUsersIDArr[]		=	$likedUsersID;		
+					$likedUsersIDJSON			= json_encode($likedUsersID);
+					/*
+					$qry0="UPDATE entrp_user_timeline_post_likes SET liked_user_ids='' WHERE  post_id=".$postId."";
+					setData($qry0);
+					*/
 					$qry="UPDATE entrp_user_timeline_post_likes SET liked_user_ids='".$likedUsersIDJSON."' WHERE  post_id=".$postId."";
 					if(setData($qry))
 					{
@@ -1053,6 +1208,7 @@ function usersWhoCommentedThisPost($post_id)
 //Function to fetch comments made on this timeline post
 //May 19,2016
 //June 06,2016: Added user location (centre location)
+//June 14,2016: Sorted comments based on datetime posted
 function userCommentsForThisPost($post_id)
 {
 	
@@ -1086,7 +1242,8 @@ function userCommentsForThisPost($post_id)
 			LEFT JOIN entrp_login AS EP ON EP.clientid=ETC.commented_by 
 			LEFT JOIN client_profile AS CP ON EP.clientid=CP.clientid
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE ETC.post_id=".$post_id." AND ETC.status=1
+			WHERE ETC.post_id=".$post_id." AND ETC.status=1 
+			ORDER BY ETC.commented_at ASC
 			";
    $res=getData($qry);
 	$count_res=mysqli_num_rows($res);

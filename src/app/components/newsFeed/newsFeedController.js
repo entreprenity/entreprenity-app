@@ -19,10 +19,23 @@
 				{
 					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
 				},
+				getBasicUserInfo:function() 
+				{
+					return $http.get(baseUrl + 'getBasicUserInformation');
+				},
 				getCompanyPosts: function(username) 
 				{
 					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
 				},
+				getTagCategories:function() 
+				{
+					return $http.get(baseUrl + 'getTagCategories');
+				},
+				getAllBusinessOpportunities:function() 
+				{
+					return $http.get(baseUrl + 'getAllBusinessOpportunities');
+				},
+				
 				postCurrentPost: function(newPost) 
 				{
 					var dataPost = {newPost: newPost};														
@@ -31,10 +44,6 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
-				},
-				getBasicUserInfo:function() 
-				{
-					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
 				postComment: function(commentedPost,newComment) 
 				{
@@ -62,16 +71,49 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				postBusoppPost: function(content) 
+				{
+					var dataPost = {postContent: content};														
+					return $http({ method: 'post',
+										url: baseUrl+'postABusinessOpportunity',
+										data: $.param(dataPost),
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 			};
 		})
 		.directive('newsFeed', function() {
-			var controller = function($routeParams, newsFeedService) {
+			var controller = function($routeParams, newsFeedService, $scope) {
 				var vm = this;
 				var userObject;
-				//console.log('postsType is ' + vm.poststype);
-				//console.log('username is ' + vm.username);
 
+				vm.busoppPost = false; // initial state is false, set to true on checkbox
+
+				$scope.loadTags = function(query) { //load tag Categories
+					
+					 var categories = [];
+					 newsFeedService.getTagCategories().success(function(data) {
+					 	vm.categories = data;						
+						/*
+					 	vm.categories = [
+						"Programming",
+						"Design",
+						"Development",
+						"Community",
+						"Petshop",
+						"Sales",
+						"Coworking",
+						"Serviced Office",
+						"Bakery",
+						"Virtual Office"
+						];
+						*/
+											 	
+					 });
+					 return vm.categories;
+					
+				};
 				
 				vm.getPosts = function () {
 						var postsType = vm.poststype;
@@ -81,26 +123,28 @@
 							case '1':
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
-								});	
-								
-							break
+								});
+							break;
 							case '2':
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
-									console.log(vm.posts);
 								});
-							break
+							break;
 							case '3':
 								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
 									vm.posts = data;
 								});
-							break
+							break;
 							case '4':
 								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
-								});	
-								
-						};	
+								});
+							break;
+							case '5':
+								newsFeedService.getAllBusinessOpportunities().success(function(data) { //change to own service newsFeedService.getBusOppPosts().
+									vm.posts = data;
+								});
+						}
 				};
 				
 				 /*
@@ -203,6 +247,17 @@
 					newsFeedService.postCurrentPost(newPost).success(function(data) {
 						vm.posts = data;
 					});	
+
+					vm.getPosts();
+				};
+
+				// Add a time-line Business Opportunity post
+				vm.addBusoppPost = function (content) {
+					//console.log(content);
+					//console.log(categories);					
+					newsFeedService.postBusoppPost(content).success(function(data) {
+						vm.posts = data;
+					});
 
 					vm.getPosts();
 				};
