@@ -1,5 +1,27 @@
 <?php
 
+//Function to fetch all company categories
+//June 15,2016
+function getAllCompanyCategories()
+{
+
+	$final_array= array();
+	
+	$qry="SELECT * FROM entrp_company_categories";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$temp_data       =   json_decode($row['category'],true); 
+  			$final_array     =   array_merge($final_array ,$temp_data);				
+		}
+	}   
+	return $final_array;
+}
+
+
 //Function to get all interest set
 //May 02, 2016
 function get_all_interest_sets()

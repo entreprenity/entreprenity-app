@@ -614,6 +614,43 @@ Flight::route('/getCompanyPosts', function()
 });
 
 
+//49 Route to fetch all company categories
+//June 13,2016
+Flight::route('/getTagCategories', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getAllCompanyCategories();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//50 Route to post a business opportunity
+//June 15,2016
+Flight::route('/postABusinessOpportunity', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=postABusinessOpportunity();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//51 Route to fetch all business opportunities
+//June 15,2016
+Flight::route('/getAllBusinessOpportunities', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getAllBusinessOpportunities();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
 
 //Route to test timeline posts
 //November 31,2016

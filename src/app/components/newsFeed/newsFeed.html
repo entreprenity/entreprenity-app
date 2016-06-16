@@ -11,7 +11,7 @@
 			</tags-input>
 			<div class="button-container">
 				<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.addPost(vm.currentPost.content)">Post</a>
-				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost.content, vm.currentPost.categories)">Post</a>
+				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost)">Post</a>
 				<a class="btn btn-addImage" ng-click="alert('addImageToPost')">
 					<i class="fa fa-camera fa-lg"></i>
 				</a>
