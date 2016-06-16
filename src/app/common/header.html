@@ -13,10 +13,19 @@
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
-			<ul class="nav navbar-nav navbar-right">
-				<!-- <li><a href="#/myprofile/{{vm.id}}">My Profile</a></li> -->
-				<!-- <li><a href="#/mycompany">Company Profile</a></li> -->
-				<li><a href="#/logout">Logout</a></li>
+			<ul class="nav navbar-nav navbar-right" style="margin-right: 2px;">
+				<li class="dropdown" ng-class="{ open : dd1 }" ng-init="dd1 = false" ng-click="dd1 = !dd1">
+					<a 	class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars fa-lg"></i></a>
+					<ul class="dropdown-menu">
+						<li><a href="#/myprofile/{{vm.id}}">My Profile</a></li>
+						<li><a href="#/mycompany">Company Profile</a></li>
+						<li><a href="#/home">Finance</a></li>
+						<li><a href="#/home">Refer a Friend</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#/settings">Settings</a></li>
+						<li><a href="#/logout">Logout</a></li>
+					</ul>
+				</li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div>

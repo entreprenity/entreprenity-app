@@ -1,29 +1,100 @@
 <?php
 
 
-//Function to update user avatar
+//Function to update user avatar, company avatar, event poster
 //May 06,2016
-function updateMyProfileAvatar()
+//June 16,2016: convert base64 to img, save path to db
+function uploadTheImage()
 {
 	$data= array();
+	$data['response']='not uploaded';
 	
-	//$clientid=validate_input($_POST['userId']);
-	//$clientid=1;
-	//$userAvatar=validate_input($_POST['userAvatar']);
+	define('PROFILE_PIC', 'assets/img/members/');
+	define('COMPANY_PIC', 'assets/img/companies/');
+	define('EVENT_POSTER', 'assets/img/events/');
 	
-	$clientid=1;
+	define('PROFILE_PIC_UPL', '../assets/img/members/');
+	define('COMPANY_PIC_UPL', '../assets/img/companies/');
+	define('EVENT_POSTER_UPL', '../assets/img/events/');
+	
+	$session_values=get_user_session();
+	$my_session_id				= $session_values['id'];
+	$my_session_firstname 	= $session_values['firstname'];
+	$my_session_lastname		= $session_values['lastname'];
+	$my_session_username		= $session_values['username'];
+	
+	$upAt=date('YmdHis');
+	
 	$postdata 		= file_get_contents("php://input");
 	$request 		= json_decode($postdata);
-	//$clientid 		= $request->userId;
-	$userAvatar 	= $request->userAvatar;
 	
-	$qry="UPDATE client_profiles SET avatar='".$userAvatar."' WHERE clientid=".$clientid." ";
-	setData($qry);
-	return $qry;
-	/*
-	$data=fetch_user_information_from_id($clientid);
+	$uploadType 	= (int)$request->uploadType;
+	$uploadImg 		= $request->uploadImg;
+	
+	// $uploadType values
+	// 1- member profile pic
+   // 2- company profile pic
+	// 3- events poster
+	// 4- client profile cover photo
+	// 5- client company profile photo
+
+	$img = str_replace('data:image/png;base64,', '', $uploadImg);
+	$img = str_replace(' ', '+', $img);
+	$data = base64_decode($img);
+	
+	if($uploadType==1)
+	{
+		$fileName 	 = PROFILE_PIC.$my_session_username.$upAt.'.png';
+		$filePath 	 = PROFILE_PIC_UPL.$my_session_username.$upAt.'.png';
+	}
+	
+	if($uploadType==2)
+	{
+		$fileName     = COMPANY_PIC.$my_session_username.$upAt.'.png';
+		$filePath 	  = COMPANY_PIC_UPL.$my_session_username.$upAt.'.png';
+	}
+	
+	if($uploadType==3)
+	{
+		$fileName 	 = EVENT_POSTER.$my_session_username.$upAt.'.png';
+		$filePath 	 = EVENT_POSTER_UPL. $my_session_username.$upAt.'.png';
+	}
+	
+	$success = file_put_contents($filePath, $data);
+	$result  = $success ? 1 : 0;	
+	
+	//client profile pic
+	if($uploadType==1)
+	{
+		$qry="UPDATE client_profile SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry))
+		{
+			$data['response']='success';
+		}
+	}
+	
+	//client company profile pic
+	if($uploadType==2)
+	{
+		$qry="UPDATE company_profiles SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry))
+		{
+			$data['response']='success';
+		}
+	}
+	
+	//event poster
+	if($uploadType==3)
+	{
+		$qry="UPDATE entrp_events SET poster='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry))
+		{
+			$data['response']='success';
+		}
+	}
+	
 	return $data;
-	*/
+	
 }
 
 

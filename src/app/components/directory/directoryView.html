@@ -61,7 +61,7 @@
 							<a ng-href="#/companies/{{company.userName}}">
 								<div>
 									<div class="top-part">
-										<img ng-src="assets/img/companies/{{company.avatar}}">
+										<img ng-src="{{company.avatar}}">
 									</div>
 									<h4 class="truncate">{{company.companyName}}</h4>
 									<p class="truncate"><i class="fa fa-map-marker"></i> {{company.city}}</p>		
@@ -98,7 +98,7 @@
 					<ul class="directory-events" infinite-scroll='vm.events.nextPage()' infinite-scroll-disabled='vm.events.busy'  infinite-scroll-distance='0'>
 						<li ng-repeat="event in vm.events.items | filter:searchedEvent | filter:selectedCity3">
 							<a ng-href="#/events/{{event.id}}">
-								<img ng-src="assets/img/events/{{event.poster}}">
+								<img ng-src="{{event.poster}}">
 								<div>
 									<h4 class="truncate">{{event.eventName}}</h4>
 									<p class="truncate">{{event.date}}</p>
