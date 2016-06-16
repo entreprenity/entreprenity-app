@@ -8948,7 +8948,14 @@ a {
   text-decoration: none;
   color: inherit;
 }
-/* line 15, ../sass/partials/_home.scss */
+/* line 14, ../sass/partials/_home.scss */
+#home h5 {
+  text-align: center;
+  text-decoration: underline;
+  margin-bottom: 5px;
+  color: #717171;
+}
+/* line 22, ../sass/partials/_home.scss */
 #home .nav-tabs {
   position: relative;
   width: 100%;
@@ -8957,22 +8964,22 @@ a {
   margin: 10px 0;
 }
 @media (max-width: 1000px) {
-  /* line 15, ../sass/partials/_home.scss */
+  /* line 22, ../sass/partials/_home.scss */
   #home .nav-tabs {
     padding: 0px 20px;
   }
 }
-/* line 25, ../sass/partials/_home.scss */
+/* line 32, ../sass/partials/_home.scss */
 #home .nav-tabs li {
   text-align: center;
   height: 100%;
   width: 33%;
 }
-/* line 29, ../sass/partials/_home.scss */
+/* line 36, ../sass/partials/_home.scss */
 #home .nav-tabs li.active {
   border-bottom: 5px solid #f29b13;
 }
-/* line 32, ../sass/partials/_home.scss */
+/* line 39, ../sass/partials/_home.scss */
 #home .nav-tabs li a {
   background-color: #ffffff;
   border: 0px;
@@ -8988,37 +8995,37 @@ a {
   -webkit-border-radius: 0px 0px;
   border-radius: 0px 0px / 0px 0px;
 }
-/* line 42, ../sass/partials/_home.scss */
+/* line 49, ../sass/partials/_home.scss */
 #home .nav-tabs li a:hover {
   border: 0px;
   /*background-color: darken($tabs-bg-color, 10%);*/
   color: #535353;
 }
-/* line 47, ../sass/partials/_home.scss */
+/* line 54, ../sass/partials/_home.scss */
 #home .nav-tabs li a:focus, #home .nav-tabs li a:active {
   border: 0px;
 }
-/* line 53, ../sass/partials/_home.scss */
+/* line 60, ../sass/partials/_home.scss */
 #home .nav-tabs li a i {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 53, ../sass/partials/_home.scss */
+  /* line 60, ../sass/partials/_home.scss */
   #home .nav-tabs li a i {
     display: block;
   }
 }
-/* line 61, ../sass/partials/_home.scss */
+/* line 68, ../sass/partials/_home.scss */
 #home .nav-tabs li a span {
   display: block;
 }
 @media (max-width: 600px) {
-  /* line 61, ../sass/partials/_home.scss */
+  /* line 68, ../sass/partials/_home.scss */
   #home .nav-tabs li a span {
     display: none;
   }
 }
-/* line 72, ../sass/partials/_home.scss */
+/* line 79, ../sass/partials/_home.scss */
 #home .card {
   text-align: center;
   border: 1px solid;
@@ -9026,46 +9033,46 @@ a {
   margin-bottom: 15px;
   background-color: #ffffff;
 }
-/* line 80, ../sass/partials/_home.scss */
+/* line 87, ../sass/partials/_home.scss */
 #home #myProfile {
   padding: 10px 15px;
 }
-/* line 82, ../sass/partials/_home.scss */
+/* line 89, ../sass/partials/_home.scss */
 #home #myProfile img {
   max-width: 100px;
   width: 100%;
   height: auto;
   margin-bottom: 5px;
 }
-/* line 88, ../sass/partials/_home.scss */
+/* line 95, ../sass/partials/_home.scss */
 #home #myProfile p {
   color: #717171;
 }
-/* line 90, ../sass/partials/_home.scss */
+/* line 97, ../sass/partials/_home.scss */
 #home #myProfile a:hover {
   opacity: 0.8;
 }
-/* line 96, ../sass/partials/_home.scss */
+/* line 103, ../sass/partials/_home.scss */
 #home #sideNav li {
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 99, ../sass/partials/_home.scss */
+/* line 106, ../sass/partials/_home.scss */
 #home #sideNav li:last-child {
   border-bottom: 1px solid transparent;
 }
-/* line 101, ../sass/partials/_home.scss */
+/* line 108, ../sass/partials/_home.scss */
 #home #sideNav li a:hover {
   color: #f29b13 !important;
 }
-/* line 107, ../sass/partials/_home.scss */
+/* line 114, ../sass/partials/_home.scss */
 #home #topNav {
   height: 150px;
   text-align: center;
   margin-left: 5px;
   margin-bottom: 15px;
 }
-/* line 112, ../sass/partials/_home.scss */
+/* line 119, ../sass/partials/_home.scss */
 #home #topNav div {
   background-color: #ffffff;
   width: 33%;
@@ -9075,40 +9082,40 @@ a {
   border: 1px solid #E5E5E5;
   padding: 15px;
 }
-/* line 121, ../sass/partials/_home.scss */
+/* line 128, ../sass/partials/_home.scss */
 #home #topNav div img {
   width: 70px;
   height: 70px;
 }
-/* line 126, ../sass/partials/_home.scss */
+/* line 133, ../sass/partials/_home.scss */
 #home #topNav div .btn {
   padding: 6px 10px;
 }
-/* line 133, ../sass/partials/_home.scss */
+/* line 140, ../sass/partials/_home.scss */
 #home #newMembers h4 {
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 137, ../sass/partials/_home.scss */
+/* line 144, ../sass/partials/_home.scss */
 #home #newMembers ul {
   padding: 15px;
 }
-/* line 139, ../sass/partials/_home.scss */
+/* line 146, ../sass/partials/_home.scss */
 #home #newMembers ul img {
   max-width: 100px;
   width: 100%;
   height: auto;
 }
-/* line 149, ../sass/partials/_home.scss */
+/* line 156, ../sass/partials/_home.scss */
 #home #latestEvents h4 {
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 153, ../sass/partials/_home.scss */
+/* line 160, ../sass/partials/_home.scss */
 #home #latestEvents ul {
   padding: 15px;
 }
-/* line 155, ../sass/partials/_home.scss */
+/* line 162, ../sass/partials/_home.scss */
 #home #latestEvents ul img {
   width: 100%;
   height: auto;
@@ -9849,4 +9856,17 @@ a {
 #settings ul .button-container {
   padding: 15px;
   text-align: center;
+}
+
+/* line 2, ../sass/partials/_busopp.scss */
+#busopp .title {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+/* line 8, ../sass/partials/_busopp.scss */
+#busopp .title h4 {
+  padding: 10px 15px;
 }

@@ -10,6 +10,13 @@ $tabs-text-color: $primary-text-color;
 		text-decoration: none;
 		color:inherit;
 	}
+
+	h5 {
+		text-align: center;
+		text-decoration: underline;
+		margin-bottom: 5px;
+		color: $secondary-text-color;
+	}
 	
 	/*-- Tabs --*/
 	.nav-tabs {

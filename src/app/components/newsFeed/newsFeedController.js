@@ -73,23 +73,28 @@
 				vm.busoppPost = false; // initial state is false, set to true on checkbox
 
 				$scope.loadTags = function(query) { //load tag Categories
+
+					
 					/*
 					 newsFeedService.getTagCategories().success(function(data) {
 					 	vm.categories = data;
 					 });
 					 */
 					vm.categories = [
-						{ "text": "Programming" },
-						{ "text": "Design" },
-						{ "text": "Development" },
-						{ "text": "Community" },
-						{ "text": "Petshop" },
-						{ "text": "Sales" },
-						{ "text": "Coworking" },
-						{ "text": "Serviced Office" },
-						{ "text": "Bakery" },
-						{ "text": "Virtual Office" }
+						'Programming',
+						"Design",
+						"Development",
+						"Community",
+						"Petshop",
+						"Sales",
+						"Coworking",
+						"Serviced Office",
+						"Bakery",
+						"Virtual Office"
 					];
+
+					console.log(vm.categories);
+
 					return vm.categories;
 				};
 				
