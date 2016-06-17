@@ -5,7 +5,7 @@
 				<div id="myProfile" class="card">
 					<a ng-href="#/myprofile/{{vm.userName}}">
 						<img class="img-circle" ng-src="{{vm.avatar}}">
-						<h3>{{vm.firstName + vm.lastName}}</h3>
+						<h3>{{vm.firstName + " " +vm.lastName}}</h3>
 						<p>{{vm.position}}</p>
 						<p>at {{vm.myOffice}}</p>
 					</a>
@@ -13,24 +13,24 @@
 				<h5>COMMUNITY</h5>
 				<div id="sideNav" class="card">
 					<ul>
-						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">MY COMPANY</a></li>
-						<li><a ng-href="#/directory">EVENTS</a></li>
-						<li><a ng-href="#/directory">DIRECTORY</a></li>
-						<li><a ng-href="#/directory">BENEFITS & DISCOUNTS</a></li>
-						<li><a ng-href="#/events/add">ADD EVENTS</a></li>
-						<li><a ng-href="#/business-opportunities">BUSINESS OPPORTUNITIES</a></li>
+						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">My Company</a></li>
+						<li><a ng-href="#/directory">Events</a></li>
+						<li><a ng-href="#/events/add">Add Events</a></li>
+						<li><a ng-href="#/directory">Directory</a></li>
+						<li><a ng-href="#/directory">Benefits & Discounts</a></li>
+						<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
 					</ul>
 				</div>
 
 				<h5>SERVICES</h5>
 				<div id="sideNav" class="card">
 					<ul>
-						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">BOOK MEETING ROOM</a></li>
-						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">BOOK WORKSPACE</a></li>
-						<li><a href="http://callanswering.me/app/login.html" target="_blank">MANAGE CALLS</a></li>
-						<li><a href="http://callanswering.me/app/login.html" target="_blank">MANAGE MAILS</a></li>
-						<li><a ng-href="#/home">FACILITIES SUPPORT</a></li>
-						<li><a ng-href="#/home">CONTACT US</a></li>
+						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">Book Meeting Room</a></li>
+						<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">Book Workspace</a></li>
+						<li><a href="http://callanswering.me/app/login.html" target="_blank">Manage Calls</a></li>
+						<li><a href="http://callanswering.me/app/login.html" target="_blank">Manage Mails</a></li>
+						<li><a ng-href="#/home">Facilities Support</a></li>
+						<li><a ng-href="#/home">Contact Us</a></li>
 					</ul>
 				</div>
 			</div>
@@ -39,7 +39,7 @@
 					<div>
 						<img ng-src="assets/img/icon-recep.png">
 						<span class="up-arrow"></span>
-						<a  ng-href="http://callanswering.me/app/login.html" class="btn btn-default" target="_blank">RECEPTIONIST</a>
+						<a  ng-href="http://callanswering.me/app/login.html" class="btn btn-default" target="_blank">MY RECEPTIONIST</a>
 					</div>
 					<div>
 						<img ng-src="assets/img/icon-meeting.png">

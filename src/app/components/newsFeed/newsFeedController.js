@@ -19,7 +19,7 @@
 				{
 					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
 				},
-				getBasicUserInfo:function() 
+				getBasicUserInfo:function()
 				{
 					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
@@ -91,7 +91,6 @@
 				vm.busoppPost = false; // initial state is false, set to true on checkbox
 
 				$scope.loadTags = function(query) { //load tag Categories
-					
 					 var categories = [];
 					 newsFeedService.getTagCategories().success(function(data) {
 					 	vm.categories = data;						
@@ -112,7 +111,7 @@
 											 	
 					 });
 					 return vm.categories;
-					
+
 				};
 				
 				vm.getPosts = function () {

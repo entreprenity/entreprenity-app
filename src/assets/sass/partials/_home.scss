@@ -12,6 +12,8 @@ $tabs-text-color: $primary-text-color;
 	}
 
 	h5 {
+		font-weight: 300;
+		font-size: 12px;
 		text-align: center;
 		text-decoration: underline;
 		margin-bottom: 5px;
@@ -101,6 +103,7 @@ $tabs-text-color: $primary-text-color;
 	
 	#sideNav {
 		li {
+			font-weight: 300;
 			border-bottom: 1px solid $primary-divider-color;
 			padding: 10px 15px;
 			&:last-child {border-bottom: 1px solid transparent;}

@@ -10,6 +10,8 @@
 		'ngTagsInput',
 		'ngImgCrop',
 		'angularMoment',
+		'vr.directives.slider',
+		'rgkevin.datetimeRangePicker',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
@@ -27,7 +29,8 @@
 		'entreprenityApp.AuthenticationService',
 		'entreprenityApp.logout',
 		'entreprenityApp.settings',
-		'entreprenityApp.notifications'
+		'entreprenityApp.notifications',
+		'entreprenityApp.addEvent'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -125,6 +128,11 @@
 		.when('/business-opportunities', {
 			controller: 'NotificationsController',
 			templateUrl: 'app/components/busopp/busoppView.html',
+			controllerAs: 'vm'
+		})
+		.when('/add-event', {
+			controller: 'addEventController',
+			templateUrl: 'app/components/events/addEventView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({
