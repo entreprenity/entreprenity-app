@@ -32,7 +32,7 @@
 				controller: 'ImageUploadController',
 				resolve: {
 					id: function () {
-						return 5;
+						return 2;
 					}
 				}
 			});

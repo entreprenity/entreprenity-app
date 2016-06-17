@@ -9,18 +9,10 @@
 			return {		
 				uploadMemberAvatar: function(id,userImg) 
 				{
-					$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-					/*
-					return $http({ method: 'post',
-										url: baseUrl+'update_member_avatar',
-										data: { userId: id,userAvatar: userImg },
-										dataType: 'json',
-										headers: {'Content-Type': 'application/json'}
-									});
-					*/				
+					$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';			
 					data = {
-			            'userId' : id,
-			            'userAvatar' : userImg
+			            'uploadType' : id,
+			            'uploadImg' : userImg
 			        };
 
 		        return $http.post(baseUrl+'update_member_avatar', data)

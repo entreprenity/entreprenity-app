@@ -9,7 +9,7 @@
 					<div class="info">
 						<div class="profilePhoto">
 							<div>
-								<img class="img-circle" ng-src="assets/img/companies/{{vm.company.profilePhoto}}">
+								<img class="img-circle" ng-src="{{vm.company.profilePhoto}}">
 							</div>
 						</div>
 						<h3>{{vm.company.name}}</h3>
@@ -55,7 +55,7 @@
 							<ul>
 								<li ng-repeat="employee in vm.company.employees">
 									<a ng-href="#/members/{{employee.id}}">
-										<img class="img-circle" ng-src="assets/img/members/{{employee.profilePhoto}}">
+										<img class="img-circle" ng-src="{{employee.profilePhoto}}">
 									</a>
 								</li>
 							</ul>

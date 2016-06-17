@@ -36,7 +36,7 @@
 						<li ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
 							<a ng-href="/members/{{member.id}}">
 								<div>
-									<img class="img-circle" ng-src="assets/img/members/{{member.avatar}}">
+									<img class="img-circle" ng-src="{{member.avatar}}">
 									<h3>{{member.firstName + ' ' + member.lastName}}</h3>
 									<p>{{member.id}}</p>
 									<p>{{member.companyName}}</p>

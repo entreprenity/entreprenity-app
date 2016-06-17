@@ -201,7 +201,7 @@ Flight::route('/update_member_avatar', function()
 {
    enable_cors();
    services_included();	
-	$returnarray=updateMyProfileAvatar();
+	$returnarray=uploadTheImage();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 
