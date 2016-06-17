@@ -30,7 +30,8 @@
 		'entreprenityApp.logout',
 		'entreprenityApp.settings',
 		'entreprenityApp.notifications',
-		'entreprenityApp.addEvent'
+		'entreprenityApp.addEvent',
+		'entreprenityApp.common'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
