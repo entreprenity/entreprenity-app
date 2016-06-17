@@ -27,7 +27,8 @@
 		'entreprenityApp.AuthenticationService',
 		'entreprenityApp.logout',
 		'entreprenityApp.settings',
-		'entreprenityApp.notifications'
+		'entreprenityApp.notifications',
+		'entreprenityApp.common'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
