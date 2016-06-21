@@ -1,6 +1,97 @@
 <?php
 
 
+//Function to generate unique event tag
+//June 15,2016
+function generateUniqueEventTag()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,6);  // creates a 6 digit token
+   $qry = "SELECT id FROM entrp_events WHERE eventTagId = '".$token."'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      generateUniqueEventTag();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+//Function to add a new event's details
+//June 15,2016
+function addNewEvent()
+{
+	$data= array();
+	$data1= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$name = $requestData->eventName;
+		$eventName=validate_input($name);
+		
+		$category = $requestData->eventCategory;
+		$eventCategory=validate_input($category);
+		
+		$description = $requestData->eventDescription;
+		$eventDescription=validate_input($description);
+		
+		$date = $requestData->eventDate;
+		$eventDate=validate_input($date);
+		
+		$startTime = $requestData->eventStartTime;
+		$eventStartTime=validate_input($startTime);
+		
+		$endTime = $requestData->eventEndTime;
+		$eventEndTime=validate_input($endTime);
+		
+		$city = $requestData->eventCity;
+		$eventCity=validate_input($city);
+		
+		$location = $requestData->eventLocation;
+		$eventLocation=validate_input($location);
+		
+		$locLat = $requestData->eventLocLat;
+		$eventLocLat=validate_input($locLat);
+		
+		$locLong = $requestData->eventLocLong;
+		$eventLocLong=validate_input($locLong);
+		
+		
+		//$eventLocation='';
+		//$eventLocLat='';
+		//$eventLocLong='';
+		$eventDateTime=$eventDate.' '.$eventStartTime;
+		$eventTag=generateUniqueEventTag();
+		$companyID=getCompanyIDfromUserID($my_session_id);
+		$addedON=date('Y-m-d H:i:s');
+		$status=0;
+		
+		$qry="INSERT INTO entrp_events 
+			   (clientid,companyid,eventName,eventTagId,category,address,description,
+			    city,event_date,event_time,event_date_time,
+			    start_time,end_time,location_lat,location_long,
+			    added_by,added_on,status) 
+			   VALUES 
+			   (".$my_session_id.", ".$companyID.",'".$eventName."','".$eventTag."',".$eventCategory.",'".$eventLocation."','".$eventDescription."',
+			    '".$eventCity."','".$eventDate."','".$eventStartTime."','".$eventDateTime."',
+			    '".$eventStartTime."','".$eventEndTime."','".$eventLocLat."','".$eventLocLong."',
+			    ".$my_session_id.",'".$addedON."',".$status.")";
+		if(setData($qry))
+		{
+			//send mail to admin
+		   send_new_event_notification_to_admin($eventTag);
+		} 
+		
+	}
+	return $data;
+}
+
 //Function to fetch members directory
 // April 13,2015
 function getMembers()

@@ -35,7 +35,7 @@
 				
 				
 				//to get basic user information
-				myHomeService.getBasicUserInfo().success(function(data) {
+				myCommonService.getBasicUserInfo().success(function(data) {
 					vm.id 			= data.id;
 					vm.firstName 	= data.firstName;
 					vm.lastName 	= data.lastName;
@@ -45,7 +45,8 @@
 					vm.userName 	= data.userName;
 					vm.companyUserName 	= data.companyUserName;
 					
-					$scope.userName= data.userName;
+					$scope.userName 			= data.userName;
+					$scope.companyUserName 	= data.companyUserName;
 				});
 				
 		});

@@ -1,5 +1,32 @@
 <?php
 
+//Function to get all Event Categories
+//June 20,2016
+function getAllEventCatgories()
+{
+	$data= array();	
+	$qry="SELECT  id,category_name FROM entrp_event_categories";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data[$i]['id']				=	$row['id'];
+			$data[$i]['category']	=	$row['category_name'];
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']				=	"";
+		$data[$i]['category']	=	"";
+   }
+	return $data;
+}
+
+
 //Function to fetch all company categories
 //June 15,2016
 function getAllCompanyCategories()

@@ -511,7 +511,7 @@ Flight::route('/postThisComment', function()
 });
 
 
-//41 Route to like a timeline post
+//41 Route to like a timeline post (timelineServices.php)
 //May 20,2016
 Flight::route('/likeThisPost', function()
 {
@@ -523,7 +523,7 @@ Flight::route('/likeThisPost', function()
 });
 
 
-//42 Route to unlike a timeline post
+//42 Route to unlike a timeline post (timelineServices.php)
 //May 20,2016
 Flight::route('/unlikeThisPost', function()
 {
@@ -638,7 +638,7 @@ Flight::route('/postABusinessOpportunity', function()
 
 });
 
-//51 Route to fetch all business opportunities
+//51 Route to fetch all business opportunities (readOnlyServices.php)
 //June 15,2016
 Flight::route('/getAllBusinessOpportunities', function()
 {
@@ -651,7 +651,30 @@ Flight::route('/getAllBusinessOpportunities', function()
 });
 
 
+//52 Route to fetch all event categories (readOnlyServices.php)
+//June 15,2016
+Flight::route('/getAllEventCatgories', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getAllEventCatgories();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
 
+});
+
+
+//53 Route to add a new event's details (directoryServices.php)
+//June 15,2016
+Flight::route('/addNewEvent', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=addNewEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
 //Route to test timeline posts
 //November 31,2016
 /*

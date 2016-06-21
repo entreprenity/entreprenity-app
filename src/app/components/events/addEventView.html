@@ -4,16 +4,62 @@
         <div class="formContainer">
             <img class="img-circle" ng-src="assets/img/entreprenity-icon.png">
             <form name="addEventForm" ng-submit="vm.addEvent(addEventForm.$valid)" novalidate>
-                <div class="form-group">
+            
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.name.$dirty && addEventForm.name.$error.required }">
                     <input type="text" name="name" id="name" class="form-control" ng-model="vm.name" placeholder="Event Name" required />
-                    <span>validation error message</span>
+                    <span ng-show="addEventForm.name.$dirty && addEventForm.name.$error.required" class="help-block">{{getError(addEventForm.name.$error, 'Event Name')}}</span>
                 </div>
-                <div class="form-group">
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.eventCategory.$dirty && addEventForm.eventCategory.$error.required }">
+                    <label>Category</label>
+								<select ng-model="vm.eventCategory">
+									<option value="">All Categories</option>
+									<option ng-repeat="category in vm.categories" value="{{category.id}}">{{category.category}}</option>
+								</select>
+							<span ng-show="addEventForm.eventCategory.$dirty && addEventForm.eventCategory.$error.required" class="help-block">{{getError(addEventForm.eventCategory.$error, 'Category')}}</span>
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.description.$dirty && addEventForm.description.$error.required }">
                     <input type="text" name="description" id="description" class="form-control" ng-model="vm.description" placeholder="Event Description" required />
-                    <span>validation error message</span>
+                    <span ng-show="addEventForm.description.$dirty && addEventForm.description.$error.required" class="help-block">{{getError(addEventForm.description.$error, 'Description')}}</span>
                 </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.eventDate.$dirty && addEventForm.eventDate.$error.required }">
+                    <input type="text" name="eventDate" id="eventDate" class="form-control" ng-model="vm.eventDate" placeholder="Event Date" required />
+                    <span ng-show="addEventForm.eventDate.$dirty && addEventForm.eventDate.$error.required" class="help-block">{{getError(addEventForm.eventDate.$error, 'Event Date')}}</span>
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.eventStartTime.$dirty && addEventForm.eventStartTime.$error.required }">
+                    <input type="text" name="eventStartTime" id="eventStartTime" class="form-control" ng-model="vm.eventStartTime" placeholder="Start Time" required />
+                    <span ng-show="addEventForm.eventStartTime.$dirty && addEventForm.eventStartTime.$error.required" class="help-block">{{getError(addEventForm.eventStartTime.$error, 'Start Time')}}</span>
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.eventEndTime.$dirty && addEventForm.eventEndTime.$error.required }">
+                    <input type="text" name="eventEndTime" id="eventEndTime" class="form-control" ng-model="vm.eventEndTime" placeholder="End Time" required />
+                    <span ng-show="addEventForm.eventEndTime.$dirty && addEventForm.eventEndTime.$error.required" class="help-block">{{getError(addEventForm.eventEndTime.$error, 'End Time')}}</span>
+                </div>
+                
+                <div class="form-group" ng-class="{ 'has-error': addEventForm.eventCity.$dirty && addEventForm.eventCity.$error.required }">
+                    <input type="text" name="eventCity" id="eventCity" class="form-control" ng-model="vm.eventCity" placeholder="City" required />
+                    <span ng-show="addEventForm.eventCity.$dirty && addEventForm.eventCity.$error.required" class="help-block">{{getError(addEventForm.eventCity.$error, 'City')}}</span>
+                </div>
+                
+					<div class="form-group" ng-class="{ 'has-error': addEventForm.source_point.$dirty && addEventForm.source_point.$error.required }" >
+					  <label for="source_point"><h2>Address</h2></label>
+					  <input type="text" id="source_point" name="source_point" ng-model="vm.source_point" class="form-control" placeholder="Enter your pick up address here">
+					  <span ng-show="addEventForm.source_point.$dirty && addEventForm.source_point.$error.required" class="help-block">{{getError(addEventForm.source_point.$error, 'Location')}}</span>
+					  <p id="pickup_location"></p>
+					  <input type="text" id="src_lat" name="src_lat" ng-model="vm.src_lat" placeholder="latitude">
+					  <input type="text" id="src_long" name="src_long" ng-model="vm.src_long" placeholder="longitude">
+					</div>
+					
+					<div class="form-group form-actions">
+					  <button type="submit" ng-disabled="addEventForm.$invalid || vm.dataLoading" ng-class="{ 'disabled': addEventForm.$invalid || vm.dataLoading }" class="btn btn-primary">Add Event</button>
+				  </div>
+		  			
             </form>
         </div>
+        
+        <div id="source_map"></div>
     </div>
 </div>
-

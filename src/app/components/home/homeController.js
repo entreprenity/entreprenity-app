@@ -78,6 +78,7 @@
 					vm.companyUserName 	= data.companyUserName;
 					
 					$scope.userName= data.userName;
+					//$scope.$apply()
 				});
 				
 		});

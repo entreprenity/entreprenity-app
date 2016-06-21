@@ -15,7 +15,7 @@
 					<ul>
 						<li><a ng-href="#/mycompany/{{vm.companyUserName}}">My Company</a></li>
 						<li><a ng-href="#/directory">Events</a></li>
-						<li><a ng-href="#/events/add">Add Events</a></li>
+						<li><a ng-href="#/add-event">Add Events</a></li>
 						<li><a ng-href="#/directory">Directory</a></li>
 						<li><a ng-href="#/directory">Benefits & Discounts</a></li>
 						<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
@@ -56,13 +56,13 @@
 				
 					<uib-tabset active="active">
 						<uib-tab index="0" heading="All Posts">
-							<news-feed poststype="1" username="vm.userName"></news-feed>
+							<news-feed  poststype="1" username="userName"></news-feed>
 						</uib-tab>
 						<uib-tab index="1" heading="Followed Posts">
-							<news-feed poststype="3" username="vm.userName"></news-feed>
+							<news-feed  poststype="3" username="userName"></news-feed>
 						</uib-tab>
 						<uib-tab index="2" heading="My Posts">							
-							<news-feed poststype="2" username="vm.userName"></news-feed>
+							<news-feed  poststype="2" username="userName"></news-feed>
 						</uib-tab>
 					</uib-tabset>
 				</div>
