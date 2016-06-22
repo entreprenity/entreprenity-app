@@ -34,3 +34,24 @@ $secondary-color: $secondary-color; //orange
 		transition: background 100ms ease-in-out;
 	}
 }
+
+.uib-daypicker{
+	.btn {
+		padding: 5px 10px !important;
+	}
+	.btn-default {
+		color: #333 !important;
+		background-color: #fff !important;
+		border-color: #ccc !important;
+	}
+	.full button span {
+		background-color: limegreen;
+		border-radius: 32px;
+		color: black;
+	}
+	.partially button span {
+		background-color: orange;
+		border-radius: 32px;
+		color: black;
+	}
+}
