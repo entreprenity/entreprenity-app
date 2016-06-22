@@ -8880,6 +8880,29 @@ a {
   transition: background 100ms ease-in-out;
 }
 
+/* line 39, ../sass/partials/_button.scss */
+.uib-daypicker .btn {
+  padding: 5px 10px !important;
+}
+/* line 42, ../sass/partials/_button.scss */
+.uib-daypicker .btn-default {
+  color: #333 !important;
+  background-color: #fff !important;
+  border-color: #ccc !important;
+}
+/* line 47, ../sass/partials/_button.scss */
+.uib-daypicker .full button span {
+  background-color: limegreen;
+  border-radius: 32px;
+  color: black;
+}
+/* line 52, ../sass/partials/_button.scss */
+.uib-daypicker .partially button span {
+  background-color: orange;
+  border-radius: 32px;
+  color: black;
+}
+
 /** Search Bar **/
 /** Select Box **/
 /* line 4, ../sass/partials/_forms.scss */
@@ -8890,12 +8913,12 @@ a {
   width: 100%;
   overflow: hidden;
   background-color: #fff;
-  background: #E9E9EB url("../img/caret-down.png") no-repeat 95% 50%;
+  background: #E9E9EB url("../img/caret-down.png") no-repeat 96% 50%;
 }
 
 /* line 14, ../sass/partials/_forms.scss */
 .select-style select {
-  padding: 5px 8px;
+  padding: 8px 15px;
   width: 100%;
   border: none;
   box-shadow: none;
@@ -9872,4 +9895,47 @@ a {
 /* line 8, ../sass/partials/_busopp.scss */
 #busopp .title h4 {
   padding: 10px 15px;
+}
+
+/* line 2, ../sass/partials/_addEvent.scss */
+#addEvent .title {
+  background-color: #ffffff;
+  border: 1px solid;
+  border-color: #e5e6e9 #dfe0e4 #d0d1d5;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+/* line 8, ../sass/partials/_addEvent.scss */
+#addEvent .title h4 {
+  padding: 10px 20px !important;
+}
+/* line 13, ../sass/partials/_addEvent.scss */
+#addEvent h3 {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+/* line 21, ../sass/partials/_addEvent.scss */
+#addEvent .rg-range-picker .well {
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+/* line 29, ../sass/partials/_addEvent.scss */
+#addEvent .formContainer {
+  background-color: #ffffff;
+  padding: 10px 15px;
+}
+/* line 32, ../sass/partials/_addEvent.scss */
+#addEvent .formContainer .form-section {
+  padding: 0 10px;
+}
+/* line 35, ../sass/partials/_addEvent.scss */
+#addEvent .formContainer .form-actions {
+  text-align: right;
+}
+/* line 40, ../sass/partials/_addEvent.scss */
+#addEvent #source_map {
+  width: 100%;
+  height: 300px;
+  margin-bottom: 20px;
 }

@@ -109,8 +109,8 @@
 							</a>
 							<hr>
 							<div class="button-group">
-								<a class="btn btn-default" ng-click="vm.going_event(event.id)" ng-hide="vm.events.items[{{$index}}].followed">JOIN</a>
-								<a class="btn btn-primary" ng-click="vm.notGoing_event(event.id)" ng-show="vm.events.items[{{$index}}].followed">NOT JOINING ANYMORE</a>
+								<a class="btn btn-default" ng-click="vm.going_event(event.id)" ng-hide="vm.events.items[{{$index}}].joining">JOIN</a>
+								<a class="btn btn-primary" ng-click="vm.notGoing_event(event.id)" ng-show="vm.events.items[{{$index}}].joining">NOT JOINING ANYMORE</a>
 							</div>
 						</li>
 						<!-- <div ng-show='vm.events.busy'>Loading data...</div> -->

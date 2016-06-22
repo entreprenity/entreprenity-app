@@ -256,28 +256,38 @@
 			
 				$scope.post = {};
 				$scope.post.addEvent = [];
-				$scope.vm = {};
 				$scope.index = '';
 				var baseUrl = 'api/';
 				
             // function to submit the form after all validation has occurred
             vm.addEvent = function(isValid)
             {
+            	 //alert(vm.name);
+            	 //alert(vm.eventCategory);
+            	 //alert(vm.description);
+            	 //alert(vm.eventDate);
+            	 //alert(vm.eventStartTime);
+            	 //alert(vm.eventEndTime);
+            	 //alert(vm.source_point);
+            	 //alert(vm.src_lat);
+            	 //alert(vm.src_long);
+            	 //alert(vm.eventCity);
                 // check to make sure the form is completely valid
                 if (isValid)
                 {
+                	 //alert('i am valid');
                 	var dataPost = 
                 			{
-                				eventName			: $scope.vm.name,
-                				eventCategory		: $scope.vm.eventCategory,
-                				eventDescription	: $scope.vm.description,
-                				eventDate			: $scope.vm.eventDate,
-                				eventStartTime		: $scope.vm.eventStartTime,
-                				eventEndTime		: $scope.vm.eventEndTime,
-                				eventLocation		: $scope.vm.source_point,
-                				eventLocLat			: $scope.vm.src_lat,
-                				eventLocLong		: $scope.vm.src_long,
-                				eventCity			: $scope.vm.eventCity
+                				eventName			: vm.name,
+                				eventCategory		: vm.eventCategory,
+                				eventDescription	: vm.description,
+                				eventDate			: vm.eventDate,
+                				eventStartTime		: vm.eventStartTime,
+                				eventEndTime		: vm.eventEndTime,
+                				eventLocation		: vm.source_point,
+                				eventLocLat			: vm.src_lat,
+                				eventLocLong		: vm.src_long,
+                				eventCity			: vm.eventCity
                 			
                 			};														
 						return $http({ method: 'post',
@@ -288,6 +298,56 @@
                 }
             };
 
-            
+            // Date Picker Objects and Functions (angular ui bootstrap datepicker)
+			$scope.today = function() {
+				vm.eventDate = new Date();
+			};
+			$scope.today();
+
+			$scope.clear = function() {
+				vm.eventDate = null;
+			};
+
+			// Disable weekend selection
+			$scope.disabled = function(date, mode) {
+				return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+			};
+
+			$scope.toggleMin = function() {
+				$scope.minDate = $scope.minDate ? null : new Date();
+			};
+
+			$scope.toggleMin();
+			$scope.maxDate = new Date(2020, 5, 22);
+			// popup open function
+            $scope.open1 = function() {
+                $scope.popup1.opened = true;
+            };
+			// popup object
+            $scope.popup1 = {
+                opened: false
+            };
+			$scope.dateDisplayFormat = 'dd-MMMM-yyyy';
+
+			// Time Range Objects and Functions (angular dateTimeRangePicker)
+			// show only time slider
+			// config for timerangepicker
+			$scope.timeRangePicker = {
+				time: {
+					from: 480, // default low value
+					to: 1020, // default high value
+					step: 15, // step width
+					minRange: 15, // min range
+					hours24: true // true for 24hrs based time | false for PM and AM
+				}
+			};
+			// update vm start and end time on timerange change
+			$scope.whenTimeChange = function (data) {
+				console.log('schedule changes', data);
+				//vm.eventStartTime = $scope.timeRangePicker.time.from;
+				vm.eventStartTime = data.from;
+				//vm.eventEndTime = $scope.timeRangePicker.time.to;
+				vm.eventEndTime = data.to;
+			};
         });
 })();

@@ -242,23 +242,24 @@
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
 					currentPost.content = ""; //clear post textarea
-
-					newsFeedService.postCurrentPost(newPost).success(function(data) {
-						vm.posts = data;
-					});	
-
-					vm.getPosts();
+					if(newPost)
+					{
+						newsFeedService.postCurrentPost(newPost).success(function(data) {
+							vm.posts = data;
+						});
+						vm.getPosts();
+					}	
 				};
 
 				// Add a time-line Business Opportunity post
 				vm.addBusoppPost = function (content) {
-					//console.log(content);
-					//console.log(categories);					
-					newsFeedService.postBusoppPost(content).success(function(data) {
-						vm.posts = data;
-					});
-
-					vm.getPosts();
+					if(content.content && content.categories)
+					{
+						newsFeedService.postBusoppPost(content).success(function(data) {
+							vm.posts = data;
+						});
+						vm.getPosts();
+					}								
 				};
 
 				//Like a time-line post
