@@ -2,6 +2,122 @@
 
 /* Functions and services based on userid begins */
 
+
+//Function to fetch event details based on event tag
+//June 21,2016
+function fetchEventDetailsBasedonEventTAG($eventTag)
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+
+	$data= array();	
+	
+	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
+			FROM entrp_events 
+			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
+		   WHERE entrp_events.eventTagId='".$eventTag."'
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data['id']				=	$row['id'];
+   		$eventid					= 	$data['id']	;
+   		$data['name']			=	$row['eventName'];
+   		$data['address']		=	$row['address'];
+   		
+   		$data['date']			=	$row['event_date'];
+   		$data['startTime']	=	$row['start_time'];
+   		$data['endTime']		=	$row['end_time'];
+   		$data['clientid']	=	$row['clientid'];
+   		if($row['poster']!='')
+   		{
+   			$data['poster']	=	$row['poster'];
+   		}
+   		else
+   		{
+   			$data['poster']	=	$events_default;
+   		}
+   		$data['about']			=	$row['description'];
+   		$data['category']		=	$row['category_name'];
+   		$data['map']['center']['latitude']		=	$row['location_lat'];
+			$data['map']['center']['longitude']		=	$row['location_long'];
+			$data['map']['zoom']	=	8;
+			
+			// newly fetched info starts
+			$data['city']				=	$row['city'];
+			$data['added_by']			=	$row['added_by'];
+			$data['added_on']			=	$row['added_on'];
+			$data['status']			=	$row['status'];
+			$data['read_only']		=	$row['read_only'];
+			$data['eventTagId']		=	$row['eventTagId'];
+			// newly fetched info ends
+   	}
+		
+		$data['attendees']=getEventAttendeesFromEventID($eventid);
+	}
+	else
+	{
+		$data['id']										=	'';
+		$data['name']									=	'';
+		$data['address']								=	'';
+		$data['map']['center']['latitude']		=	'';
+		$data['map']['center']['longitude']		=	'';
+		$data['map']['zoom']							=	8;
+		$data['date']									=	'';
+		$data['startTime']							=	'';
+		$data['endTime']								=	'';
+		$data['eventPhoto']							=	'';
+		$data['poster']								=	'';
+		$data['about']									=	'';
+   	$data['category']								=	'';
+   	
+   	$data['description']		=	'';
+		$data['city']				=	'';
+		$data['added_by']			=	'';
+		$data['added_on']			=	'';
+		$data['status']			=	'';
+		$data['read_only']		=	'';
+		$data['eventTagId']		=	'';
+	}
+	return $data;
+} 
+
+
+//Function to get company id from user id
+//June 15,2016
+function getCompanyIDfromUserID($userID)
+{
+	//SELECT id FROM company_profiles WHERE clientid=1;
+	$qry="SELECT id FROM company_profiles  
+			WHERE clientid='".$userID."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['id'];  					
+		}
+		return $id;
+	}
+	else
+	{
+		return null;
+	} 
+}
+
 //Function to fetch members of a company (fetch id only)
 //June 13,2016
 function getAllCompanyMemberIDs($companyId)
@@ -416,6 +532,7 @@ function getEventAttendeesFromEventID($eventid)
 
 //Function to get event from event id
 //May 12,2016
+//June 21,2016: New data fetched (newly fetched info)
 function getEventFromEventID($eventid)
 {
 	//the defaults starts
@@ -446,11 +563,12 @@ function getEventFromEventID($eventid)
    		$data['id']				=	$row['id'];
    		$data['name']			=	$row['eventName'];
    		$data['address']		=	$row['address'];
+   		
 
    		$data['date']			=	$row['event_date'];
    		$data['startTime']	=	$row['start_time'];
    		$data['endTime']		=	$row['end_time'];
-   		$data['eventPhoto']	=	$row['clientid'];
+   		$data['clientid']		=	$row['clientid'];
    		if($row['poster']!='')
    		{
    			$data['poster']	=	$row['poster'];
@@ -464,6 +582,15 @@ function getEventFromEventID($eventid)
    		$data['map']['center']['latitude']		=	$row['location_lat'];
 			$data['map']['center']['longitude']		=	$row['location_long'];
 			$data['map']['zoom']	=	8;
+			
+			// newly fetched info starts
+			$data['city']				=	$row['city'];
+			$data['added_by']			=	$row['added_by'];
+			$data['added_on']			=	$row['added_on'];
+			$data['status']			=	$row['status'];
+			$data['read_only']		=	$row['read_only'];
+			$data['eventTagId']		=	$row['eventTagId'];
+			// newly fetched info ends
    	}
 		
 		$data['attendees']=getEventAttendeesFromEventID($eventid);
@@ -482,7 +609,15 @@ function getEventFromEventID($eventid)
 		$data['eventPhoto']							=	'';
 		$data['poster']								=	'';
 		$data['about']									=	'';
-   	$data['category']								=	'';		
+   	$data['category']								=	'';
+   	
+   	$data['description']		=	'';
+		$data['city']				=	'';
+		$data['added_by']			=	'';
+		$data['added_on']			=	'';
+		$data['status']			=	'';
+		$data['read_only']		=	'';
+		$data['eventTagId']		=	'';
 	}
 	return $data;
 

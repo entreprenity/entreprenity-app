@@ -7,7 +7,7 @@
 function uploadTheImage()
 {
 	$data= array();
-	$data['response']='not uploaded';
+	$data='not uploaded';
 	
 	define('PROFILE_PIC', 'assets/img/members/');
 	define('COMPANY_PIC', 'assets/img/companies/');
@@ -66,30 +66,30 @@ function uploadTheImage()
 	//client profile pic
 	if($uploadType==1)
 	{
-		$qry="UPDATE client_profile SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
-		if(setData($qry))
+		$qry1="UPDATE client_profile SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry1))
 		{
-			$data['response']='success';
+			$data='success';
 		}
 	}
 	
 	//client company profile pic
 	if($uploadType==2)
 	{
-		$qry="UPDATE company_profiles SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
-		if(setData($qry))
+		$qry2="UPDATE company_profiles SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry2))
 		{
-			$data['response']='success';
+			$data='success';
 		}
 	}
 	
 	//event poster
 	if($uploadType==3)
 	{
-		$qry="UPDATE entrp_events SET poster='".$fileName."' WHERE clientid=".$my_session_id." ";
-		if(setData($qry))
+		$qry3="UPDATE entrp_events SET poster='".$fileName."' WHERE clientid=".$my_session_id." ";
+		if(setData($qry3))
 		{
-			$data['response']='success';
+			$data='success';
 		}
 	}
 	

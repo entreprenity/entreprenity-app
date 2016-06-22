@@ -2,45 +2,289 @@
 
     angular
         .module('entreprenityApp.addEvent', [])
-
+        
         .factory('addEventService', function($http) {
             var baseUrl = 'api/';
 
             return {
             //services
+            getEventCatgories:function() {
+					return $http.get(baseUrl + 'getAllEventCatgories');
+				},
             };
         })
 
-        .controller('addEventController', function($routeParams, addEventService, $scope, id) {
+        .controller('addEventController', function($routeParams, addEventService,$http, $scope) {
 
+			  var vm = this;
+			  var map;
+			  var marker;
+			  var latLngC;
+			  
+			  initialize();
+				
+			  function initialize() 
+			  {
+			    latLngC = new google.maps.LatLng(14.5800, 121.0000);
+			    var mapOptions = {
+			      center: latLngC,
+			      zoom: 12,
+			      mapTypeId: google.maps.MapTypeId.ROADMAP,
+			    };
+			
+			    map = new google.maps.Map(document.getElementById('source_map'),
+			      mapOptions);
+			
+			    var marker = new google.maps.Marker({
+			      position: latLngC,
+			      map: map,
+			      draggable: true
+			    });
+			
+			
+				google.maps.event.addListener(marker, 'dragend', function (x) 
+        		{
+            	//document.getElementById('src_lat').value = x.latLng.lat();
+            	//document.getElementById('src_long').value = x.latLng.lng();
+            	$scope.$apply(function() 
+					{
+			        $scope.vm.src_lat = x.latLng.lat();
+			        $scope.vm.src_long = x.latLng.lng();
+			      });
+            	document.getElementById('pickup_location').innerHTML = x.latLng.lat()+' , '+x.latLng.lng();
+			  		var geocoder = new google.maps.Geocoder;
+  					var infowindow = new google.maps.InfoWindow;	            
+            	geocodeLatLng(geocoder, map, infowindow,x.latLng.lat(),x.latLng.lng(),'source_point');
+        		}); 
+        		
+        		//Get coordinates,address Upon clicking a location in map (Source Map)
+        		google.maps.event.addListener(map, 'click', function(x) 
+        		{
+            	//document.getElementById('src_lat').value = x.latLng.lat();
+            	//document.getElementById('src_long').value = x.latLng.lng();
+            	$scope.$apply(function() 
+					{
+			        $scope.vm.src_lat = x.latLng.lat();
+			        $scope.vm.src_long = x.latLng.lng();
+			      });
+            	document.getElementById('pickup_location').innerHTML = x.latLng.lat()+' , '+x.latLng.lng();
+			  		var geocoder = new google.maps.Geocoder;
+  					var infowindow = new google.maps.InfoWindow;	            
+            	geocodeLatLng(geocoder, map, infowindow,x.latLng.lat(),x.latLng.lng(),'source_point');
+        		});			
+			
+			    //Add marker upon clicking on map
+			    //google.maps.event.addDomListener(map, 'click', addMarker);
+			    google.maps.event.addDomListener(map, 'click', function() {
+			      addMarker(map);
+			    });
+			
+			    var places1 = new google.maps.places.Autocomplete(document.getElementById('source_point'));
+			    google.maps.event.addListener(places1, 'place_changed', function() {
+			      var place1 = places1.getPlace();
+			
+			      var src_addr = place1.formatted_address;
+			      var src_lat = place1.geometry.location.lat();
+			      var src_long = place1.geometry.location.lng();
+			
+					$scope.$apply(function() 
+					{
+			        $scope.vm.src_lat = src_lat;
+			        $scope.vm.src_long = src_long;
+			        $scope.vm.source_point = src_addr; 
+			      });
+			      //document.getElementById('src_lat').value = src_lat;
+			      //document.getElementById('src_long').value = src_long;
+			      document.getElementById('pickup_location').innerHTML = src_lat + ' , ' + src_long;
+			    });
+			    //Add marker upon place change          
+			    google.maps.event.addDomListener(places1, 'place_changed', function() {
+			      addMarker(map);
+			    });
+			
+			  }
+			  
+			  google.maps.event.addDomListener(window, 'resize', initialize);
+			  google.maps.event.addDomListener(window, 'load', initialize);
+			
+				//Function to add a marker on the map
+			   function addMarker(map) 
+	     		{
+	         	//var lat = document.getElementById('src_lat').value;
+	         	var lat = $scope.vm.src_lat;
+	         	//var loong = document.getElementById('src_long').value;
+	         	var loong = $scope.vm.src_long;
+	         	
+	     			if(!lat || !loong) return;
+	
+	     			var coordinate = new google.maps.LatLng(lat, loong);
+	 
+	 				if(marker) 
+	 				{
+	     				//if marker already was created change positon
+	    				marker.setPosition(coordinate);
+	    				map.setCenter(coordinate);
+	  					map.setZoom(18);
+	  						 
+	     				google.maps.event.addListener(marker, 'dragend', function (x) 
+	     				{
+	         			//document.getElementById('src_lat').value = x.latLng.lat();
+	         			//document.getElementById('src_long').value = x.latLng.lng();
+	         			$scope.$apply(function() 
+							{
+			       			 $scope.vm.src_lat = x.latLng.lat();
+			       			 $scope.vm.src_long = x.latLng.lng();
+			      		});
+	         			document.getElementById('pickup_location').innerHTML = x.latLng.lat()+' , '+x.latLng.lng();
+			  				var geocoder = new google.maps.Geocoder;
+	  							var infowindow = new google.maps.InfoWindow;	            
+	         			geocodeLatLng(geocoder, map, infowindow,x.latLng.lat(),x.latLng.lng(),'source_point');
+	     				});   						 
+	 				} 
+	 				else 
+	 				{
+	     				//create a marker
+	     				marker = new google.maps.Marker({          
+	         			position: coordinate,
+	         			map: map,
+	         			draggable: true
+	     				});
+	     				map.setCenter(coordinate);
+	  					map.setZoom(18);
+	  						
+	     				google.maps.event.addListener(marker, 'dragend', function (x) 
+	     				{
+	         			//document.getElementById('src_lat').value = x.latLng.lat();
+	         			//document.getElementById('src_long').value = x.latLng.lng();
+	         			$scope.$apply(function() 
+							{
+			       			 $scope.vm.src_lat = x.latLng.lat();
+			       			 $scope.vm.src_long = x.latLng.lng();
+			      		});
+	         			document.getElementById('pickup_location').innerHTML = x.latLng.lat()+' , '+x.latLng.lng();
+			  				var geocoder = new google.maps.Geocoder;
+	  							var infowindow = new google.maps.InfoWindow;	            
+	         			geocodeLatLng(geocoder, map, infowindow,x.latLng.lat(),x.latLng.lng(),'source_point');
+	     				});   						
+	 				} 
+	 			}
+
+
+			 //To Calculate address from coordinates
+			 function geocodeLatLng(geocoder, map, infowindow,latt,longg,addr_div) 
+			 {
+  					var latlng = {lat: parseFloat(latt), lng: parseFloat(longg)};
+  					geocoder.geocode({'location': latlng}, function(results, status) 
+  					{
+    					if (status === google.maps.GeocoderStatus.OK) 
+    					{
+      					if (results[1]) 
+      					{
+      						$scope.$apply(function() 
+								{
+			       			 $scope.vm.source_point = results[1].formatted_address; 
+			      			});
+      						//document.getElementById(addr_div).value= results[1].formatted_address;     						
+        						//infowindow.setContent(results[1].formatted_address);
+        						//infowindow.open(map, marker);
+      					} 
+      					else 
+      					{
+        						window.alert('No results found');
+     						}
+    					} 
+    					else 
+    					{
+      					window.alert('Geocoder failed due to: ' + status);
+    					}
+  				  });
+			 }
+
+				
+				addEventService.getEventCatgories().success(function(data) {
+					vm.categories = data;
+				});
+			
+				//Function to validate add event form
+				//April 15,2016
+				$scope.getError = function(error, name)
+				{
+					if(angular.isDefined(error))
+					{
+						if(error.required && name == 'name')
+						{
+							return "Please enter an event name";
+						}
+						else if(error.required && name == 'eventCategory')
+						{
+							return "Please select an event category";
+						}
+						else if(error.required && name == 'description')
+						{
+							return "Please enter a description";
+						}
+						else if(error.required && name == 'eventDate')
+						{
+							return "Select a date";
+						}
+						else if(error.required && name == 'eventStartTime')
+						{
+							return "Select a start time";
+						}
+						else if(error.required && name == 'eventEndTime')
+						{
+							return "Select an end time";
+						}
+						else if(error.required && name == 'src_lat')
+						{
+							return "Latitude required";
+						}
+						else if(error.required && name == 'src_long')
+						{
+							return "Longitude required";
+						}
+						else if(error.required && name == 'source_point')
+						{
+							return "Enter event address";
+						}
+						else if(error.required && name == 'eventCity')
+						{
+							return "Enter City";
+						}
+				  }
+			  }
+			
+				$scope.post = {};
+				$scope.post.addEvent = [];
+				$scope.vm = {};
+				$scope.index = '';
+				var baseUrl = 'api/';
+				
             // function to submit the form after all validation has occurred
             vm.addEvent = function(isValid)
             {
                 // check to make sure the form is completely valid
                 if (isValid)
                 {
-                    //alert('isValid');
-                    $http({
-                        method: 'post',
-                        url: baseUrl+'login',
-                        data: $.param($scope.vm),
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-                    })
-                    .success(function(data, status, headers, config)
-                    {
-                        if(data.success)
-                        {
-                            //alert('success');
-                        }
-                        else
-                        {
-                            //alert('data error');
-                        }
-                    }).
-                    error(function(data, status, headers, config)
-                    {
-                        //alert('post error');
-                    });
+                	var dataPost = 
+                			{
+                				eventName			: $scope.vm.name,
+                				eventCategory		: $scope.vm.eventCategory,
+                				eventDescription	: $scope.vm.description,
+                				eventDate			: $scope.vm.eventDate,
+                				eventStartTime		: $scope.vm.eventStartTime,
+                				eventEndTime		: $scope.vm.eventEndTime,
+                				eventLocation		: $scope.vm.source_point,
+                				eventLocLat			: $scope.vm.src_lat,
+                				eventLocLong		: $scope.vm.src_long,
+                				eventCity			: $scope.vm.eventCity
+                			
+                			};														
+						return $http({ method: 'post',
+										url: baseUrl+'addNewEvent',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
                 }
             };
 

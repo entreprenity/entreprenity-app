@@ -19,6 +19,8 @@
 		<script src="assets/lib/ui-bootstrap-tpls-1.3.1.js"></script>
 		<script src="assets/lib/ng-infinite-scroll.js"></script>
 		<script src="assets/lib/ui-bootstrap-tpls-1.3.1.js"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places,geometry"></script>
+		
 		<script src="app/components/login/loginController.js"></script>
 		<script src="app/components/login/logoutController.js"></script>
 		<script src="app/common/headerController.js"></script>
@@ -42,7 +44,8 @@
 		<script src='assets/lib/lodash.js'></script>
 		<script src='assets/lib/angular-simple-logger.js'></script>
 		<script src='assets/lib/angular-google-maps.js'></script>
-		<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+		<!--<script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>-->
+		
 		<script src="assets/lib/ng-tags-input.js"></script>
 		<script src='assets/lib/ng-img-crop.js'></script>
 		<script src="app/app.js"></script>
@@ -51,10 +54,16 @@
 		<script src="assets/lib/angular-moment.min.js"></script>
 		<script src="assets/lib/angular-slider.min.js"></script>
 		<script src="assets/lib/range-picker.min.js"></script>
-		
+		<style type="text/css">
+			#source_map 
+			{
+			  width: 450px;
+			  height: 450px;
+			}
+		</style>
 	</head>
 	<body>
-		<div class="header" ng-include="'app/common/header.html'"></div>
+		<div class="header" ng-controller="CommonController" ng-include="'app/common/header.html'"></div>
 		<div class="main" ng-view></div>
 	</body>
 </html>
