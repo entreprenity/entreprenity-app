@@ -29,10 +29,17 @@
 			};
 		})
 	
-		.controller('ImageUploadController', function($routeParams,imageUploadService,$scope, $uibModalInstance, id) {
+		.controller('ImageUploadController', function($routeParams,imageUploadService,$scope, $uibModalInstance, id, $timeout) {
 			$scope.id = id;
 			$scope.myImage='';
 			$scope.myCroppedImage='';
+			$scope.progressValue = 70;
+			$scope.progressMax = 100;
+			$scope.showImage = false;
+2
+			$scope.clickBrowseImage = function(){
+				angular.element('#fileInput').trigger('click');
+			};
 
 			$scope.handleFileSelect = function(evt){
 				//alert('test');
@@ -44,6 +51,12 @@
 					});
 				};
 				reader.readAsDataURL(file);
+				$scope.progressValue = 100;
+
+				$timeout(function(){
+					$scope.showImage = true;
+				}, 1000);
+
 			}
 			
 			
