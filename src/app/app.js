@@ -31,7 +31,8 @@
 		'entreprenityApp.settings',
 		'entreprenityApp.notifications',
 		'entreprenityApp.addEvent',
-		'entreprenityApp.common'
+		'entreprenityApp.common',
+		'entreprenityApp.imgEventPoster'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -134,6 +135,11 @@
 		.when('/add-event', {
 			controller: 'addEventController',
 			templateUrl: 'app/components/events/addEventView.html',
+			controllerAs: 'vm'
+		})
+		.when('/addEventPoster/:eventTag', {
+			controller: 'eventPosterController',
+			templateUrl: 'app/components/events/addEventPosterView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

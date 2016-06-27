@@ -85,12 +85,31 @@ function uploadTheImage()
 	
 	//event poster
 	if($uploadType==3)
-	{
-		$qry3="UPDATE entrp_events SET poster='".$fileName."' WHERE clientid=".$my_session_id." ";
-		if(setData($qry3))
-		{
-			$data='success';
-		}
+	{			
+		$qry4="SELECT eventTag FROM entrp_events_users_tags WHERE userID=".$my_session_id."";
+		$res4=getData($qry4);
+	   $count_res4=mysqli_num_rows($res4);
+	   if($count_res4>0)
+	   {
+	   	while($row4=mysqli_fetch_array($res4))
+	      {
+	      	$eventTag				=	$row4['eventTag'];
+	      }
+	      
+	      $qry3="UPDATE entrp_events SET poster='".$fileName."' WHERE eventTagId='".$eventTag."' ";
+			if(setData($qry3))
+			{
+				$data='success';
+			}
+			else
+			{
+				$data='failed';
+			}	
+	   }
+	   else
+	   {
+	   	$data='failed';
+	   }		
 	}
 	
 	return $data;

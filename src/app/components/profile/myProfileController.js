@@ -17,10 +17,17 @@ angular
 									data: $.param(userdata),
 									headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 								});
-			}
-			,
+			},
+			getBasicUserInfo:function()
+			{
+				return $http.get(baseUrl + 'getBasicUserInformation');
+			},
 			getUserSessInfo: function() {
-					return $http.get(baseUrl+ 'get_user_session');
+				return $http.get(baseUrl+ 'get_user_session');
+			},
+			getMemberPosts: function(username) 
+			{
+				return $http.get(baseUrl+ 'getMembersPost?user='+username);
 			}
 			
 		};
@@ -44,9 +51,46 @@ angular
 			
 			modalInstance.result.then(function (myCroppedImage) {
 				vm.member.avatar = myCroppedImage;
+
+				myProfileService.getBasicUserInfo().success(function(data) {
+					/*
+					vm.currentPost.post_author.id 	= data.id;
+					vm.currentPost.post_author.firstName 	= data.firstName;
+					vm.currentPost.post_author.lastName 	= data.lastName;
+					vm.currentPost.post_author.position 	= data.position;
+					vm.currentPost.post_author.companyName 	= data.companyName;
+					vm.currentPost.post_author.avatar 		= data.avatar;
+					vm.currentPost.post_author.userName 	= data.userName;
+					vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+					*/
+					vm.getPosts(1,data.userName);
+				});
+
 			}, function () {
 				$log.info('Modal dismissed at: ' + new Date());
 			});
+		};
+
+
+		//To fetch timeline posts
+		vm.getPosts = function (postsType,username) 
+		{
+			var postType =postsType.toString(); //alerts "number"
+			switch(postType)
+			{
+				case '1':
+					myProfileService.getMemberPosts(username).success(function(data) {
+						vm.posts = data;
+						return vm.posts;
+					});
+				break;
+				case '2':
+					myProfileService.getCompanyPosts(username).success(function(data) {
+						vm.posts = data;
+						return vm.posts;
+					});
+				break;
+			}
 		};
 	
 		vm.memberUserName = $routeParams.memberUserName;

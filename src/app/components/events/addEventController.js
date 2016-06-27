@@ -14,7 +14,7 @@
             };
         })
 
-        .controller('addEventController', function($routeParams, addEventService,$http, $scope) {
+        .controller('addEventController', function($routeParams, addEventService,$http, $scope,$location) {
 
 			  var vm = this;
 			  var map;
@@ -276,25 +276,50 @@
                 if (isValid)
                 {
                 	 //alert('i am valid');
-                	var dataPost = 
-                			{
-                				eventName			: vm.name,
-                				eventCategory		: vm.eventCategory,
-                				eventDescription	: vm.description,
-                				eventDate			: vm.eventDate,
-                				eventStartTime		: vm.eventStartTime,
-                				eventEndTime		: vm.eventEndTime,
-                				eventLocation		: vm.source_point,
-                				eventLocLat			: vm.src_lat,
-                				eventLocLong		: vm.src_long,
-                				eventCity			: vm.eventCity
-                			
-                			};														
-						return $http({ method: 'post',
+                	if(vm.name && vm.eventCategory && vm.description && vm.eventDate && vm.eventStartTime && vm.eventEndTime && vm.source_point && vm.src_lat && vm.src_long && vm.eventCity)
+                	{
+	                	var dataPost = 
+	                			{
+	                				eventName			: vm.name,
+	                				eventCategory		: vm.eventCategory,
+	                				eventDescription	: vm.description,
+	                				eventDate			: vm.eventDate,
+	                				eventStartTime		: vm.eventStartTime,
+	                				eventEndTime		: vm.eventEndTime,
+	                				eventLocation		: vm.source_point,
+	                				eventLocLat			: vm.src_lat,
+	                				eventLocLong		: vm.src_long,
+	                				eventCity			: vm.eventCity
+	                			
+	                			};														
+							$http({ method: 'post',
 										url: baseUrl+'addNewEvent',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+									})
+									.success(function(data, status, headers, config) 
+								   {
+								    	if(data.eventToken)
+								    	{
+								    		var eT=data.eventToken;
+								    		
+								    		$location.path('/addEventPoster/'+eT);
+								    	}
+								    	else
+								    	{
+								    		alert('Something went wrong. Please try again');
+								    	}
+						    	 }).
+						    	 error(function(data, status, headers, config) 
+						    	 {
+						    			alert('Something went wrong. Please try again');
+						    	 });                		                	
+                	}
+                	else
+                	{
+                		alert('Please set event start and end time');
+                	}
+
                 }
             };
 

@@ -1,5 +1,21 @@
 <?php
 
+//Function to like a comment made on a timeline post
+//June 23,2016
+function likeThisComment()
+{
+
+}
+
+
+//Function to unlike a comment made on a timeline post
+//June 23,2016
+function unlikeThisComment()
+{
+
+}
+
+
 //Function to fetch all business opportunities
 //June 15,2016
 function getAllBusinessOpportunities()

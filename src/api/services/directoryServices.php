@@ -1,5 +1,36 @@
 <?php
 
+//Function to finish an add event process
+//June 24,2016
+function finishThisEvent()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$eTag = $requestData->eventTag;
+		$eventTag=validate_input($eTag);
+		
+		$qry="DELETE FROM entrp_events_users_tags WHERE eventTag='".$eventTag."'";
+		if(setData($qry))
+		{	
+			//send mail to admin
+		   send_new_event_notification_to_admin($eventTag);
+		   $data['msg'] = 'success';
+		}
+		else
+		{
+			 $data['msg'] = 'failed';
+		} 
+		
+	}
+	return $data;
+}
+
 
 //Function to generate unique event tag
 //June 15,2016
@@ -25,7 +56,6 @@ function generateUniqueEventTag()
 function addNewEvent()
 {
 	$data= array();
-	$data1= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	
@@ -86,8 +116,12 @@ function addNewEvent()
 			    ".$my_session_id.",'".$addedON."',".$status.")";
 		if(setData($qry))
 		{
-			//send mail to admin
-		   send_new_event_notification_to_admin($eventTag);
+			
+			$qry2="INSERT INTO entrp_events_users_tags (userID,eventTag) 
+			      VALUES (".$my_session_id.",'".$eventTag."')";
+			setData($qry2);
+			
+		   $data['eventToken'] = $eventTag;
 		} 
 		
 	}

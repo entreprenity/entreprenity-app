@@ -9939,3 +9939,44 @@ a {
   height: 300px;
   margin-bottom: 20px;
 }
+
+/* line 1, ../sass/partials/_uploadImage.scss */
+#uploadImage {
+  margin: 0 auto;
+}
+/* line 3, ../sass/partials/_uploadImage.scss */
+#uploadImage .image-container {
+  width: 200px;
+  height: 200px;
+  border: 1px dashed #202020;
+  border-radius: 3px;
+  text-align: center;
+  padding: 10px;
+  position: relative;
+  margin: 10px auto;
+}
+/* line 13, ../sass/partials/_uploadImage.scss */
+#uploadImage .image-container i {
+  margin-top: 20px;
+}
+/* line 15, ../sass/partials/_uploadImage.scss */
+#uploadImage .image-container .myCroppedImage {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+/* line 21, ../sass/partials/_uploadImage.scss */
+#uploadImage .image-container .image-placeholder {
+  width: 200px;
+  height: 200px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 10px;
+}
+/* line 31, ../sass/partials/_uploadImage.scss */
+#uploadImage .cropArea {
+  margin: 0 auto;
+  width: 200px;
+  height: 200px;
+}

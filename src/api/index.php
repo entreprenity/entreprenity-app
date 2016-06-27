@@ -675,6 +675,46 @@ Flight::route('/addNewEvent', function()
 	echo json_encode($returnarray);
 
 });
+
+
+//54 Route to like a comment made for a timeline post
+//June 23,2016
+Flight::route('/likeThisComment', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=likeThisComment();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//55 Route to unlike a comment made for a timeline post
+//June 23,2016
+Flight::route('/unlikeThisComment', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=unlikeThisComment();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+
+//56 Route to finish an add event process
+//June 23,2016
+Flight::route('/finishThisEvent', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=finishThisEvent();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
