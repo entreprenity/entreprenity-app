@@ -14,7 +14,7 @@
             };
         })
 
-        .controller('addEventController', function($routeParams, addEventService,$http, $scope) {
+        .controller('addEventController', function($routeParams, addEventService,$http, $scope,$location) {
 
 			  var vm = this;
 			  var map;
@@ -262,30 +262,63 @@
             // function to submit the form after all validation has occurred
             vm.addEvent = function(isValid)
             {
-				
+            	 //alert(vm.name);
+            	 //alert(vm.eventCategory);
+            	 //alert(vm.description);
+            	 //alert(vm.eventDate);
+            	 //alert(vm.eventStartTime);
+            	 //alert(vm.eventEndTime);
+            	 //alert(vm.source_point);
+            	 //alert(vm.src_lat);
+            	 //alert(vm.src_long);
+            	 //alert(vm.eventCity);
                 // check to make sure the form is completely valid
                 if (isValid)
                 {
-					alert('form is valid');
-                	var dataPost = 
-                			{
-                				eventName			: vm.name,
-                				eventCategory		: vm.eventCategory,
-                				eventDescription	: vm.description,
-                				eventDate			: vm.eventDate,
-                				eventStartTime		: vm.eventStartTime,
-                				eventEndTime		: vm.eventEndTime,
-                				eventLocation		: vm.source_point,
-                				eventLocLat			: vm.src_lat,
-                				eventLocLong		: vm.src_long,
-                				eventCity			: vm.eventCity
-                			
-                			};														
-						return $http({ method: 'post',
+                	 //alert('i am valid');
+                	if(vm.name && vm.eventCategory && vm.description && vm.eventDate && vm.eventStartTime && vm.eventEndTime && vm.source_point && vm.src_lat && vm.src_long && vm.eventCity)
+                	{
+	                	var dataPost = 
+	                			{
+	                				eventName			: vm.name,
+	                				eventCategory		: vm.eventCategory,
+	                				eventDescription	: vm.description,
+	                				eventDate			: vm.eventDate,
+	                				eventStartTime		: vm.eventStartTime,
+	                				eventEndTime		: vm.eventEndTime,
+	                				eventLocation		: vm.source_point,
+	                				eventLocLat			: vm.src_lat,
+	                				eventLocLong		: vm.src_long,
+	                				eventCity			: vm.eventCity
+	                			
+	                			};														
+							$http({ method: 'post',
 										url: baseUrl+'addNewEvent',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+									})
+									.success(function(data, status, headers, config) 
+								   {
+								    	if(data.eventToken)
+								    	{
+								    		var eT=data.eventToken;
+								    		
+								    		$location.path('/addEventPoster/'+eT);
+								    	}
+								    	else
+								    	{
+								    		alert('Something went wrong. Please try again');
+								    	}
+						    	 }).
+						    	 error(function(data, status, headers, config) 
+						    	 {
+						    			alert('Something went wrong. Please try again');
+						    	 });                		                	
+                	}
+                	else
+                	{
+                		alert('Please set event start and end time');
+                	}
                 }
             };
 
@@ -329,14 +362,25 @@
 					to: 1020, // default high value
 					step: 15, // step width
 					minRange: 15, // min range
+<<<<<<< HEAD
 					hours24: false // true for 24hrs based time | false for PM and AM
+=======
+					hours24: true // true for 24hrs based time | false for PM and AM
+>>>>>>> dominic-branch
 				}
 			};
 			// update vm start and end time on timerange change
 			$scope.whenTimeChange = function (data) {
 				console.log('schedule changes', data);
+<<<<<<< HEAD
 				vm.eventStartTime = $scope.timeRangePicker.time.from;
 				vm.eventEndTime = $scope.timeRangePicker.time.to;
+=======
+				//vm.eventStartTime = $scope.timeRangePicker.time.from;
+				vm.eventStartTime = data.from;
+				//vm.eventEndTime = $scope.timeRangePicker.time.to;
+				vm.eventEndTime = data.to;
+>>>>>>> dominic-branch
 			};
         });
 })();

@@ -1,5 +1,36 @@
 <?php
 
+//Function to finish an add event process
+//June 24,2016
+function finishThisEvent()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$eTag = $requestData->eventTag;
+		$eventTag=validate_input($eTag);
+		
+		$qry="DELETE FROM entrp_events_users_tags WHERE eventTag='".$eventTag."'";
+		if(setData($qry))
+		{	
+			//send mail to admin
+		   send_new_event_notification_to_admin($eventTag);
+		   $data['msg'] = 'success';
+		}
+		else
+		{
+			 $data['msg'] = 'failed';
+		} 
+		
+	}
+	return $data;
+}
+
 
 //Function to generate unique event tag
 //June 15,2016
@@ -21,10 +52,10 @@ function generateUniqueEventTag()
 
 //Function to add a new event's details
 //June 15,2016
+//June 22,2016: added string to time conversion for event date
 function addNewEvent()
 {
 	$data= array();
-	$data1= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	
@@ -42,7 +73,8 @@ function addNewEvent()
 		$eventDescription=validate_input($description);
 		
 		$date = $requestData->eventDate;
-		$eventDate=validate_input($date);
+		$eventDate1=validate_input($date);
+		$eventDate=date('Y-m-d',strtotime($eventDate1));
 		
 		$startTime = $requestData->eventStartTime;
 		$eventStartTime=validate_input($startTime);
@@ -84,8 +116,12 @@ function addNewEvent()
 			    ".$my_session_id.",'".$addedON."',".$status.")";
 		if(setData($qry))
 		{
-			//send mail to admin
-		   send_new_event_notification_to_admin($eventTag);
+			
+			$qry2="INSERT INTO entrp_events_users_tags (userID,eventTag) 
+			      VALUES (".$my_session_id.",'".$eventTag."')";
+			setData($qry2);
+			
+		   $data['eventToken'] = $eventTag;
 		} 
 		
 	}
@@ -312,6 +348,7 @@ function getCompanies()
 
 //Function to fetch events directory
 // April 13,2015
+//June 22,2016: added WHERE clause
 function getEvents()
 {
 
@@ -329,7 +366,7 @@ function getEvents()
 	
 	$data= array();
 	
-	$qry="SELECT * FROM entrp_events";
+	$qry="SELECT * FROM entrp_events WHERE status=1";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -340,7 +377,15 @@ function getEvents()
       	$data[$i]['id']				=	$row['id'];
 			$data[$i]['eventName']		=	$row['eventName'];
 			$data[$i]['description']	=	$row['description'];
-			$data[$i]['poster']			=	$row['poster'];
+			if($row['poster']!='')
+			{
+				$data[$i]['poster']			=	$row['poster'];
+			}
+			else
+			{
+				$data[$i]['poster']			=	$event_default_poster;
+			}
+			
 			$data[$i]['city']				=	$row['city'];
 			$data[$i]['date']				=	$row['event_date'];
 			$data[$i]['time']				=	$row['event_time'];

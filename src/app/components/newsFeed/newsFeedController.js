@@ -80,6 +80,24 @@
 										data: $.param(dataPost),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				commentLike: function(commentID) 
+				{
+					var dataPost = {likedCommentId: commentID};														
+					return $http({ method: 'post',
+										url: baseUrl+'likeThisComment',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},
+				commentUnLike: function(commentID) 
+				{
+					var dataPost = {unlikedCommentId: commentID};														
+					return $http({ method: 'post',
+										url: baseUrl+'unlikeThisComment',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 			};
 		})
@@ -195,13 +213,13 @@
 					"image": "",
 					"created_at": "",
 					"post_author": {
-						"id": "2",
-						"firstName": "Will",
-						"lastName": "Ferrel",
-						"avatar": "member-default.jpg",
-						"position": "CEO",
-						"companyName": "Clever Sheep",
-						"userName": "will"
+						"id": "",
+						"firstName": "",
+						"lastName": "",
+						"avatar": "",
+						"position": "",
+						"companyName": "",
+						"userName": ""
 					},
 					"isLiked": false,
 					"likes_count": 0,
@@ -242,23 +260,24 @@
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
 					currentPost.content = ""; //clear post textarea
-
-					newsFeedService.postCurrentPost(newPost).success(function(data) {
-						vm.posts = data;
-					});	
-
-					vm.getPosts();
+					if(newPost)
+					{
+						newsFeedService.postCurrentPost(newPost).success(function(data) {
+							vm.posts = data;
+						});
+						vm.getPosts();
+					}	
 				};
 
 				// Add a time-line Business Opportunity post
 				vm.addBusoppPost = function (content) {
-					//console.log(content);
-					//console.log(categories);					
-					newsFeedService.postBusoppPost(content).success(function(data) {
-						vm.posts = data;
-					});
-
-					vm.getPosts();
+					if(content.content && content.categories)
+					{
+						newsFeedService.postBusoppPost(content).success(function(data) {
+							vm.posts = data;
+						});
+						vm.getPosts();
+					}								
 				};
 
 				//Like a time-line post
@@ -286,6 +305,36 @@
 						unLikedPost.isLiked = false;
 						unLikedPost.likes_count--;
 						unLikedPost.likers.pop();
+						vm.posts = data;
+					});
+					vm.getPosts();	
+				};
+				
+				//Like a time-line comment
+				vm.likeComment = function(commentID) {
+					var likedComment = commentID;
+
+					//this will come from the session userobject
+					vm.basicInfo();
+					likedComment.likers.push(userObject);
+					newsFeedService.commentLike(likedComment).success(function(data) {
+						likedComment.isLiked = true;
+						likedComment.likes_count++;
+						vm.posts = data;
+					});	
+					vm.getPosts();
+				};
+				
+				//unlike a time-line comment
+				vm.unLikeComment = function(commentID) {
+					var unLikedComment = post;
+
+					//this will come from the session userobject
+					vm.basicInfo();
+					newsFeedService.commentUnLike(commentID).success(function(data) {
+						unLikedComment.isLiked = false;
+						unLikedComment.likes_count--;
+						unLikedComment.likers.pop();
 						vm.posts = data;
 					});
 					vm.getPosts();	

@@ -45,6 +45,7 @@ function send_new_event_notification_to_admin($eventTag)
 			$eventsNotify_template = ob_get_contents();			
 			ob_end_clean();
 			
+			//$to = 'sean@flexiesolutions.com'; 
 			$to = 'dominic@cliffsupport.com'; 
 			/*$to = $to_email; //please uncomment this when in live*/
 			$strSubject = "New Event Request";
