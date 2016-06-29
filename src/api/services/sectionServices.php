@@ -1,6 +1,13 @@
 <?php
 
 
+//Function to fetch business opportunities (as a section) to show in home page
+//June 29,2016
+function recommendedBusinessOpportunities()
+{
+
+}
+
 //Function to get most timeline commenter s (not comments received, but comments posted)
 //June 02,2016
 function getMostTimeLineCommenters()

@@ -3,6 +3,31 @@
 /* Functions and services based on userid begins */
 
 
+//Function to fetch event id from event tag
+//June 29,2016
+function getEventIdfromEventTag($eventTagid)
+{
+	
+	$qry="SELECT id FROM entrp_events  
+			WHERE eventTagId='".$eventTagid."' ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$id		=	$row['id'];  					
+		}
+		return $id;
+	}
+	else
+	{
+		return null;
+	}   
+	
+}
+
+
 //Function to fetch event details based on event tag
 //June 21,2016
 function fetchEventDetailsBasedonEventTAG($eventTag)
@@ -471,6 +496,7 @@ function goingForThisEventorNot($eventid)
 
 //Function to get event attendees from eventid
 //May 12,2016
+//June 29,2016: Fetch username
 function getEventAttendeesFromEventID($eventid)
 {
 		//the defaults starts
@@ -487,7 +513,7 @@ function getEventAttendeesFromEventID($eventid)
 	
    	$i=0;
    	$data2= array();
-   	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,client_profile.avatar,client_profile.designation,client_profile.city,client_profile.cover_pic 
+   	$qry2="SELECT entrp_event_attendees.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.avatar,client_profile.designation,client_profile.city,client_profile.cover_pic 
 				 FROM entrp_event_attendees 
 				 LEFT JOIN entrp_login ON entrp_login.clientid=entrp_event_attendees.clientid 
 				 LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
@@ -502,6 +528,7 @@ function getEventAttendeesFromEventID($eventid)
    			$data2[$i]['id']				=	$row2['clientid'];
    			$data2[$i]['firstName']		=	$row2['firstname'];
    			$data2[$i]['lastName']		=	$row2['lastname'];
+   			$data2[$i]['userName']		=	$row2['username'];
    			if($row2['avatar']!='')
    			{
    				$data2[$i]['avatar']	=	$row2['avatar'];

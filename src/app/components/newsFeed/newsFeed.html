@@ -25,11 +25,11 @@
 				<li class="media post" ng-repeat="post in vm.posts">
 					<div class="post-main">
 						<div class="media-body post-header">
-							<a href="#" class="pull-left">
+							<a href="#/members/{{post.post_author.userName}}" class="pull-left">
 								<img ng-src="{{post.post_author.avatar}}" alt="" class="img-circle" width="60px">
 							</a>
-							<a class="author-name"><strong >{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
-							<a class="author-company">{{post.post_author.companyName}}</a>
+							<a href="#/members/{{post.post_author.userName}}" class="author-name"><strong >{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
+							<div class="author-company">{{post.post_author.companyName}}</div>
 							<small class="text-muted"><span am-time-ago="post.created_at"></span></small>,
 							<small class="text-muted">{{post.post_author.location}}</small>
 						</div>
@@ -60,15 +60,15 @@
 						<hr>
 						<ul class="media-list">
 							<li class="media" ng-repeat="comment in post.comments">
-								<a href="#" class="pull-left">
+								<a href="#/members/{{comment.comment_author.userName}}" class="pull-left">
 									<img ng-src="{{comment.comment_author.avatar}}" alt="" class="img-circle" width="40px">
 								</a>
 								<div class="media-body comment-header">
 										<span class="text-muted pull-right">
 											<small class="text-muted"><span am-time-ago="comment.created_at"></span></small>
 										</span>
-										<a><strong>{{comment.comment_author.firstName + ' ' + comment.comment_author.lastName}}</strong></a>
-										<a><p><small class="text-muted">{{comment.comment_author.companyName}}</small></p></a>
+										<a href="#/members/{{comment.comment_author.userName}}" ><strong>{{comment.comment_author.firstName + ' ' + comment.comment_author.lastName}}</strong></a>
+										<p><small class="text-muted">{{comment.comment_author.companyName}}</small></p>
 								</div>
 								<div class="post-buttonGroup">
 									<a ng-click="vm.likeComment(comment.commentId)" ng-hide="comment.isLiked">Like</a>	
@@ -80,7 +80,7 @@
 						</ul>
 
 						<div class="media comment-textarea">
-							<a href="#" class="pull-left">
+							<a href="#/members/{{vm.currentPost.post_author.userName}}" class="pull-left">
 								<img ng-src="{{vm.currentPost.post_author.avatar}}" alt="" class="img-circle" width="30px">
 							</a>
 							<div class="media-body">
