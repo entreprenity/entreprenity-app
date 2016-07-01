@@ -260,7 +260,7 @@ Flight::route('/unfollowThisUser', function()
 
 
 //21 Route to follow a user from member directory
-//May 11,2016
+//May 11,2016 (followUnfollowservices.php)
 Flight::route('/followUser', function()
 {
    enable_cors();
@@ -273,7 +273,7 @@ Flight::route('/followUser', function()
 
 
 //22 Route to un-follow a user from member directory
-//May 11,2016
+//May 11,2016 (followUnfollowservices.php)
 Flight::route('/unfollowUser', function()
 {
    enable_cors();
@@ -739,6 +739,18 @@ Flight::route('/recommendedBusinessOpportunities', function()
 
 });
 
+//Route to invoke call answering service
+//June 30,2016 (externalServices.php)
+Flight::route('/invokeCallAnswering', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=invokeCallAnswering();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -773,6 +785,7 @@ function services_included()
 	require_once 'services/emailServices.php'; 
 	require_once 'services/sectionServices.php'; 
 	require_once 'services/notificationServices.php'; 
+	require_once 'services/externalServices.php'; 
 }
 
 

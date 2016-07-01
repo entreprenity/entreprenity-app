@@ -2,6 +2,27 @@
 
 /* Functions and services based on userid begins */
 
+//Function entreprenity login password using email id
+//June 30,2016
+function fetchUserLoginPassword($loginEmail,$userId)
+{
+	$qry="SELECT password FROM entrp_login  
+			WHERE email='".$loginEmail."' AND clientid=".$userId." AND status=1 AND user_type=2 ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$password		=	$row['password'];  					
+		}
+		return $password;
+	}
+	else
+	{
+		return null;
+	}
+}
 
 //Function to fetch event id from event tag
 //June 29,2016
