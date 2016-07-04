@@ -7,12 +7,12 @@
 
 		var baseUrl = 'api/';
 		return {
-			getEventProfile: function(id) {
-				return $http.get(baseUrl+ 'view_event_detail?id='+id);
+			getEventProfile: function(eventTagId) {
+				return $http.get(baseUrl+ 'view_event_detail?id='+eventTagId);
 			},
-			postGoingtoEvent: function(eventId) {
+			postGoingtoEvent: function(eventTagId) {
 				var dataContent = {
-		            'event' : eventId
+		            'event' : eventTagId
 		        };
 		        
 				return $http({ method: 'post',
@@ -21,9 +21,9 @@
 								headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 							});
 			},
-			postNotGoingtoEvent: function(eventId) {
+			postNotGoingtoEvent: function(eventTagId) {
 				var dataContent = {
-		            'event' : eventId
+		            'event' : eventTagId
 		        };
 		        
 				return $http({ method: 'post',
@@ -37,7 +37,7 @@
 		};
 	})
 
-		.controller('EventsPageController', function($routeParams, eventsPageService) {
+		.controller('EventsPageController', function($routeParams, eventsPageService,$scope) {
 		var vm = this;
 
 		vm.eventId = $routeParams.eventId;
@@ -45,7 +45,21 @@
 
 		eventsPageService.getEventProfile(vm.eventId).success(function(data) {
 			vm.event = data;
+	  		
+	  		$scope.map = 
+	  		{ 
+    			center: { latitude: data.map.center.latitude, longitude: data.map.center.longitude }, 
+    			zoom: data.map.zoom 
+  			};
+  			
+  			$scope.marker = { 
+		    	coords: { latitude: data.map.center.latitude, longitude: data.map.center.longitude }, 
+		    	id: data.id ,
+		    	window: { title: data.address }
+		   };
+  
 		});
+		
 		
 		vm.joinEvent = function(eventId) {
 			//post service

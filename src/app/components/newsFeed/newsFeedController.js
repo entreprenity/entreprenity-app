@@ -263,7 +263,7 @@
 					if(newPost)
 					{
 						newsFeedService.postCurrentPost(newPost).success(function(data) {
-							vm.posts = data;
+							vm.posts = data;							
 						});
 						vm.getPosts();
 					}	
@@ -276,7 +276,7 @@
 						newsFeedService.postBusoppPost(content).success(function(data) {
 							vm.posts = data;
 						});
-						vm.getPosts();
+						vm.getPosts(); 
 					}								
 				};
 
@@ -290,7 +290,7 @@
 					newsFeedService.postLike(likedPost).success(function(data) {
 						likedPost.isLiked = true;
 						likedPost.likes_count++;
-						vm.posts = data;
+						vm.posts = data;						
 					});	
 					vm.getPosts();
 				};
@@ -305,9 +305,9 @@
 						unLikedPost.isLiked = false;
 						unLikedPost.likes_count--;
 						unLikedPost.likers.pop();
-						vm.posts = data;
-					});
-					vm.getPosts();	
+						vm.posts = data;							
+					});	
+					vm.getPosts(); 
 				};
 				
 				//Like a time-line comment
@@ -320,9 +320,9 @@
 					newsFeedService.commentLike(likedComment).success(function(data) {
 						likedComment.isLiked = true;
 						likedComment.likes_count++;
-						vm.posts = data;
-					});	
-					vm.getPosts();
+						vm.posts = data;						
+					});
+					vm.getPosts(); 	
 				};
 				
 				//unlike a time-line comment
@@ -335,7 +335,7 @@
 						unLikedComment.isLiked = false;
 						unLikedComment.likes_count--;
 						unLikedComment.likers.pop();
-						vm.posts = data;
+						vm.posts = data;						
 					});
 					vm.getPosts();	
 				};
@@ -355,7 +355,7 @@
 					vm.currentComment.content = ""; //clear comment textarea
 
 					newsFeedService.postComment(commentedPost,newComment).success(function(data) {
-						vm.posts = data;
+						vm.posts = data;						
 					});	
 					vm.getPosts();
 				};

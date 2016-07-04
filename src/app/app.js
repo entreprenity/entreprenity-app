@@ -32,7 +32,8 @@
 		'entreprenityApp.notifications',
 		'entreprenityApp.addEvent',
 		'entreprenityApp.common',
-		'entreprenityApp.imgEventPoster'
+		'entreprenityApp.imgEventPoster',
+		'entreprenityApp.callanswering'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -140,6 +141,11 @@
 		.when('/addEventPoster/:eventTag', {
 			controller: 'eventPosterController',
 			templateUrl: 'app/components/events/addEventPosterView.html',
+			controllerAs: 'vm'
+		})
+		.when('/callanswering', {
+			controller: 'CallAnswerController',
+			templateUrl: 'app/components/externalservices/externalServiceRedirectView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

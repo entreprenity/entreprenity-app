@@ -376,6 +376,7 @@ function getEvents()
       {
       	$data[$i]['id']				=	$row['id'];
 			$data[$i]['eventName']		=	$row['eventName'];
+			$data[$i]['eventTagId']		=	$row['eventTagId'];
 			$data[$i]['description']	=	$row['description'];
 			if($row['poster']!='')
 			{
@@ -397,6 +398,7 @@ function getEvents()
    {
    	$data[$i]['id']				=	"";
 		$data[$i]['eventName']		=	"";
+		$data[$i]['eventTagId']		=	"";
 		$data[$i]['description']	=	"";
 		$data[$i]['poster']			=	"";
 		$data[$i]['city']				=	"";

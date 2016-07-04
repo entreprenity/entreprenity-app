@@ -10,6 +10,9 @@
 			getCompanyProfile: function(id) {
 				return $http.get(baseUrl+ 'view_company_profile?id='+id);
 			},
+			getCompanyEvents: function(companyUserName) {
+				return $http.get(baseUrl+ 'getEventsHostedByCompany?id='+companyUserName);
+			},
 			postCompanyFollow: function(companyUserName) 
 			{
 				var dataContent = {
@@ -60,5 +63,12 @@
 				vm.company = data; //return company info, with updated followers and followed status
 			});	
 		};
+		
+		//Fetch events hosted by this company
+		/*
+		companyProfileService.getCompanyEvents(vm.companyUserName).success(function(data) {
+			vm.company = data;
+		});
+		*/
 	});			
 })();

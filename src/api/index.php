@@ -130,7 +130,7 @@ Flight::route('/view_company_profile', function()
 
 
 //11 Route to fetch new members
-// April 27,2016
+// April 27,2016 (index.php)
 Flight::route('/view_event_detail', function()
 {
    enable_cors();	
@@ -260,7 +260,7 @@ Flight::route('/unfollowThisUser', function()
 
 
 //21 Route to follow a user from member directory
-//May 11,2016
+//May 11,2016 (followUnfollowservices.php)
 Flight::route('/followUser', function()
 {
    enable_cors();
@@ -273,7 +273,7 @@ Flight::route('/followUser', function()
 
 
 //22 Route to un-follow a user from member directory
-//May 11,2016
+//May 11,2016 (followUnfollowservices.php)
 Flight::route('/unfollowUser', function()
 {
    enable_cors();
@@ -715,6 +715,42 @@ Flight::route('/finishThisEvent', function()
 
 });
 
+//57 Route to fetch events hosted by a company
+//June 28,2016
+Flight::route('/getEventsHostedByCompany', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getEventsHostedByCompany();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to fetch business opportunities (as a section) to show in home page
+//June 29,2016
+Flight::route('/recommendedBusinessOpportunities', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=recommendedBusinessOpportunities();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//Route to invoke call answering service
+//June 30,2016 (externalServices.php)
+Flight::route('/invokeCallAnswering', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=invokeCallAnswering();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -749,6 +785,7 @@ function services_included()
 	require_once 'services/emailServices.php'; 
 	require_once 'services/sectionServices.php'; 
 	require_once 'services/notificationServices.php'; 
+	require_once 'services/externalServices.php'; 
 }
 
 
@@ -765,6 +802,78 @@ function base_url(){
 }
 
 
+//Function to fetch events hosted by a company using companyid
+//June 28,2016
+function fetchCompanyEvents($companyid)
+{
+
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
+	
+	$data= array();
+	
+	$qry="SELECT * FROM entrp_events WHERE companyid=".$companyid." AND status=1";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data[$i]['id']				=	$row['id'];
+			$data[$i]['eventName']		=	$row['eventName'];
+			$data[$i]['eventTagId']		=	$row['eventTagId'];
+			$data[$i]['description']	=	$row['description'];
+			if($row['poster']!='')
+			{
+				$data[$i]['poster']			=	$row['poster'];
+			}
+			else
+			{
+				$data[$i]['poster']			=	$event_default_poster;
+			}
+			
+			$data[$i]['city']				=	$row['city'];
+			$data[$i]['date']				=	$row['event_date'];
+			$data[$i]['time']				=	$row['event_time'];
+			$data[$i]['joining']			=	goingForThisEventorNot($data[$i]['id']);
+			$i++;
+      }	
+   }
+   else
+   {
+   	$data[$i]['id']				=	"";
+		$data[$i]['eventName']		=	"";
+		$data[$i]['eventTagId']		=	"";
+		$data[$i]['description']	=	"";
+		$data[$i]['poster']			=	"";
+		$data[$i]['city']				=	"";
+		$data[$i]['date']				=	"";
+		$data[$i]['time']				=	"";
+   }
+	
+	return $data;
+
+}
+
+
+//Function to fetch events hosted by a company using company user name 
+//(Not in use as of now. This is fetched from mother function internally)
+//June 28,2016
+function getEventsHostedByCompany()
+{
+	$companyUserName=validate_input($_GET['companyUserName']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+}
 
 
 
@@ -1179,6 +1288,7 @@ function viewCompanyProfile()
    		
    		$data['followers']		=	entrp_company_follows($companyid);
    		$data['categories']		=  fetch_company_categories($companyid);
+   		$data['companyEvents']	=  fetchCompanyEvents($companyid);
 
    	}
    	
@@ -1245,61 +1355,69 @@ function viewEventDetail()
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends
 	
-	$eventid=validate_input($_GET['id']);
+	
 	$data= array();		
 	
-	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
-			FROM entrp_events 
-			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
-		   WHERE entrp_events.id=".$eventid."
-			";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
+	$eventTagid=validate_input($_GET['id']);
+	$eventid=getEventIdfromEventTag($eventTagid);
+	if($eventid!='')
 	{
-		while($row=mysqli_fetch_array($res))
-   	{
-   		$data['id']				=	$row['id'];
-   		$data['name']			=	$row['eventName'];
-   		$data['address']		=	$row['address'];
-
-   		$data['date']			=	$row['event_date'];
-   		$data['startTime']	=	$row['start_time'];
-   		$data['endTime']		=	$row['end_time'];
-   		$data['eventPhoto']	=	$row['clientid'];
-   		if($row['poster']!='')
-   		{
-   			$data['poster']	=	$row['poster'];
-   		}
-   		else
-   		{
-   			$data['poster']	=	$events_default;
-   		}
-   		$data['about']			=	$row['description'];
-   		$data['category']		=	$row['category_name'];
-   		$data['map']['center']['latitude']		=	$row['location_lat'];
-			$data['map']['center']['longitude']		=	$row['location_long'];
-			$data['map']['zoom']	=	8;
-   	}
-   	
-		$data['joining']			=	goingForThisEventorNot($eventid);
-		$data['attendees']		=	getEventAttendeesFromEventID($eventid);
-	}
-	else
-	{
-		$data['id']										=	'';
-		$data['name']									=	'';
-		$data['address']								=	'';
-		$data['map']['center']['latitude']		=	'';
-		$data['map']['center']['longitude']		=	'';
-		$data['map']['zoom']							=	8;
-		$data['date']									=	'';
-		$data['startTime']							=	'';
-		$data['endTime']								=	'';
-		$data['eventPhoto']							=	'';
-		$data['poster']								=	'';
-		$data['about']									=	'';
-   	$data['category']								=	'';		
+		$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
+				FROM entrp_events 
+				LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
+			   WHERE entrp_events.id=".$eventid." AND entrp_events.status!=0
+				";
+		$res=getData($qry);
+		$count_res=mysqli_num_rows($res);
+		if($count_res>0)
+		{
+			while($row=mysqli_fetch_array($res))
+	   	{
+	   		$data['id']				=	$row['id'];
+	   		$data['eventTagId']	=	$row['eventTagId'];
+	   		$data['city']			=	$row['city'];
+	   		$data['share_url']	=	$row['share_url'];
+	   		$data['name']			=	$row['eventName'];
+	   		$data['address']		=	$row['address'];
+	
+	   		$data['date']			=	$row['event_date'];
+	   		$data['startTime']	=	$row['start_time'];
+	   		$data['endTime']		=	$row['end_time'];
+	   		$data['eventPhoto']	=	$row['clientid'];
+	   		if($row['poster']!='')
+	   		{
+	   			$data['poster']	=	$row['poster'];
+	   		}
+	   		else
+	   		{
+	   			$data['poster']	=	$events_default;
+	   		}
+	   		$data['about']			=	$row['description'];
+	   		$data['category']		=	$row['category_name'];
+	   		$data['map']['center']['latitude']		=	$row['location_lat'];
+				$data['map']['center']['longitude']		=	$row['location_long'];
+				$data['map']['zoom']	=	8;
+	   	}
+	   	
+			$data['joining']			=	goingForThisEventorNot($eventid);
+			$data['attendees']		=	getEventAttendeesFromEventID($eventid);
+		}
+		else
+		{
+			$data['id']										=	'';
+			$data['name']									=	'';
+			$data['address']								=	'';
+			$data['map']['center']['latitude']		=	'';
+			$data['map']['center']['longitude']		=	'';
+			$data['map']['zoom']							=	8;
+			$data['date']									=	'';
+			$data['startTime']							=	'';
+			$data['endTime']								=	'';
+			$data['eventPhoto']							=	'';
+			$data['poster']								=	'';
+			$data['about']									=	'';
+	   	$data['category']								=	'';		
+		}	
 	}
 	return $data;
 }
