@@ -5,12 +5,14 @@ $tabs-bg-color: #ffffff;
 $tabs-text-color: $primary-text-color;
 
 #home {
-	margin-top: 10px;
+	margin-top: 0;
+	.container {
+		padding-top: 15px;
+	}
 	a {
 		text-decoration: none;
 		color:inherit;
 	}
-
 	h5 {
 		font-weight: 300;
 		font-size: 12px;
@@ -78,6 +80,10 @@ $tabs-text-color: $primary-text-color;
 		}
 	}
 
+	#page-content-wrapper {
+		overflow-y: scroll;
+	}
+
 	.card {
 		text-align: center;
 		border: 1px solid;
@@ -87,6 +93,7 @@ $tabs-text-color: $primary-text-color;
 	}
 	
 	#myProfile {
+		position: relative;
 		padding: 10px 15px;
 		img {
 			max-width: 100px;
@@ -98,6 +105,17 @@ $tabs-text-color: $primary-text-color;
 		
 		a:hover {
 			opacity: 0.8;
+		}
+		a.button-toggle {
+			position: absolute;
+			top: 15px;
+			left: 15px;
+			color: #f29b13;
+		}
+		@media (min-width: 997px) {
+			a.button-toggle {
+				display: none;
+			}
 		}
 	}
 	
@@ -169,3 +187,41 @@ $tabs-text-color: $primary-text-color;
 		}
 	}
 }
+
+@media (max-width: 977px) {
+	.container {
+		margin-left: 0;
+		margin-right: 0;
+		width: 100%;
+	}
+	h5 {
+		display: none;
+	}
+	#topNav {
+		display: none;
+	}
+	#sideNav {
+		display: none;
+	}
+	#home .nav-tabs {
+		padding: 0 !important;
+	}
+}
+
+/*
+@include mobile {
+	#topNav {
+		display: none;
+	}
+	#sideNav {
+		display: none;
+	}
+	.nav-tabs {
+		padding: 0;
+	}
+}
+
+@include tablet {
+
+}
+*/

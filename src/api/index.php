@@ -727,7 +727,7 @@ Flight::route('/getEventsHostedByCompany', function()
 
 });
 
-//Route to fetch business opportunities (as a section) to show in home page
+//58 Route to fetch business opportunities (as a section) to show in home page
 //June 29,2016
 Flight::route('/recommendedBusinessOpportunities', function()
 {
@@ -739,13 +739,25 @@ Flight::route('/recommendedBusinessOpportunities', function()
 
 });
 
-//Route to invoke call answering service
+//59 Route to invoke call answering service
 //June 30,2016 (externalServices.php)
 Flight::route('/invokeCallAnswering', function()
 {
    enable_cors();	
    services_included();	
 	$returnarray=invokeCallAnswering();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//60 Route to invoke spaces (meeting room) service
+//July 05,2016 (externalServices.php)
+Flight::route('/invokeSpaces', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=invokeSpaces();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 
