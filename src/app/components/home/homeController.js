@@ -80,9 +80,10 @@
 					$scope.userName= data.userName;
 					//$scope.$apply()
 				});
-				
-		});
-	
-		
 
+			$scope.toggleMenu = function() {
+				$scope.isActive = !$scope.isActive;
+			}
+
+		});
 })();

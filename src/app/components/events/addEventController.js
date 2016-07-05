@@ -362,25 +362,16 @@
 					to: 1020, // default high value
 					step: 15, // step width
 					minRange: 15, // min range
-<<<<<<< HEAD
-					hours24: false // true for 24hrs based time | false for PM and AM
-=======
 					hours24: true // true for 24hrs based time | false for PM and AM
->>>>>>> dominic-branch
 				}
 			};
 			// update vm start and end time on timerange change
 			$scope.whenTimeChange = function (data) {
 				console.log('schedule changes', data);
-<<<<<<< HEAD
-				vm.eventStartTime = $scope.timeRangePicker.time.from;
-				vm.eventEndTime = $scope.timeRangePicker.time.to;
-=======
 				//vm.eventStartTime = $scope.timeRangePicker.time.from;
 				vm.eventStartTime = data.from;
 				//vm.eventEndTime = $scope.timeRangePicker.time.to;
 				vm.eventEndTime = data.to;
->>>>>>> dominic-branch
 			};
         });
 })();

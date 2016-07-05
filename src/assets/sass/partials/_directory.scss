@@ -17,18 +17,18 @@ $tabs-text-color: $primary-text-color;
 		height: 36px;
 		border: 0px;
 		margin: 10px 0;
-		padding-left: 28%;
-		padding-right: 20px;
+		padding-left: 270px;
+		padding-right: 32px;
 		
 		@media (max-width: 1000px) {
-			padding: 0px 20px;
+			padding: 0 15px;
 	
 		}
 
 		li {
 			text-align: center;
 			height: 100%;
-			width: 33%;
+			width: 33.33%;
 			&.active, {
 				border-bottom: 5px solid $tabs-underline-color;
 			}
@@ -105,6 +105,18 @@ $tabs-text-color: $primary-text-color;
 				}
 			}
 		}
+		@media (min-width: 480px) and (max-width: 769px) {
+			li {
+				width: 49%;
+			}
+		}
+		@media (max-width: 479px){
+			li {
+				width: 100%;
+				margin: 0;
+				margin-top: 10px;
+			}
+		}
 	}
 	
 	/*-- Companies Directory --*/
@@ -136,6 +148,16 @@ $tabs-text-color: $primary-text-color;
 					right: 0;
 					margin: auto;
 				}
+			}
+		}
+		@media (min-width: 480px) and (max-width: 767px) {
+			li {
+				width: 49%;
+			}
+		}
+		@media (max-width: 479px){
+			li {
+				width: 100%;
 			}
 		}
 	}
@@ -175,7 +197,16 @@ $tabs-text-color: $primary-text-color;
 					margin: auto;
 				}
 			}
-			
+		}
+		@media (min-width: 480px) and (max-width: 767px) {
+			li {
+				width: 49%;
+			}
+		}
+		@media (max-width: 479px){
+			li {
+				width: 100%;
+			}
 		}
 	}
 	
@@ -185,5 +216,10 @@ $tabs-text-color: $primary-text-color;
 		border-color: $primary-border-color;
 		padding: 15px;
 		background-color: #ffffff;
+	}
+	@media (max-width: 769px) {
+		.side-filters label {
+			display: block;
+		}
 	}
 }
