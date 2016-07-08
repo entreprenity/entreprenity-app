@@ -9123,8 +9123,25 @@ body {
 }
 */
 /* line 2, ../sass/partials/_navBar.scss */
+.header a {
+  text-decoration: none;
+  color: inherit;
+}
+/* line 6, ../sass/partials/_navBar.scss */
 .header .navbar-header {
   margin: 0;
+}
+/* line 9, ../sass/partials/_navBar.scss */
+.header .button-home {
+  position: absolute;
+  right: 70px;
+  top: 20px;
+  background: #222;
+  color: #9d9d9d;
+}
+/* line 15, ../sass/partials/_navBar.scss */
+.header .button-home:hover {
+  background: #000000;
 }
 
 /* line 1, ../sass/partials/_login.scss */
@@ -9249,10 +9266,48 @@ body {
   }
 }
 /* line 83, ../sass/partials/_home.scss */
+#home .button-fab {
+  display: none;
+  border: none;
+  font-size: 1.5em;
+  color: white;
+  background-color: #f29b13;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  margin: auto;
+  -webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
+  -moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
+  box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, 0.3);
+  position: fixed;
+  right: 10px;
+  top: 80px;
+  z-index: 99;
+  transition: all 1s ease;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -ms-transition: all 1s ease;
+}
+/* line 100, ../sass/partials/_home.scss */
+#home .button-fab i {
+  margin-left: 13px;
+  margin-top: 11px;
+}
+@media (max-width: 479px) {
+  /* line 83, ../sass/partials/_home.scss */
+  #home .button-fab {
+    display: block;
+  }
+}
+/* line 114, ../sass/partials/_home.scss */
+#home .button-fab.slide {
+  right: 210px !important;
+}
+/* line 119, ../sass/partials/_home.scss */
 #home #page-content-wrapper {
   overflow-y: scroll;
 }
-/* line 87, ../sass/partials/_home.scss */
+/* line 123, ../sass/partials/_home.scss */
 #home .card {
   text-align: center;
   border: 1px solid;
@@ -9260,27 +9315,27 @@ body {
   margin-bottom: 15px;
   background-color: #ffffff;
 }
-/* line 95, ../sass/partials/_home.scss */
+/* line 131, ../sass/partials/_home.scss */
 #home #myProfile {
   position: relative;
   padding: 10px 15px;
 }
-/* line 98, ../sass/partials/_home.scss */
+/* line 134, ../sass/partials/_home.scss */
 #home #myProfile img {
   max-width: 100px;
   width: 100%;
   height: auto;
   margin-bottom: 5px;
 }
-/* line 104, ../sass/partials/_home.scss */
+/* line 140, ../sass/partials/_home.scss */
 #home #myProfile p {
   color: #717171;
 }
-/* line 106, ../sass/partials/_home.scss */
+/* line 142, ../sass/partials/_home.scss */
 #home #myProfile a:hover {
   opacity: 0.8;
 }
-/* line 109, ../sass/partials/_home.scss */
+/* line 145, ../sass/partials/_home.scss */
 #home #myProfile a.button-toggle {
   position: absolute;
   top: 15px;
@@ -9288,33 +9343,33 @@ body {
   color: #f29b13;
 }
 @media (min-width: 997px) {
-  /* line 116, ../sass/partials/_home.scss */
+  /* line 152, ../sass/partials/_home.scss */
   #home #myProfile a.button-toggle {
     display: none;
   }
 }
-/* line 123, ../sass/partials/_home.scss */
+/* line 159, ../sass/partials/_home.scss */
 #home #sideNav li {
   font-weight: 300;
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 127, ../sass/partials/_home.scss */
+/* line 163, ../sass/partials/_home.scss */
 #home #sideNav li:last-child {
   border-bottom: 1px solid transparent;
 }
-/* line 129, ../sass/partials/_home.scss */
+/* line 165, ../sass/partials/_home.scss */
 #home #sideNav li a:hover {
   color: #f29b13 !important;
 }
-/* line 135, ../sass/partials/_home.scss */
+/* line 171, ../sass/partials/_home.scss */
 #home #topNav {
   height: 150px;
   text-align: center;
   margin-left: 5px;
   margin-bottom: 15px;
 }
-/* line 140, ../sass/partials/_home.scss */
+/* line 176, ../sass/partials/_home.scss */
 #home #topNav div {
   background-color: #ffffff;
   width: 33%;
@@ -9324,69 +9379,100 @@ body {
   border: 1px solid #E5E5E5;
   padding: 15px;
 }
-/* line 149, ../sass/partials/_home.scss */
+/* line 185, ../sass/partials/_home.scss */
 #home #topNav div img {
   width: 70px;
   height: 70px;
 }
-/* line 154, ../sass/partials/_home.scss */
+/* line 190, ../sass/partials/_home.scss */
 #home #topNav div .btn {
   padding: 6px 10px;
 }
-/* line 161, ../sass/partials/_home.scss */
+@media (max-width: 767px) {
+  /* line 171, ../sass/partials/_home.scss */
+  #home #topNav {
+    height: 130px;
+  }
+  /* line 196, ../sass/partials/_home.scss */
+  #home #topNav div {
+    padding: 0;
+    height: 130px;
+  }
+  /* line 200, ../sass/partials/_home.scss */
+  #home #topNav .btn {
+    padding: 5px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 479px) {
+  /* line 171, ../sass/partials/_home.scss */
+  #home #topNav {
+    height: 110px;
+  }
+  /* line 207, ../sass/partials/_home.scss */
+  #home #topNav div {
+    height: 110px;
+  }
+  /* line 210, ../sass/partials/_home.scss */
+  #home #topNav .btn {
+    padding: 2px;
+    font-size: 8px;
+  }
+}
+/* line 218, ../sass/partials/_home.scss */
 #home #newMembers h4 {
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 165, ../sass/partials/_home.scss */
+/* line 222, ../sass/partials/_home.scss */
 #home #newMembers ul {
   padding: 15px;
 }
-/* line 167, ../sass/partials/_home.scss */
+/* line 224, ../sass/partials/_home.scss */
 #home #newMembers ul img {
   max-width: 100px;
   width: 100%;
   height: auto;
 }
-/* line 177, ../sass/partials/_home.scss */
+/* line 234, ../sass/partials/_home.scss */
 #home #latestEvents h4 {
   border-bottom: 1px solid #E5E5E5;
   padding: 10px 15px;
 }
-/* line 181, ../sass/partials/_home.scss */
+/* line 238, ../sass/partials/_home.scss */
 #home #latestEvents ul {
   padding: 15px;
 }
-/* line 183, ../sass/partials/_home.scss */
+/* line 240, ../sass/partials/_home.scss */
 #home #latestEvents ul img {
   width: 100%;
   height: auto;
 }
 
 @media (max-width: 977px) {
-  /* line 192, ../sass/partials/_home.scss */
+  /* line 249, ../sass/partials/_home.scss */
   .container {
     margin-left: 0;
     margin-right: 0;
     width: 100%;
   }
 
-  /* line 197, ../sass/partials/_home.scss */
+  /* line 254, ../sass/partials/_home.scss */
   h5 {
     display: none;
   }
 
-  /* line 200, ../sass/partials/_home.scss */
-  #topNav {
+  /* line 257, ../sass/partials/_home.scss */
+  #myProfile {
     display: none;
   }
 
-  /* line 203, ../sass/partials/_home.scss */
+  /* line 260, ../sass/partials/_home.scss */
   #sideNav {
     display: none;
   }
 
-  /* line 206, ../sass/partials/_home.scss */
+  /* line 263, ../sass/partials/_home.scss */
   #home .nav-tabs {
     padding: 0 !important;
   }

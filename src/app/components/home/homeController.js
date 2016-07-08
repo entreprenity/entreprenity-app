@@ -83,6 +83,7 @@
 
 			$scope.toggleMenu = function() {
 				$scope.isActive = !$scope.isActive;
+				$scope.isSlide = !$scope.isSlide;
 			}
 
 		});

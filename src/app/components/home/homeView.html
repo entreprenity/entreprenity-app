@@ -1,4 +1,5 @@
 <div id="home">
+
 	<div id="wrapper" ng-class="{'toggled': isActive}">
 		<!-- Sidebar -->
 		<div id="sidebar-wrapper">
@@ -23,12 +24,14 @@
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Page Content -->
+		<div class="button-fab" ng-class="{'slide': isActive}">
+			<a class="button-toggle" ng-click="toggleMenu()"> <i class="fa fa-compass fa-2x" aria-hidden="true"></i></a>
+		</div>
 		<div id="page-content-wrapper">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-2">
 						<div id="myProfile" class="card">
-							<a class="button-toggle" ng-click="toggleMenu()"> <i class="fa fa-compass fa-2x" aria-hidden="true"></i></a><br>
 							<a ng-href="#/myprofile/{{vm.userName}}">
 								<img class="img-circle" ng-src="{{vm.avatar}}">
 								<h3>{{vm.firstName + " " +vm.lastName}}</h3>
@@ -51,17 +54,10 @@
 						<h5>SERVICES</h5>
 						<div id="sideNav" class="card">
 							<ul>
-<<<<<<< HEAD
-								<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">Book Meeting Room</a></li>
-								<li><a href="http://myvoffice.me/spaces/login.html" target="_blank">Book Workspace</a></li>
-								<li><a href="#/callanswering">Manage Calls</a></li>
-								<li><a href="http://callanswering.me/app/login.html" target="_blank">Manage Mails</a></li>
-=======
 								<li><a href="#/spaces" >Book Meeting Room</a></li>
 								<li><a href="#/spaces" >Book Workspace</a></li>
 								<li><a href="#/callanswering">Manage Calls</a></li>
 								<li><a href="#/callanswering" >Manage Mails</a></li>
->>>>>>> dominic-branch
 								<li><a ng-href="#/home">Facilities Support</a></li>
 								<li><a ng-href="#/home">Contact Us</a></li>
 							</ul>
@@ -72,20 +68,12 @@
 							<div>
 								<img ng-src="assets/img/icon-recep.png">
 								<span class="up-arrow"></span>
-<<<<<<< HEAD
-								<a  ng-href="http://callanswering.me/app/login.html" class="btn btn-default" target="_blank">MY RECEPTIONIST</a>
-=======
 								<a  ng-href="#/callanswering" class="btn btn-default" >MY RECEPTIONIST</a>
->>>>>>> dominic-branch
 							</div>
 							<div>
 								<img ng-src="assets/img/icon-meeting.png">
 								<span class="up-arrow"></span>
-<<<<<<< HEAD
-								<a ng-href="http://myvoffice.me/spaces/login.html" class="btn btn-default" target="_blank">MEETING ROOM</a>
-=======
 								<a ng-href="#/spaces" class="btn btn-default" >MEETING ROOM</a>
->>>>>>> dominic-branch
 							</div>
 							<div>
 								<img ng-src="assets/img/icon-services.png">
@@ -153,12 +141,6 @@
 	</div>
 </div>
 
-<script>
-	$("#menu-toggle").click(function(e) {
-		e.preventDefault();
-		$("#wrapper").toggleClass("toggled");
-	});
-</script>
 
 
 
