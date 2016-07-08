@@ -10088,12 +10088,13 @@ body {
 /* line 78, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-content {
   padding: 5px 10px;
+  font-size: 12px;
 }
-/* line 80, ../sass/partials/_newsfeed.scss */
+/* line 83, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body {
   position: relative;
 }
-/* line 82, ../sass/partials/_newsfeed.scss */
+/* line 85, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body .btn-submit-comment {
   position: absolute;
   right: 0px;
@@ -10102,21 +10103,21 @@ body {
   padding-right: 20px;
   height: 32px;
 }
-/* line 92, ../sass/partials/_newsfeed.scss */
+/* line 95, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers {
   width: 155px;
   border: 1px solid transparent;
 }
-/* line 95, ../sass/partials/_newsfeed.scss */
+/* line 98, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container {
   padding: 0px 10px;
   position: relative;
 }
-/* line 98, ../sass/partials/_newsfeed.scss */
+/* line 101, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container i {
   color: #f29b13;
 }
-/* line 99, ../sass/partials/_newsfeed.scss */
+/* line 102, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container .post-likers-list {
   position: absolute;
   top: 20px;
@@ -10127,7 +10128,7 @@ body {
   padding: 5px 10px;
   margin: 0px;
 }
-/* line 110, ../sass/partials/_newsfeed.scss */
+/* line 113, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers:hover {
   background-color: #ffffff;
   border: 1px solid #E1E2E3;
