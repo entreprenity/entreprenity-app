@@ -1,20 +1,19 @@
 <?php
 
-//Function to invoke call answering service
-//June 30,2016
-function invokeCallAnswering()
+
+//Function to invoke spaces service
+//July 05,2016
+function invokeSpaces()
 {
 	$data = array();	   
 	$myData = array();
 	$landing = "index.html";
 		   
    $token=validate_input($_POST['token']);
-	
+   
 	$session_values = get_user_session();
 	$my_session_id	= $session_values['id'];	
 	$userName	= $session_values['username'];	
-	
-	//$timeofaction=date('Y-m-d H:i:s');
 	
 	$myData = fetch_info_from_entrp_login($my_session_id);
 		
@@ -32,13 +31,57 @@ function invokeCallAnswering()
 		//setcookie('cid', $_SESSION["cid"], time() +  60 * 60 * 24 * 30, 'http://callanswering.me/app/');
 		//setcookie('token', $_SESSION['token'], time() +  60 * 60 * 24 * 30, 'http://callanswering.me/app/');
 		
-		//$land = "<script>window.location.href = '$landing';exit();</script>";
-		/*
-		echo "<script type=\"text/javascript\">
-        			window.open('".$landing."', '_blank')
-    			</script>";
-    			*/
-    	$serviceType=1;
+    	$serviceType=2; //represents spaces
+    	$logResp=logThisServiceAuthRequest($cid,$loginEmail,$loginPassword,$authtoken,$serviceType);
+    	if($logResp!='')
+    	{
+    		$data=$logResp;
+    	}
+    	else
+    	{
+    		$data='failed';
+    	}    	
+	}
+	else
+	{
+		$data='failed';
+	}
+	return $data;
+
+}
+
+
+//Function to invoke call answering service
+//June 30,2016
+function invokeCallAnswering()
+{
+	$data = array();	   
+	$myData = array();
+	$landing = "index.html";
+		   
+   $token=validate_input($_POST['token']);
+	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];	
+	$userName	= $session_values['username'];	
+	
+	$myData = fetch_info_from_entrp_login($my_session_id);
+		
+	$loginEmail = $myData['email'];
+	
+	$loginPassword = fetchUserLoginPassword($loginEmail,$my_session_id);
+
+	$cid= checkUserLoginClientInfo($loginEmail,$loginPassword);
+	
+	if($cid!="")
+	{
+		$authtoken			= md5($loginEmail.date('Y-m-d H:i:s'));
+		$_SESSION['token']= $authtoken; 
+		$_SESSION["cid"]	 = $cid;
+		//setcookie('cid', $_SESSION["cid"], time() +  60 * 60 * 24 * 30, 'http://callanswering.me/app/');
+		//setcookie('token', $_SESSION['token'], time() +  60 * 60 * 24 * 30, 'http://callanswering.me/app/');
+		
+    	$serviceType=1; //represents call answer
     	$logResp=logThisServiceAuthRequest($cid,$loginEmail,$loginPassword,$authtoken,$serviceType);
     	if($logResp!='')
     	{

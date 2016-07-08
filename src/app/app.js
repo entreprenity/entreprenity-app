@@ -33,7 +33,8 @@
 		'entreprenityApp.addEvent',
 		'entreprenityApp.common',
 		'entreprenityApp.imgEventPoster',
-		'entreprenityApp.callanswering'
+		'entreprenityApp.callanswering',
+		'entreprenityApp.spaces'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -145,6 +146,11 @@
 		})
 		.when('/callanswering', {
 			controller: 'CallAnswerController',
+			templateUrl: 'app/components/externalservices/externalServiceRedirectView.html',
+			controllerAs: 'vm'
+		})
+		.when('/spaces', {
+			controller: 'SpacesController',
 			templateUrl: 'app/components/externalservices/externalServiceRedirectView.html',
 			controllerAs: 'vm'
 		})
