@@ -171,7 +171,7 @@
 			return Events;
 		})
 
-		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter) {
+		.controller('DirectoryController', function(Members, Companies, Events, directoryService, $filter, $routeParams) {
 			
 			var vm = this;
 		
