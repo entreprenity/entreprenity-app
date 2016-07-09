@@ -8,16 +8,16 @@
 				<li><a ng-href="#/directory">Events</a></li>
 				<li><a ng-href="#/add-event">Add Events</a></li>
 				<li><a ng-href="#/directory">Directory</a></li>
-				<li><a ng-href="#/directory">Benefits & Discounts</a></li>
+				<!--<li><a ng-href="#/directory">Benefits & Discounts</a></li>-->
 				<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
 				<br>
 				<li><h3>SERVICES</h3></li>
 				<li><a href="#/spaces" >Book Meeting Room</a></li>
-				<li><a href="#/spaces" >Book Workspace</a></li>
+				<!--<li><a href="#/spaces" >Book Workspace</a></li>-->
 				<li><a href="#/callanswering">Manage Calls</a></li>
-				<li><a href="#/callanswering" >Manage Mails</a></li>
-				<li><a ng-href="#/home">Facilities Support</a></li>
-				<li><a ng-href="#/home">Contact Us</a></li>
+				<!--<li><a href="#/callanswering" >Manage Mails</a></li>-->
+				<!--<li><a ng-href="#/home">Facilities Support</a></li>-->
+				<!--<li><a ng-href="#/home">Contact Us</a></li>-->
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -43,7 +43,7 @@
 								<li><a ng-href="#/directory">Events</a></li>
 								<li><a ng-href="#/add-event">Add Events</a></li>
 								<li><a ng-href="#/directory">Directory</a></li>
-								<li><a ng-href="#/directory">Benefits & Discounts</a></li>
+								<!--<li><a ng-href="#/directory">Benefits & Discounts</a></li>-->
 								<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
 							</ul>
 						</div>
@@ -52,11 +52,11 @@
 						<div id="sideNav" class="card">
 							<ul>
 								<li><a href="#/spaces" >Book Meeting Room</a></li>
-								<li><a href="#/spaces" >Book Workspace</a></li>
+								<!--<li><a href="#/spaces" >Book Workspace</a></li>-->
 								<li><a href="#/callanswering">Manage Calls</a></li>
-								<li><a href="#/callanswering" >Manage Mails</a></li>
-								<li><a ng-href="#/home">Facilities Support</a></li>
-								<li><a ng-href="#/home">Contact Us</a></li>
+								<!--<li><a href="#/callanswering" >Manage Mails</a></li>-->
+								<!--<li><a ng-href="#/home">Facilities Support</a></li>-->
+								<!--<li><a ng-href="#/home">Contact Us</a></li>-->
 							</ul>
 						</div>
 					</div>
@@ -130,6 +130,24 @@
 								</li>
 							</ul>
 						</div>
+						
+						<div id="newMembers" class="card">
+							<h4>BUSINESS OPPORTUNITIES</h4>
+							<ul>
+								<li ng-repeat="businessOpportunity in vm.businessOpportunities">
+									<a ng-href="#/members/{{businessOpportunity.post_author.userName}}">
+										<img class="img-circle" ng-src="{{businessOpportunity.post_author.avatar}}">
+										<p>{{businessOpportunity.post_author.firstName + ' ' + businessOpportunity.post_author.lastName}}</p>
+										<p>{{businessOpportunity.post_author.position + ' / ' + businessOpportunity.post_author.company}}</p>
+										<p>is looking for</p>
+										<ul>
+											<li ng-repeat="tag in businessOpportunity.postTags"><a href="#" class="tags-item">{{tag}}</a></li>
+										</ul>
+									</a>
+								</li>
+							</ul>
+						</div>
+						
 					</div>
 				</div>
 			</div>

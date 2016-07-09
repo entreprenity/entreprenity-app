@@ -91,7 +91,7 @@ Flight::route('/getLocations', function()
 
 
 //08 Route to fetch new members
-// April 21,2016
+// April 21,2016 (sectionServices.php)
 Flight::route('/getNewMembers', function()
 {
    enable_cors();	
@@ -208,7 +208,7 @@ Flight::route('/update_member_avatar', function()
 });
 
 //17 Route to fetch latest events
-//May 09,2016
+//May 09,2016 (sectionServices.php)
 Flight::route('/getLatestEvents', function()
 {
    enable_cors();
@@ -428,7 +428,7 @@ Flight::route('/getCompanyFollowers', function()
 
 
 //34 Route to check validity of a user token
-//May 17,2016
+//May 17,2016 (userLoginServices.php)
 Flight::route('/validateUserToken', function()
 {
    enable_cors();
@@ -441,7 +441,7 @@ Flight::route('/validateUserToken', function()
 
 
 //35 Route to check validity of a user token
-//May 17,2016
+//May 17,2016 (userLoginServices.php)
 Flight::route('/destroyUserToken', function()
 {
    enable_cors();
@@ -563,7 +563,7 @@ Flight::route('/updateMyPreferences', function()
 
 
 //45 Route to fetch top contributors
-//June 02,2016
+//June 02,2016 (sectionServices.php)
 Flight::route('/getTopContributors', function()
 {
    enable_cors();	
@@ -728,7 +728,7 @@ Flight::route('/getEventsHostedByCompany', function()
 });
 
 //58 Route to fetch business opportunities (as a section) to show in home page
-//June 29,2016
+//June 29,2016 (sectionServices.php)
 Flight::route('/recommendedBusinessOpportunities', function()
 {
    enable_cors();	

@@ -43,6 +43,10 @@ function validateUserToken()
 	} 
 	else 
 	{
+		if(!isset($_SESSION))
+ 		{
+    		session_start();
+  		}
 		session_destroy();
 		$resp['msg']				=	"unauthorized";   
 		//$resp['msg']				=	$qry;  

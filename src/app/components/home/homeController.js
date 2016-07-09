@@ -20,6 +20,9 @@
 				},
 				getTopContributors:function() {
 					return $http.get(baseUrl + 'getTopContributors');
+				},
+				recommendedBusinessOpportunities:function() {
+					return $http.get(baseUrl + 'recommendedBusinessOpportunities');
 				}
 			};
 		})
@@ -34,9 +37,56 @@
 				} 
 				else 
 				{
-					token = "something stupid";
+					token = "";
 				}
-				AuthService.checkToken(token);
+				
+				if(token)
+				{
+					AuthService.checkToken(token);
+					
+					//To get user session value
+					myHomeService.getUserSessInfo().success(function(data) {
+						vm.id 			= data.id;
+						//vm.userName 	= data.username;
+					});
+					
+					//To get new members
+					myHomeService.getNewMembers().success(function(data) {
+						vm.newMembers = data;
+					});
+					
+					//to get latest events
+					myHomeService.getLatestEvents().success(function(data) {
+						vm.latestEvents = data;
+					});
+					
+					//to get top contributors
+					myHomeService.getTopContributors().success(function(data) {
+						vm.topContributors = data;
+					});
+					
+					//to get recommended business opportunities
+					myHomeService.recommendedBusinessOpportunities().success(function(data) {
+						vm.businessOpportunities = data;
+					});
+					
+					
+					//to get basic user information
+					myHomeService.getBasicUserInfo().success(function(data) {
+						vm.firstName 	= data.firstName;
+						vm.lastName 	= data.lastName;
+						vm.position 	= data.position;
+						vm.myOffice 	= data.myOffice;
+						vm.avatar 		= data.avatar;
+						vm.userName 	= data.userName;
+						vm.companyUserName 	= data.companyUserName;
+						
+						$scope.userName= data.userName;
+						//$scope.$apply()
+					});		
+				}	
+					
+				
 				
 				$scope.logout = function(){
 					var data = {
@@ -44,42 +94,6 @@
 					}
 					AuthService.logOut(token);
 				}
-
-				
-				//To get user session value
-				myHomeService.getUserSessInfo().success(function(data) {
-					vm.id 			= data.id;
-					//vm.userName 	= data.username;
-				});
-				
-				//To get new members
-				myHomeService.getNewMembers().success(function(data) {
-					vm.newMembers = data;
-				});
-				
-				//to get latest events
-				myHomeService.getLatestEvents().success(function(data) {
-					vm.latestEvents = data;
-				});
-				
-				//to get top contributors
-				myHomeService.getTopContributors().success(function(data) {
-					vm.topContributors = data;
-				});
-				
-				//to get basic user information
-				myHomeService.getBasicUserInfo().success(function(data) {
-					vm.firstName 	= data.firstName;
-					vm.lastName 	= data.lastName;
-					vm.position 	= data.position;
-					vm.myOffice 	= data.myOffice;
-					vm.avatar 		= data.avatar;
-					vm.userName 	= data.userName;
-					vm.companyUserName 	= data.companyUserName;
-					
-					$scope.userName= data.userName;
-					//$scope.$apply()
-				});
 
 			$scope.toggleMenu = function() {
 				$scope.isActive = !$scope.isActive;

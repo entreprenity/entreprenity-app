@@ -70,10 +70,7 @@
 										<a href="#/members/{{comment.comment_author.userName}}" ><strong>{{comment.comment_author.firstName + ' ' + comment.comment_author.lastName}}</strong></a>
 										<p><small class="text-muted">{{comment.comment_author.companyName}}</small></p>
 								</div>
-								<div class="post-buttonGroup">
-									<a ng-click="vm.likeComment(comment.commentId)" ng-hide="comment.isLiked">Like</a>	
-									<a ng-click="vm.unLikeComment(comment.commentId)" ng-show="comment.isLiked">Liked</a>
-								</div>
+
 								<div class="clearfix"></div>
 								<div class="comment-content">{{comment.content}}</div>
 							</li>
