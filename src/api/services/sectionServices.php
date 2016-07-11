@@ -1,11 +1,150 @@
 <?php
 
+//Function to fetch tags of a timeline business opportunity post
+//July 08,2016
+function getTimelinePostTags($post_id)
+{
+	$data= array();
+	$qry="SELECT BOT.business_tags 
+			FROM entrp_user_timeline_businessopp_tags AS BOT
+			WHERE BOT.postid=".$post_id."
+		  ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {    	
+			$data			=	json_decode($row['business_tags']);
+      }	
+   }
+	return $data;
+}
+
+
+//Function to fetch all business opportunity tags
+//July 07,2016
+function getAllBusinessOpportunityTags()
+{
+	$data= array();
+	$qry="SELECT BOT.* 
+			FROM entrp_user_timeline_businessopp_tags AS BOT
+		  ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	
+      	$data[$i]['post_id']			=	$row['id'];      	
+      	$data[$i]['postid']			=	$row['postid'];      	
+			$data[$i]['tags']				=	json_decode($row['business_tags']);
+
+			$i++;
+      }	
+   }
+	return $data;
+}
+
 
 //Function to fetch business opportunities (as a section) to show in home page
 //June 29,2016
 function recommendedBusinessOpportunities()
 {
-
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+	$allTags= array();
+	$myCompCategoriesDecoded= array();
+	$array = array();
+	$postIdArrays = array();
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$myCompanyID			=	getCompanyIDfromUserID($my_session_id); //get company id
+		$myCompanyTags			=  fetch_company_categories($myCompanyID); //get company categories json (my company tags)			
+		$allTags 				=  getAllBusinessOpportunityTags(); 	//get All business opportunity tags
+	
+		$myUniqueCompanyTags = array_unique($myCompanyTags);
+		
+		foreach($allTags as $tag)  // iterate through multi-dimensional array not single one
+		{
+			// a for loop to iterate through single-dimensional completely
+			for($i=0;$i<count($myUniqueCompanyTags);$i++)
+			{ 
+				 // if single dimensional array value exist in multi-dimensional tags array
+			    if (in_array($myUniqueCompanyTags[$i],$tag['tags']))  
+			    {
+			        $newdata =  array (
+			            'postId' => $tag['postid'],
+			            'tag' => $myUniqueCompanyTags[$i]
+			         );
+			        array_push($array, $newdata); // push the data
+			        array_push($postIdArrays, $tag['postid']); // push the data
+			    }
+			}
+		}
+		$postIdArrayString = implode(",", $postIdArrays);
+		
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
+				ORDER BY EUT.created_at DESC";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   $i=0; //to initiate count
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {
+	      	$post_id														=	$row['post_id'];
+	      	
+	      	$data[$i]['post_id']										=	$row['post_id'];      	
+	      	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
+				$data[$i]['content']										=	$row['content'];
+				$data[$i]['image']										=	$row['post_img'];
+				$data[$i]['created_at']									=	$row['created_at'];
+				
+				$data[$i]['post_author']['id']						=	$row['clientid'];
+				$data[$i]['post_author']['firstName']				=	$row['firstname'];
+				$data[$i]['post_author']['lastName']				=	$row['lastname'];
+				if($row['avatar']!='')
+				{
+					$data[$i]['post_author']['avatar']				=	$row['avatar'];
+				}
+				else
+				{
+					$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+				}
+	   				
+				$data[$i]['post_author']['position']				=	$row['designation'];
+				$data[$i]['post_author']['companyName']			=	$row['company_name'];
+				$data[$i]['post_author']['userName']				=	$row['username'];
+				$data[$i]['post_author']['location']				=	$row['location_desc'];
+	
+				$i++;
+	      }	
+	   }	
+	}
+	return $data;
 }
 
 //Function to get most timeline commenter s (not comments received, but comments posted)

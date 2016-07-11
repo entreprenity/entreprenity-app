@@ -80,7 +80,8 @@
 										data: $.param(dataPost),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
-				},
+				}
+				/*,
 				commentLike: function(commentID) 
 				{
 					var dataPost = {likedCommentId: commentID};														
@@ -99,6 +100,7 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				}
+				*/
 			};
 		})
 		.directive('newsFeed', function() {
@@ -311,6 +313,7 @@
 				};
 				
 				//Like a time-line comment
+				/*
 				vm.likeComment = function(commentID) {
 					var likedComment = commentID;
 
@@ -324,8 +327,10 @@
 					});
 					vm.getPosts(); 	
 				};
+				*/
 				
 				//unlike a time-line comment
+				/*
 				vm.unLikeComment = function(commentID) {
 					var unLikedComment = post;
 
@@ -339,6 +344,7 @@
 					});
 					vm.getPosts();	
 				};
+				*/
 
 				//Add a comment to time-line post
 				vm.addComment = function(post,newComment) {

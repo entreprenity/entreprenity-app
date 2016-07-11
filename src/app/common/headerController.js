@@ -22,9 +22,28 @@
 				} 
 				else 
 				{
-					token = "something stupid";
+					token = "";
 				}
-				AuthService.checkToken(token);
+				
+				if(token)
+				{
+					AuthService.checkToken(token);
+					//to get basic user information
+					myCommonService.getBasicUserInfo().success(function(data) {
+						vm.id 			= data.id;
+						vm.firstName 	= data.firstName;
+						vm.lastName 	= data.lastName;
+						vm.position 	= data.position;
+						vm.myOffice 	= data.myOffice;
+						vm.avatar 		= data.avatar;
+						vm.userName 	= data.userName;
+						vm.companyUserName 	= data.companyUserName;
+						
+						$scope.userName 			= data.userName;
+						$scope.companyUserName 	= data.companyUserName;
+					});
+				}
+				
 				
 				$scope.logout = function(){
 					var data = {
@@ -32,22 +51,6 @@
 					}
 					AuthService.logOut(token);
 				}
-				
-				
-				//to get basic user information
-				myCommonService.getBasicUserInfo().success(function(data) {
-					vm.id 			= data.id;
-					vm.firstName 	= data.firstName;
-					vm.lastName 	= data.lastName;
-					vm.position 	= data.position;
-					vm.myOffice 	= data.myOffice;
-					vm.avatar 		= data.avatar;
-					vm.userName 	= data.userName;
-					vm.companyUserName 	= data.companyUserName;
-					
-					$scope.userName 			= data.userName;
-					$scope.companyUserName 	= data.companyUserName;
-				});
 				
 		});
 	
