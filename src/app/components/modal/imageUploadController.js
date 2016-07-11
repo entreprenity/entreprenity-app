@@ -39,7 +39,7 @@
 				}
 			};
 		})
-	
+
 		.controller('ImageUploadController', function($routeParams,imageUploadService,$scope, $uibModalInstance, id , $timeout) {
 			$scope.id = id;
 			$scope.myImage='';
@@ -77,7 +77,6 @@
 			$scope.clickBrowseImage = function(){
 				angular.element('#fileInput').trigger('click');
 			};
-						
 			
 
 			$scope.handleFileSelect = function(evt){
