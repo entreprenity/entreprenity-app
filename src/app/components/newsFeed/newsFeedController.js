@@ -4,22 +4,22 @@
 
 		.factory('newsFeedService', function($http) {
 			var baseUrl = 'api/';
-			
+
 			return {
-				
-				getAllPosts: function() 
-				{ 
+
+				getAllPosts: function()
+				{
 					return $http.get(baseUrl+ 'getAllPosts');
 				},
-				getMemberPosts: function(username) 
+				getMemberPosts: function(username)
 				{
 					return $http.get(baseUrl+ 'getMembersPost?user='+username);
 				},
-                getmyMemberPosts: function(username) 
+				getmyMemberPosts: function(username)
 				{
 					return $http.get(baseUrl+ 'getmyMembersPost');
 				},
-				getFollowedMembersPosts: function(username) 
+				getFollowedMembersPosts: function(username)
 				{
 					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
 				},
@@ -27,116 +27,116 @@
 				{
 					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
-				getCompanyPosts: function(username) 
+				getCompanyPosts: function(username)
 				{
 					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
 				},
-                getMyCompanyPosts: function(username) 
+				getMyCompanyPosts: function(username)
 				{
 					return $http.get(baseUrl+ 'getmyCompanyPosts');
 				},
-				getTagCategories:function() 
+				getTagCategories:function()
 				{
 					return $http.get(baseUrl + 'getTagCategories');
 				},
-				getAllBusinessOpportunities:function() 
+				getAllBusinessOpportunities:function()
 				{
 					return $http.get(baseUrl + 'getAllBusinessOpportunities');
 				},
-				
-				postCurrentPost: function(newPost) 
+
+				postCurrentPost: function(newPost)
 				{
-					var dataPost = {newPost: newPost};														
+					var dataPost = {newPost: newPost};
 					return $http({ method: 'post',
-										url: baseUrl+'postCurrentPost',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+						url: baseUrl+'postCurrentPost',
+						data: dataPost,
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					});
 				},
-				postComment: function(commentedPost,newComment) 
+				postComment: function(commentedPost,newComment)
 				{
-					var dataPost = {postId: commentedPost.post_id,postComment:newComment};														
+					var dataPost = {postId: commentedPost.post_id,postComment:newComment};
 					return $http({ method: 'post',
-										url: baseUrl+'postThisComment',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
-				},				
-				postLike: function(likedPost) 
-				{
-					var dataPost = {likedPostId: likedPost.post_id};														
-					return $http({ method: 'post',
-										url: baseUrl+'likeThisPost',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+						url: baseUrl+'postThisComment',
+						data: dataPost,
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					});
 				},
-				postUnLike: function(unLikedPost) 
+				postLike: function(likedPost)
 				{
-					var dataPost = {unlikedPostId: unLikedPost.post_id};														
+					var dataPost = {likedPostId: likedPost.post_id};
 					return $http({ method: 'post',
-										url: baseUrl+'unlikeThisPost',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+						url: baseUrl+'likeThisPost',
+						data: dataPost,
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					});
 				},
-				postBusoppPost: function(content) 
+				postUnLike: function(unLikedPost)
 				{
-					var dataPost = {postContent: content};														
+					var dataPost = {unlikedPostId: unLikedPost.post_id};
 					return $http({ method: 'post',
-										url: baseUrl+'postABusinessOpportunity',
-										data: $.param(dataPost),
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
+						url: baseUrl+'unlikeThisPost',
+						data: dataPost,
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					});
+				},
+				postBusoppPost: function(content)
+				{
+					var dataPost = {postContent: content};
+					return $http({ method: 'post',
+						url: baseUrl+'postABusinessOpportunity',
+						data: $.param(dataPost),
+						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					});
 				}
 				/*,
-				commentLike: function(commentID) 
-				{
-					var dataPost = {likedCommentId: commentID};														
-					return $http({ method: 'post',
-										url: baseUrl+'likeThisComment',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
-				},
-				commentUnLike: function(commentID) 
-				{
-					var dataPost = {unlikedCommentId: commentID};														
-					return $http({ method: 'post',
-										url: baseUrl+'unlikeThisComment',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
-				}
-				*/
+				 commentLike: function(commentID)
+				 {
+				 var dataPost = {likedCommentId: commentID};
+				 return $http({ method: 'post',
+				 url: baseUrl+'likeThisComment',
+				 data: dataPost,
+				 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+				 });
+				 },
+				 commentUnLike: function(commentID)
+				 {
+				 var dataPost = {unlikedCommentId: commentID};
+				 return $http({ method: 'post',
+				 url: baseUrl+'unlikeThisComment',
+				 data: dataPost,
+				 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+				 });
+				 }
+				 */
 			};
 		})
-        .factory('focus', function($timeout, $window) {
-            return function(id) {
-            // timeout makes sure that is invoked after any other event has been triggered.
-            // e.g. click events that need to run before the focus or
-            // inputs elements that are in a disabled state but are enabled when those events
-            // are triggered.
-            $timeout(function() {
-                var element = $window.document.getElementById(id);
-                if(element)
-                element.focus();
-                });
-            };
-        })
-        .directive('eventFocus', function(focus) {
-            return function(scope, elem, attr) {
-                elem.on(attr.eventFocus, function() {
-                    focus(attr.eventFocusId);
-                });
-      
-            // Removes bound events in the element itself
-            // when the scope is destroyed
-            scope.$on('$destroy', function() {
-                element.off(attr.eventFocus);
-            });
-            };
-        })
+		.factory('focus', function($timeout, $window) {
+			return function(id) {
+				// timeout makes sure that is invoked after any other event has been triggered.
+				// e.g. click events that need to run before the focus or
+				// inputs elements that are in a disabled state but are enabled when those events
+				// are triggered.
+				$timeout(function() {
+					var element = $window.document.getElementById(id);
+					if(element)
+						element.focus();
+				});
+			};
+		})
+		.directive('eventFocus', function(focus) {
+			return function(scope, elem, attr) {
+				elem.on(attr.eventFocus, function() {
+					focus(attr.eventFocusId);
+				});
+
+				// Removes bound events in the element itself
+				// when the scope is destroyed
+				scope.$on('$destroy', function() {
+					element.off(attr.eventFocus);
+				});
+			};
+		})
 		.directive('newsFeed', function() {
 			var controller = function($routeParams, newsFeedService, $scope,focus) {
 				var vm = this;
@@ -145,114 +145,114 @@
 				vm.busoppPost = false; // initial state is false, set to true on checkbox
 
 				$scope.loadTags = function(query) { //load tag Categories
-					 var categories = [];
-					 newsFeedService.getTagCategories().success(function(data) {
-					 	vm.categories = data;						
+					var categories = [];
+					newsFeedService.getTagCategories().success(function(data) {
+						vm.categories = data;
 						/*
-					 	vm.categories = [
-						"Programming",
-						"Design",
-						"Development",
-						"Community",
-						"Petshop",
-						"Sales",
-						"Coworking",
-						"Serviced Office",
-						"Bakery",
-						"Virtual Office"
-						];
-						*/
-											 	
-					 });
-					 return vm.categories;
+						 vm.categories = [
+						 "Programming",
+						 "Design",
+						 "Development",
+						 "Community",
+						 "Petshop",
+						 "Sales",
+						 "Coworking",
+						 "Serviced Office",
+						 "Bakery",
+						 "Virtual Office"
+						 ];
+						 */
+
+					});
+					return vm.categories;
 
 				};
-				
+
 				vm.getPosts = function () {
-						var postsType = vm.poststype;
-						var username = vm.username;
+					var postsType = vm.poststype;
+					var username = vm.username;
 
-						switch(postsType){
-							case '1':
-								newsFeedService.getAllPosts().success(function(data) {
-									vm.posts = data;
-								});
+					switch(postsType){
+						case '1':
+							newsFeedService.getAllPosts().success(function(data) {
+								vm.posts = data;
+							});
 							break;
-							case '2':
-								newsFeedService.getMemberPosts(username).success(function(data) {
-									vm.posts = data;
-								});
+						case '2':
+							newsFeedService.getMemberPosts(username).success(function(data) {
+								vm.posts = data;
+							});
 							break;
-							case '3':
-								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
-									vm.posts = data;
-								});
+						case '3':
+							newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+								vm.posts = data;
+							});
 							break;
-							case '4':
-								newsFeedService.getCompanyPosts(username).success(function(data) {
-									vm.posts = data;
-								});
+						case '4':
+							newsFeedService.getCompanyPosts(username).success(function(data) {
+								vm.posts = data;
+							});
 							break;
-							case '5':
-								newsFeedService.getAllBusinessOpportunities().success(function(data) {
-									vm.posts = data;
-								});
-                            case '6':
-                                newsFeedService.getMyCompanyPosts(username).success(function(data) {
-                                    vm.posts = data;
-                            });
-                            break;
-                            case '7':
-								newsFeedService.getmyMemberPosts(username).success(function(data) {
-									vm.posts = data;
-				            });
-							
+						case '5':
+							newsFeedService.getAllBusinessOpportunities().success(function(data) {
+								vm.posts = data;
+							});
+						case '6':
+							newsFeedService.getMyCompanyPosts(username).success(function(data) {
+								vm.posts = data;
+							});
 							break;
-						}
+						case '7':
+							newsFeedService.getmyMemberPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+
+							break;
+					}
 				};
-				
-				 /*
-			    vm.getPosts = function() 
-			    {
-				     var postsType = vm.poststype;
-				     var username = vm.username;
-				     console.log('postsType is ' + vm.poststype);
-						console.log('username is ' + vm.username);
-				
-				     if (typeof username != 'undefined') 
-				     {
-					      switch (postsType) {
-					       case '1':
-					        			newsFeedService.getAllPosts().success(function(data) {
-														vm.posts = data;
-										});
-					       break
-					       case '2':
-					        			newsFeedService.getMemberPosts(username).success(function(data) {
-														vm.posts = data;
-														console.log(vm.posts);
-										});
-					       break
-					       case '3':
-					        			newsFeedService.getFollowedMembersPosts(username).success(function(data) {
-														vm.posts = data;
-										});
-					      };
-				     } 
-				     else 
-				     {
-				      window.setTimeout(vm.getPosts, 100); 
-				     }
-			    };
-			    */
-				
-				vm.getPosts();
-					
+
 				/*
-				newsFeedService.getPosts().success(function(data) {
-					vm.posts = data;
-				});
-				*/
+				 vm.getPosts = function()
+				 {
+				 var postsType = vm.poststype;
+				 var username = vm.username;
+				 console.log('postsType is ' + vm.poststype);
+				 console.log('username is ' + vm.username);
+
+				 if (typeof username != 'undefined')
+				 {
+				 switch (postsType) {
+				 case '1':
+				 newsFeedService.getAllPosts().success(function(data) {
+				 vm.posts = data;
+				 });
+				 break
+				 case '2':
+				 newsFeedService.getMemberPosts(username).success(function(data) {
+				 vm.posts = data;
+				 console.log(vm.posts);
+				 });
+				 break
+				 case '3':
+				 newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+				 vm.posts = data;
+				 });
+				 };
+				 }
+				 else
+				 {
+				 window.setTimeout(vm.getPosts, 100);
+				 }
+				 };
+				 */
+
+				vm.getPosts();
+
+				/*
+				 newsFeedService.getPosts().success(function(data) {
+				 vm.posts = data;
+				 });
+				 */
 
 				var myPost = {
 					"post_id": "",
@@ -279,24 +279,24 @@
 				vm.currentPost = myPost;
 
 				/*
-				newsFeedService.post(vm.npostID).success(function(data) {
-					vm.npost = data;
-				});
-				*/
+				 newsFeedService.post(vm.npostID).success(function(data) {
+				 vm.npost = data;
+				 });
+				 */
 
 				//to get basic user information
 				vm.basicInfo = function () {
 					newsFeedService.getBasicUserInfo().success(function(data) {
-						vm.currentPost.post_author.id 	= data.id;
-						vm.currentPost.post_author.firstName 	= data.firstName;
-						vm.currentPost.post_author.lastName 	= data.lastName;
-						vm.currentPost.post_author.position 	= data.position;
-						vm.currentPost.post_author.companyName 	= data.companyName;
-						vm.currentPost.post_author.avatar 		= data.avatar;
-						vm.currentPost.post_author.userName 	= data.userName;
-						vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+						vm.currentPost.post_author.id     = data.id;
+						vm.currentPost.post_author.firstName     = data.firstName;
+						vm.currentPost.post_author.lastName     = data.lastName;
+						vm.currentPost.post_author.position     = data.position;
+						vm.currentPost.post_author.companyName     = data.companyName;
+						vm.currentPost.post_author.avatar         = data.avatar;
+						vm.currentPost.post_author.userName     = data.userName;
+						vm.currentPost.post_author.companyUserName     = data.companyUserName;
 						userObject = data;
-					});	
+					});
 				};
 				vm.basicInfo();
 
@@ -310,10 +310,10 @@
 					if(newPost)
 					{
 						newsFeedService.postCurrentPost(newPost).success(function(data) {
-							vm.posts = data;							
+							vm.posts = data;
 						});
 						vm.getPosts();
-					}	
+					}
 				};
 
 				// Add a time-line Business Opportunity post
@@ -323,8 +323,8 @@
 						newsFeedService.postBusoppPost(content).success(function(data) {
 							vm.posts = data;
 						});
-						vm.getPosts(); 
-					}								
+						vm.getPosts();
+					}
 				};
 
 				//Like a time-line post
@@ -337,8 +337,8 @@
 					newsFeedService.postLike(likedPost).success(function(data) {
 						likedPost.isLiked = true;
 						likedPost.likes_count++;
-						vm.posts = data;						
-					});	
+						vm.posts = data;
+					});
 					vm.getPosts();
 				};
 
@@ -352,44 +352,44 @@
 						unLikedPost.isLiked = false;
 						unLikedPost.likes_count--;
 						unLikedPost.likers.pop();
-						vm.posts = data;							
-					});	
-					vm.getPosts(); 
+						vm.posts = data;
+					});
+					vm.getPosts();
 				};
-				
+
 				//Like a time-line comment
 				/*
-				vm.likeComment = function(commentID) {
-					var likedComment = commentID;
+				 vm.likeComment = function(commentID) {
+				 var likedComment = commentID;
 
-					//this will come from the session userobject
-					vm.basicInfo();
-					likedComment.likers.push(userObject);
-					newsFeedService.commentLike(likedComment).success(function(data) {
-						likedComment.isLiked = true;
-						likedComment.likes_count++;
-						vm.posts = data;						
-					});
-					vm.getPosts(); 	
-				};
-				*/
-				
+				 //this will come from the session userobject
+				 vm.basicInfo();
+				 likedComment.likers.push(userObject);
+				 newsFeedService.commentLike(likedComment).success(function(data) {
+				 likedComment.isLiked = true;
+				 likedComment.likes_count++;
+				 vm.posts = data;
+				 });
+				 vm.getPosts();
+				 };
+				 */
+
 				//unlike a time-line comment
 				/*
-				vm.unLikeComment = function(commentID) {
-					var unLikedComment = post;
+				 vm.unLikeComment = function(commentID) {
+				 var unLikedComment = post;
 
-					//this will come from the session userobject
-					vm.basicInfo();
-					newsFeedService.commentUnLike(commentID).success(function(data) {
-						unLikedComment.isLiked = false;
-						unLikedComment.likes_count--;
-						unLikedComment.likers.pop();
-						vm.posts = data;						
-					});
-					vm.getPosts();	
-				};
-				*/
+				 //this will come from the session userobject
+				 vm.basicInfo();
+				 newsFeedService.commentUnLike(commentID).success(function(data) {
+				 unLikedComment.isLiked = false;
+				 unLikedComment.likes_count--;
+				 unLikedComment.likers.pop();
+				 vm.posts = data;
+				 });
+				 vm.getPosts();
+				 };
+				 */
 
 				//Add a comment to time-line post
 				vm.addComment = function(post,newComment) {
@@ -408,18 +408,18 @@
 					//vm.currentComment.content = ""; //clear comment textarea
 
 					newsFeedService.postComment(commentedPost,newComment).success(function(data) {
-						vm.posts = data;						
-					});	
+						vm.posts = data;
+					});
 					vm.getPosts();
 				};
-                
-                //focus
-                vm.focusCommentBox = function(newCommentBox) {
-                    // do something awesome
-                    focus(newCommentBox);
-                };
+
+				//focus
+				vm.focusCommentBox = function(newCommentBox) {
+					// do something awesome
+					focus(newCommentBox);
+				};
 			};
-		
+
 			var template = '<button>{{vm.poststype}}</button>';
 
 			return {
@@ -434,5 +434,5 @@
 				templateUrl: 'app/components/newsFeed/newsFeed.html'
 				//template: template
 			};
-		});		
+		});
 })();
