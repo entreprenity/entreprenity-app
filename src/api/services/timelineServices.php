@@ -185,7 +185,7 @@ function getmyCompanyPosts()
 	$data= array();
 
 	//I represent this post
-	$companyUserName=validate_input($_GET['company']);
+	//$companyUserName=validate_input($_GET['company']);
 	
 	//I am the logged in user.
 	$session_values=get_user_session();
