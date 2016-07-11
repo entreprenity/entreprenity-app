@@ -763,6 +763,30 @@ Flight::route('/invokeSpaces', function()
 
 });
 
+
+//48 Route to fetch timeline posts of a company
+//June 13,2016
+Flight::route('/getmyCompanyPosts', function()
+{
+   enable_cors();	
+   services_included();	
+	$returnarray=getmyCompanyPosts();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+
+});
+
+//37 Route to get my Feed to timeline
+//May 18,2016
+Flight::route('/getmyMembersPost', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getMyOwnNewsFeed();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*

@@ -27,8 +27,12 @@ angular
 			},
 			getMemberPosts: function(username) 
 			{
-				return $http.get(baseUrl+ 'getMembersPost?user='+username);
-			}
+				return $http.get(baseUrl+ 'getmyMembersPost');
+			},
+            getBasicUserInfo:function() 
+            {
+					return $http.get(baseUrl + 'getBasicUserInformation');
+            }
 			
 		};
 	})
@@ -65,13 +69,39 @@ angular
 					*/
 					vm.getPosts(1,data.userName);
 				});
+                /*
+                 myProfileService.getBasicUserInfo().success(function(data) {
+						vm.id 			= data.id;
+						vm.firstName 	= data.firstName;
+						vm.lastName 	= data.lastName;
+						vm.position 	= data.position;
+						vm.myOffice 	= data.myOffice;
+						vm.avatar 		= data.avatar;
+						vm.userName 	= data.userName;
+						vm.memberUserName 	= data.userName;
+						vm.companyUserName 	= data.companyUserName;
+						vm.getPosts(1,vm.memberUserName);
+					});
+                */
 
 			}, function () {
 				$log.info('Modal dismissed at: ' + new Date());
 			});
 		};
-
-
+        /*
+        myProfileService.getBasicUserInfo().success(function(data) {
+						vm.id 			= data.id;
+						vm.firstName 	= data.firstName;
+						vm.lastName 	= data.lastName;
+						vm.position 	= data.position;
+						vm.myOffice 	= data.myOffice;
+						vm.avatar 		= data.avatar;
+						vm.userName 	= data.userName;
+						vm.memberUserName 	= data.userName;
+						vm.companyUserName 	= data.companyUserName;
+						vm.getPosts(1,vm.memberUserName);
+					});
+        */
 		//To fetch timeline posts
 		vm.getPosts = function (postsType,username) 
 		{
@@ -84,16 +114,11 @@ angular
 						return vm.posts;
 					});
 				break;
-				case '2':
-					myProfileService.getCompanyPosts(username).success(function(data) {
-						vm.posts = data;
-						return vm.posts;
-					});
-				break;
 			}
 		};
 	
-		vm.memberUserName = $routeParams.memberUserName;
+		//vm.memberUserName = "";
+		//vm.memberUserName = $routeParams.memberUserName;
 		vm.editState = false;
 		
 		//get initial data

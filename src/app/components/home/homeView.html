@@ -5,7 +5,7 @@
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li><h3>COMMUNITY</h3></li>
-				<li><a ng-href="#/mycompany/{{vm.companyUserName}}">My Company</a></li>
+				<li><a ng-href="#/mycompany">My Company</a></li>
 				<li><a ng-href="#/directory">Events</a></li>
 				<li><a ng-href="#/add-event">Add Events</a></li>
 				<li><a ng-href="#/directory">Directory</a></li>
@@ -42,7 +42,7 @@
 						<h5>COMMUNITY</h5>
 						<div id="sideNav" class="card">
 							<ul>
-								<li><a ng-href="#/mycompany/{{vm.companyUserName}}">My Company</a></li>
+								<li><a ng-href="#/mycompany">My Company</a></li>
 								<li><a ng-href="#/directory">Events</a></li>
 								<li><a ng-href="#/add-event">Add Events</a></li>
 								<li><a ng-href="#/directory">Directory</a></li>
@@ -91,7 +91,7 @@
 									<news-feed  poststype="3" username="userName"></news-feed>
 								</uib-tab>
 								<uib-tab index="2" heading="My Posts">
-									<news-feed  poststype="2" username="userName"></news-feed>
+									<news-feed  poststype="7" username="userName"></news-feed>
 								</uib-tab>
 							</uib-tabset>
 						</div>
@@ -113,7 +113,7 @@
 							<h4>UPCOMING EVENTS</h4>
 							<ul>
 								<li ng-repeat="	latestEvent in vm.latestEvents">
-									<a ng-href="#/events/{{latestEvent.id}}">
+									<a ng-href="#/events/{{latestEvent.eventTagId}}">
 										<img ng-src="{{latestEvent.poster}}">
 										<p>{{latestEvent.name}}</p>
 										<p>{{latestEvent.date}}</p>

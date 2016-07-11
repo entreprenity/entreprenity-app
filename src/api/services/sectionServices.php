@@ -569,7 +569,7 @@ function getLatestEvents()
 	$qry="SELECT entrp_events.*,entrp_event_categories.category_name 
 			FROM entrp_events 
 			LEFT JOIN entrp_event_categories ON entrp_events.category=entrp_event_categories.id
-	      WHERE entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
+	      WHERE  entrp_events.status=1 AND entrp_events.event_date_time >= '".$today."' AND entrp_events.event_date_time <= '".$tothatday."'
 	      ORDER BY entrp_events.event_date_time 
 	      LIMIT 3
 	      ";
@@ -587,6 +587,15 @@ function getLatestEvents()
       	else
       	{
       		$data[$i]['id']					=	"";
+      	}
+        
+        if(!empty($row['eventTagId']))
+      	{
+      		$data[$i]['eventTagId']					=	$row['eventTagId'];
+      	}
+      	else
+      	{
+      		$data[$i]['eventTagId']					=	"";
       	}
       	
       	if(!empty($row['eventName']))

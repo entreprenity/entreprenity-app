@@ -34,8 +34,8 @@
 				$_SESSION["cid"]		=	$clientid;
 				$_SESSION['token']	=	$newToken;
 				
-				setcookie('cid', "", time() - 60 * 60 * 24 * 30, '../../spaces/');
-				setcookie('token', "", time() - 60 * 60 * 24 * 30, '../../spaces/');
+				setcookie('cid', "", time() + 60 * 60 * 24 * 30, '/');
+				setcookie('token', "", time() + 60 * 60 * 24 * 30, '/');
 				
 				header("Location: ../../spaces/login.php"); 
 			}

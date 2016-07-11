@@ -39,7 +39,7 @@
 						<div class="post-buttonGroup">
 							<a ng-click="vm.likePost(post)" ng-hide="post.isLiked">Like</a>	
 							<a ng-click="vm.unLikePost(post)" ng-show="post.isLiked">Liked</a>
-							<a ng-click="vm.focusCommentBox()">Comment</a>
+							<a ng-click="vm.focusCommentBox(post.post_id)">Comment</a>
 						</div>
 					</div>
 
@@ -80,8 +80,8 @@
 								<img ng-src="{{vm.currentPost.post_author.avatar}}" alt="" class="img-circle" width="30px">
 							</a>
 							<div class="media-body">
-								<textarea class="form-control" placeholder="Type comment here..." rows="1" ng-model="vm.currentComment.content"></textarea>
-								<a class="btn btn-primary btn-submit-comment" ng-click="vm.addComment(post,vm.currentComment.content)">
+								<textarea id="{{post.post_id}}" class="form-control" placeholder="Type comment here..." rows="1" ng-model="post.comment.content"></textarea>
+								<a class="btn btn-primary btn-submit-comment" ng-click="vm.addComment(post,post.comment.content)">
 									<i class="fa fa-paper-plane"></i>
 								</a>	
 							</div>

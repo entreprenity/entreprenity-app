@@ -186,7 +186,6 @@ function getMembers()
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CI.clientid!=".$my_session_id." 
 	      ORDER BY CI.clientid ASC 
-	      LIMIT $start ,$end
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
