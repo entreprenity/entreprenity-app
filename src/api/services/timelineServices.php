@@ -168,6 +168,88 @@ function postABusinessOpportunity()
 
 }
 
+function getmyCompanyPosts()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+
+	//I represent this post
+	$companyUserName=validate_input($_GET['company']);
+	
+	//I am the logged in user.
+	$session_values=get_user_session();
+	$my_session_id	= (int)$session_values['id'];
+
+	$companyId=getCompanyIDfromUserID($my_session_id);
+
+	$companyMembers= getAllCompanyMemberIDs($companyId);
+	//$companyMembersString = implode(",", $companyMembers);
+	$companyMembersString = '1,2,3';
+	
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;
+}
+
+
 //Function to fetch a company timeline post based on company username
 //June 13,2016
 function getCompanyPosts()
@@ -336,6 +418,7 @@ function getThisPost()
 //Route to get timeline feeds of users I follow
 //May 30,2016
 //June 06, 2016: Added location (client centre location)
+//July 10,2016: temp fix- user id equal session id.
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -352,8 +435,12 @@ function getFollowedMembersPosts()
 	
 	$data= array();
    
-   $username=validate_input($_GET['user']);
-	$myUserId	= getUserIdfromUserName($username);
+    $session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+    
+    $username=validate_input($_GET['user']);
+	//$myUserId	= getUserIdfromUserName($username);
+	$myUserId	= $my_session_id;
 	
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
 	$usersIFollowString = implode(",", $usersIFollow);
@@ -1504,6 +1591,83 @@ function howManyLikesThisPostReceived($post_id)
 		$likes_count=sizeof($data);
 	}   
 	return $likes_count;	
+}
+
+
+function getMyOwnNewsFeed()
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+   $session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+   //$username=validate_input($_GET['user']);
+	//$my_id	= getUserIdfromUserName($username);
+	$my_id	=$my_session_id;
+		
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;	
+
+
 }
 
 

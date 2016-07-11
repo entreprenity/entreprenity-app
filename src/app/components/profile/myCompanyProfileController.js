@@ -17,7 +17,11 @@
 											data: $.param(userdata),
 											headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 										 });
-			}
+			},
+            getBasicUserInfo:function() 
+            {
+					return $http.get(baseUrl + 'getBasicUserInformation');
+            }
 
 		};
 	})
@@ -44,7 +48,20 @@
 			});
 		};
 
+		//vm.companyUserNam = "";
 		vm.companyUserName = $routeParams.companyUserName;
+        myCompanyProfileService.getBasicUserInfo().success(function(data) {
+						vm.id 			= data.id;
+						vm.firstName 	= data.firstName;
+						vm.lastName 	= data.lastName;
+						vm.position 	= data.position;
+						vm.myOffice 	= data.myOffice;
+						vm.avatar 		= data.avatar;
+						vm.userName 	= data.userName;
+						vm.memberUserName 	= data.userName;
+						vm.companyUserName 	= data.companyUserName;
+						
+         });
 		
 		//alert(vm.companyId);
 		vm.editState = false;

@@ -14,7 +14,11 @@
 				getMemberPosts: function(username) 
 				{
 					return $http.get(baseUrl+ 'getMembersPost?user='+username);
-				},	
+				},
+                getmyMemberPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getmyMembersPost');
+				},
 				getFollowedMembersPosts: function(username) 
 				{
 					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
@@ -26,6 +30,10 @@
 				getCompanyPosts: function(username) 
 				{
 					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
+				},
+                getMyCompanyPosts: function(username) 
+				{
+					return $http.get(baseUrl+ 'getmyCompanyPosts');
 				},
 				getTagCategories:function() 
 				{
@@ -103,8 +111,34 @@
 				*/
 			};
 		})
+        .factory('focus', function($timeout, $window) {
+            return function(id) {
+            // timeout makes sure that is invoked after any other event has been triggered.
+            // e.g. click events that need to run before the focus or
+            // inputs elements that are in a disabled state but are enabled when those events
+            // are triggered.
+            $timeout(function() {
+                var element = $window.document.getElementById(id);
+                if(element)
+                element.focus();
+                });
+            };
+        })
+        .directive('eventFocus', function(focus) {
+            return function(scope, elem, attr) {
+                elem.on(attr.eventFocus, function() {
+                    focus(attr.eventFocusId);
+                });
+      
+            // Removes bound events in the element itself
+            // when the scope is destroyed
+            scope.$on('$destroy', function() {
+                element.off(attr.eventFocus);
+            });
+            };
+        })
 		.directive('newsFeed', function() {
-			var controller = function($routeParams, newsFeedService, $scope) {
+			var controller = function($routeParams, newsFeedService, $scope,focus) {
 				var vm = this;
 				var userObject;
 
@@ -160,9 +194,20 @@
 								});
 							break;
 							case '5':
-								newsFeedService.getAllBusinessOpportunities().success(function(data) { //change to own service newsFeedService.getBusOppPosts().
+								newsFeedService.getAllBusinessOpportunities().success(function(data) {
 									vm.posts = data;
 								});
+                            case '6':
+                                newsFeedService.getMyCompanyPosts(username).success(function(data) {
+                                    vm.posts = data;
+                            });
+                            break;
+                            case '7':
+								newsFeedService.getmyMemberPosts(username).success(function(data) {
+									vm.posts = data;
+				            });
+							
+							break;
 						}
 				};
 				
@@ -352,19 +397,27 @@
 					//this will come from the session userobject
 					vm.basicInfo();
 					var currentComment = {};
-					currentComment.content = vm.currentComment.content;
+					//currentComment.content = vm.currentComment.content;
+					currentComment.content = newComment;
 					currentComment.created_at = new Date();
 					currentComment.comment_author = userObject;
 
 					commentedPost.comments_count++;
 					commentedPost.comments.push(currentComment);
-					vm.currentComment.content = ""; //clear comment textarea
+					post.comment.content = ""; //clear comment textarea
+					//vm.currentComment.content = ""; //clear comment textarea
 
 					newsFeedService.postComment(commentedPost,newComment).success(function(data) {
 						vm.posts = data;						
 					});	
 					vm.getPosts();
 				};
+                
+                //focus
+                vm.focusCommentBox = function(newCommentBox) {
+                    // do something awesome
+                    focus(newCommentBox);
+                };
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';

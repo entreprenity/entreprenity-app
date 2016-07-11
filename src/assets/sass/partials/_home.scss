@@ -80,6 +80,42 @@ $tabs-text-color: $primary-text-color;
 		}
 	}
 
+	.button-fab {
+		display: none;
+		border:none;
+		font-size:1.5em;
+		color:white;
+		background-color: $secondary-color;
+		border-radius: 50%;
+		width: 64px;
+		height: 64px;
+		margin: auto;
+		-webkit-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+		-moz-box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+		box-shadow: 2px 3px 3px 0px rgba(41, 41, 41, .3);
+		position: fixed;
+		right: 10px;
+		top: 80px;
+		z-index: 99;
+		i {
+			margin-left:13px;
+			margin-top: 11px;;
+		}
+
+		transition: all 1s ease;
+		-webkit-transition: all 1s ease;
+		-moz-transition: all 1s ease;
+		-ms-transition: all 1s ease;
+		@media (max-width: 479px) {
+			display: block;
+		}
+
+	}
+	.button-fab.slide {
+		right: 210px !important;
+	}
+
+
 	#page-content-wrapper {
 		overflow-y: scroll;
 	}
@@ -155,6 +191,27 @@ $tabs-text-color: $primary-text-color;
 				padding: 6px 10px;	
 			}
 		}
+		@media (max-width: 767px) {
+			height: 130px;
+			div {
+				padding: 0;
+				height: 130px;
+			}
+			.btn {
+				padding: 5px;
+				font-size: 10px;
+			}
+		}
+		@media (max-width: 479px) {
+			height: 110px;
+			div {
+				height: 110px;
+			}
+			.btn {
+				padding: 2px;
+				font-size: 8px;
+			}
+		}
 	}
 	
 	#newMembers {
@@ -197,7 +254,7 @@ $tabs-text-color: $primary-text-color;
 	h5 {
 		display: none;
 	}
-	#topNav {
+	#myProfile {
 		display: none;
 	}
 	#sideNav {

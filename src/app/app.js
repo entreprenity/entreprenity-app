@@ -64,7 +64,8 @@
 			templateUrl: 'app/components/home/homeView.html',
 			controllerAs: 'vm'
 		})
-		.when('/myprofile/:memberUserName', {
+		//.when('/myprofile/:memberUserName', {
+		.when('/myprofile', {
 			controller: 'MyProfileController',
 			templateUrl: 'app/components/profile/myProfileView.html',
 			controllerAs: 'vm'
@@ -74,7 +75,8 @@
 			templateUrl: 'app/components/profile/memberProfileView.html',
 			controllerAs: 'vm'
 		})
-		.when('/mycompany/:companyUserName', {
+		//.when('/mycompany/:companyUserName', {
+		.when('/mycompany', {
 			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/myCompanyProfileView.html',
 			controllerAs: 'vm'
