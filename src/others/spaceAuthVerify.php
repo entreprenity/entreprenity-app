@@ -34,10 +34,10 @@
 				$_SESSION["cid"]		=	$clientid;
 				$_SESSION['token']	=	$newToken;
 				
-				setcookie('cid', "", time() + 60 * 60 * 24 * 30, '/');
-				setcookie('token', "", time() + 60 * 60 * 24 * 30, '/');
+				setcookie('cid', "", time() + 60 * 60 * 24 * 30, '/spaces/');
+				setcookie('token', "", time() + 60 * 60 * 24 * 30, '/spaces/');
 				
-				header("Location: ../../spaces/login.php"); 
+				header("Location: ../../spaces/index.php"); 
 			}
 			else
 			{

@@ -1,8 +1,164 @@
-<div style="max-width: 600px; margin: 10px auto;">
-    <div id="busopp">
-        <div class="title">
-            <h4>Business Opportunities</h4>
-        </div>
-        <news-feed poststype="5" username="vm.userName"></news-feed>
-    </div>
+<div id="home">
+
+	<div id="wrapper" ng-class="{'toggled': isActive}">
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li><h3>COMMUNITY</h3></li>
+				<li><a ng-href="#/mycompany">My Company</a></li>
+				<li><a ng-href="#/directory">Events</a></li>
+				<li><a ng-href="#/add-event">Add Events</a></li>
+				<li><a ng-href="#/directory">Directory</a></li>
+				<!--<li><a ng-href="#/directory">Benefits & Discounts</a></li>-->
+				<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
+				<br>
+				<li><h3>SERVICES</h3></li>
+				<li><a href="#/spaces" >Book Meeting Room</a></li>
+				<!--<li><a href="#/spaces" >Book Workspace</a></li>-->
+				<li><a href="#/callanswering">Manage Calls</a></li>
+				<!--<li><a href="#/callanswering" >Manage Mails</a></li>-->
+				<!--<li><a ng-href="#/home">Facilities Support</a></li>-->
+				<!--<li><a ng-href="#/home">Contact Us</a></li>-->
+			</ul>
+		</div>
+		<!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+		<div class="button-fab" ng-class="{'slide': isActive}">
+			<a class="button-toggle" ng-click="toggleMenu()"> <i class="fa fa-compass fa-2x" aria-hidden="true"></i></a>
+		</div>
+		<div id="page-content-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-2">
+						<div id="myProfile" class="card">
+							<a ng-href="#/myprofile">
+								<img class="img-circle" ng-src="{{vm.avatar}}">
+								<h3>{{vm.firstName + " " +vm.lastName}}</h3>
+								<p>{{vm.position}}</p>
+								<p>at {{vm.myOffice}}</p>
+							</a>
+						</div>
+						<h5>COMMUNITY</h5>
+						<div id="sideNav" class="card">
+							<ul>
+								<li><a ng-href="#/mycompany">My Company</a></li>
+								<li><a ng-href="#/directory">Events</a></li>
+								<li><a ng-href="#/add-event">Add Events</a></li>
+								<li><a ng-href="#/directory">Directory</a></li>
+								<!--<li><a ng-href="#/directory">Benefits & Discounts</a></li>-->
+								<li><a ng-href="#/business-opportunities">Business Opportunities</a></li>
+							</ul>
+						</div>
+
+						<h5>SERVICES</h5>
+						<div id="sideNav" class="card">
+							<ul>
+								<li><a href="#/spaces" >Book Meeting Room</a></li>
+								<!--<li><a href="#/spaces" >Book Workspace</a></li>-->
+								<li><a href="#/callanswering">Manage Calls</a></li>
+								<!--<li><a href="#/callanswering" >Manage Mails</a></li>-->
+								<!--<li><a ng-href="#/home">Facilities Support</a></li>-->
+								<!--<li><a ng-href="#/home">Contact Us</a></li>-->
+							</ul>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div id="topNav">
+							<div>
+								<img ng-src="assets/img/icon-recep.png">
+								<span class="up-arrow"></span>
+								<a  ng-href="#/callanswering" class="btn btn-default" >MY RECEPTIONIST</a>
+							</div>
+							<div>
+								<img ng-src="assets/img/icon-meeting.png">
+								<span class="up-arrow"></span>
+								<a ng-href="#/spaces" class="btn btn-default" >MEETING ROOM</a>
+							</div>
+							<div>
+								<img ng-src="assets/img/icon-services.png">
+								<span class="up-arrow"></span>
+								<a ng-href="#/home" class="btn btn-default">OTHER SERVICES</a>
+							</div>
+						</div>
+						<div>
+
+							<div id="busopp">
+						        <div class="title">
+						            <h4>Business Opportunities</h4>
+						        </div>
+						        <news-feed poststype="5" username="vm.userName"></news-feed>
+						    </div>
+						</div>
+					</div>
+					<div class="col-md-4">
+					
+						<div id="newMembers" class="card">
+								<h4>BUSINESS OPPORTUNITIES</h4>
+								<ul>
+									<li ng-repeat="businessOpportunity in vm.businessOpportunities">
+										<a ng-href="#/members/{{businessOpportunity.post_author.userName}}">
+											<img class="img-circle" ng-src="{{businessOpportunity.post_author.avatar}}">
+											<p>{{businessOpportunity.post_author.firstName + ' ' + businessOpportunity.post_author.lastName}}</p>
+											<p>{{businessOpportunity.post_author.position + ' / ' + businessOpportunity.post_author.company}}</p>
+											<p>is looking for</p>
+											<ul>
+												<li ng-repeat="tag in businessOpportunity.postTags"><a href="#" class="tags-item">{{tag}}</a></li>
+											</ul>
+										</a>
+									</li>
+								</ul>
+							</div>
+
+						<div id="latestEvents" class="card">
+							<h4>UPCOMING EVENTS</h4>
+							<ul>
+								<li ng-repeat="	latestEvent in vm.latestEvents">
+									<a ng-href="#/events/{{latestEvent.eventTagId}}">
+										<img ng-src="{{latestEvent.poster}}">
+										<p>{{latestEvent.name}}</p>
+										<p>{{latestEvent.date}}</p>
+									</a>
+								</li>
+							</ul>
+						</div>
+
+						<div id="newMembers" class="card">
+							<h4>TOP CONTRIBUTORS</h4>
+							<ul>
+								<li ng-repeat="topContributor in vm.topContributors">
+									<a ng-href="#/members/{{topContributor.userName}}">
+										<img class="img-circle" ng-src="{{topContributor.avatar}}">
+										<p>{{topContributor.firstName + ' ' + topContributor.lastName}}</p>
+										<p>{{topContributor.position + ' / ' + topContributor.company}}</p>
+									</a>
+								</li>
+							</ul>
+						</div>
+							
+						<div id="newMembers" class="card">
+							<h4>NEW MEMBERS</h4>
+							<ul>
+								<li ng-repeat="newMember in vm.newMembers">
+									<a ng-href="#/members/{{newMember.userName}}">
+										<img class="img-circle" ng-src="{{newMember.avatar}}">
+										<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
+										<p>{{newMember.position + ' / ' + newMember.company}}</p>
+									</a>
+								</li>
+							</ul>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#page-content-wrapper -->
+	</div>
 </div>
+
+
+
+
+
+
