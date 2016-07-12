@@ -45,8 +45,8 @@ function send_new_event_notification_to_admin($eventTag)
 			$eventsNotify_template = ob_get_contents();			
 			ob_end_clean();
 			
-			//$to = 'sean@flexiesolutions.com'; 
-			$to = 'dominic@cliffsupport.com'; 
+			$to = 'sean@flexiesolutions.com'; 
+			//$to = 'dominic@cliffsupport.com'; 
 			/*$to = $to_email; //please uncomment this when in live*/
 			$strSubject = "New Event Request";
 			$message =  $eventsNotify_template;              
@@ -102,8 +102,8 @@ function send_notification_mail($notification_array){
 	
 	
 	
-	$to = 'dominic@cliffsupport.com'; 
-	/*$to = $to_email; //please uncomment this when in live*/
+	//$to = 'dominic@cliffsupport.com'; 
+	$to = $to_email; //please uncomment this when in live
 	$strSubject = "Notification mail";
 	$message =  $notification_template;              
 	$headers = 'MIME-Version: 1.0'."\r\n";
