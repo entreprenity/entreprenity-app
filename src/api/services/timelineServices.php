@@ -462,7 +462,7 @@ function getFollowedMembersPosts()
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	$row['content'];
+			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			
@@ -600,7 +600,7 @@ function getAllPosts()
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	$row['content'];
+			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			
@@ -1356,7 +1356,7 @@ function userCommentsForThisPost($post_id)
 		{
 			$commentId												=  $row['post_comments_id'];
 			$data[$i]['commentId']								=	$row['post_comments_id'];
-			$data[$i]['content']									=	$row['comment'];
+			$data[$i]['content']									=	htmlspecialchars_decode($row['comment'],ENT_QUOTES);
 			$data[$i]['created_at']								=	$row['commented_at'];
 			$data[$i]['likes_count']							=	howManyLikesThisCommentReceived($commentId);
 			$data[$i]['likers']									=	usersWhoLikedThisComment($commentId);			
@@ -1632,8 +1632,9 @@ function getMyOwnNewsFeed()
       {
       	$post_id														=	$row['post_id'];
       	
-      	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	$row['content'];
+      	$data[$i]['post_id']										=	$row['post_id'];  
+        
+			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			
@@ -1709,8 +1710,8 @@ function getMyNewsFeed()
       {
       	$post_id														=	$row['post_id'];
       	
-      	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	$row['content'];
+      	$data[$i]['post_id']										=	$row['post_id']; 
+			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			
