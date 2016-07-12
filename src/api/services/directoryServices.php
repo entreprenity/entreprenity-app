@@ -323,7 +323,15 @@ function getCompanies()
       	$data[$i]['id']				=	$row['clientid'];
 			$data[$i]['companyName']	=	$row['company_name'];
 			$data[$i]['description']	=	$row['description'];
-			$data[$i]['avatar']			=	$row['avatar'];
+
+			if($row['avatar']!='')
+			{
+				$data[$i]['avatar']			=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['avatar']			=	$company_default_avatar;
+			}
 			$data[$i]['city']				=	$row['city'];
 			$data[$i]['userName']		=	$row['company_username'];
 			

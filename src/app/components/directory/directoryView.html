@@ -25,9 +25,9 @@
 								<div>
 									<img class="img-circle" ng-src="{{member.avatar}}">
 									<h4 class="truncate">{{member.firstName + ' ' + member.lastName}}</h4>
-									<p class="truncate">{{member.position}}</p>
-									<p class="truncate">at {{member.companyName}}</p>
-									<p class="truncate"><i class="fa fa-map-marker"></i> {{member.city}}</p>
+									<p class="truncate">{{member.position ? member.position : 'Member'}}</p>
+									<p class="truncate">at {{member.companyName ? member.companyName : 'Not Specified'}}</p>
+									<p class="truncate"><i class="fa fa-map-marker"></i> {{member.city ? member.city : 'Not Specified'}}</p>
 									<hr>
 								</div>
 							</a>
@@ -64,9 +64,9 @@
 									<div class="top-part">
 										<img ng-src="{{company.avatar}}">
 									</div>
-									<h4 class="truncate">{{company.companyName}}</h4>
-									<p class="truncate"><i class="fa fa-map-marker"></i> {{company.city}}</p>		
-									<p class="truncate"><small>{{company.description}}</small></p>
+									<h4 class="truncate">{{company.companyName ? company.companyName : 'Not Mentioned'}}</h4>
+									<p class="truncate"><i class="fa fa-map-marker"></i> {{company.city ? company.city : 'Not Mentioned'}}</p>		
+									<p class="truncate"><small>{{company.description ? company.description : 'No Details Provided'}}</small></p>
 									<hr>
 								</div>
 							</a>
@@ -101,11 +101,11 @@
 							<a ng-href="#/events/{{event.eventTagId}}">
 								<img ng-src="{{event.poster}}">
 								<div>
-									<h4 class="truncate">{{event.eventName}}</h4>
-									<p class="truncate">{{event.date}}</p>
-									<p class="truncate">{{event.time}}</p>
-									<p class="truncate"><i class="fa fa-map-marker"></i> {{event.city}}</p>
-									<p class="truncate"><small>{{event.description}}</small></p>
+									<h4 class="truncate">{{event.eventName ? event.eventName : 'Not Mentioned'}}</h4>
+									<p class="truncate">{{event.date ? event.date : 'Not Specified'}} </p>
+									<p class="truncate">{{event.time ? event.time : 'Not Specified'}} </p>
+									<p class="truncate"><i class="fa fa-map-marker"></i> {{event.city ? event.city : 'Not Mentioned'}} </p>
+									<p class="truncate"><small>{{event.description ? event.description : 'No Details Provided'}}</small></p>
 								</div>
 							</a>
 							<hr>
