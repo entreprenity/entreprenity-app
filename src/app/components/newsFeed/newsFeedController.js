@@ -89,26 +89,6 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				}
-				/*,
-				commentLike: function(commentID) 
-				{
-					var dataPost = {likedCommentId: commentID};														
-					return $http({ method: 'post',
-										url: baseUrl+'likeThisComment',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
-				},
-				commentUnLike: function(commentID) 
-				{
-					var dataPost = {unlikedCommentId: commentID};														
-					return $http({ method: 'post',
-										url: baseUrl+'unlikeThisComment',
-										data: dataPost,
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
-				}
-				*/
 			};
 		})
         .factory('focus', function($timeout, $window) {
@@ -148,20 +128,6 @@
 					 var categories = [];
 					 newsFeedService.getTagCategories().success(function(data) {
 					 	vm.categories = data;						
-						/*
-					 	vm.categories = [
-						"Programming",
-						"Design",
-						"Development",
-						"Community",
-						"Petshop",
-						"Sales",
-						"Coworking",
-						"Serviced Office",
-						"Bakery",
-						"Virtual Office"
-						];
-						*/
 											 	
 					 });
 					 return vm.categories;
@@ -173,86 +139,52 @@
 						var username = vm.username;
 
 						switch(postsType){
+							
 							case '1':
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
 								});
 							break;
+							
 							case '2':
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
+							
 							case '3':
 								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
+							
 							case '4':
 								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
+							
 							case '5':
 								newsFeedService.getAllBusinessOpportunities().success(function(data) {
 									vm.posts = data;
 								});
-                            case '6':
-                                newsFeedService.getMyCompanyPosts(username).success(function(data) {
-                                    vm.posts = data;
-                            });
-                            break;
-                            case '7':
-								newsFeedService.getmyMemberPosts(username).success(function(data) {
-									vm.posts = data;
-				            });
-							
-							break;
+								
+                      case '6':
+                          newsFeedService.getMyCompanyPosts(username).success(function(data) {
+                              vm.posts = data;
+                      });
+                      break;
+                      
+                      case '7':
+							 newsFeedService.getmyMemberPosts(username).success(function(data) {
+								vm.posts = data;
+			             });						
+							 break;
 						}
 				};
 				
-				 /*
-			    vm.getPosts = function() 
-			    {
-				     var postsType = vm.poststype;
-				     var username = vm.username;
-				     console.log('postsType is ' + vm.poststype);
-						console.log('username is ' + vm.username);
-				
-				     if (typeof username != 'undefined') 
-				     {
-					      switch (postsType) {
-					       case '1':
-					        			newsFeedService.getAllPosts().success(function(data) {
-														vm.posts = data;
-										});
-					       break
-					       case '2':
-					        			newsFeedService.getMemberPosts(username).success(function(data) {
-														vm.posts = data;
-														console.log(vm.posts);
-										});
-					       break
-					       case '3':
-					        			newsFeedService.getFollowedMembersPosts(username).success(function(data) {
-														vm.posts = data;
-										});
-					      };
-				     } 
-				     else 
-				     {
-				      window.setTimeout(vm.getPosts, 100); 
-				     }
-			    };
-			    */
 				
 				vm.getPosts();
-					
-				/*
-				newsFeedService.getPosts().success(function(data) {
-					vm.posts = data;
-				});
-				*/
 
 				var myPost = {
 					"post_id": "",
@@ -277,12 +209,6 @@
 				};
 
 				vm.currentPost = myPost;
-
-				/*
-				newsFeedService.post(vm.npostID).success(function(data) {
-					vm.npost = data;
-				});
-				*/
 
 				//to get basic user information
 				vm.basicInfo = function () {
@@ -312,7 +238,7 @@
 						newsFeedService.postCurrentPost(newPost).success(function(data) {
 							vm.posts = data;							
 						});
-						vm.getPosts();
+						//vm.getPosts();
 					}	
 				};
 
@@ -323,7 +249,6 @@
 						newsFeedService.postBusoppPost(content).success(function(data) {
 							vm.posts = data;
 						});
-						vm.getPosts(); 
 					}								
 				};
 
@@ -339,7 +264,6 @@
 						likedPost.likes_count++;
 						vm.posts = data;						
 					});	
-					vm.getPosts();
 				};
 
 				//unlike a time-line post
@@ -354,42 +278,8 @@
 						unLikedPost.likers.pop();
 						vm.posts = data;							
 					});	
-					vm.getPosts(); 
 				};
 				
-				//Like a time-line comment
-				/*
-				vm.likeComment = function(commentID) {
-					var likedComment = commentID;
-
-					//this will come from the session userobject
-					vm.basicInfo();
-					likedComment.likers.push(userObject);
-					newsFeedService.commentLike(likedComment).success(function(data) {
-						likedComment.isLiked = true;
-						likedComment.likes_count++;
-						vm.posts = data;						
-					});
-					vm.getPosts(); 	
-				};
-				*/
-				
-				//unlike a time-line comment
-				/*
-				vm.unLikeComment = function(commentID) {
-					var unLikedComment = post;
-
-					//this will come from the session userobject
-					vm.basicInfo();
-					newsFeedService.commentUnLike(commentID).success(function(data) {
-						unLikedComment.isLiked = false;
-						unLikedComment.likes_count--;
-						unLikedComment.likers.pop();
-						vm.posts = data;						
-					});
-					vm.getPosts();	
-				};
-				*/
 
 				//Add a comment to time-line post
 				vm.addComment = function(post,newComment) {
@@ -410,14 +300,13 @@
 					newsFeedService.postComment(commentedPost,newComment).success(function(data) {
 						vm.posts = data;						
 					});	
-					vm.getPosts();
 				};
                 
-                //focus
-                vm.focusCommentBox = function(newCommentBox) {
-                    // do something awesome
-                    focus(newCommentBox);
-                };
+             //This is to set focus on the comment box upon clicking the comment link
+             vm.focusCommentBox = function(newCommentBox) {
+                 // do something awesome
+                 focus(newCommentBox);
+             };
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';

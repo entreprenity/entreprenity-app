@@ -164,6 +164,7 @@ function postABusinessOpportunity()
 		
 	
 	}
+	$data=getAllPosts();
 	return $data;
 
 }
@@ -806,6 +807,7 @@ function unlikeThisPost()
 			}
 		}
 	}
+	$data=getAllPosts();
 	return $data;
 }
 
@@ -889,12 +891,13 @@ function likeThisPost()
 						addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
 					}
 			
-					$data['response']='successssss';
-					
+					$data['response']='success';
+					$data=getAllPosts();
 				}
 				else
 				{
 					$data['response']='failed';
+					$data=getAllPosts();
 				}
 			}
 		}
@@ -933,10 +936,12 @@ function likeThisPost()
 				}
 					
 				$data['response']='success';
+				$data=getAllPosts();
 			}
 			else
 			{
 				$data['response']='failed';
+				$data=getAllPosts();
 			}		
 		}
 	
@@ -1003,6 +1008,7 @@ function postThisComment()
 		}
 	
 	}
+	$data=getAllPosts();
 	return $data;
 }
 
@@ -1842,6 +1848,7 @@ function postCurrentPost()
 		}
 	
 	}
+	$data=getAllPosts();
 	return $data;
 
 }
