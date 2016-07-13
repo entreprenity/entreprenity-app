@@ -64,25 +64,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div id="topNav">
-							<div>
-								<img ng-src="assets/img/icon-recep.png">
-								<span class="up-arrow"></span>
-								<a  ng-href="#/callanswering" class="btn btn-default" >MY RECEPTIONIST</a>
-							</div>
-							<div>
-								<img ng-src="assets/img/icon-meeting.png">
-								<span class="up-arrow"></span>
-								<a ng-href="#/spaces" class="btn btn-default" >MEETING ROOM</a>
-							</div>
-							<div>
-								<img ng-src="assets/img/icon-services.png">
-								<span class="up-arrow"></span>
-								<a ng-href="#/home" class="btn btn-default">OTHER SERVICES</a>
-							</div>
-						</div>
 						<div>
-
 							<div id="busopp">
 						        <div class="title">
 						            <h4>Business Opportunities</h4>
@@ -92,23 +74,6 @@
 						</div>
 					</div>
 					<div class="col-md-4">
-					
-						<div id="newMembers" class="card">
-								<h4>BUSINESS OPPORTUNITIES</h4>
-								<ul>
-									<li ng-repeat="businessOpportunity in vm.businessOpportunities">
-										<a ng-href="#/members/{{businessOpportunity.post_author.userName}}">
-											<img class="img-circle" ng-src="{{businessOpportunity.post_author.avatar}}">
-											<p>{{businessOpportunity.post_author.firstName + ' ' + businessOpportunity.post_author.lastName}}</p>
-											<p>{{businessOpportunity.post_author.position + ' / ' + businessOpportunity.post_author.company}}</p>
-											<p>is looking for</p>
-											<ul>
-												<li ng-repeat="tag in businessOpportunity.postTags"><a href="#" class="tags-item">{{tag}}</a></li>
-											</ul>
-										</a>
-									</li>
-								</ul>
-							</div>
 
 						<div id="latestEvents" class="card">
 							<h4>UPCOMING EVENTS</h4>
@@ -123,32 +88,7 @@
 							</ul>
 						</div>
 
-						<div id="newMembers" class="card">
-							<h4>TOP CONTRIBUTORS</h4>
-							<ul>
-								<li ng-repeat="topContributor in vm.topContributors">
-									<a ng-href="#/members/{{topContributor.userName}}">
-										<img class="img-circle" ng-src="{{topContributor.avatar}}">
-										<p>{{topContributor.firstName + ' ' + topContributor.lastName}}</p>
-										<p>{{topContributor.position + ' / ' + topContributor.company}}</p>
-									</a>
-								</li>
-							</ul>
-						</div>
-							
-						<div id="newMembers" class="card">
-							<h4>NEW MEMBERS</h4>
-							<ul>
-								<li ng-repeat="newMember in vm.newMembers">
-									<a ng-href="#/members/{{newMember.userName}}">
-										<img class="img-circle" ng-src="{{newMember.avatar}}">
-										<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
-										<p>{{newMember.position + ' / ' + newMember.company}}</p>
-									</a>
-								</li>
-							</ul>
-						</div>
-						
+
 					</div>
 				</div>
 			</div>

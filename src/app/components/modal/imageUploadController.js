@@ -80,15 +80,18 @@
 			
 
 			$scope.handleFileSelect = function(evt){
-				//alert('test');
+				
 				var file = evt.files[0];
+				
 				var reader = new FileReader();
 				reader.onload = function (evt) {
 					$scope.$apply(function($scope){
 						$scope.myImage = evt.target.result;
 					});
 				};
+
 				reader.readAsDataURL(file);
+				
 				$scope.progressValue = 100;
 
 				$timeout(function(){
@@ -101,10 +104,13 @@
 			$scope.ok = function () {
 				//create a service to update the profile photo using $scope.id
 				//when user click save, will post data to update in backend
+				if($scope.myCroppedImage)
+				{
 					imageUploadService.uploadMemberAvatar($scope.id,$scope.myCroppedImage).success(function(data) {
 						
 						$scope.myImage= data;
 					});	
+				}
 
 				//alert($scope.myCroppedImage);
 				$uibModalInstance.close($scope.myCroppedImage);

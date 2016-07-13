@@ -34,8 +34,10 @@ function send_new_event_notification_to_admin($eventTag)
 			$companyName			=	$eventHostInfo['company']['companyName'];
 			
 			//http://192.168.11.13/projects/entreprenity/api/addNewEvent
+			//http://entreprenity.co/app/api/services/testmail.php
 			$pathToFile				= "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-			$eventBaseURL			=  str_replace("api/addNewEvent","others/event.php",$pathToFile);
+			$eventBaseURL			=  str_replace("api/finishThisEvent","others/event.php",$pathToFile);
+			//$eventBaseURL			=  str_replace("api/services/emailServices.php","others/event.php",$pathToFile);
 			
 			$eventAprovURL			= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=accept';
 			$eventRejectURL		= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=reject';
