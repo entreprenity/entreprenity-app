@@ -34,8 +34,10 @@ function send_new_event_notification_to_admin($eventTag)
 			$companyName			=	$eventHostInfo['company']['companyName'];
 			
 			//http://192.168.11.13/projects/entreprenity/api/addNewEvent
+			//http://entreprenity.co/app/api/services/testmail.php
 			$pathToFile				= "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-			$eventBaseURL			=  str_replace("api/addNewEvent","others/event.php",$pathToFile);
+			$eventBaseURL			=  str_replace("api/finishThisEvent","others/event.php",$pathToFile);
+			//$eventBaseURL			=  str_replace("api/services/emailServices.php","others/event.php",$pathToFile);
 			
 			$eventAprovURL			= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=accept';
 			$eventRejectURL		= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=reject';
@@ -45,8 +47,8 @@ function send_new_event_notification_to_admin($eventTag)
 			$eventsNotify_template = ob_get_contents();			
 			ob_end_clean();
 			
-			//$to = 'sean@flexiesolutions.com'; 
-			$to = 'dominic@cliffsupport.com'; 
+			$to = 'sean@flexiesolutions.com'; 
+			//$to = 'dominic@cliffsupport.com'; 
 			/*$to = $to_email; //please uncomment this when in live*/
 			$strSubject = "New Event Request";
 			$message =  $eventsNotify_template;              
@@ -102,8 +104,8 @@ function send_notification_mail($notification_array){
 	
 	
 	
-	$to = 'dominic@cliffsupport.com'; 
-	/*$to = $to_email; //please uncomment this when in live*/
+	//$to = 'dominic@cliffsupport.com'; 
+	$to = $to_email; //please uncomment this when in live
 	$strSubject = "Notification mail";
 	$message =  $notification_template;              
 	$headers = 'MIME-Version: 1.0'."\r\n";

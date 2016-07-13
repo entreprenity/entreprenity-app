@@ -34,7 +34,9 @@
 		'entreprenityApp.common',
 		'entreprenityApp.imgEventPoster',
 		'entreprenityApp.callanswering',
-		'entreprenityApp.spaces'
+		'entreprenityApp.spaces',
+		'entreprenityApp.eventPlaced',
+		'entreprenityApp.bussOpp'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -132,7 +134,7 @@
 			controllerAs: 'vm'
 		})
 		.when('/business-opportunities', {
-			controller: 'NotificationsController',
+			controller: 'BusinessOpportunityController',
 			templateUrl: 'app/components/busopp/busoppView.html',
 			controllerAs: 'vm'
 		})
@@ -154,6 +156,11 @@
 		.when('/spaces', {
 			controller: 'SpacesController',
 			templateUrl: 'app/components/externalservices/externalServiceRedirectView.html',
+			controllerAs: 'vm'
+		})
+        .when('/eventPlaced', {
+			controller: 'eventPlacedController',
+			templateUrl: 'app/components/events/eventPlaced.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

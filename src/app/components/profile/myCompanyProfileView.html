@@ -46,7 +46,7 @@
 								<p ng-hide="vm.editState">{{vm.company.companyDesc}}</p>
 								<textarea type="text" name="desc" ng-model="vm.company.companyDesc" ng-show="vm.editState"></textarea>
 								<ul ng-hide="vm.editState">
-									<li ng-repeat="category in vm.company.categories"><a href="#" class="tags-item">{{category.text}}</a></li>
+									<li ng-repeat="category in vm.company.categories"><a href="" class="tags-item">{{category.text}}</a></li>
 								</ul>
 								<tags-input class="bootstrap"
 											ng-model="vm.company.categories"

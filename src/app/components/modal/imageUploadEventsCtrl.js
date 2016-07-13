@@ -63,7 +63,7 @@ angular
 
 		vm.finshEvent = function() {
 			eventPosterService.finshEvent(vm.eventTagID).success(function(data) {
-				$location.path('/home');
+				$location.path('/eventPlaced');
 			});	
 		};
 
