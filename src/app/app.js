@@ -56,7 +56,7 @@
 			templateUrl: 'app/components/forgotpassword/forgotpasswordView.html',
 			controllerAs: 'vm'
 		})
-		.when('/directory', {
+		.when('/directory/:directoryType', {
 			controller: 'DirectoryController',
 			templateUrl: 'app/components/directory/directoryView.html',
 			controllerAs: 'vm'

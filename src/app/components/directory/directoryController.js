@@ -177,10 +177,21 @@
 		
 			vm.members = new Members();
 			vm.companies = new Companies();
-			console.log(vm.companies);
 			vm.events = new Events();
 			//vm.location = new Location();
-			console.log(vm.members);
+
+			vm.directoryType = $routeParams.directoryType;
+			switch(vm.directoryType) {
+				case 'members':
+					vm.activeTab = 0;
+					break;
+				case 'companies':
+					vm.activeTab = 1;
+					break;
+				case 'events':
+					vm.activeTab = 2;
+					break;
+			}
 		
 			directoryService.getLocations().success(function(data) {
 				vm.locations = data;
@@ -239,8 +250,4 @@
 			}
 			
 		});
-	
-	$(function() {
-		$('.item').matchHeight();
-	});
 })();
