@@ -54,7 +54,7 @@
 											<table cellpadding="0" cellspacing="0" style="width: 100%;">
 												<tr>
 													<td align="center" style="width: 100%; padding-left: 10px;  padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
-														<img src="../../assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
+														<img src="http://entreprenity.co/app/assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
 													</td>
 												</tr>
 											</table>
