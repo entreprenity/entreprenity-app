@@ -121,6 +121,7 @@
 			var controller = function($routeParams, newsFeedService, $scope,focus) {
 				var vm = this;
 				var userObject;
+				console.log(vm);
 
 				vm.busoppPost = false; // initial state is false, set to true on checkbox
 
@@ -315,6 +316,7 @@
 				restrict: 'E',
 				scope: {
 					poststype: '@',
+					istextareahidden: '=',
 					username: '='
 				},
 				controller: controller,

@@ -1,6 +1,6 @@
 <div>
 	<div id="newsFeed">
-		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required }">
+		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
 			<textarea class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
 			<tags-input class="bootstrap"
 						ng-model="vm.currentPost.categories"
