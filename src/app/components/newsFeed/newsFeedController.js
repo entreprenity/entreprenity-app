@@ -17,11 +17,11 @@
 				},
                 getmyMemberPosts: function(username) 
 				{
-					return $http.get(baseUrl+ 'getmyMembersPost');
+					return $http.get(baseUrl+ 'getmyTimeLinePost');
 				},
 				getFollowedMembersPosts: function(username) 
 				{
-					return $http.get(baseUrl+ 'getFollowedMembersPosts?user='+username);
+					return $http.get(baseUrl+ 'getFollowedMembersPosts');
 				},
 				getBasicUserInfo:function()
 				{
@@ -31,7 +31,7 @@
 				{
 					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
 				},
-                getMyCompanyPosts: function(username) 
+            getMyCompanyPosts: function(username) 
 				{
 					return $http.get(baseUrl+ 'getmyCompanyPosts');
 				},
@@ -44,45 +44,45 @@
 					return $http.get(baseUrl + 'getAllBusinessOpportunities');
 				},
 				
-				postCurrentPost: function(newPost) 
+				postCurrentPost: function(newPost,timelineId,ucUsername) 
 				{
-					var dataPost = {newPost: newPost};														
+					var dataPost = {newPost: newPost,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'postCurrentPost',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-				postComment: function(commentedPost,newComment) 
+				postComment: function(commentedPost,newComment,timelineId,ucUsername) 
 				{
-					var dataPost = {postId: commentedPost.post_id,postComment:newComment};														
+					var dataPost = {postId: commentedPost.post_id,postComment:newComment,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'postThisComment',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},				
-				postLike: function(likedPost) 
+				postLike: function(likedPost,timelineId,ucUsername) 
 				{
-					var dataPost = {likedPostId: likedPost.post_id};														
+					var dataPost = {likedPostId: likedPost.post_id,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'likeThisPost',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-				postUnLike: function(unLikedPost) 
+				postUnLike: function(unLikedPost,timelineId,ucUsername) 
 				{
-					var dataPost = {unlikedPostId: unLikedPost.post_id};														
+					var dataPost = {unlikedPostId: unLikedPost.post_id,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'unlikeThisPost',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-				postBusoppPost: function(content) 
+				postBusoppPost: function(content,timelineId,ucUsername) 
 				{
-					var dataPost = {postContent: content};														
+					var dataPost = {postContent: content,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'postABusinessOpportunity',
 										data: $.param(dataPost),
@@ -141,41 +141,49 @@
 
 						switch(postsType){
 							
+							//home page all posts
 							case '1':
 								newsFeedService.getAllPosts().success(function(data) {
 									vm.posts = data;
 								});
 							break;
 							
+							//member profile timeline posts
 							case '2':
 								newsFeedService.getMemberPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
 							
+							//home page followed posts
 							case '3':
 								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
 							
+							//company profile timeline posts
 							case '4':
 								newsFeedService.getCompanyPosts(username).success(function(data) {
 									vm.posts = data;
 								});
 							break;
 							
+							//business opportunities page
 							case '5':
 								newsFeedService.getAllBusinessOpportunities().success(function(data) {
 									vm.posts = data;
 								});
-								
-                      case '6':
+							break;
+							
+							//my company profile timeline posts	
+                     case '6':
                           newsFeedService.getMyCompanyPosts(username).success(function(data) {
                               vm.posts = data;
                       });
                       break;
                       
+                      //home page my posts timeline
                       case '7':
 							 newsFeedService.getmyMemberPosts(username).success(function(data) {
 								vm.posts = data;
@@ -236,7 +244,7 @@
 					currentPost.content = ""; //clear post textarea
 					if(newPost)
 					{
-						newsFeedService.postCurrentPost(newPost).success(function(data) {
+						newsFeedService.postCurrentPost(newPost,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;							
 						});
 						//vm.getPosts();
@@ -247,7 +255,7 @@
 				vm.addBusoppPost = function (content) {
 					if(content.content && content.categories)
 					{
-						newsFeedService.postBusoppPost(content).success(function(data) {
+						newsFeedService.postBusoppPost(content,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;
 						});
 					}								
@@ -256,11 +264,10 @@
 				//Like a time-line post
 				vm.likePost = function(post) {
 					var likedPost = post;
-
 					//this will come from the session userobject
 					vm.basicInfo();
 					likedPost.likers.push(userObject);
-					newsFeedService.postLike(likedPost).success(function(data) {
+					newsFeedService.postLike(likedPost,vm.poststype,vm.username).success(function(data) {
 						likedPost.isLiked = true;
 						likedPost.likes_count++;
 						vm.posts = data;						
@@ -270,10 +277,9 @@
 				//unlike a time-line post
 				vm.unLikePost = function(post) {
 					var unLikedPost = post;
-
 					//this will come from the session userobject
 					vm.basicInfo();
-					newsFeedService.postUnLike(unLikedPost).success(function(data) {
+					newsFeedService.postUnLike(unLikedPost,vm.poststype,vm.username).success(function(data) {
 						unLikedPost.isLiked = false;
 						unLikedPost.likes_count--;
 						unLikedPost.likers.pop();
@@ -298,7 +304,7 @@
 					post.comment.content = ""; //clear comment textarea
 					//vm.currentComment.content = ""; //clear comment textarea
 
-					newsFeedService.postComment(commentedPost,newComment).success(function(data) {
+					newsFeedService.postComment(commentedPost,newComment,vm.poststype,vm.username).success(function(data) {
 						vm.posts = data;						
 					});	
 				};

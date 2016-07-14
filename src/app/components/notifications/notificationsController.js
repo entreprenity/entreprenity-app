@@ -22,27 +22,27 @@
 				{
 					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
-				postComment: function(commentedPost,newComment) 
+				postComment: function(commentedPost,newComment,timelineId,ucUsername) 
 				{
-					var dataPost = {postId: commentedPost.post_id,postComment:newComment};														
+					var dataPost = {postId: commentedPost.post_id,postComment:newComment,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'postThisComment',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},				
-				postLike: function(likedPost) 
+				postLike: function(likedPost,timelineId,ucUsername) 
 				{
-					var dataPost = {likedPostId: likedPost.post_id};														
+					var dataPost = {likedPostId: likedPost.post_id,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'likeThisPost',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-				postUnLike: function(unLikedPost) 
+				postUnLike: function(unLikedPost,timelineId,ucUsername) 
 				{
-					var dataPost = {unlikedPostId: unLikedPost.post_id};														
+					var dataPost = {unlikedPostId: unLikedPost.post_id,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'unlikeThisPost',
 										data: dataPost,
@@ -51,8 +51,33 @@
 				}
 			};
 		})
-
-		.controller('NotificationsController', function($routeParams, notificationsService) {
+		.factory('focus', function($timeout, $window) {
+            return function(id) {
+            // timeout makes sure that is invoked after any other event has been triggered.
+            // e.g. click events that need to run before the focus or
+            // inputs elements that are in a disabled state but are enabled when those events
+            // are triggered.
+            $timeout(function() {
+                var element = $window.document.getElementById(id);
+                if(element)
+                element.focus();
+                });
+            };
+        })
+        .directive('eventFocus', function(focus) {
+            return function(scope, elem, attr) {
+                elem.on(attr.eventFocus, function() {
+                    focus(attr.eventFocusId);
+                });
+      
+            // Removes bound events in the element itself
+            // when the scope is destroyed
+            scope.$on('$destroy', function() {
+                element.off(attr.eventFocus);
+            });
+            };
+        })
+		.controller('NotificationsController', function($routeParams, notificationsService,$scope) {
 				var vm = this;
 				
 				var cPost = {
@@ -125,7 +150,7 @@
 						//console.log(likedPost);
 						//likedPost.likers = likedPost.likers || [];
 						likedPost.likers.push(userObject);
-						notificationsService.postLike(likedPost).success(function(data) {
+						notificationsService.postLike(likedPost,vm.poststype='',vm.username='').success(function(data) {
 							likedPost.isLiked = true;
 							likedPost.likes_count++;
 							vm.npost = data;
@@ -137,7 +162,7 @@
 				vm.unLikePost = function(post) {
 					var unLikedPost = post;
 						vm.basicInfo();
-						notificationsService.postUnLike(unLikedPost).success(function(data) {
+						notificationsService.postUnLike(unLikedPost,vm.poststype='',vm.username='').success(function(data) {
 							unLikedPost.isLiked = false;
 							unLikedPost.likes_count--;
 							unLikedPost.likers.pop();
@@ -160,11 +185,17 @@
 					commentedPost.comments.push(currentComment);
 					vm.currentComment.content = ""; //clear comment textarea
 
-					notificationsService.postComment(commentedPost,newComment).success(function(data) {
+					notificationsService.postComment(commentedPost,newComment,vm.poststype='',vm.username='').success(function(data) {
 						vm.posts = data;
 					});	
 					vm.thisPost();
 				};
+				
+				//This is to set focus on the comment box upon clicking the comment link
+             vm.focusCommentBox = function(newCommentBox) {
+                 // do something awesome
+                 focus(newCommentBox);
+             };
 	
 				/*
 				var nPost = {

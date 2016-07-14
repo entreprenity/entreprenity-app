@@ -778,7 +778,7 @@ Flight::route('/getmyCompanyPosts', function()
 
 //37 Route to get my Feed to timeline
 //May 18,2016
-Flight::route('/getmyMembersPost', function()
+Flight::route('/getmyTimeLinePost', function()
 {
    enable_cors();
    services_included();	

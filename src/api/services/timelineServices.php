@@ -16,6 +16,238 @@ function unlikeThisComment()
 }
 
 
+//Function to refetch a single timeline post
+//July 14,2016
+function refetchThisPost($post_id)
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+	
+	//I am the logged in user.
+	$session_values=get_user_session();
+	$my_session_id	= (int)$session_values['id'];
+	
+	//Let me see to whom this post belongs
+	$posted_by= whoIsTheAuthorOfThisPost($post_id);
+	
+	if($posted_by==$my_session_id)
+	{
+		//This post is mine. I'm the author
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.post_id=".$post_id."";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {
+	      	//$post_id												=	$row['post_id'];	      	
+	      	$data['post_id']									=	$row['post_id'];      	
+				$data['content']									=	$row['content'];
+				$data['image']										=	$row['post_img'];
+				$data['created_at']								=	$row['created_at'];
+				
+				$data['post_author']['id']						=	$row['clientid'];
+				$data['post_author']['firstName']			=	$row['firstname'];
+				$data['post_author']['lastName']				=	$row['lastname'];
+				if($row['avatar']!='')
+				{
+					$data['post_author']['avatar']			=	$row['avatar'];
+				}
+				else
+				{
+					$data['post_author']['avatar']			=	$member_default_avatar;
+				}
+	   				
+				$data['post_author']['position']				=	$row['designation'];
+				$data['post_author']['companyName']			=	$row['company_name'];
+				$data['post_author']['userName']				=	$row['username'];
+				$data['post_author']['location']				=	$row['location_desc'];
+				
+				$data['isLiked']									= doILikeThisPost($post_id);
+				$data['likes_count']								= howManyLikesThisPostReceived($post_id);
+				$data['likers']									= usersWhoLikesThisPost($post_id);
+				$data['comments_count']							= howManyCommentsThisPostReceived($post_id);
+				$data['commenters']								= usersWhoCommentedThisPost($post_id);
+				$data['comments']									= userCommentsForThisPost($post_id);
+				
+	      }	
+	   }			
+	}
+	
+	return $data;	
+}
+
+
+
+//Function to refetch a company timeline post based on company username
+//July 14,2016
+function refetchCompanyPosts($companyUserName)
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+	
+	//I am the logged in user.
+	$session_values=get_user_session();
+	$my_session_id	= (int)$session_values['id'];
+
+	$companyId=getCompanyIdfromCompanyUserName($companyUserName);
+
+	$companyMembers= getAllCompanyMemberIDs($companyId);
+	//$companyMembersString = implode(",", $companyMembers);
+	$companyMembersString = '1,2,3';
+	
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id'];      	
+			$data[$i]['content']										=	$row['content'];
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;
+}
+
+//Function to refetch timeline posts of a member's profile
+//July 14,2016
+function refetchMemberNewsFeed($username)
+{
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$data= array();
+   
+	$my_id	= getUserIdfromUserName($username);
+		
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
+			ORDER BY EUT.created_at DESC";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$post_id														=	$row['post_id'];
+      	
+      	$data[$i]['post_id']										=	$row['post_id']; 
+			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['created_at']									=	$row['created_at'];
+			
+			$data[$i]['post_author']['id']						=	$row['clientid'];
+			$data[$i]['post_author']['firstName']				=	$row['firstname'];
+			$data[$i]['post_author']['lastName']				=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['post_author']['avatar']				=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+			}
+   				
+			$data[$i]['post_author']['position']				=	$row['designation'];
+			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			$data[$i]['post_author']['userName']				=	$row['username'];
+			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$data[$i]['isLiked']										= doILikeThisPost($post_id);
+			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+			$data[$i]['comments']									= userCommentsForThisPost($post_id);
+			
+
+			$i++;
+      }	
+   }
+	return $data;	
+
+}
+
 //Function to fetch all business opportunities
 //June 15,2016
 function getAllBusinessOpportunities()
@@ -111,6 +343,7 @@ function getLastTimelinePostID($posted_by,$created_at,$content)
 
 //Function to post a business opportunity
 //June 15,2016
+//July 14,2016: Timeline id and type added and if else if ladder
 function postABusinessOpportunity()
 {
 	$data= array();
@@ -121,6 +354,7 @@ function postABusinessOpportunity()
 	if($my_session_id)
 	{
 		$content	= validate_input($_POST['postContent']['content']);
+		$timeLine=validate_input($_POST['timeLine']);
 		
 		if(!empty($_POST['postContent']['categories']))
 		{
@@ -162,9 +396,51 @@ function postABusinessOpportunity()
 			$data['response']='failed';
 		}
 		
+	}
+	
+	if($timeLine==1)
+	{
+		//home page all posts
+		$data=getAllPosts();
+	}
+	else if($timeLine==2)
+	{
+		//member profile timeline posts
+		$username=validate_input($_POST['username']);
+		$data		       = refetchMemberNewsFeed($username);
+	}
+	else if($timeLine==3)
+	{
+		//home page followed posts
+		$data=getFollowedMembersPosts();
 	
 	}
-	$data=getAllPosts();
+	else if($timeLine==4)
+	{
+		//company profile timeline posts
+		$username=validate_input($_POST['username']);
+		$data				  = refetchCompanyPosts($username);
+	}
+	else if($timeLine==5)
+	{
+		//business opportunities page
+		$data=getAllBusinessOpportunities();
+	}
+	else if($timeLine==6)
+	{
+		//my company profile timeline posts
+		$data=getmyCompanyPosts();
+	}
+	else if($timeLine==7)
+	{
+		//home page my posts/myprofile timeline
+		$data=getMyOwnNewsFeed();
+	}
+	else
+	{
+		//single post
+		$data=refetchThisPost($postId);
+	}
 	return $data;
 
 }
@@ -439,7 +715,7 @@ function getFollowedMembersPosts()
     $session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
     
-    $username=validate_input($_GET['user']);
+   //$username=validate_input($_GET['user']);
 	//$myUserId	= getUserIdfromUserName($username);
 	$myUserId	= $my_session_id;
 	
@@ -730,6 +1006,7 @@ function fetchLoginInfoUsingPostid($postId){
 
 //Function to unlike a timeline post\
 //May 20,2016
+//July 14,2016: Timeline id and type added and if else if ladder
 function unlikeThisPost()
 {
 	$data= array();
@@ -743,6 +1020,9 @@ function unlikeThisPost()
 		
 		$unlikedPostId = $requestData->unlikedPostId;
 		$postId=validate_input($unlikedPostId);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
 		
 		$likedUsersID=fetchUsersIDWhoLikesThisPost($postId);
 		if (!empty($likedUsersID)) 
@@ -806,8 +1086,53 @@ function unlikeThisPost()
 				
 			}
 		}
+		
+		if($timeLine==1)
+		{
+			//home page all posts
+			$data=getAllPosts();
+		}
+		else if($timeLine==2)
+		{
+			//member profile timeline posts
+			$memberUsername = $requestData->username;
+			$username		 = validate_input($memberUsername);
+			$data		       = refetchMemberNewsFeed($username);
+		}
+		else if($timeLine==3)
+		{
+			//home page followed posts
+			$data=getFollowedMembersPosts();
+		
+		}
+		else if($timeLine==4)
+		{
+			//company profile timeline posts
+			$companyUsername = $requestData->username;
+			$username		  = validate_input($companyUsername);
+			$data				  = refetchCompanyPosts($username);
+		}
+		else if($timeLine==5)
+		{
+			//business opportunities page
+			$data=getAllBusinessOpportunities();
+		}
+		else if($timeLine==6)
+		{
+			//my company profile timeline posts
+			$data=getmyCompanyPosts();
+		}
+		else if($timeLine==7)
+		{
+			//home page my posts/myprofile timeline
+			$data=getMyOwnNewsFeed();
+		}
+		else
+		{
+			//single post
+			$data=refetchThisPost($postId);
+		}
 	}
-	$data=getAllPosts();
 	return $data;
 }
 
@@ -834,6 +1159,7 @@ function fetchUsersIDWhoLikesThisPost($post_id)
 
 //Function to like a timelinePost
 //May 20,2016
+//July 14,2016: Timeline id and type added and if else if ladder
 function likeThisPost()
 {
 	$data= array();
@@ -849,6 +1175,9 @@ function likeThisPost()
 		
 		$likedPostId = $requestData->likedPostId;
 		$postId=validate_input($likedPostId);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
 		
 		$likedUsersID=fetchUsersIDWhoLikesThisPost($postId);
 		//$likedUsersIDArray = array_filter($likedUsersID);
@@ -892,12 +1221,10 @@ function likeThisPost()
 					}
 			
 					$data['response']='success';
-					$data=getAllPosts();
 				}
 				else
 				{
 					$data['response']='failed';
-					$data=getAllPosts();
 				}
 			}
 		}
@@ -936,13 +1263,57 @@ function likeThisPost()
 				}
 					
 				$data['response']='success';
-				$data=getAllPosts();
 			}
 			else
 			{
 				$data['response']='failed';
-				$data=getAllPosts();
 			}		
+		}
+		
+		if($timeLine==1)
+		{
+			//home page all posts
+			$data=getAllPosts();
+		}
+		else if($timeLine==2)
+		{
+			//member profile timeline posts
+			$memberUsername = $requestData->username;
+			$username		 = validate_input($memberUsername);
+			$data		       = refetchMemberNewsFeed($username);
+		}
+		else if($timeLine==3)
+		{
+			//home page followed posts
+			$data=getFollowedMembersPosts();
+		
+		}
+		else if($timeLine==4)
+		{
+			//company profile timeline posts
+			$companyUsername = $requestData->username;
+			$username		  = validate_input($companyUsername);
+			$data				  = refetchCompanyPosts($username);
+		}
+		else if($timeLine==5)
+		{
+			//business opportunities page
+			$data=getAllBusinessOpportunities();
+		}
+		else if($timeLine==6)
+		{
+			//my company profile timeline posts
+			$data=getmyCompanyPosts();
+		}
+		else if($timeLine==7)
+		{
+			//home page my posts/myprofile timeline
+			$data=getMyOwnNewsFeed();
+		}
+		else
+		{
+			//single post
+			$data=refetchThisPost($postId);
 		}
 	
 	}
@@ -952,6 +1323,7 @@ function likeThisPost()
 
 //Function to post a comment for a timeline post
 //May 20,2016
+//July 14,2016: Timeline id and type added and if else if ladder
 function postThisComment()
 {
 	$data= array();
@@ -965,8 +1337,12 @@ function postThisComment()
 		
 		$timelinePostId = $requestData->postId;
 		$postId=validate_input($timelinePostId);
+		
 		$newComment = $requestData->postComment;
 		$comment=validate_input($newComment);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
 		
 		$post_img='';
 		$created_at=date('Y-m-d H:i:s');
@@ -1008,7 +1384,54 @@ function postThisComment()
 		}
 	
 	}
-	$data=getAllPosts();
+	
+	
+	if($timeLine==1)
+	{
+		//home page all posts
+		$data=getAllPosts();
+	}
+	else if($timeLine==2)
+	{
+		//member profile timeline posts
+		$memberUsername = $requestData->username;
+		$username		 = validate_input($memberUsername);
+		$data		       = refetchMemberNewsFeed($username);
+	}
+	else if($timeLine==3)
+	{
+		//home page followed posts
+		$data=getFollowedMembersPosts();
+	
+	}
+	else if($timeLine==4)
+	{
+		//company profile timeline posts
+		$companyUsername = $requestData->username;
+		$username		  = validate_input($companyUsername);
+		$data				  = refetchCompanyPosts($username);
+	}
+	else if($timeLine==5)
+	{
+		//business opportunities page
+		$data=getAllBusinessOpportunities();
+	}
+	else if($timeLine==6)
+	{
+		//my company profile timeline posts
+		$data=getmyCompanyPosts();
+	}
+	else if($timeLine==7)
+	{
+		//home page my posts/myprofile timeline
+		$data=getMyOwnNewsFeed();
+	}
+	else
+	{
+		//single post
+		$data=refetchThisPost($postId);
+	}
+
 	return $data;
 }
 
@@ -1600,6 +2023,8 @@ function howManyLikesThisPostReceived($post_id)
 }
 
 
+//Function to fetch myprofile/my timeline posts to show in home and my profile
+//July 09,2016
 function getMyOwnNewsFeed()
 {
 	//the defaults starts
@@ -1678,7 +2103,7 @@ function getMyOwnNewsFeed()
 }
 
 
-//Function to get my news feed to timeline
+//Function to get member news feed to timeline
 //May 18,2016
 //June 06, 2016: Added location (client centre location)
 function getMyNewsFeed()
@@ -1820,6 +2245,7 @@ function getMyNewsFeed()
 
 //Function to add new feed to timeline
 //May 18,2016
+//July 14,2016: Timeline id and type added and if else if ladder
 function postCurrentPost()
 {
 	$data= array();
@@ -1832,6 +2258,9 @@ function postCurrentPost()
 		
 		$newPost = $requestData->newPost;
 		$content=validate_input($newPost);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
 		
 		$post_img='';
 		$created_at=date('Y-m-d H:i:s');
@@ -1846,13 +2275,56 @@ function postCurrentPost()
 		{
 			$data['response']='failed';
 		}
-	
+		
+		if($timeLine==1)
+		{
+			//home page all posts
+			$data=getAllPosts();
+		}
+		else if($timeLine==2)
+		{
+			//member profile timeline posts
+			$memberUsername = $requestData->username;
+			$username		 = validate_input($memberUsername);
+			$data		       = refetchMemberNewsFeed($username);
+		}
+		else if($timeLine==3)
+		{
+			//home page followed posts
+			$data=getFollowedMembersPosts();
+		
+		}
+		else if($timeLine==4)
+		{
+			//company profile timeline posts
+			$companyUsername = $requestData->username;
+			$username		  = validate_input($companyUsername);
+			$data				  = refetchCompanyPosts($username);
+		}
+		else if($timeLine==5)
+		{
+			//business opportunities page
+			$data=getAllBusinessOpportunities();
+		}
+		else if($timeLine==6)
+		{
+			//my company profile timeline posts
+			$data=getmyCompanyPosts();
+		}
+		else if($timeLine==7)
+		{
+			//home page my posts/myprofile timeline
+			$data=getMyOwnNewsFeed();
+		}
+		else
+		{
+			//single post
+			$data=refetchThisPost($postId);
+		}
 	}
-	$data=getAllPosts();
 	return $data;
 
 }
-
 
 //Function to test time-line module
 //November 31,2016
