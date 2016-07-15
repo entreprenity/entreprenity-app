@@ -67,55 +67,15 @@ angular
 					vm.currentPost.post_author.userName 	= data.userName;
 					vm.currentPost.post_author.companyUserName 	= data.companyUserName;
 					*/
-					vm.getPosts(1,data.userName);
+					//vm.getPosts(1,data.userName);
 				});
-                /*
-                 myProfileService.getBasicUserInfo().success(function(data) {
-						vm.id 			= data.id;
-						vm.firstName 	= data.firstName;
-						vm.lastName 	= data.lastName;
-						vm.position 	= data.position;
-						vm.myOffice 	= data.myOffice;
-						vm.avatar 		= data.avatar;
-						vm.userName 	= data.userName;
-						vm.memberUserName 	= data.userName;
-						vm.companyUserName 	= data.companyUserName;
-						vm.getPosts(1,vm.memberUserName);
-					});
-                */
+
 
 			}, function () {
 				$log.info('Modal dismissed at: ' + new Date());
 			});
 		};
-        /*
-        myProfileService.getBasicUserInfo().success(function(data) {
-						vm.id 			= data.id;
-						vm.firstName 	= data.firstName;
-						vm.lastName 	= data.lastName;
-						vm.position 	= data.position;
-						vm.myOffice 	= data.myOffice;
-						vm.avatar 		= data.avatar;
-						vm.userName 	= data.userName;
-						vm.memberUserName 	= data.userName;
-						vm.companyUserName 	= data.companyUserName;
-						vm.getPosts(1,vm.memberUserName);
-					});
-        */
-		//To fetch timeline posts
-		vm.getPosts = function (postsType,username) 
-		{
-			var postType =postsType.toString(); //alerts "number"
-			switch(postType)
-			{
-				case '1':
-					myProfileService.getMemberPosts(username).success(function(data) {
-						vm.posts = data;
-						return vm.posts;
-					});
-				break;
-			}
-		};
+
 	
 		//vm.memberUserName = "";
 		//vm.memberUserName = $routeParams.memberUserName;
