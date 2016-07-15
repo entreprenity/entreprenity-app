@@ -2,6 +2,9 @@
 	<div id="newsFeed">
 		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
 			<textarea class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
+			<div style="margin: 0 auto; text-align: center; padding: 10px;">
+				<img class="" ng-src="{{vm.currentPost.image}}" style="max-width: 300px; width: 100%; height: auto;">
+			</div>
 			<tags-input class="bootstrap"
 						ng-model="vm.currentPost.categories"
 						placeholder="Add a category"
@@ -12,7 +15,7 @@
 			<div class="button-container">
 				<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.addPost(vm.currentPost.content)">Post</a>
 				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost)">Post</a>
-				<a class="btn btn-addImage" ng-click="alert('addImageToPost')">
+				<a class="btn btn-addImage" ng-click="vm.addImageToPost()">
 					<i class="fa fa-camera fa-lg"></i>
 				</a>
 				<input type="checkbox" ng-model="vm.busoppPost">
@@ -35,6 +38,7 @@
 						</div>
 						<div class="clearfix"></div>
 						<div class="post-content">{{post.content}}</div>
+						<div class="post-content image">PLACE IMAGE HERE<img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<hr>
 						<div class="post-buttonGroup">
 							<a ng-click="vm.likePost(post)" ng-hide="post.isLiked">Like</a>	

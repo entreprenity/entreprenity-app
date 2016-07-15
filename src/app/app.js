@@ -36,7 +36,8 @@
 		'entreprenityApp.callanswering',
 		'entreprenityApp.spaces',
 		'entreprenityApp.eventPlaced',
-		'entreprenityApp.bussOpp'
+		'entreprenityApp.bussOpp',
+		'entreprenityApp.imageUploadPostsCtrl'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -163,11 +164,16 @@
 			templateUrl: 'app/components/events/eventPlaced.html',
 			controllerAs: 'vm'
 		})
+		.when('/add-image-to-post', {
+			controller: 'imageUploadPostsCtrl',
+			templateUrl: 'app/components/modal/imageUploadPostsView.html',
+			controllerAs: 'vm'
+		})
 		.otherwise({
 			redirectTo: '/login'
-		});
+		})
 	}]);
-	
+
 	angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
 
 })();

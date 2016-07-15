@@ -118,7 +118,7 @@
             };
         })
 		.directive('newsFeed', function() {
-			var controller = function($routeParams, newsFeedService, $scope,focus) {
+			var controller = function($routeParams, newsFeedService, $scope, focus, $uibModal) {
 				var vm = this;
 				var userObject;
 				console.log(vm);
@@ -303,11 +303,63 @@
 					});	
 				};
                 
-             //This is to set focus on the comment box upon clicking the comment link
-             vm.focusCommentBox = function(newCommentBox) {
-                 // do something awesome
-                 focus(newCommentBox);
-             };
+				 //This is to set focus on the comment box upon clicking the comment link
+				 vm.focusCommentBox = function(newCommentBox) {
+					 // do something awesome
+					 focus(newCommentBox);
+				 };
+
+				//Image upload function
+				vm.addImageToPost = function () {
+					alert('addImageToPost');
+					var modalInstance = $uibModal.open({
+						animation: $scope.animationsEnabled,
+						templateUrl: 'app/components/modal/imageUploadPostsView.html',
+						controller: 'ImageUploadController',
+						resolve: {
+							id: function ()
+							{
+								return 1;
+							}
+						}
+					});
+
+					modalInstance.result.then(function (imageToPost) {
+						vm.currentPost.image = imageToPost;
+						
+						myProfileService.getBasicUserInfo().success(function(data) {
+							/*
+							 vm.currentPost.post_author.id 	= data.id;
+							 vm.currentPost.post_author.firstName 	= data.firstName;
+							 vm.currentPost.post_author.lastName 	= data.lastName;
+							 vm.currentPost.post_author.position 	= data.position;
+							 vm.currentPost.post_author.companyName 	= data.companyName;
+							 vm.currentPost.post_author.avatar 		= data.avatar;
+							 vm.currentPost.post_author.userName 	= data.userName;
+							 vm.currentPost.post_author.companyUserName 	= data.companyUserName;
+							 */
+							vm.getPosts(1,data.userName);
+						});
+						/*
+						 myProfileService.getBasicUserInfo().success(function(data) {
+						 vm.id 			= data.id;
+						 vm.firstName 	= data.firstName;
+						 vm.lastName 	= data.lastName;
+						 vm.position 	= data.position;
+						 vm.myOffice 	= data.myOffice;
+						 vm.avatar 		= data.avatar;
+						 vm.userName 	= data.userName;
+						 vm.memberUserName 	= data.userName;
+						 vm.companyUserName 	= data.companyUserName;
+						 vm.getPosts(1,vm.memberUserName);
+						 });
+						 */
+
+					}, function () {
+						$log.info('Modal dismissed at: ' + new Date());
+					});
+
+				}
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';

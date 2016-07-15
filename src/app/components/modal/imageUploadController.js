@@ -70,7 +70,7 @@
 
 			vm.currentPost = myPost;
 
-			$scope.progressValue = 70;
+			$scope.progressValue = 0;
 			$scope.progressMax = 100;
 			$scope.showImage = false;
 
@@ -82,22 +82,30 @@
 			$scope.handleFileSelect = function(evt){
 				
 				var file = evt.files[0];
-				
 				var reader = new FileReader();
-				reader.onload = function (evt) {
-					$scope.$apply(function($scope){
-						$scope.myImage = evt.target.result;
-					});
-				};
+				var maxSize = 5e+6;
 
-				reader.readAsDataURL(file);
-				
-				$scope.progressValue = 100;
-
-				$timeout(function(){
-					$scope.showImage = true;
-				}, 1000);
-
+				console.log(file);
+				if(evt.files.length > 1) {
+					alert("You can select only 2 images");
+				}else {
+					if(file.size>maxSize){
+						alert('file size is more than ' + maxSize + ' bytes');
+						return false;
+					}else{
+						alert('file size is correct - ' + file.size + ' bytes');
+						reader.onload = function (evt) {
+							$scope.$apply(function($scope){
+								$scope.myImage = evt.target.result;
+							});
+						};
+						reader.readAsDataURL(file);
+						$scope.progressValue = 100;
+						$timeout(function(){
+							$scope.showImage = true;
+						}, 1000);
+					}
+				}
 			}
 			
 			
@@ -109,15 +117,26 @@
 					imageUploadService.uploadMemberAvatar($scope.id,$scope.myCroppedImage).success(function(data) {
 						
 						$scope.myImage= data;
+
+
 					});	
 				}
 
 				//alert($scope.myCroppedImage);
+				console.log($scope.myImage);
+				console.log($scope.myCroppedImage);
 				$uibModalInstance.close($scope.myCroppedImage);
 			};
 
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
+			};
+
+			$scope.okPost = function () {
+				//create a service to update the profile photo using $scope.id
+				//when user click save, will post data to update in backend
+				if($scope.myImage) alert('image uploaded');
+				$uibModalInstance.close($scope.myImage);
 			};
 			
 		});

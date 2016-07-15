@@ -28,7 +28,7 @@
 									<a ng-href="#/companies/{{vm.company.companyUserName}}/followers"><span>{{vm.company.followers}}</span>Followers</a>
 								</div>
 								<div class="btn-group">
-									<a class="btn btn-default" ng-hide="vm.editState" ng-click="vm.editState = true">EDIT PROFILE</a>
+									<a class="btn btn-default" ng-show="vm.editState" ng-click="vm.editState = true">EDIT PROFILE</a>
 									<a class="btn btn-default" ng-show="vm.editState" ng-click="vm.updateData(vm.company)">SAVE PROFILE</a>
 									<a class="btn btn-default" ng-show="vm.editState" ng-click="vm.reloadData()">CANCEL</a>
 								</div>

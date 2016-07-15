@@ -37,7 +37,7 @@ angular
 		};
 	})
 
-	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal,$http) {
+	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal, $http) {
 		var vm = this;
 	
 		vm.open = function () {		
