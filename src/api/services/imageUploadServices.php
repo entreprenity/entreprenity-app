@@ -1,5 +1,91 @@
 <?php
 
+//Function to upload timeline post image
+//July 16,2016
+function uploadTimelineImage($uploadImg,$uploadType)
+{
+	$data= array();
+	$data='not uploaded';
+	define('TIMELINE_POST_PIC', 'assets/img/timeline/');	
+	define('TIMELINE_POST_PIC_UPL', '../assets/img/timeline/');	
+	
+	define('BUSSOPP_POST_PIC', 'assets/img/businessopp/');
+	define('BUSSOPP_POST_PIC_UPL', '../assets/img/businessopp/');
+	
+	define('JPEG', '.jpeg');
+	define('GIF', '.gif');
+	define('PNG', '.png');
+
+	$session_values=get_user_session();
+	$my_session_id				= $session_values['id'];
+	$my_session_firstname 	= $session_values['firstname'];
+	$my_session_lastname		= $session_values['lastname'];
+	$my_session_username		= $session_values['username'];
+	
+	$upAt=date('YmdHis');
+	
+	// $uploadType values
+	// 1- member profile pic
+   // 2- company profile pic
+	// 3- events poster
+	// 4- client profile cover photo
+	// 5- client company profile photo
+	// 6- timeline post pic
+	// 7- buss opp post pic
+
+	
+	if (strpos($uploadImg, 'data:image/png;base64') !== false) 
+	{
+   	$img = str_replace('data:image/png;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		$extension= PNG;
+	}
+	
+	if (strpos($uploadImg, 'data:image/gif;base64') !== false) 
+	{
+   	$img = str_replace('data:image/gif;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		$extension= GIF; 
+	}
+	
+	if (strpos($uploadImg, 'data:image/jpeg;base64') !== false) 
+	{
+   	$img = str_replace('data:image/jpeg;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		$extension= JPEG; 
+	}
+	
+	if($uploadType==6)
+	{
+		$fileName 	 = TIMELINE_POST_PIC.'timelineimg'.$my_session_username.$upAt.$extension;
+		$filePath 	 = TIMELINE_POST_PIC_UPL.'timelineimg'.$my_session_username.$upAt.$extension;
+	}
+	
+	if($uploadType==7)
+	{
+		$fileName     = BUSSOPP_POST_PIC.'bussoppimg'.$my_session_username.$upAt.$extension;
+		$filePath 	  = BUSSOPP_POST_PIC_UPL.'bussoppimg'.$my_session_username.$upAt.$extension;
+	}
+	
+	$success = file_put_contents($filePath, $data);
+	$result  = $success ? 1 : 0;
+	
+	
+	if($result==1)
+	{
+		return $fileName;
+	}
+	else
+	{
+		return null;
+	}
+
+}
+
+
 
 //Function to update user avatar, company avatar, event poster
 //May 06,2016

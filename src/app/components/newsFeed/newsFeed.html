@@ -13,8 +13,8 @@
 				<auto-complete source="loadTags($query)"></auto-complete>
 			</tags-input>
 			<div class="button-container">
-				<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.addPost(vm.currentPost.content)">Post</a>
-				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost)">Post</a>
+				<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.addPost(vm.currentPost.content,vm.currentPost.image)">Post</a>
+				<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.addBusoppPost(vm.currentPost,vm.currentPost.image)">Post</a>
 				<a class="btn btn-addImage" ng-click="vm.addImageToPost()">
 					<i class="fa fa-camera fa-lg"></i>
 				</a>
@@ -36,7 +36,7 @@
 						</div>
 						<div class="clearfix"></div>
 						<div class="post-content">{{post.content}}</div>
-						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
+						<div  class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div>
 							<ul ng-show="vm.busoppPost">
 								Categories will be shown here

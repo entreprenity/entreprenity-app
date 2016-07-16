@@ -30,6 +30,12 @@
 							<p>{{vm.event.about}}</p>
 						</div>
 					</div>
+					<div class="about">
+						<h4>ADRESS</h4>
+						<div class="content">
+							<p>{{vm.event.address}}</p>
+						</div>
+					</div>
 					<div class="contact">
 						<h4>MAP</h4>
 						<div class="content">
@@ -38,7 +44,7 @@
 						    zoom='map.zoom' aria-label="Google map">
 						    
 						    <ui-gmap-marker
-						      coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id">
+						      coords="vm.event.map.center" options="marker.options" events="marker.events" idkey="marker.id">
 						      <ui-gmap-window>
 						        <div>{{marker.window.title}}</div>
 						      </ui-gmap-window>

@@ -90,10 +90,10 @@
 					alert("You can select only 2 images");
 				}else {
 					if(file.size>maxSize){
-						alert('file size is more than ' + maxSize + ' bytes');
+						//alert('file size is more than ' + maxSize + ' bytes');
 						return false;
 					}else{
-						alert('file size is correct - ' + file.size + ' bytes');
+						//alert('file size is correct - ' + file.size + ' bytes');
 						reader.onload = function (evt) {
 							$scope.$apply(function($scope){
 								$scope.myImage = evt.target.result;
@@ -135,7 +135,7 @@
 			$scope.okPost = function () {
 				//create a service to update the profile photo using $scope.id
 				//when user click save, will post data to update in backend
-				if($scope.myImage) alert('image uploaded');
+				if($scope.myImage) //alert('image uploaded');
 				$uibModalInstance.close($scope.myImage);
 			};
 			

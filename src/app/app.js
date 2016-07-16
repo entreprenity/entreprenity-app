@@ -1,4 +1,22 @@
 ( function () {
+   /*
+	var onlyLoggedIn = function ($location,$q,AuthService2) 
+	{
+	    var deferred = $q.defer();
+	    
+	    if (AuthService2.isLogin()) 
+	    {
+	    		alert(JSON.stringify(deferred));
+	        deferred.resolve();
+	    } 
+	    else 
+	    {
+	        deferred.reject();
+	        $location.url('/login');
+	    }
+	    return deferred.promise;
+	};	
+	*/	
 	
 	angular.module('entreprenityApp', [
 		'ngRoute',
@@ -37,13 +55,61 @@
 		'entreprenityApp.spaces',
 		'entreprenityApp.eventPlaced',
 		'entreprenityApp.bussOpp',
+		//'entreprenityApp.imageUploadPostsCtrl'
 	])
-	
+    /*
+	.factory('AuthService2', ["$http", "$location", function($http, $location){
+	    //var vm = this;
+	    var baseUrl = 'api/';
+
+ 		 return {
+ 		 	
+          isLogin : function()
+          			  {
+						    	  var token;
+								  if (localStorage['entrp_token'])
+								  {
+							    	  token = JSON.parse(localStorage['entrp_token']);
+								  } 
+								  else 
+								  {
+									  token = "";
+								  }	 
+						        var data = {token: token};
+						        
+						        $http.post(baseUrl + 'validateUserToken', data).success(function(response)
+						        {
+						            if (response.msg == "authorized")
+						            {
+						                //console.log(response.msg);
+						                //return {isLogin: response.msg}
+						                return localStorage.isLogged === "true";
+						                
+						            } 
+						            else 
+						            {
+						               return localStorage.isLogged === "false";
+						            }
+						        });
+                    }
+       }	    
+	    
+	    
+	    //var isLogin = function()
+	    //{   
+
+	       
+	    //}
+	    
+		 return {isLogin: isLogin} ; 
+	}])
+	*/	
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 		.when('/login', {
 			controller: 'LoginController',
 			templateUrl: 'app/components/login/loginView.html',
+			//resolve: {loggedIn: onlyLoggedIn},
 			controllerAs: 'vm'
 		})
 		.when('/register', {
@@ -63,7 +129,7 @@
 		})
 		.when('/home', {
 			controller: 'HomeController',
-			templateUrl: 'app/components/home/homeView.html',
+			templateUrl: 'app/components/home/homeView.html',			
 			controllerAs: 'vm'
 		})
 		//.when('/myprofile/:memberUserName', {
@@ -163,11 +229,18 @@
 			templateUrl: 'app/components/events/eventPlaced.html',
 			controllerAs: 'vm'
 		})
+	
+		.when('/add-image-to-post', {
+			controller: 'imageUploadPostsCtrl',
+			templateUrl: 'app/components/modal/imageUploadPostsView.html',
+			controllerAs: 'vm'
+		})
+	
 		.otherwise({
 			redirectTo: '/login'
-		})
+		});
 	}]);
-
+	
 	angular.module('infinite-scroll').value('THROTTLE_MILLISECONDS', 1000);
 
 })();

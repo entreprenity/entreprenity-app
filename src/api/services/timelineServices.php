@@ -2259,10 +2259,21 @@ function postCurrentPost()
 		$newPost = $requestData->newPost;
 		$content=validate_input($newPost);
 		
+		$b64String = $requestData->imgString;
+		$imgString=$b64String;
+		
 		$timelineId = $requestData->timeLine;
 		$timeLine=validate_input($timelineId);
 		
-		$post_img='';
+		if($imgString!='')
+		{
+			$post_img=uploadTimelineImage($imgString,6);
+		}
+		else
+		{
+			$post_img='';
+		}
+		
 		$created_at=date('Y-m-d H:i:s');
 		$posted_by=$my_session_id;
 		

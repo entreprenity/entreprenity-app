@@ -44,9 +44,9 @@
 					return $http.get(baseUrl + 'getAllBusinessOpportunities');
 				},
 				
-				postCurrentPost: function(newPost,timelineId,ucUsername) 
+				postCurrentPost: function(newPost,imgString,timelineId,ucUsername) 
 				{
-					var dataPost = {newPost: newPost,timeLine: timelineId,username: ucUsername};														
+					var dataPost = {newPost: newPost,imgString: imgString,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'postCurrentPost',
 										data: dataPost,
@@ -244,17 +244,26 @@
 
 
 				// Add a time-line post
-				vm.addPost = function (newPost) {
+				vm.addPost = function (newPost,newImg) {
 					var currentPost = vm.currentPost;
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
 					currentPost.content = ""; //clear post textarea
+					currentPost.image = ""; //clear post image
+					if(newImg)
+					{
+					 	var base64ImgString= newImg;
+					}
+					else
+					{
+						var base64ImgString= '';
+					}
+					
 					if(newPost)
 					{
-						newsFeedService.postCurrentPost(newPost,vm.poststype,vm.username).success(function(data) {
+						newsFeedService.postCurrentPost(newPost,base64ImgString,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;							
 						});
-						//vm.getPosts();
 					}	
 				};
 
@@ -324,7 +333,7 @@
 
 				//Image upload function
 				vm.addImageToPost = function () {
-					alert('addImageToPost');
+					//alert('addImageToPost');
 					vm.isAnImagePost = true;
 					var modalInstance = $uibModal.open({
 						animation: $scope.animationsEnabled,
@@ -340,9 +349,11 @@
 
 					modalInstance.result.then(function (imageToPost) {
 						vm.currentPost.image = imageToPost;
+
 					}, function () {
 						$log.info('Modal dismissed at: ' + new Date());
 					});
+
 				}
 			};
 		

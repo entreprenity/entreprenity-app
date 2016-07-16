@@ -37,7 +37,7 @@
 					    		localStorage.removeItem('entrp_token');
 					    	}					    		
 					    	localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
-				    		
+				    		localStorage.isLogged = 'true';
 				    		$location.path('/home');
 				    	}
 				    	else
