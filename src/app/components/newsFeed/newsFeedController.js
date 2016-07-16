@@ -43,7 +43,10 @@
 				{
 					return $http.get(baseUrl + 'getAllBusinessOpportunities');
 				},
-				
+				getBusinessOpportunitiesForMe:function() 
+				{
+					return $http.get(baseUrl + 'getBusinessOpportunitiesForMe');
+				},
 				postCurrentPost: function(newPost,imgString,timelineId,ucUsername) 
 				{
 					var dataPost = {newPost: newPost,imgString: imgString,timeLine: timelineId,username: ucUsername};														
@@ -140,8 +143,8 @@
 					var postsType = vm.poststype;
 					var username = vm.username;
 
-					switch(postsType){
-
+					switch(postsType)
+					{
 						//home page all posts
 						case '1':
 							newsFeedService.getAllPosts().success(function(data) {
@@ -170,30 +173,38 @@
 							});
 						break;
 
-						//business opportunities page
+						//business all opportunities page
 						case '5':
 							newsFeedService.getAllBusinessOpportunities().success(function(data) {
 								vm.posts = data;
 								vm.busoppPost = true;
-								console.log(vm.busoppPost);
-								console.log('busopp', vm.posts);
+								//console.log(vm.busoppPost);
+								//console.log('busopp', vm.posts);
 							});
 						break;
+						
 						//my company profile timeline posts
 						case '6':
 							newsFeedService.getMyCompanyPosts(username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
+						
 						//home page my posts timeline
 						case '7':
 							newsFeedService.getmyMemberPosts(username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
+						
 						//matched business opportunities
 						case '8':
-							//need to create new service for matched business opportunities
+							newsFeedService.getBusinessOpportunitiesForMe().success(function(data) {
+								vm.posts = data;
+								vm.busoppPost = true;
+								//console.log(vm.busoppPost);
+								//console.log('busopp', vm.posts);
+							});
 						break;
 					}
 

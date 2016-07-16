@@ -764,8 +764,8 @@ Flight::route('/invokeSpaces', function()
 });
 
 
-//48 Route to fetch timeline posts of a company
-//June 13,2016
+//61 Route to fetch timeline posts of a company
+//July 10,2016
 Flight::route('/getmyCompanyPosts', function()
 {
    enable_cors();	
@@ -776,13 +776,25 @@ Flight::route('/getmyCompanyPosts', function()
 
 });
 
-//37 Route to get my Feed to timeline
-//May 18,2016
+//62 Route to get my Feed to timeline
+//July 10,2016
 Flight::route('/getmyTimeLinePost', function()
 {
    enable_cors();
    services_included();	
 	$returnarray=getMyOwnNewsFeed();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//63 Route to get recommended business opportunities (business opportunity timeline)
+//July 16,2016
+Flight::route('/getBusinessOpportunitiesForMe', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getBusinessOpportunitiesForMe();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 });

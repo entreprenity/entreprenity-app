@@ -107,7 +107,7 @@ function recommendedBusinessOpportunities()
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 				WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
-				ORDER BY EUT.created_at DESC";
+				ORDER BY EUT.created_at DESC LIMIT 3";
 		$res=getData($qry);
 	   $count_res=mysqli_num_rows($res);
 	   $i=0; //to initiate count
