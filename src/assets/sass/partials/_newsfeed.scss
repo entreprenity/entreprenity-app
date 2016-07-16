@@ -118,4 +118,11 @@
 			}
 		}
 	}
+
+	.tags input{
+		&::-webkit-input-placeholder {
+			font-size: 11px;
+			display: block;
+		}
+	}
 }

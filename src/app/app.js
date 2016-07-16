@@ -37,7 +37,6 @@
 		'entreprenityApp.spaces',
 		'entreprenityApp.eventPlaced',
 		'entreprenityApp.bussOpp',
-		'entreprenityApp.imageUploadPostsCtrl'
 	])
 	
 	.config(['$routeProvider', function($routeProvider) {
@@ -162,11 +161,6 @@
         .when('/eventPlaced', {
 			controller: 'eventPlacedController',
 			templateUrl: 'app/components/events/eventPlaced.html',
-			controllerAs: 'vm'
-		})
-		.when('/add-image-to-post', {
-			controller: 'imageUploadPostsCtrl',
-			templateUrl: 'app/components/modal/imageUploadPostsView.html',
 			controllerAs: 'vm'
 		})
 		.otherwise({

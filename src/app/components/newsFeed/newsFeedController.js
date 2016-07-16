@@ -123,7 +123,8 @@
 				var userObject;
 				console.log(vm);
 
-				vm.busoppPost = false; // initial state is false, set to true on checkbox
+				vm.busoppPost = false; // initial state is false, set to true if a business opportunity post
+				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
 
 				$scope.loadTags = function(query) { //load tag Categories
 					 var categories = [];
@@ -136,60 +137,66 @@
 				};
 				
 				vm.getPosts = function () {
-						var postsType = vm.poststype;
-						var username = vm.username;
+					var postsType = vm.poststype;
+					var username = vm.username;
 
-						switch(postsType){
-							
-							//home page all posts
-							case '1':
-								newsFeedService.getAllPosts().success(function(data) {
-									vm.posts = data;
-								});
-							break;
-							
-							//member profile timeline posts
-							case '2':
-								newsFeedService.getMemberPosts(username).success(function(data) {
-									vm.posts = data;
-								});
-							break;
-							
-							//home page followed posts
-							case '3':
-								newsFeedService.getFollowedMembersPosts(username).success(function(data) {
-									vm.posts = data;
-								});
-							break;
-							
-							//company profile timeline posts
-							case '4':
-								newsFeedService.getCompanyPosts(username).success(function(data) {
-									vm.posts = data;
-								});
-							break;
-							
-							//business opportunities page
-							case '5':
-								newsFeedService.getAllBusinessOpportunities().success(function(data) {
-									vm.posts = data;
-								});
-							break;
-							
-							//my company profile timeline posts	
-                     case '6':
-                          newsFeedService.getMyCompanyPosts(username).success(function(data) {
-                              vm.posts = data;
-                      });
-                      break;
-                      
-                      //home page my posts timeline
-                      case '7':
-							 newsFeedService.getmyMemberPosts(username).success(function(data) {
+					switch(postsType){
+
+						//home page all posts
+						case '1':
+							newsFeedService.getAllPosts().success(function(data) {
 								vm.posts = data;
-			             });						
-							 break;
-						}
+							});
+						break;
+
+						//member profile timeline posts
+						case '2':
+							newsFeedService.getMemberPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+						break;
+
+						//home page followed posts
+						case '3':
+							newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+						break;
+
+						//company profile timeline posts
+						case '4':
+							newsFeedService.getCompanyPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+						break;
+
+						//business opportunities page
+						case '5':
+							newsFeedService.getAllBusinessOpportunities().success(function(data) {
+								vm.posts = data;
+								vm.busoppPost = true;
+								console.log(vm.busoppPost);
+								console.log('busopp', vm.posts);
+							});
+						break;
+						//my company profile timeline posts
+						case '6':
+							newsFeedService.getMyCompanyPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+						break;
+						//home page my posts timeline
+						case '7':
+							newsFeedService.getmyMemberPosts(username).success(function(data) {
+								vm.posts = data;
+							});
+						break;
+						//matched business opportunities
+						case '8':
+							//need to create new service for matched business opportunities
+						break;
+					}
+
 				};
 				
 				
@@ -318,6 +325,7 @@
 				//Image upload function
 				vm.addImageToPost = function () {
 					alert('addImageToPost');
+					vm.isAnImagePost = true;
 					var modalInstance = $uibModal.open({
 						animation: $scope.animationsEnabled,
 						templateUrl: 'app/components/modal/imageUploadPostsView.html',
@@ -332,39 +340,9 @@
 
 					modalInstance.result.then(function (imageToPost) {
 						vm.currentPost.image = imageToPost;
-						
-						myProfileService.getBasicUserInfo().success(function(data) {
-							/*
-							 vm.currentPost.post_author.id 	= data.id;
-							 vm.currentPost.post_author.firstName 	= data.firstName;
-							 vm.currentPost.post_author.lastName 	= data.lastName;
-							 vm.currentPost.post_author.position 	= data.position;
-							 vm.currentPost.post_author.companyName 	= data.companyName;
-							 vm.currentPost.post_author.avatar 		= data.avatar;
-							 vm.currentPost.post_author.userName 	= data.userName;
-							 vm.currentPost.post_author.companyUserName 	= data.companyUserName;
-							 */
-							vm.getPosts(1,data.userName);
-						});
-						/*
-						 myProfileService.getBasicUserInfo().success(function(data) {
-						 vm.id 			= data.id;
-						 vm.firstName 	= data.firstName;
-						 vm.lastName 	= data.lastName;
-						 vm.position 	= data.position;
-						 vm.myOffice 	= data.myOffice;
-						 vm.avatar 		= data.avatar;
-						 vm.userName 	= data.userName;
-						 vm.memberUserName 	= data.userName;
-						 vm.companyUserName 	= data.companyUserName;
-						 vm.getPosts(1,vm.memberUserName);
-						 });
-						 */
-
 					}, function () {
 						$log.info('Modal dismissed at: ' + new Date());
 					});
-
 				}
 			};
 		
