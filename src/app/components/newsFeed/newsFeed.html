@@ -2,7 +2,7 @@
 	<div id="newsFeed">
 		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
 			<textarea class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
-			<div ng-show="vm.isAnImagePost" style="margin: 0 auto; text-align: center; padding: 10px;">
+			<div ng-show="vm.isAnImagePost" style="margin: 0 auto; text-align: center; padding: 10px; background: #fff;">
 				<img class="" ng-src="{{vm.currentPost.image}}" style="max-width: 300px; width: 100%; height: auto;">
 			</div>
 			<tags-input class="bootstrap"

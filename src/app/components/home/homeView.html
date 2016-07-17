@@ -98,22 +98,35 @@
 					</div>
 					<div class="col-md-4">
 					
-						<div id="newMembers" class="card">
-								<h4>BUSINESS OPPORTUNITIES</h4>
-								<ul>
-									<li ng-repeat="businessOpportunity in vm.businessOpportunities">
-										<a ng-href="#/members/{{businessOpportunity.post_author.userName}}">
-											<img class="img-circle" ng-src="{{businessOpportunity.post_author.avatar}}">
-											<p>{{businessOpportunity.post_author.firstName + ' ' + businessOpportunity.post_author.lastName}}</p>
-											<p>{{businessOpportunity.post_author.position + ' / ' + businessOpportunity.post_author.company}}</p>
-											<p>is looking for</p>
+						<div id="newBusOpp" class="card">
+							<h4>BUSINESS OPPORTUNITIES</h4>
+							<ul class="media-list">
+								<li class="media post" ng-repeat="businessOpportunity in vm.businessOpportunities">
+									<div class="post-main">
+										<div class="media-body post-header">
+											<a href="#/members/{{businessOpportunity.post_author.userName}}" class="pull-left">
+												<img ng-src="{{businessOpportunity.post_author.avatar}}" alt="" class="img-circle" width="60px">
+											</a>
+											<span class="text-muted pull-right">
+												<small class="text-muted"><span am-time-ago="businessOpportunity.created_at"></span></small>
+											</span>
+											<a href="#/members/{{businessOpportunity.post_author.userName}}" class="author-name"><strong >{{businessOpportunity.post_author.firstName + ' ' + businessOpportunity.post_author.lastName}}</strong></a>
+											<div class="author-company">{{businessOpportunity.post_author.position + ' / ' + businessOpportunity.post_author.company}}</div>
+											<small class="text-muted">Is looking for</small>
+
+										</div>
+										<div class="clearfix"></div>
+										<div class="post-content">
 											<ul>
-												<li ng-repeat="tag in businessOpportunity.postTags"><a href="#" class="tags-item">{{tag}}</a></li>
+												<li ng-repeat="tag in businessOpportunity.postTags"><a href="" class="tags-item">{{tag}}</a></li>
 											</ul>
-										</a>
-									</li>
-								</ul>
-							</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<div class="see-more"><a ng-href="#/business-opportunities">See more...</a></div>
+
+						</div>
 
 						<div id="latestEvents" class="card">
 							<h4>UPCOMING EVENTS</h4>
