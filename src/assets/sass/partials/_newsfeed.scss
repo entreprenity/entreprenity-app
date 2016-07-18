@@ -48,6 +48,9 @@
 		.post-main {
 			background-color: #ffffff;
 			padding: 15px;
+			.dropdown-menu {
+				left: -150px;
+			}
 			.post-header {
 				a {
 					padding-right: 10px;

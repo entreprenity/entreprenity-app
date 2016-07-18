@@ -10216,33 +10216,37 @@ body {
   background-color: #ffffff;
   padding: 15px;
 }
-/* line 52, ../sass/partials/_newsfeed.scss */
+/* line 51, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .dropdown-menu {
+  left: -150px;
+}
+/* line 55, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-header a {
   padding-right: 10px;
   display: block;
 }
-/* line 56, ../sass/partials/_newsfeed.scss */
+/* line 59, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-header a:hover {
   text-decoration: underline;
 }
-/* line 59, ../sass/partials/_newsfeed.scss */
+/* line 62, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-header .author-name {
   color: #202020;
   font-size: 16px;
 }
-/* line 64, ../sass/partials/_newsfeed.scss */
+/* line 67, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-content {
   padding: 5px 10px;
 }
-/* line 66, ../sass/partials/_newsfeed.scss */
+/* line 69, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-content.image {
   text-align: center;
 }
-/* line 70, ../sass/partials/_newsfeed.scss */
+/* line 73, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-content.category-tags ul li {
   display: inline-block;
 }
-/* line 72, ../sass/partials/_newsfeed.scss */
+/* line 75, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-content.category-tags ul li .tags-item {
   margin: 2px;
   padding: 0 5px;
@@ -10255,34 +10259,34 @@ body {
   border: 1px solid #df8d0c;
   border-radius: 4px;
 }
-/* line 87, ../sass/partials/_newsfeed.scss */
+/* line 90, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-buttonGroup {
   padding: 5px 10px;
 }
-/* line 89, ../sass/partials/_newsfeed.scss */
+/* line 92, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-buttonGroup a {
   padding-right: 20px;
 }
-/* line 93, ../sass/partials/_newsfeed.scss */
+/* line 96, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment {
   border-top: 1px solid #E5E5E5;
   background-color: #F6F7FB;
   padding: 15px;
 }
-/* line 97, ../sass/partials/_newsfeed.scss */
+/* line 100, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment a:hover {
   text-decoration: underline;
 }
-/* line 100, ../sass/partials/_newsfeed.scss */
+/* line 103, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-content {
   padding: 5px 10px;
   font-size: 12px;
 }
-/* line 105, ../sass/partials/_newsfeed.scss */
+/* line 108, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body {
   position: relative;
 }
-/* line 107, ../sass/partials/_newsfeed.scss */
+/* line 110, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body .btn-submit-comment {
   position: absolute;
   right: 0px;
@@ -10291,21 +10295,21 @@ body {
   padding-right: 20px;
   height: 32px;
 }
-/* line 117, ../sass/partials/_newsfeed.scss */
+/* line 120, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers {
   width: 155px;
   border: 1px solid transparent;
 }
-/* line 120, ../sass/partials/_newsfeed.scss */
+/* line 123, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container {
   padding: 0px 10px;
   position: relative;
 }
-/* line 123, ../sass/partials/_newsfeed.scss */
+/* line 126, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container i {
   color: #f29b13;
 }
-/* line 124, ../sass/partials/_newsfeed.scss */
+/* line 127, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container .post-likers-list {
   position: absolute;
   top: 20px;
@@ -10316,12 +10320,12 @@ body {
   padding: 5px 10px;
   margin: 0px;
 }
-/* line 135, ../sass/partials/_newsfeed.scss */
+/* line 138, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers:hover {
   background-color: #ffffff;
   border: 1px solid #E1E2E3;
 }
-/* line 145, ../sass/partials/_newsfeed.scss */
+/* line 148, ../sass/partials/_newsfeed.scss */
 #newsFeed .tags input::-webkit-input-placeholder {
   font-size: 11px;
   display: block;

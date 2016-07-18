@@ -26,6 +26,17 @@
 			<ul class="media-list">
 				<li class="media post" ng-repeat="post in vm.posts">
 					<div class="post-main">
+						<div class="pull-right">
+							<span uib-dropdown on-toggle="toggled(open)">
+								<a href id="simple-dropdown" uib-dropdown-toggle>
+									<i class="fa fa-caret-down"></i>
+								</a>
+								<ul class="dropdown-menu" uib-dropdown-menu>
+									<li><a ng-click="vm.editPost()">Edit</a></li>
+									<li><a ng-click="vm.deletePost()">Delete</a></li>
+								</ul>
+							</span>
+						</div>
 						<div class="media-body post-header">
 							<a href="#/members/{{post.post_author.userName}}" class="pull-left">
 								<img ng-src="{{post.post_author.avatar}}" alt="" class="img-circle" width="60px">
