@@ -51,6 +51,7 @@
 						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags">
 							<ul ng-show="vm.busoppPost">
+								
 								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category}}</a></li>
 							</ul>
 						</div>
