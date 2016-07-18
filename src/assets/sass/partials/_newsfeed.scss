@@ -66,6 +66,23 @@
 				&.image {
 					text-align: center;
 				}
+				&.category-tags {
+					ul li {
+						display: inline-block;
+						.tags-item {
+							margin: 2px;
+							padding: 0 5px;
+							display: inline-block;
+							font-size: 14px;
+							height: 26px;
+							line-height: 25px;
+							color: #fff;
+							background: $secondary-color;
+							border: 1px solid darken($secondary-color, 5%);
+							border-radius: 4px;
+						}
+					}
+				}
 			}
 			.post-buttonGroup {
 				padding: 5px 10px;

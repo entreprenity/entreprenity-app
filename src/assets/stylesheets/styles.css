@@ -10239,33 +10239,50 @@ body {
   text-align: center;
 }
 /* line 70, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-content.category-tags ul li {
+  display: inline-block;
+}
+/* line 72, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .post-content.category-tags ul li .tags-item {
+  margin: 2px;
+  padding: 0 5px;
+  display: inline-block;
+  font-size: 14px;
+  height: 26px;
+  line-height: 25px;
+  color: #fff;
+  background: #f29b13;
+  border: 1px solid #df8d0c;
+  border-radius: 4px;
+}
+/* line 87, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-buttonGroup {
   padding: 5px 10px;
 }
-/* line 72, ../sass/partials/_newsfeed.scss */
+/* line 89, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .post-main .post-buttonGroup a {
   padding-right: 20px;
 }
-/* line 76, ../sass/partials/_newsfeed.scss */
+/* line 93, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment {
   border-top: 1px solid #E5E5E5;
   background-color: #F6F7FB;
   padding: 15px;
 }
-/* line 80, ../sass/partials/_newsfeed.scss */
+/* line 97, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment a:hover {
   text-decoration: underline;
 }
-/* line 83, ../sass/partials/_newsfeed.scss */
+/* line 100, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-content {
   padding: 5px 10px;
   font-size: 12px;
 }
-/* line 88, ../sass/partials/_newsfeed.scss */
+/* line 105, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body {
   position: relative;
 }
-/* line 90, ../sass/partials/_newsfeed.scss */
+/* line 107, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body .btn-submit-comment {
   position: absolute;
   right: 0px;
@@ -10274,21 +10291,21 @@ body {
   padding-right: 20px;
   height: 32px;
 }
-/* line 100, ../sass/partials/_newsfeed.scss */
+/* line 117, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers {
   width: 155px;
   border: 1px solid transparent;
 }
-/* line 103, ../sass/partials/_newsfeed.scss */
+/* line 120, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container {
   padding: 0px 10px;
   position: relative;
 }
-/* line 106, ../sass/partials/_newsfeed.scss */
+/* line 123, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container i {
   color: #f29b13;
 }
-/* line 107, ../sass/partials/_newsfeed.scss */
+/* line 124, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container .post-likers-list {
   position: absolute;
   top: 20px;
@@ -10299,12 +10316,12 @@ body {
   padding: 5px 10px;
   margin: 0px;
 }
-/* line 118, ../sass/partials/_newsfeed.scss */
+/* line 135, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers:hover {
   background-color: #ffffff;
   border: 1px solid #E1E2E3;
 }
-/* line 128, ../sass/partials/_newsfeed.scss */
+/* line 145, ../sass/partials/_newsfeed.scss */
 #newsFeed .tags input::-webkit-input-placeholder {
   font-size: 11px;
   display: block;

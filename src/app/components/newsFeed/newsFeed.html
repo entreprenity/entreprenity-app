@@ -1,7 +1,8 @@
 <div>
 	<div id="newsFeed">
 		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
-			<textarea class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
+			<textarea ng-hide="vm.busoppPost" class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
+			<textarea ng-show="vm.busoppPost" class="form-control" placeholder="Describe the Service you Seek here..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
 			<div ng-show="vm.isAnImagePost" style="margin: 0 auto; text-align: center; padding: 10px; background: #fff;">
 				<img class="" ng-src="{{vm.currentPost.image}}" style="max-width: 300px; width: 100%; height: auto;">
 			</div>
@@ -36,10 +37,9 @@
 						</div>
 						<div class="clearfix"></div>
 						<div class="post-content">{{post.content}}</div>
-						<div  class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
-						<div>
+						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
+						<div class="post-content category-tags">
 							<ul ng-show="vm.busoppPost">
-								
 								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category}}</a></li>
 							</ul>
 						</div>
