@@ -56,6 +56,15 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
+                postBusoppPost: function(content,imgString,timelineId,ucUsername) 
+				{
+					var dataPost = {postContent: content,imgString: imgString,timeLine: timelineId,username: ucUsername};														
+					return $http({ method: 'post',
+										url: baseUrl+'postABusinessOpportunity',
+										data: $.param(dataPost),
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},
 				postComment: function(commentedPost,newComment,timelineId,ucUsername) 
 				{
 					var dataPost = {postId: commentedPost.post_id,postComment:newComment,timeLine: timelineId,username: ucUsername};														
@@ -82,16 +91,8 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
-				},
-				postBusoppPost: function(content,timelineId,ucUsername) 
-				{
-					var dataPost = {postContent: content,timeLine: timelineId,username: ucUsername};														
-					return $http({ method: 'post',
-										url: baseUrl+'postABusinessOpportunity',
-										data: $.param(dataPost),
-										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-									});
 				}
+				
 			};
 		})
         .factory('focus', function($timeout, $window) {
@@ -124,7 +125,7 @@
 			var controller = function($routeParams, newsFeedService, $scope, focus, $uibModal) {
 				var vm = this;
 				var userObject;
-				console.log(vm);
+				//console.log(vm);
 
 				vm.busoppPost = false; // initial state is false, set to true if a business opportunity post
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
@@ -273,17 +274,31 @@
 					if(newPost)
 					{
 						newsFeedService.postCurrentPost(newPost,base64ImgString,vm.poststype,vm.username).success(function(data) {
-							vm.posts = data;							
+							vm.posts = data;
+                            vm.isAnImagePost = false; //hide image div
 						});
 					}	
 				};
 
 				// Add a time-line Business Opportunity post
-				vm.addBusoppPost = function (content) {
+				vm.addBusoppPost = function (content,newImg) {
+                    var currentPost = vm.currentPost;
 					if(content.content && content.categories)
 					{
-						newsFeedService.postBusoppPost(content,vm.poststype,vm.username).success(function(data) {
+                        if(newImg)
+                        {
+                            var base64ImgString= newImg;
+                        }
+                        else
+                        {
+                            var base64ImgString= '';
+                        }
+						newsFeedService.postBusoppPost(content,base64ImgString,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;
+                            currentPost.image = ""; //clear post image
+                            currentPost.content = ""; //clear post textarea
+                            currentPost.categories = ""; //clear tags
+                            vm.isAnImagePost = false; //hide image div
 						});
 					}								
 				};

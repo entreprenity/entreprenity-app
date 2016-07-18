@@ -69,9 +69,12 @@ function getBusinessOpportunitiesForMe()
 				    }
 				}
 			}
-			$postIdArrayString = implode(",", $postIdArrays);
 			
-			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+             $postIdArrayStringUF = array_filter($postIdArrays);
+		    if (!empty($postIdArrayStringUF)) 
+            {
+                 $postIdArrayString = implode(",", $postIdArrayStringUF);
+                $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 					FROM entrp_user_timeline AS EUT
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -112,7 +115,10 @@ function getBusinessOpportunitiesForMe()
 		
 					$i++;
 		      }	
-		   }				
+		   }
+                
+            }
+				
 		}	
 	}
 	return $data;
@@ -386,7 +392,7 @@ function getAllBusinessOpportunities()
    	while($row=mysqli_fetch_array($res))
       {
       	$post_id														=	$row['post_id'];
-      	
+        $data[$i]['postTags']									=	getTimelinePostTags($post_id);
       	$data[$i]['post_id']										=	$row['post_id'];      	
 			$data[$i]['content']										=	$row['content'];
 			$data[$i]['image']										=	$row['post_img'];
@@ -453,6 +459,7 @@ function postABusinessOpportunity()
 {
 	$data= array();
 	$categories=array();
+    $post_img='';
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	
@@ -460,7 +467,21 @@ function postABusinessOpportunity()
 	{
 		$content	= validate_input($_POST['postContent']['content']);
 		$timeLine=validate_input($_POST['timeLine']);
+
+        $b64String = validate_input($_POST['imgString']);
+		$imgString=$b64String;
 		
+		
+		if($imgString!='')
+		{
+			$post_img=uploadTimelineImage($imgString,7);
+		}
+		else
+		{
+			$post_img='';
+		}
+        
+        
 		if(!empty($_POST['postContent']['categories']))
 		{
 			$business_op=1;
@@ -470,13 +491,30 @@ function postABusinessOpportunity()
 				$categories[$i]	=	$_POST['postContent']['categories'][$i]['text'];
 				$category_json		=  json_encode($categories);
 			}
+            
+            if($imgString!='')
+            {
+                $post_img=uploadTimelineImage($imgString,7);
+            }
+            else
+            {
+                $post_img='';
+            }
 		}
 		else
 		{
+            if($imgString!='')
+            {
+                $post_img=uploadTimelineImage($imgString,6);
+            }
+            else
+            {
+                $post_img='';
+            }
+            
 			$business_op=0;
 		}
 		
-		$post_img='';
 		$created_at=date('Y-m-d H:i:s');
 		$posted_by=$my_session_id;
 		
@@ -541,6 +579,11 @@ function postABusinessOpportunity()
 		//home page my posts/myprofile timeline
 		$data=getMyOwnNewsFeed();
 	}
+    else if($timeLine==8)
+    {
+        //home page my posts/myprofile timeline
+        $data=getBusinessOpportunitiesForMe();
+    }
 	else
 	{
 		//single post
@@ -980,7 +1023,7 @@ function getAllPosts()
    	while($row=mysqli_fetch_array($res))
       {
       	$post_id														=	$row['post_id'];
-      	
+      	 $data[$i]['postTags']									=	getTimelinePostTags($post_id);
       	$data[$i]['post_id']										=	$row['post_id'];      	
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
@@ -1232,6 +1275,11 @@ function unlikeThisPost()
 			//home page my posts/myprofile timeline
 			$data=getMyOwnNewsFeed();
 		}
+        else if($timeLine==8)
+        {
+            //home page my posts/myprofile timeline
+            $data=getBusinessOpportunitiesForMe();
+        }
 		else
 		{
 			//single post
@@ -1415,6 +1463,11 @@ function likeThisPost()
 			//home page my posts/myprofile timeline
 			$data=getMyOwnNewsFeed();
 		}
+        else if($timeLine==8)
+        {
+            //home page my posts/myprofile timeline
+            $data=getBusinessOpportunitiesForMe();
+        }
 		else
 		{
 			//single post
@@ -1531,6 +1584,11 @@ function postThisComment()
 		//home page my posts/myprofile timeline
 		$data=getMyOwnNewsFeed();
 	}
+    else if($timeLine==8)
+    {
+        //home page my posts/myprofile timeline
+        $data=getBusinessOpportunitiesForMe();
+    }
 	else
 	{
 		//single post
@@ -2431,6 +2489,11 @@ function postCurrentPost()
 		{
 			//home page my posts/myprofile timeline
 			$data=getMyOwnNewsFeed();
+		}
+        else if($timeLine==8)
+		{
+			//home page my posts/myprofile timeline
+			$data=getBusinessOpportunitiesForMe();
 		}
 		else
 		{

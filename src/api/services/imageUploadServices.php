@@ -6,15 +6,16 @@ function uploadTimelineImage($uploadImg,$uploadType)
 {
 	$data= array();
 	$data='not uploaded';
-	define('TIMELINE_POST_PIC', 'assets/img/timeline/');	
-	define('TIMELINE_POST_PIC_UPL', '../assets/img/timeline/');	
-	
-	define('BUSSOPP_POST_PIC', 'assets/img/businessopp/');
-	define('BUSSOPP_POST_PIC_UPL', '../assets/img/businessopp/');
-	
-	define('JPEG', '.jpeg');
-	define('GIF', '.gif');
-	define('PNG', '.png');
+    
+    if (!defined('TIMELINE_POST_PIC')) define('TIMELINE_POST_PIC', 'assets/img/timeline/');
+    if (!defined('TIMELINE_POST_PIC_UPL')) define('TIMELINE_POST_PIC_UPL', '../assets/img/timeline/');
+    
+    if (!defined('BUSSOPP_POST_PIC')) define('BUSSOPP_POST_PIC', 'assets/img/businessopp/');
+    if (!defined('BUSSOPP_POST_PIC_UPL')) define('BUSSOPP_POST_PIC_UPL', '../assets/img/businessopp/');
+    
+    if (!defined('JPEG')) define('JPEG', '.jpeg');
+    if (!defined('GIF')) define('GIF', '.gif');
+    if (!defined('PNG')) define('PNG','.png');
 
 	$session_values=get_user_session();
 	$my_session_id				= $session_values['id'];
@@ -94,14 +95,14 @@ function uploadTheImage()
 {
 	$data= array();
 	$data='not uploaded';
-	
-	define('PROFILE_PIC', 'assets/img/members/');
-	define('COMPANY_PIC', 'assets/img/companies/');
-	define('EVENT_POSTER', 'assets/img/events/');
-	
-	define('PROFILE_PIC_UPL', '../assets/img/members/');
-	define('COMPANY_PIC_UPL', '../assets/img/companies/');
-	define('EVENT_POSTER_UPL', '../assets/img/events/');
+    
+    if (!defined('PROFILE_PIC')) define('PROFILE_PIC', 'assets/img/members/');
+    if (!defined('COMPANY_PIC')) define('COMPANY_PIC', 'assets/img/companies/');
+    if (!defined('EVENT_POSTER')) define('EVENT_POSTER', 'assets/img/events/');
+
+    if (!defined('PROFILE_PIC_UPL')) define('PROFILE_PIC_UPL', '../assets/img/members/');
+    if (!defined('COMPANY_PIC_UPL')) define('COMPANY_PIC_UPL', '../assets/img/companies/');
+    if (!defined('EVENT_POSTER_UPL')) define('EVENT_POSTER_UPL', '../assets/img/events/');
 	
 	$session_values=get_user_session();
 	$my_session_id				= $session_values['id'];
