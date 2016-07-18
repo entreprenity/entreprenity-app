@@ -130,8 +130,8 @@
 
 						<div id="latestEvents" class="card">
 							<h4>UPCOMING EVENTS</h4>
-							<ul>
-								<li ng-repeat="	latestEvent in vm.latestEvents">
+							<ul class="media-list">
+								<li class="media post" ng-repeat="	latestEvent in vm.latestEvents">
 									<a ng-href="#/events/{{latestEvent.eventTagId}}">
 										<img ng-src="{{latestEvent.poster}}">
 										<p>{{latestEvent.name}}</p>
@@ -139,12 +139,13 @@
 									</a>
 								</li>
 							</ul>
+							<div class="see-more"><a ng-href="#/directory/events">See more...</a></div>
 						</div>
 
 						<div id="newMembers" class="card">
 							<h4>TOP CONTRIBUTORS</h4>
-							<ul>
-								<li ng-repeat="topContributor in vm.topContributors">
+							<ul class="media-list">
+								<li class="media post" ng-repeat="topContributor in vm.topContributors">
 									<a ng-href="#/members/{{topContributor.userName}}">
 										<img class="img-circle" ng-src="{{topContributor.avatar}}">
 										<p>{{topContributor.firstName + ' ' + topContributor.lastName}}</p>
@@ -156,8 +157,8 @@
 							
 						<div id="newMembers" class="card">
 							<h4>NEW MEMBERS</h4>
-							<ul>
-								<li ng-repeat="newMember in vm.newMembers">
+							<ul class="media-list">
+								<li class="media post" ng-repeat="newMember in vm.newMembers">
 									<a ng-href="#/members/{{newMember.userName}}">
 										<img class="img-circle" ng-src="{{newMember.avatar}}">
 										<p>{{newMember.firstName + ' ' + newMember.lastName}}</p>
@@ -165,6 +166,7 @@
 									</a>
 								</li>
 							</ul>
+							<div class="see-more"><a ng-href="#/directory/members">See more...</a></div>
 						</div>
 						
 					</div>
