@@ -381,6 +381,21 @@
 					});
 
 				}
+
+				//delete Post
+				vm.deletePost = function(postsArray, postIndex) {
+					var deletedPost = postsArray[postIndex];
+					console.log(deletedPost);
+					postsArray.splice(postIndex, 1);
+					//service to send deleted post to backend
+				};
+
+				//edit Post
+				vm.editPost = function(post) {
+					var editedPost = post;
+					vm.editState = true;
+					//service to send edited post, still work in progress
+				};
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';

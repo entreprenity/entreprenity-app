@@ -32,8 +32,8 @@
 									<i class="fa fa-caret-down"></i>
 								</a>
 								<ul class="dropdown-menu" uib-dropdown-menu>
-									<li><a ng-click="vm.editPost()">Edit</a></li>
-									<li><a ng-click="vm.deletePost()">Delete</a></li>
+									<li><a ng-click="vm.editPost()" style="display:none;">Edit</a></li>
+									<li><a ng-click="vm.deletePost(vm.posts, $index)">Delete</a></li>
 								</ul>
 							</span>
 						</div>
