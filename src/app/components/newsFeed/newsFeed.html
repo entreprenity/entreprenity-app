@@ -24,7 +24,7 @@
 		<div class="clearfix"></div>
 		<div>
 			<ul class="media-list">
-				<li class="media post" ng-repeat="post in vm.posts">
+				<li class="media post animate-repeat" ng-repeat="post in vm.posts">
 					<div class="post-main">
 						<div class="pull-right">
 							<span uib-dropdown on-toggle="toggled(open)">
@@ -32,8 +32,8 @@
 									<i class="fa fa-caret-down"></i>
 								</a>
 								<ul class="dropdown-menu" uib-dropdown-menu>
-									<li><a ng-click="vm.editPost()">Edit</a></li>
-									<li><a ng-click="vm.deletePost()">Delete</a></li>
+									<li><a ng-click="vm.editState = true">Edit</a></li>
+									<li><a ng-click="vm.deletePost(vm.posts, $index)">Delete</a></li>
 								</ul>
 							</span>
 						</div>
@@ -47,12 +47,19 @@
 							<small class="text-muted">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>
-						<div class="post-content">{{post.content}}</div>
+						<div ng-hide="vm.editState" class="post-content">{{post.content}}</div>
+						<textarea ng-show="vm.editState" class="form-control textarea-edit" rows="3" ng-model="post.content" ng-keypress="vm.keypressEventListener($event, post)" style="margin-bottom: 5px;"></textarea>
+						<tags-input class="bootstrap"
+									ng-model="post.postTags"
+									placeholder="Add key words for service matching with other members e.g. marketing, SEO, legal service, etc."
+									replace-spaces-with-dashes="false"
+									ng-show="vm.editState && vm.busoppPost">
+							<auto-complete source="loadTags($query)"></auto-complete>
+						</tags-input>
 						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags">
-							<ul ng-show="vm.busoppPost">
-								
-								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category}}</a></li>
+							<ul ng-show="vm.busoppPost && !vm.editState">
+								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category.text}}</a></li>
 							</ul>
 						</div>
 						<hr>

@@ -1,19 +1,25 @@
 ( function () {
-	var onlyLoggedIn = function ($location,$q,AuthService2) 
+	
+	var onlyLoggedIn = function($location, $q, AuthService2) 
 	{
-	    var deferred = $q.defer();
-	    
-	    if (AuthService2.isLogin()) 
-	    {
-	        deferred.resolve();
-	    } 
-	    else 
-	    {
-	        deferred.reject();
-	        $location.url('/login');
-	    }
-	    return deferred.promise;
+	  var deferred = $q.defer();
+	  AuthService2.isLogin().then(function (res)
+	  {
+	  		if(res.data.msg == "authorized")
+	  		{
+	      	//console.log("Logged In");
+	         deferred.resolve();
+	      }
+	      else
+	      {
+	      	//console.log("Not Logged In");
+	         deferred.reject();
+	         $location.url('/login');
+	      }
+	  });
+	  return deferred.promise;
 	};	
+	
 	
 	angular.module('entreprenityApp', [
 		'ngRoute',
@@ -55,59 +61,31 @@
 		//'entreprenityApp.imageUploadPostsCtrl'
 	])
 	.factory('AuthService2', ["$http", "$location", function($http, $location){
-	    //var vm = this;
-	    var baseUrl = 'api/';
-
- 		 return {
- 		 	
-          isLogin : function()
-          			  {
-						    	  var token;
-								  if (localStorage['entrp_token'])
-								  {
-							    	  token = JSON.parse(localStorage['entrp_token']);
-							    	  return true;
-								  } 
-								  else 
-								  {
-									  token = "";
-									  return false;
-								  }	 
-						        var data = {token: token};
-						        /*
-						        $http.post(baseUrl + 'validateUserToken', data).success(function(response)
-						        {
-						            if (response.msg == "authorized")
-						            {
-						                //console.log(response.msg);
-						                //return {isLogin: response.msg}
-						                return localStorage.isLogged === "true";
-						                
-						            } 
-						            else 
-						            {
-						               return localStorage.isLogged === "false";
-						            }
-						        });
-						        */
-                    }
-       }	    
+	   //var vm = this;
+	   var baseUrl = 'api/';
+      var isLogin = function()
+ 	   {
+    	  var token;
+		  if (localStorage['entrp_token'])
+		  {
+	    	  token = JSON.parse(localStorage['entrp_token']);
+		  } 
+		  else 
+		  {
+			  token = "";
+		  }	 
+        var data = {token: token};	
+        return $http.post(baseUrl + 'validateUserToken', {token: token });			       
+      }    
 	    
-	    
-	    //var isLogin = function()
-	    //{   
-
-	       
-	    //}
-	    
-		 return {isLogin: isLogin} ; 
+		return {isLogin: isLogin} ; 
 	}])
 	
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 		.when('/login', {
 			controller: 'LoginController',
-			templateUrl: 'app/components/login/loginView.html',
+			templateUrl: 'app/components/login/loginView.html',		
 			controllerAs: 'vm'
 		})
 		.when('/register', {
@@ -132,7 +110,6 @@
 			resolve: {loggedIn: onlyLoggedIn},			
 			controllerAs: 'vm'			
 		})
-		//.when('/myprofile/:memberUserName', {
 		.when('/myprofile', {
 			controller: 'MyProfileController',
 			templateUrl: 'app/components/profile/myProfileView.html',
@@ -145,7 +122,6 @@
 			resolve: {loggedIn: onlyLoggedIn},		
 			controllerAs: 'vm'
 		})
-		//.when('/mycompany/:companyUserName', {
 		.when('/mycompany', {
 			controller: 'MyCompanyProfileController',
 			templateUrl: 'app/components/profile/myCompanyProfileView.html',

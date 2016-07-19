@@ -8846,6 +8846,45 @@ a {
   text-overflow: ellipsis;
 }
 
+/* line 1, ../sass/partials/_animation.scss */
+.example-animate-container {
+  background: white;
+  border: 1px solid black;
+  list-style: none;
+  margin: 0;
+  padding: 0 10px;
+}
+
+/* line 9, ../sass/partials/_animation.scss */
+.animate-repeat {
+  line-height: 30px;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+/* line 15, ../sass/partials/_animation.scss */
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  transition: all linear 0.5s;
+}
+
+/* line 21, ../sass/partials/_animation.scss */
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity: 0;
+  max-height: 0;
+}
+
+/* line 28, ../sass/partials/_animation.scss */
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity: 1;
+  max-height: 30px;
+}
+
 /* line 6, ../sass/partials/_button.scss */
 .btn {
   padding: 6px 32px;
@@ -10267,26 +10306,31 @@ body {
 #newsFeed .post .post-main .post-buttonGroup a {
   padding-right: 20px;
 }
-/* line 96, ../sass/partials/_newsfeed.scss */
+/* line 94, ../sass/partials/_newsfeed.scss */
+#newsFeed .post .post-main .textarea-edit {
+  border: 1px solid #E5E5E5;
+  background-color: #fff;
+}
+/* line 100, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment {
   border-top: 1px solid #E5E5E5;
   background-color: #F6F7FB;
   padding: 15px;
 }
-/* line 100, ../sass/partials/_newsfeed.scss */
+/* line 104, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment a:hover {
   text-decoration: underline;
 }
-/* line 103, ../sass/partials/_newsfeed.scss */
+/* line 107, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-content {
   padding: 5px 10px;
   font-size: 12px;
 }
-/* line 108, ../sass/partials/_newsfeed.scss */
+/* line 112, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body {
   position: relative;
 }
-/* line 110, ../sass/partials/_newsfeed.scss */
+/* line 114, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .comment-textarea .media-body .btn-submit-comment {
   position: absolute;
   right: 0px;
@@ -10295,21 +10339,21 @@ body {
   padding-right: 20px;
   height: 32px;
 }
-/* line 120, ../sass/partials/_newsfeed.scss */
+/* line 124, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers {
   width: 155px;
   border: 1px solid transparent;
 }
-/* line 123, ../sass/partials/_newsfeed.scss */
+/* line 127, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container {
   padding: 0px 10px;
   position: relative;
 }
-/* line 126, ../sass/partials/_newsfeed.scss */
+/* line 130, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container i {
   color: #f29b13;
 }
-/* line 127, ../sass/partials/_newsfeed.scss */
+/* line 131, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers .post-likers-container .post-likers-list {
   position: absolute;
   top: 20px;
@@ -10320,12 +10364,12 @@ body {
   padding: 5px 10px;
   margin: 0px;
 }
-/* line 138, ../sass/partials/_newsfeed.scss */
+/* line 142, ../sass/partials/_newsfeed.scss */
 #newsFeed .post .comment .post-likers:hover {
   background-color: #ffffff;
   border: 1px solid #E1E2E3;
 }
-/* line 148, ../sass/partials/_newsfeed.scss */
+/* line 152, ../sass/partials/_newsfeed.scss */
 #newsFeed .tags input::-webkit-input-placeholder {
   font-size: 11px;
   display: block;
