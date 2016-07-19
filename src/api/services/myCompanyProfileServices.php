@@ -151,7 +151,8 @@ function getMyCompanyProfileDetails()
 		}
 		$company_id=$data['id'];
 		$data['categories']	= fetch_company_categories($company_id);	
-		$data['followers']	= entrp_company_follows($company_id);	
+		$data['followers']	= entrp_company_follows($company_id);
+		$data['companyEvents']	=  fetchCompanyEvents($company_id);	
 	}
 	else 
 	{
@@ -191,6 +192,134 @@ function getMyCompanyProfileDetails()
 	*/
 }
 
+
+
+//Function to fetch a company profile
+//April 25,2016
+function viewCompanyProfile()
+{
+		/*
+		{
+		  "name": "vOffice",
+		  "location": "Fort Legend Tower",
+		  "coverPhoto": "cover.jpg",
+		  "profilePhoto": "profile.jpg",
+		  "website": "voffice.com.ph",
+		  "email": "sales@voffice.com",
+		  "mobile": "639175296299",
+		  "tel": "6322931533",
+		  "fax": "6329165745",
+		  "desc": "We provide businesses superior reach and access to South East Asia markets like Jakarta, Manila, Kuala Lumpur and Singapore.",
+		  "natureOfBusinessTags": [
+		    "virtual office",
+		    "serviced office",
+		    "co-working spaces"
+		  ],
+		  "employees": [
+		    {
+		      "id": "1",
+		      "firstName": "Ken",
+		      "lastName": "Sia",
+		      "profilePhoto": "emp1.jpg"
+		    },
+		    {
+		      "id": "2",
+		      "firstName": "Jaye",
+		      "lastName": "Atienza",
+		      "profilePhoto": "emp2.jpg"
+		    }
+		  ]
+		}
+		*/
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$companyUserName=validate_input($_GET['id']);
+	$companyid=getCompanyIdfromCompanyUserName($companyUserName);	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$data= array();	
+	
+	if($my_session_id)
+	{
+		$data['followed']= doIFollowThisCompany($my_session_id,$companyid);
+	}
+	
+	$qry="SELECT  CP.*,LI.location_desc AS city 
+			FROM company_profiles AS CP
+			LEFT JOIN location_info as LI ON LI.id=CP.client_location
+			WHERE CP.id=".$companyid." 
+		  ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+   	{
+   		$data['id']					=	$row['id'];
+   		$data['name']				=	$row['company_name'];
+   		$data['companyUserName']=	$row['company_username'];
+   		$data['location']			=	$row['located_at'];
+   		
+   		if($row['cover_photo']!='')
+   		{
+   			$data['coverPhoto']		=	$row['cover_photo'];
+   		}
+   		else
+   		{
+   			$data['coverPhoto']		=	$company_default_cover;
+   		}
+   		
+   		if($row['avatar']!='')
+   		{
+   			$data['profilePhoto']	=	$row['avatar'];
+   		}
+   		else
+   		{
+   			$data['profilePhoto']	=	$company_default_avatar;
+   		}     				
+   		$data['website']			=	$row['website'];
+   		$data['email']				=	$row['email'];
+   		$data['mobile']			=	$row['mobile'];
+   		$data['tel']				=	$row['telephone'];
+   		$data['fax']				=	$row['fax'];
+   		$data['desc']				=	$row['description'];
+   		
+   		$data['followers']		=	entrp_company_follows($companyid);
+   		$data['categories']		=  fetch_company_categories($companyid);
+   		$data['companyEvents']	=  fetchCompanyEvents($companyid);
+
+   	}
+   	
+	}
+	else
+	{
+		$data['id']				=	'';
+		$data['name']			=	'';
+		$data['companyUserName']='';
+		$data['location']		=	'';
+		$data['coverPhoto']		=	'';
+		$data['profilePhoto']		=	'';
+		$data['website']			=	'';
+		$data['mobile']	=	'';
+		$data['tel']		=	'';
+		$data['fax']	=	'';
+		$data['desc']		=	'';
+	}
+	return $data;
+
+}
 
 /* My Company Profile Services Ends */
 

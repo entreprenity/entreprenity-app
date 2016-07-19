@@ -16,8 +16,181 @@ function unlikeThisComment()
 }
 
 
+//Function to get image path of a timeline post
+//July 19,2016
+function getImagePathofaTimelinePost($post_id)
+{
+	$timeLineImage='';
+	
+	//I am the logged in user.
+	$session_values=get_user_session();
+	$my_session_id	= (int)$session_values['id'];
+	
+	//Let me see to whom this post belongs
+	$posted_by= whoIsTheAuthorOfThisPost($post_id);
+	
+	if($posted_by==$my_session_id)
+	{
+		//This post is mine. I'm the author
+		$qry="SELECT EUT.post_img
+				FROM entrp_user_timeline AS EUT
+				WHERE EUT.post_id=".$post_id."";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {     	
+				$timeLineImage			=	$row['post_img'];
+	      }	
+	   }			
+	}
+	return $timeLineImage;
+}
+
+//Function to delete timeline post likes
+//July 19,2016
+function deleteTimelinePostLikes($postID)
+{
+	$qry="DELETE FROM entrp_user_timeline_post_likes WHERE post_id =".$postID."";
+	setData($qry);
+}
+
+//Function to delete timeline post comments
+//July 19,2016
+function deleteTimelinePostComments($postID)
+{
+	$qry="DELETE FROM entrp_user_timeline_post_comments WHERE post_id =".$postID."";
+	setData($qry);
+}
+
+//Function to delete timeline post tags 
+//July 19,2016
+function deleteTimelinePostTags($postID)
+{
+	$qry="DELETE FROM entrp_user_timeline_businessopp_tags WHERE postid =".$postID."";
+	setData($qry);
+}
+
+//Function to delete timeline post notifications
+//July 19,2016
+function deleteTimelinePostNotification($postID)
+{
+	$qry="DELETE FROM entrp_user_notifications WHERE post_id =".$postID."";
+	setData($qry);
+}
+
+
+//Function to unlink a timeline post image from server
+//July 19,2016
+function deleteTimelinePostImageFromServer($timeLineImage)
+{
+	//assets/img/timeline/timelineimgjordan20160716185651.jpeg
+	$timeLineImagePath='../'.$timeLineImage;
+	if (file_exists($timeLineImagePath)) 
+	{
+	   unlink($timeLineImagePath);
+	} 
+}
+
+//Function to delete a timeline post
+//July 19,2016
+function deleteTimlinePost()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$timelinePostID = $requestData->postID;
+		$postID=validate_input($timelinePostID);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
+		
+		$timeLineImage=getImagePathofaTimelinePost($postID);
+		
+		$qry="DELETE FROM entrp_user_timeline WHERE post_id =".$postID."";
+		if(setData($qry))
+		{
+			deleteTimelinePostLikes($postID);
+			deleteTimelinePostComments($postID);
+			deleteTimelinePostTags($postID);
+			deleteTimelinePostNotification($postID);
+			
+			if($timeLineImage!='')
+			{
+				deleteTimelinePostImageFromServer($timeLineImage);
+			}
+			
+			
+			$data['response']='success';
+		}
+		else
+		{
+			$data['response']='failed';
+		}
+		
+		if($timeLine==1)
+		{
+			//home page all posts
+			$data=getAllPosts();
+		}
+		else if($timeLine==2)
+		{
+			//member profile timeline posts
+			$memberUsername = $requestData->username;
+			$username		 = validate_input($memberUsername);
+			$data		       = refetchMemberNewsFeed($username);
+		}
+		else if($timeLine==3)
+		{
+			//home page followed posts
+			$data=getFollowedMembersPosts();
+		
+		}
+		else if($timeLine==4)
+		{
+			//company profile timeline posts
+			$companyUsername = $requestData->username;
+			$username		  = validate_input($companyUsername);
+			$data				  = refetchCompanyPosts($username);
+		}
+		else if($timeLine==5)
+		{
+			//business opportunities page
+			$data=getAllBusinessOpportunities();
+		}
+		else if($timeLine==6)
+		{
+			//my company profile timeline posts
+			$data=getmyCompanyPosts();
+		}
+		else if($timeLine==7)
+		{
+			//home page my posts/myprofile timeline
+			$data=getMyOwnNewsFeed();
+		}
+      else if($timeLine==8)
+		{
+			//home page my posts/myprofile timeline
+			$data=getBusinessOpportunitiesForMe();
+		}
+		else
+		{
+		
+		}
+	}
+	return $data;
+}
+
+
 //Function to fetch matching business opportunities
 //July 16,2016
+//July 19, 2016: fetch buss opp flag
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -74,7 +247,7 @@ function getBusinessOpportunitiesForMe()
 		    if (!empty($postIdArrayStringUF)) 
             {
                  $postIdArrayString = implode(",", $postIdArrayStringUF);
-                $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+                $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 					FROM entrp_user_timeline AS EUT
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -95,7 +268,7 @@ function getBusinessOpportunitiesForMe()
 					$data[$i]['content']										=	$row['content'];
 					$data[$i]['image']										=	$row['post_img'];
 					$data[$i]['created_at']									=	$row['created_at'];
-					
+					$data[$i]['bussOpp']										=	$row['business_opp'];
 					$data[$i]['post_author']['id']						=	$row['clientid'];
 					$data[$i]['post_author']['firstName']				=	$row['firstname'];
 					$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -129,6 +302,7 @@ function getBusinessOpportunitiesForMe()
 
 //Function to refetch a single timeline post
 //July 14,2016
+//July 19, 2016: fetch buss opp flag
 function refetchThisPost($post_id)
 {
 	//the defaults starts
@@ -155,7 +329,7 @@ function refetchThisPost($post_id)
 	if($posted_by==$my_session_id)
 	{
 		//This post is mine. I'm the author
-		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -172,7 +346,7 @@ function refetchThisPost($post_id)
 				$data['content']									=	$row['content'];
 				$data['image']										=	$row['post_img'];
 				$data['created_at']								=	$row['created_at'];
-				
+				$data['bussOpp']									=	$row['business_opp'];
 				$data['post_author']['id']						=	$row['clientid'];
 				$data['post_author']['firstName']			=	$row['firstname'];
 				$data['post_author']['lastName']				=	$row['lastname'];
@@ -208,6 +382,7 @@ function refetchThisPost($post_id)
 
 //Function to refetch a company timeline post based on company username
 //July 14,2016
+//July 19, 2016: fetch buss opp flag
 function refetchCompanyPosts($companyUserName)
 {
 	//the defaults starts
@@ -234,12 +409,12 @@ function refetchCompanyPosts($companyUserName)
 	//$companyMembersString = implode(",", $companyMembers);
 	$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -254,7 +429,7 @@ function refetchCompanyPosts($companyUserName)
 			$data[$i]['content']										=	$row['content'];
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -288,6 +463,7 @@ function refetchCompanyPosts($companyUserName)
 
 //Function to refetch timeline posts of a member's profile
 //July 14,2016
+//July 19, 2016: fetch buss opp flag
 function refetchMemberNewsFeed($username)
 {
 	//the defaults starts
@@ -306,12 +482,12 @@ function refetchMemberNewsFeed($username)
    
 	$my_id	= getUserIdfromUserName($username);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 AND EUT.business_opp!=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -326,7 +502,7 @@ function refetchMemberNewsFeed($username)
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -361,6 +537,7 @@ function refetchMemberNewsFeed($username)
 
 //Function to fetch all business opportunities
 //June 15,2016
+//July 19, 2016: fetch buss opp flag
 function getAllBusinessOpportunities()
 {
 	//the defaults starts
@@ -377,7 +554,7 @@ function getAllBusinessOpportunities()
 	
 	$data= array();
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -397,7 +574,7 @@ function getAllBusinessOpportunities()
 			$data[$i]['content']										=	$row['content'];
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -593,6 +770,9 @@ function postABusinessOpportunity()
 
 }
 
+//Function to fetch my company timeline post based on company username
+//June 13,2016
+//July 19, 2016: fetch buss opp flag
 function getmyCompanyPosts()
 {
 	//the defaults starts
@@ -622,12 +802,12 @@ function getmyCompanyPosts()
 	//$companyMembersString = implode(",", $companyMembers);
 	$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -642,7 +822,7 @@ function getmyCompanyPosts()
 			$data[$i]['content']										=	$row['content'];
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -677,6 +857,7 @@ function getmyCompanyPosts()
 
 //Function to fetch a company timeline post based on company username
 //June 13,2016
+//July 19, 2016: fetch buss opp flag
 function getCompanyPosts()
 {
 	//the defaults starts
@@ -706,12 +887,12 @@ function getCompanyPosts()
 	//$companyMembersString = implode(",", $companyMembers);
 	$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -726,7 +907,7 @@ function getCompanyPosts()
 			$data[$i]['content']										=	$row['content'];
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -760,6 +941,7 @@ function getCompanyPosts()
 
 //Function to fetch a single timeline post
 //June 08,2016
+//July 19, 2016: fetch buss opp flag
 function getThisPost()
 {
 	//the defaults starts
@@ -789,7 +971,7 @@ function getThisPost()
 	if($posted_by==$my_session_id)
 	{
 		//This post is mine. I'm the author
-		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -806,7 +988,7 @@ function getThisPost()
 				$data['content']									=	$row['content'];
 				$data['image']										=	$row['post_img'];
 				$data['created_at']								=	$row['created_at'];
-				
+				$data['bussOpp']									=	$row['business_opp'];
 				$data['post_author']['id']						=	$row['clientid'];
 				$data['post_author']['firstName']			=	$row['firstname'];
 				$data['post_author']['lastName']				=	$row['lastname'];
@@ -844,6 +1026,7 @@ function getThisPost()
 //May 30,2016
 //June 06, 2016: Added location (client centre location)
 //July 10,2016: temp fix- user id equal session id.
+//July 19, 2016: fetch buss opp flag
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -870,12 +1053,12 @@ function getFollowedMembersPosts()
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
 	$usersIFollowString = implode(",", $usersIFollow);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 
+			WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -890,7 +1073,7 @@ function getFollowedMembersPosts()
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -992,6 +1175,7 @@ function getFollowedMembersPosts()
 //Route to get timeline feeds of all users
 //May 30,2016
 //June 06,2016: Added user location (centre location)
+//July 19, 2016: fetch buss opp flag
 function getAllPosts()
 {
 	//the defaults starts
@@ -1008,12 +1192,12 @@ function getAllPosts()
 	
 	$data= array();
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.status=1 
+			WHERE EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -1028,7 +1212,7 @@ function getAllPosts()
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -2188,6 +2372,7 @@ function howManyLikesThisPostReceived($post_id)
 
 //Function to fetch myprofile/my timeline posts to show in home and my profile
 //July 09,2016
+//July 19, 2016: fetch buss opp flag
 function getMyOwnNewsFeed()
 {
 	//the defaults starts
@@ -2210,12 +2395,12 @@ function getMyOwnNewsFeed()
 	//$my_id	= getUserIdfromUserName($username);
 	$my_id	=$my_session_id;
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 AND EUT.business_opp!=1
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -2231,7 +2416,7 @@ function getMyOwnNewsFeed()
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
-			
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['post_author']['id']						=	$row['clientid'];
 			$data[$i]['post_author']['firstName']				=	$row['firstname'];
 			$data[$i]['post_author']['lastName']				=	$row['lastname'];
@@ -2269,6 +2454,7 @@ function getMyOwnNewsFeed()
 //Function to get member news feed to timeline
 //May 18,2016
 //June 06, 2016: Added location (client centre location)
+//July 19, 2016: fetch buss opp flag
 function getMyNewsFeed()
 {
 	//the defaults starts
@@ -2288,12 +2474,12 @@ function getMyNewsFeed()
    $username=validate_input($_GET['user']);
 	$my_id	= getUserIdfromUserName($username);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 
+			WHERE EUT.posted_by=".$my_id." AND EUT.status=1 AND EUT.business_opp!=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -2307,6 +2493,7 @@ function getMyNewsFeed()
       	$data[$i]['post_id']										=	$row['post_id']; 
 			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
 			$data[$i]['image']										=	$row['post_img'];
+			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			
 			$data[$i]['post_author']['id']						=	$row['clientid'];

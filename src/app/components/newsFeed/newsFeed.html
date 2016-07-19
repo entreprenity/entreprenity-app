@@ -26,14 +26,15 @@
 			<ul class="media-list">
 				<li class="media post animate-repeat" ng-repeat="post in vm.posts">
 					<div class="post-main">
-						<div class="pull-right">
+						<div class="pull-right"  ng-if="vm.currentPost.post_author.id == post.post_author.id">
 							<span uib-dropdown on-toggle="toggled(open)">
 								<a href id="simple-dropdown" uib-dropdown-toggle>
 									<i class="fa fa-caret-down"></i>
 								</a>
+								
 								<ul class="dropdown-menu" uib-dropdown-menu>
-									<li><a ng-click="vm.editState = true">Edit</a></li>
-									<li><a ng-click="vm.deletePost(vm.posts, $index)">Delete</a></li>
+									<li><a ng-click="vm.editPost(post.post_id)">Edit</a></li>
+									<li><a ng-click="vm.deletePost(post.post_id)">Delete</a></li>
 								</ul>
 							</span>
 						</div>
@@ -57,7 +58,7 @@
 							<auto-complete source="loadTags($query)"></auto-complete>
 						</tags-input>
 						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
-						<div class="post-content category-tags">
+						<div class="post-content category-tags" ng-if="post.bussOpp == 1">
 							<ul ng-show="vm.busoppPost && !vm.editState">
 								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category.text}}</a></li>
 							</ul>

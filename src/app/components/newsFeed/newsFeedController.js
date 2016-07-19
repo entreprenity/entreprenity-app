@@ -56,7 +56,7 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
 				},
-                postBusoppPost: function(content,imgString,timelineId,ucUsername) 
+            postBusoppPost: function(content,imgString,timelineId,ucUsername) 
 				{
 					var dataPost = {postContent: content,imgString: imgString,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
@@ -88,6 +88,15 @@
 					var dataPost = {unlikedPostId: unLikedPost.post_id,timeLine: timelineId,username: ucUsername};														
 					return $http({ method: 'post',
 										url: baseUrl+'unlikeThisPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},
+				deleteTimlinePost: function(postID,timelineId,ucUsername) 
+				{
+					var dataPost = {postID: postID,timeLine: timelineId,username: ucUsername};														
+					return $http({ method: 'post',
+										url: baseUrl+'deleteTimlinePost',
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
@@ -191,8 +200,6 @@
 							newsFeedService.getAllBusinessOpportunities().success(function(data) {
 								vm.posts = data;
 								vm.busoppPost = true;
-								//console.log(vm.busoppPost);
-								//console.log('busopp', vm.posts);
 							});
 						break;
 						
@@ -215,8 +222,6 @@
 							newsFeedService.getBusinessOpportunitiesForMe().success(function(data) {
 								vm.posts = data;
 								vm.busoppPost = true;
-								//console.log(vm.busoppPost);
-								//console.log('busopp', vm.posts);
 							});
 						break;
 					}
@@ -268,7 +273,8 @@
 
 
 				// Add a time-line post
-				vm.addPost = function (newPost,newImg) {
+				vm.addPost = function (newPost,newImg) 
+				{
 					var currentPost = vm.currentPost;
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
@@ -293,30 +299,33 @@
 				};
 
 				// Add a time-line Business Opportunity post
-				vm.addBusoppPost = function (content,newImg) {
-                    var currentPost = vm.currentPost;
+				vm.addBusoppPost = function (content,newImg) 
+				{
+               var currentPost = vm.currentPost;
 					if(content.content && content.categories)
 					{
-                        if(newImg)
-                        {
-                            var base64ImgString= newImg;
-                        }
-                        else
-                        {
-                            var base64ImgString= '';
-                        }
-						newsFeedService.postBusoppPost(content,base64ImgString,vm.poststype,vm.username).success(function(data) {
+                  if(newImg)
+                  {
+                      var base64ImgString= newImg;
+                  }
+                  else
+                  {
+                      var base64ImgString= '';
+                  }
+						newsFeedService.postBusoppPost(content,base64ImgString,vm.poststype,vm.username).success(function(data) 
+						{
 							vm.posts = data;
-                            currentPost.image = ""; //clear post image
-                            currentPost.content = ""; //clear post textarea
-                            currentPost.categories = ""; //clear tags
-                            vm.isAnImagePost = false; //hide image div
+                     currentPost.image = ""; //clear post image
+                     currentPost.content = ""; //clear post textarea
+                     currentPost.categories = ""; //clear tags
+                     vm.isAnImagePost = false; //hide image div
 						});
 					}								
 				};
 
 				//Like a time-line post
-				vm.likePost = function(post) {
+				vm.likePost = function(post) 
+				{
 					var likedPost = post;
 					//this will come from the session userobject
 					vm.basicInfo();
@@ -329,7 +338,8 @@
 				};
 
 				//unlike a time-line post
-				vm.unLikePost = function(post) {
+				vm.unLikePost = function(post) 
+				{
 					var unLikedPost = post;
 					//this will come from the session userobject
 					vm.basicInfo();
@@ -370,7 +380,8 @@
 				 };
 
 				//Image upload function
-				vm.addImageToPost = function () {
+				vm.addImageToPost = function () 
+				{
 					//alert('addImageToPost');
 					vm.isAnImagePost = true;
 					var modalInstance = $uibModal.open({
@@ -393,14 +404,29 @@
 					});
 
 				}
-
-				//delete Post
+				
+				// Delete a time-line post
+				vm.deletePost = function (postID) 
+				{					
+					if(postID)
+					{
+						newsFeedService.deleteTimlinePost(postID,vm.poststype,vm.username).success(function(data) 
+						{
+							vm.posts = data;
+						});
+					}	
+				};
+				
+				/*				
+				//Ken's delete Post
 				vm.deletePost = function(postsArray, postIndex) {
 					var deletedPost = postsArray[postIndex];
 					console.log(deletedPost);
 					postsArray.splice(postIndex, 1);
 					//service to send deleted post to backend
 				};
+				*/
+
 
 				//edit Post
 				vm.editPost = function(post) {
