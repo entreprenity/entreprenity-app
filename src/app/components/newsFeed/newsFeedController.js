@@ -129,6 +129,7 @@
 
 				vm.busoppPost = false; // initial state is false, set to true if a business opportunity post
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
+				vm.editState = false; // initial state is false, set to true if edit post is clicked
 
 				$scope.loadTags = function(query) { //load tag Categories
 					 var categories = [];
@@ -137,6 +138,17 @@
 											 	
 					 });
 					 return vm.categories;
+
+				};
+
+				vm.keypressEventListener = function($event, post){
+					var keyCode = $event.which || $event.keyCode;
+					if (keyCode === 13) {
+						alert('Enter pressed');
+						console.log(post);
+						vm.editPost(post);
+
+					}
 
 				};
 				
@@ -393,8 +405,9 @@
 				//edit Post
 				vm.editPost = function(post) {
 					var editedPost = post;
-					vm.editState = true;
 					//service to send edited post, still work in progress
+					alert('service to send edited post');
+					vm.editState = false;
 				};
 			};
 		
