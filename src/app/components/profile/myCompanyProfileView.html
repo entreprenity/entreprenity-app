@@ -89,6 +89,18 @@
 								</ul>
 							</div>
 						</div>
+						<div class="team">
+							<h4>Events</h4>
+							<div class="content">
+								<ul>
+									<li ng-repeat="event in vm.company.companyEvents">
+										<a ng-href="#/events/{{event.eventTagId}}">
+											{{event.eventName}}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="col-md-8">
