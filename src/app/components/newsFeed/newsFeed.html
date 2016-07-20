@@ -31,9 +31,8 @@
 								<a href id="simple-dropdown" uib-dropdown-toggle>
 									<i class="fa fa-caret-down"></i>
 								</a>
-								
 								<ul class="dropdown-menu" uib-dropdown-menu>
-									<li><a ng-click="vm.editState = true">Edit</a></li>
+									<li><a ng-click="vm.openPostToEdit($index)">Edit</a></li>
 									<li><a ng-click="vm.deletePost(post.post_id)">Delete</a></li>
 								</ul>
 							</span>
@@ -48,18 +47,18 @@
 							<small class="text-muted">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>
-						<div ng-hide="vm.editState" class="post-content">{{post.content}}</div>
-						<textarea ng-show="vm.editState" class="form-control textarea-edit" rows="3" ng-model="post.content" ng-keypress="vm.keypressEventListener($event, post)" style="margin-bottom: 5px;"></textarea>
+						<div ng-hide="$index == vm.indexOfEditedPost" class="post-content">{{post.content}}</div>
+						<textarea ng-show="$index == vm.indexOfEditedPost" class="form-control textarea-edit" rows="3" ng-model="post.content" ng-keypress="vm.keypressEventListener($event, post)" style="margin-bottom: 5px;"></textarea>
 						<tags-input class="bootstrap"
 									ng-model="post.postTags"
 									placeholder="Add key words for service matching with other members e.g. marketing, SEO, legal service, etc."
 									replace-spaces-with-dashes="false"
-									ng-show="vm.editState && vm.busoppPost">
+									ng-show="$index == vm.indexOfEditedPost && vm.busoppPost">
 							<auto-complete source="loadTags($query)"></auto-complete>
 						</tags-input>
 						<div ng-show="vm.isAnImagePost" class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags" ng-if="post.bussOpp == 1">
-							<ul ng-show="vm.busoppPost && !vm.editState">
+							<ul ng-show="vm.busoppPost && !$index == vm.indexOfEditedPost">
 								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category.text}}</a></li>
 							</ul>
 						</div>

@@ -438,6 +438,10 @@
 					alert('service to send edited post');
 					vm.editState = false;
 				};
+
+				vm.openPostToEdit = function(index) {
+					vm.indexOfEditedPost = index;
+				}
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';
