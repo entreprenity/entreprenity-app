@@ -156,9 +156,7 @@
 						alert('Enter pressed');
 						console.log(post);
 						vm.editPost(post);
-
 					}
-
 				};
 				
 				vm.getPosts = function () {
@@ -421,9 +419,14 @@
 				//Ken's delete Post
 				vm.deletePost = function(postsArray, postIndex) {
 					var deletedPost = postsArray[postIndex];
-					console.log(deletedPost);
-					postsArray.splice(postIndex, 1);
+
 					//service to send deleted post to backend
+					 newsFeedService.deleteTimlinePost(postID,vm.poststype,vm.username).success(function(data)
+					 {
+						//vm.posts = data;
+						 console.log(deletedPost);
+						 postsArray.splice(postIndex, 1);
+					 });
 				};
 				*/
 
