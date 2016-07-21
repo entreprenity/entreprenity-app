@@ -810,6 +810,19 @@ Flight::route('/deleteTimlinePost', function()
 	echo json_encode($returnarray);
 });
 
+
+//63 Route to edit a timeline post (timelineServices.php)
+//July 19,2016
+Flight::route('/editTimelinePost', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=editTimelinePost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
 //Route to test timeline posts
 //November 31,2016
 /*

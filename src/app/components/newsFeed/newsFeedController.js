@@ -100,6 +100,15 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				editTimelinePost: function(content,timelineId,ucUsername) 
+				{
+					var dataPost = {postContent: content,timeLine: timelineId,username: ucUsername};														
+					return $http({ method: 'post',
+										url: baseUrl+'editTimelinePost',
+										data: $.param(dataPost),
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 				
 			};
@@ -153,8 +162,8 @@
 				vm.keypressEventListener = function($event, post){
 					var keyCode = $event.which || $event.keyCode;
 					if (keyCode === 13) {
-						alert('Enter pressed');
-						console.log(post);
+						//alert('Enter pressed');
+						//console.log(post);
 						vm.editPost(post);
 					}
 				};
@@ -431,12 +440,20 @@
 				*/
 
 
-				//edit Post
-				vm.editPost = function(post) {
+				//Edit a time-line Post content
+				vm.editPost = function(post) 
+				{
 					var editedPost = post;
-					//service to send edited post, still work in progress
-					alert('service to send edited post');
-					vm.editState = false;
+					var postContent 	= editedPost.content;
+					
+					if(postContent)
+					{
+						//service to send edited post
+						newsFeedService.editTimelinePost(editedPost,vm.poststype,vm.username).success(function(data) {
+							vm.posts = data;
+						});
+						vm.editState = false;
+					}
 				};
 
 				vm.openPostToEdit = function(index) {

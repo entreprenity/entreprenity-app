@@ -16,6 +16,103 @@ function unlikeThisComment()
 }
 
 
+//Function to edit a timeline post
+//June 20,2016
+function editTimelinePost()
+{
+   $data= array();
+   $categories= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		//postID: postId, postContent:postContent, bussOpp:bussOpp, postTags:postTags, timeLine: timelineId, username: ucUsername
+
+		$content	= validate_input($_POST['postContent']['content']);
+		$timeLine=validate_input($_POST['timeLine']);
+		$postID=validate_input($_POST['postContent']['post_id']);
+     
+		if(!empty($_POST['postContent']['postTags']))
+		{
+			$business_op=1;
+			$count_category=count($_POST['postContent']['postTags']);
+			for($i=0;$i<$count_category;$i++)	
+			{
+				$categories[$i]	=	$_POST['postContent']['postTags'][$i]['text'];
+				$category_json		=  json_encode($categories);
+			}
+		}
+		else
+		{     
+			$business_op=0;
+		}
+
+		$qry="UPDATE entrp_user_timeline SET content='".$content."' WHERE post_id=".$postID."";
+		if(setData($qry))
+		{
+			if($business_op==1)
+			{
+				$qry2="UPDATE entrp_user_timeline_businessopp_tags SET business_tags='".$category_json."' WHERE postid=".$postID."";
+				setData($qry2);  
+			}
+			
+			$data['response']='success';
+		}
+		else
+		{
+			$data['response']='failed';
+		}
+
+
+		if($timeLine==1)
+		{
+			//home page all posts
+			$data=getAllPosts();
+		}
+		else if($timeLine==2)
+		{
+			//member profile timeline posts
+			$username=validate_input($_POST['username']);
+			$data		       = refetchMemberNewsFeed($username);
+		}
+		else if($timeLine==3)
+		{
+			//home page followed posts
+			$data=getFollowedMembersPosts();
+		
+		}
+		else if($timeLine==4)
+		{
+			//company profile timeline posts
+			$username=validate_input($_POST['username']);
+			$data				  = refetchCompanyPosts($username);
+		}
+		else if($timeLine==5)
+		{
+			//business opportunities page
+			$data=getAllBusinessOpportunities();
+		}
+		else if($timeLine==6)
+		{
+			//my company profile timeline posts
+			$data=getmyCompanyPosts();
+		}
+		else if($timeLine==7)
+		{
+			//home page my posts/myprofile timeline
+			$data=getMyOwnNewsFeed();
+		}
+	   else if($timeLine==8)
+	   {
+	       //home page my posts/myprofile timeline
+	       $data=getBusinessOpportunitiesForMe();
+	   }
+	}
+	return $data;
+}
+
+
 //Function to get image path of a timeline post
 //July 19,2016
 function getImagePathofaTimelinePost($post_id)
@@ -669,14 +766,14 @@ function postABusinessOpportunity()
 				$category_json		=  json_encode($categories);
 			}
             
-            if($imgString!='')
-            {
-                $post_img=uploadTimelineImage($imgString,7);
-            }
-            else
-            {
-                $post_img='';
-            }
+         if($imgString!='')
+         {
+             $post_img=uploadTimelineImage($imgString,7);
+         }
+         else
+         {
+             $post_img='';
+         }
 		}
 		else
 		{
