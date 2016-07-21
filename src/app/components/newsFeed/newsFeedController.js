@@ -452,12 +452,14 @@
 						newsFeedService.editTimelinePost(editedPost,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;
 						});
+						vm.indexOfEditedPost = null;
 						vm.editState = false;
 					}
 				};
 
 				vm.openPostToEdit = function(index) {
 					vm.indexOfEditedPost = index;
+					vm.editState = true;
 				}
 			};
 		

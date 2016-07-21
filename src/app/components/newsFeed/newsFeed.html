@@ -3,7 +3,7 @@
 		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
 			<textarea ng-hide="vm.busoppPost" class="form-control" placeholder="What do you need right now? Start a conversation..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
 			<textarea ng-show="vm.busoppPost" class="form-control" placeholder="Describe the Service you Seek here..." rows="3" ng-model="vm.currentPost.content" required ></textarea>
-			<div ng-show="vm.isAnImagePost" style="margin: 0 auto; text-align: center; padding: 10px; background: #fff;">
+			<div style="margin: 0 auto; text-align: center; padding: 10px; background: #fff;">
 				<img class="" ng-src="{{vm.currentPost.image}}" style="max-width: 300px; width: 100%; height: auto;">
 			</div>
 			<tags-input class="bootstrap"
@@ -33,7 +33,8 @@
 								</a>
 								
 								<ul class="dropdown-menu" uib-dropdown-menu>
-									<li><a ng-click="vm.editState = true">Edit</a></li>
+									<li><a ng-click="vm.openPostToEdit($index)">Edit</a></li>
+									<li><a ng-click="vm.editPostImage(post.post_id, post.image)">Edit Post Image</a></li>
 									<li><a ng-click="vm.deletePost(post.post_id)">Delete</a></li>
 								</ul>
 							</span>
@@ -59,7 +60,7 @@
 						</tags-input>
 						<div  class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags" ng-if="post.bussOpp == 1">
-							<ul ng-show="vm.busoppPost && !$index == vm.indexOfEditedPost">
+							<ul ng-show="vm.busoppPost && !vm.editState">
 								<li ng-repeat="category in post.postTags"><a href="" class="tags-item">{{category.text}}</a></li>
 							</ul>
 						</div>
