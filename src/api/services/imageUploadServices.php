@@ -7,16 +7,6 @@ function uploadTimelineImage($uploadImg,$uploadType)
 	$data= array();
 	$data='not uploaded';
     
-    if (!defined('TIMELINE_POST_PIC')) define('TIMELINE_POST_PIC', 'assets/img/timeline/');
-    if (!defined('TIMELINE_POST_PIC_UPL')) define('TIMELINE_POST_PIC_UPL', '../assets/img/timeline/');
-    
-    if (!defined('BUSSOPP_POST_PIC')) define('BUSSOPP_POST_PIC', 'assets/img/businessopp/');
-    if (!defined('BUSSOPP_POST_PIC_UPL')) define('BUSSOPP_POST_PIC_UPL', '../assets/img/businessopp/');
-    
-    if (!defined('JPEG')) define('JPEG', '.jpeg');
-    if (!defined('GIF')) define('GIF', '.gif');
-    if (!defined('PNG')) define('PNG','.png');
-
 	$session_values=get_user_session();
 	$my_session_id				= $session_values['id'];
 	$my_session_firstname 	= $session_values['firstname'];
@@ -95,14 +85,6 @@ function uploadTheImage()
 {
 	$data= array();
 	$data='not uploaded';
-    
-    if (!defined('PROFILE_PIC')) define('PROFILE_PIC', 'assets/img/members/');
-    if (!defined('COMPANY_PIC')) define('COMPANY_PIC', 'assets/img/companies/');
-    if (!defined('EVENT_POSTER')) define('EVENT_POSTER', 'assets/img/events/');
-
-    if (!defined('PROFILE_PIC_UPL')) define('PROFILE_PIC_UPL', '../assets/img/members/');
-    if (!defined('COMPANY_PIC_UPL')) define('COMPANY_PIC_UPL', '../assets/img/companies/');
-    if (!defined('EVENT_POSTER_UPL')) define('EVENT_POSTER_UPL', '../assets/img/events/');
 	
 	$session_values=get_user_session();
 	$my_session_id				= $session_values['id'];
@@ -124,29 +106,66 @@ function uploadTheImage()
 	// 3- events poster
 	// 4- client profile cover photo
 	// 5- client company profile photo
-
-	$img = str_replace('data:image/png;base64,', '', $uploadImg);
-	$img = str_replace(' ', '+', $img);
-	$data = base64_decode($img);
 	
+	if (strpos($uploadImg, 'data:image/png;base64') !== false) 
+	{
+   	$img = str_replace('data:image/png;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		//$extension= PNG;
+	}
+	
+	if (strpos($uploadImg, 'data:image/gif;base64') !== false) 
+	{
+   	$img = str_replace('data:image/gif;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		$extension= GIF; 
+	}
+	
+	if (strpos($uploadImg, 'data:image/jpeg;base64') !== false) 
+	{
+   	$img = str_replace('data:image/jpeg;base64,', '', $uploadImg);
+		$img = str_replace(' ', '+', $img);
+		$data = base64_decode($img);	
+		$extension= JPEG; 
+	}	
+		
+	$extension= PNG;
+	
+   // 1- member profile pic
 	if($uploadType==1)
 	{
-		$fileName 	 = PROFILE_PIC.$my_session_username.$upAt.'.png';
-		$filePath 	 = PROFILE_PIC_UPL.$my_session_username.$upAt.'.png';
+		$userImg=getUserProfilePicFromUserID($my_session_id);
+		if($userImg!='')
+		{
+			deleteTimelinePostImageFromServer($userImg);
+		}
+		
+		$fileName 	 = PROFILE_PIC.$my_session_username.$upAt.$extension;
+		$filePath 	 = PROFILE_PIC_UPL.$my_session_username.$upAt.$extension;		
 	}
 	
+   // 2- company profile pic
 	if($uploadType==2)
 	{
-		$fileName     = COMPANY_PIC.$my_session_username.$upAt.'.png';
-		$filePath 	  = COMPANY_PIC_UPL.$my_session_username.$upAt.'.png';
+		$userImg=getCompanyProfilePicFromUserID($my_session_id);
+		if($userImg!='')
+		{
+			deleteTimelinePostImageFromServer($userImg);
+		}
+		$fileName     = COMPANY_PIC.$my_session_username.$upAt.$extension;
+		$filePath 	  = COMPANY_PIC_UPL.$my_session_username.$upAt.$extension;
 	}
 	
+   // 3- events poster
 	if($uploadType==3)
 	{
-		$fileName 	 = EVENT_POSTER.$my_session_username.$upAt.'.png';
-		$filePath 	 = EVENT_POSTER_UPL. $my_session_username.$upAt.'.png';
+		$fileName 	 = EVENT_POSTER.$my_session_username.$upAt.$extension;
+		$filePath 	 = EVENT_POSTER_UPL.$my_session_username.$upAt.$extension;
 	}
 	
+		
 	$success = file_put_contents($filePath, $data);
 	$result  = $success ? 1 : 0;	
 	

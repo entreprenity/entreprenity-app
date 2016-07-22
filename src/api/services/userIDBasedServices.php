@@ -2,6 +2,56 @@
 
 /* Functions and services based on userid begins */
 
+//Function to fetch user image path based on user id
+//July 22,2016
+function getCompanyProfilePicFromUserID($clientid)
+{
+
+	$avatar= '';
+ 	$qry="SELECT avatar
+			FROM company_profiles
+			WHERE clientid=".$clientid."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$avatar			=	$row['avatar'];
+		}
+   	   	
+   }
+   return $avatar;
+
+}
+
+
+//Function to fetch user image path based on user id
+//July 21,2016
+function getUserProfilePicFromUserID($clientid)
+{
+
+	$avatar= '';
+ 	$qry="SELECT client_profile.avatar
+			FROM entrp_login
+			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+			WHERE entrp_login.clientid=".$clientid."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$avatar			=	$row['avatar'];
+		}
+   	   	
+   }
+   return $avatar;
+
+}
+
 //Function entreprenity login password using email id
 //June 30,2016
 function fetchUserLoginPassword($loginEmail,$userId)
@@ -1048,6 +1098,7 @@ function user_followers($clientid)
 	}
 	return $count_followers;
 }
+
 
 
 //Function to get user information based on id

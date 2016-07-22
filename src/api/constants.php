@@ -29,6 +29,25 @@ $myStaticVars = [
 
 
 
+if (!defined('TIMELINE_POST_PIC')) define('TIMELINE_POST_PIC', 'assets/img/timeline/');
+if (!defined('TIMELINE_POST_PIC_UPL')) define('TIMELINE_POST_PIC_UPL', '../assets/img/timeline/');
+ 
+if (!defined('BUSSOPP_POST_PIC')) define('BUSSOPP_POST_PIC', 'assets/img/businessopp/');
+if (!defined('BUSSOPP_POST_PIC_UPL')) define('BUSSOPP_POST_PIC_UPL', '../assets/img/businessopp/');
+ 
+if (!defined('JPEG')) define('JPEG', '.jpeg');
+if (!defined('GIF')) define('GIF', '.gif');
+if (!defined('PNG')) define('PNG','.png');
+
+if (!defined('PROFILE_PIC')) define('PROFILE_PIC', 'assets/img/members/');
+if (!defined('COMPANY_PIC')) define('COMPANY_PIC', 'assets/img/companies/');
+if (!defined('EVENT_POSTER')) define('EVENT_POSTER', 'assets/img/events/');
+
+if (!defined('PROFILE_PIC_UPL')) define('PROFILE_PIC_UPL', '../assets/img/members/');
+if (!defined('COMPANY_PIC_UPL')) define('COMPANY_PIC_UPL', '../assets/img/companies/');
+if (!defined('EVENT_POSTER_UPL')) define('EVENT_POSTER_UPL', '../assets/img/events/');
+
+
 
 
 /*

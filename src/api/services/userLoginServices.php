@@ -1,6 +1,24 @@
 <?php
 
 
+//Function to generate unique password token
+//July 22,2016
+function generateUniquePasswordToken()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,10);  // creates a 10 digit token
+   $qry = "SELECT id FROM entrp_forgot_password_tokens WHERE forgotToken = '".$token."'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      generateUniquePasswordToken();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
 //Function to destroy a user login token
 //May 17,2016
 function destroyUserToken()
@@ -62,40 +80,51 @@ function forgot_password()
 	$data= array();
 	$username=validate_input($_POST['username']);
 	//check whether this email id exist on database
-	$qry="SELECT clientid,firstname,lastname FROM entrp_login AS CI where CI.email='".$username."'";
+	$qry="SELECT clientid,firstname,lastname,email FROM entrp_login where email='".$username."' AND status=1 ";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);   
 	if($count_res>0)
 	{
 		while($row=mysqli_fetch_array($res))
 		{
-			$data['firstname']	=	$row['firstname'];
-			$data['lastname']		=	$row['lastname'];
-			$data['id']				=	$row['clientid'];      
+			$firstname		=	$row['firstname'];
+			$lastname		=	$row['lastname'];
+			$id				=	$row['clientid'];      
+			$email			=	$row['email'];      
 		}
 
 		//if yes, start password reset process
 
-		$fullname=$data['firstname'].' '.$data['lastname'];
-		$password=generateRandomAlphaNumeric($length=8);
+		$fullname=$firstname.' '.$lastname;
+		$passToken=generateUniquePasswordToken();
+
+		$pathToFile				= "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+		$changePassURL			=  str_replace("api/forgotpassword","others/changepassword.php",$pathToFile);	
+		$changePasswordURL	= $changePassURL."?token=".urlencode($passToken);
+
+		$requestTime=date('Y-m-d H:i:s');
+		$to_day = new DateTime($requestTime);
+		$to_day->modify('+2 day');
+		$expireTime= $to_day->format('Y-m-d H:i:s');
+		
 		ob_start();
 		include('email_templates/forgot_password.php');
-		$order_placement_template = ob_get_contents();			
+		$forgot_password_template = ob_get_contents();			
 		ob_end_clean();			
 
-		$to='dominic@cliffsupport.com'; 
-		//$to1='cs@vrush.ph'; 
+		$to=$email; 
 		$strSubject="Password reset form";
-		$message =  $order_placement_template;              
+		$message =  $forgot_password_template;              
 		$headers = 'MIME-Version: 1.0'."\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
 		$headers .= "From: eprty@test.com"; 
 
-		$qry2="UPDATE entrp_login SET password='".md5($password)."' where email='".$username."' ";
+		//$qry2="UPDATE entrp_login SET password='".md5($password)."' where email='".$email."' ";
+		$qry2="INSERT INTO entrp_forgot_password_tokens(clientid,emailid,forgotToken,requestTime,expireTime) VALUES(".$id.",'".$email."','".$passToken."','".$requestTime."','".$expireTime."') ";
 		if(setData($qry2))
 		{
-			$mail_to_vrush=mail($to, $strSubject, $message, $headers);  			
-			if($mail_to_vrush)
+			$mail_to_enduser=mail($to, $strSubject, $message, $headers);  			
+			if($mail_to_enduser)
 			{
 				$data['success'] 		= true;
 				$data['msg'] 			= 'An email has been sent to you with your new password - Please check your email';
@@ -120,6 +149,8 @@ function forgot_password()
 	}
 	return $data;
 }
+
+
 
 //Function to generate random alpha numeric string
 //April 19,2016
