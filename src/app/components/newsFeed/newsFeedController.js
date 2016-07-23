@@ -334,13 +334,12 @@
 				vm.likePost = function(post) 
 				{
 					var likedPost = post;
-					//this will come from the session userobject
-					vm.basicInfo();
+					//vm.basicInfo();
 					likedPost.likers.push(userObject);
 					newsFeedService.postLike(likedPost,vm.poststype,vm.username).success(function(data) {
 						likedPost.isLiked = true;
 						likedPost.likes_count++;
-						vm.posts = data;						
+						//vm.posts = data;						
 					});	
 				};
 
@@ -348,13 +347,12 @@
 				vm.unLikePost = function(post) 
 				{
 					var unLikedPost = post;
-					//this will come from the session userobject
-					vm.basicInfo();
+					//vm.basicInfo();
 					newsFeedService.postUnLike(unLikedPost,vm.poststype,vm.username).success(function(data) {
 						unLikedPost.isLiked = false;
 						unLikedPost.likes_count--;
 						unLikedPost.likers.pop();
-						vm.posts = data;							
+						//vm.posts = data;							
 					});	
 				};
 				
@@ -362,22 +360,23 @@
 				//Add a comment to time-line post
 				vm.addComment = function(post,newComment) {
 					var commentedPost = post;
-					//this will come from the session userobject
-					vm.basicInfo();
 					var currentComment = {};
-					//currentComment.content = vm.currentComment.content;
-					currentComment.content = newComment;
-					currentComment.created_at = new Date();
-					currentComment.comment_author = userObject;
-
-					commentedPost.comments_count++;
-					commentedPost.comments.push(currentComment);
-					post.comment.content = ""; //clear comment textarea
-					//vm.currentComment.content = ""; //clear comment textarea
-
-					newsFeedService.postComment(commentedPost,newComment,vm.poststype,vm.username).success(function(data) {
-						vm.posts = data;						
-					});	
+					
+					if(newComment)
+					{
+						//currentComment.content = vm.currentComment.content;
+						currentComment.content = newComment;
+						currentComment.created_at = new Date();
+						currentComment.comment_author = userObject;
+	
+						newsFeedService.postComment(commentedPost,newComment,vm.poststype,vm.username).success(function(data) {
+							//vm.posts = data;	
+							commentedPost.comments_count++;
+							commentedPost.comments.push(currentComment);
+							post.comment.content = ""; //clear comment textarea
+							//vm.currentComment.content = ""; //clear comment textarea					
+						});
+					}	
 				};
                 
 				 //This is to set focus on the comment box upon clicking the comment link
