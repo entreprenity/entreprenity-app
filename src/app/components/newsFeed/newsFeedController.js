@@ -300,7 +300,8 @@
 					{
 						newsFeedService.postCurrentPost(newPost,base64ImgString,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;
-                            vm.isAnImagePost = false; //hide image div
+							vm.currentPost.image = ""; //clear post image
+                     vm.isAnImagePost = false; //hide image div
 						});
 					}	
 				};
@@ -325,6 +326,7 @@
                      currentPost.image = ""; //clear post image
                      currentPost.content = ""; //clear post textarea
                      currentPost.categories = ""; //clear tags
+                     vm.currentPost.image = ""; //clear post image
                      vm.isAnImagePost = false; //hide image div
 						});
 					}								
