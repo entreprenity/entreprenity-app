@@ -282,6 +282,7 @@
 				// Add a time-line post
 				vm.addPost = function (newPost,newImg) 
 				{
+					
 					var currentPost = vm.currentPost;
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
@@ -300,6 +301,11 @@
 					{
 						newsFeedService.postCurrentPost(newPost,base64ImgString,vm.poststype,vm.username).success(function(data) {
 							vm.posts = data;
+							/*if(data.response=='success')
+							{
+								vm.posts.unshift(currentPost);
+							}*/
+							
 							vm.currentPost.image = ""; //clear post image
                      vm.isAnImagePost = false; //hide image div
 						});
@@ -339,9 +345,13 @@
 					//vm.basicInfo();
 					likedPost.likers.push(userObject);
 					newsFeedService.postLike(likedPost,vm.poststype,vm.username).success(function(data) {
-						likedPost.isLiked = true;
-						likedPost.likes_count++;
-						//vm.posts = data;						
+						if(data.response=='success')
+						{
+							likedPost.isLiked = true;
+							likedPost.likes_count++;						
+						}
+						//vm.posts = data;
+												
 					});	
 				};
 
@@ -351,9 +361,12 @@
 					var unLikedPost = post;
 					//vm.basicInfo();
 					newsFeedService.postUnLike(unLikedPost,vm.poststype,vm.username).success(function(data) {
-						unLikedPost.isLiked = false;
-						unLikedPost.likes_count--;
-						unLikedPost.likers.pop();
+						if(data.response=='success')
+						{
+							unLikedPost.isLiked = false;
+							unLikedPost.likes_count--;
+							unLikedPost.likers.pop();
+						}
 						//vm.posts = data;							
 					});	
 				};
@@ -372,9 +385,12 @@
 						currentComment.comment_author = userObject;
 	
 						newsFeedService.postComment(commentedPost,newComment,vm.poststype,vm.username).success(function(data) {
-							//vm.posts = data;	
-							commentedPost.comments_count++;
-							commentedPost.comments.push(currentComment);
+							//vm.posts = data;
+							if(data.response=='success')
+							{
+								commentedPost.comments_count++;
+								commentedPost.comments.push(currentComment);
+							}								
 							post.comment.content = ""; //clear comment textarea
 							//vm.currentComment.content = ""; //clear comment textarea					
 						});
@@ -414,13 +430,18 @@
 				}
 				
 				// Delete a time-line post
-				vm.deletePost = function (postID) 
-				{					
+				vm.deletePost = function (postsArray, postIndex,postID) 
+				{	
+					var deletedPost = postsArray[postIndex];				
 					if(postID)
 					{
 						newsFeedService.deleteTimlinePost(postID,vm.poststype,vm.username).success(function(data) 
 						{
-							vm.posts = data;
+							if(data.response=='success')
+							{
+								postsArray.splice(postIndex, 1);
+							}							
+							//vm.posts = data;
 						});
 					}	
 				};

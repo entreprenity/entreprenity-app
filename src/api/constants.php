@@ -49,6 +49,32 @@ if (!defined('EVENT_POSTER_UPL')) define('EVENT_POSTER_UPL', '../assets/img/even
 
 
 
+//Mail settings (mailgun)
+if (!defined('MS_HOSTNAME')) define('MS_HOSTNAME', 'mailgun.securesvr.net');
+if (!defined('MS_USERNAME')) define('MS_USERNAME', 'smtp_dominic');
+if (!defined('MS_PASSWORD')) define('MS_PASSWORD', 'pIFV2yDX0mbvs');
+if (!defined('MS_PORT')) 	  define('MS_PORT', 587);
+
+
+if (!defined('MS_SENTFROM')) 	  	define('MS_SENTFROM', 'eprty@entreprenity.co');
+if (!defined('MS_SENTFROMNAME'))	define('MS_SENTFROMNAME', 'entreprenity.co');
+
+if (!defined('RECIPIENTNAME1')) define('RECIPIENTNAME1','Dominic Gmail');
+if (!defined('RECIPIENTEMAIL1')) define('RECIPIENTEMAIL1','dominiccliff88@gmail.com');
+
+if (!defined('RECIPIENTNAME2')) define('RECIPIENTNAME2','Jordan Rains');
+if (!defined('RECIPIENTEMAIL2')) define('RECIPIENTEMAIL2','morethanjordan@outlook.com');
+
+
+if (!defined('ADMINNAME')) define('ADMINNAME','Sean Lim');
+if (!defined('ADMINEMAIL')) define('ADMINEMAIL','sean@flexiesolutions.com');
+
+
+//Email Subjects
+if (!defined('NOTIFICATION_CONST')) define('NOTIFICATION_CONST','Notification mail');
+if (!defined('EVENTREQ_CONST')) 		define('EVENTREQ_CONST','Sean Lim');
+if (!defined('FORGOTPASS_CONST')) 	define('FORGOTPASS_CONST','Sean Lim');
+
 
 /*
  	//the defaults starts

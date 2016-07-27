@@ -35,7 +35,7 @@
 								<ul class="dropdown-menu" uib-dropdown-menu>
 									<li><a ng-click="vm.openPostToEdit($index)">Edit</a></li>
 									<li><a ng-click="vm.editPostImage(post.post_id, post.image)">Edit Post Image</a></li>
-									<li><a ng-click="vm.deletePost(post.post_id)">Delete</a></li>
+									<li><a ng-click="vm.deletePost(vm.posts,$index,post.post_id)">Delete</a></li>
 								</ul>
 							</span>
 						</div>

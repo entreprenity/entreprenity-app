@@ -230,7 +230,7 @@ function deleteTimlinePost()
 		{
 			$data['response']='failed';
 		}
-		
+		/*
 		if($timeLine==1)
 		{
 			//home page all posts
@@ -280,6 +280,7 @@ function deleteTimlinePost()
 		{
 		
 		}
+		*/
 	}
 	return $data;
 }
@@ -1465,7 +1466,8 @@ function unlikeThisPost()
 				if(!empty($likedUsersID))
 				{	
 					//$likedUsersIDArr[]		=	$likedUsersID;		
-					$likedUsersIDJSON			= json_encode($likedUsersID);
+					//$likedUsersIDJSON		= json_encode($likedUsersID);
+					$likedUsersIDJSON 		= json_encode(array_values($likedUsersID));
 					/*
 					$qry0="UPDATE entrp_user_timeline_post_likes SET liked_user_ids='' WHERE  post_id=".$postId."";
 					setData($qry0);
@@ -1514,6 +1516,7 @@ function unlikeThisPost()
 			}
 		}
 		
+		/*
 		if($timeLine==1)
 		{
 			//home page all posts
@@ -1554,16 +1557,17 @@ function unlikeThisPost()
 			//home page my posts/myprofile timeline
 			$data=getMyOwnNewsFeed();
 		}
-        else if($timeLine==8)
-        {
-            //home page my posts/myprofile timeline
-            $data=getBusinessOpportunitiesForMe();
-        }
+      else if($timeLine==8)
+      {
+          //home page my posts/myprofile timeline
+          $data=getBusinessOpportunitiesForMe();
+      }
 		else
 		{
 			//single post
 			$data=refetchThisPost($postId);
 		}
+		*/
 	}
 	return $data;
 }
@@ -1702,6 +1706,7 @@ function likeThisPost()
 			}		
 		}
 		
+		/*
 		if($timeLine==1)
 		{
 			//home page all posts
@@ -1742,16 +1747,17 @@ function likeThisPost()
 			//home page my posts/myprofile timeline
 			$data=getMyOwnNewsFeed();
 		}
-        else if($timeLine==8)
-        {
-            //home page my posts/myprofile timeline
-            $data=getBusinessOpportunitiesForMe();
-        }
+      else if($timeLine==8)
+      {
+         //home page my posts/myprofile timeline
+         $data=getBusinessOpportunitiesForMe();
+      }
 		else
 		{
 			//single post
 			$data=refetchThisPost($postId);
 		}
+		*/
 	
 	}
 	return $data;
@@ -1822,7 +1828,7 @@ function postThisComment()
 	
 	}
 	
-	
+	/*
 	if($timeLine==1)
 	{
 		//home page all posts
@@ -1873,7 +1879,7 @@ function postThisComment()
 		//single post
 		$data=refetchThisPost($postId);
 	}
-
+	*/
 	return $data;
 }
 
@@ -2782,6 +2788,7 @@ function postCurrentPost()
 			//single post
 			$data=refetchThisPost($postId);
 		}
+		
 	}
 	return $data;
 

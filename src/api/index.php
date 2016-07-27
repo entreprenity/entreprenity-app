@@ -4,7 +4,6 @@ require_once ('Query.php');
 require_once 'constants.php';
 require 'flight/Flight.php';
 
-
 //01 Route to events directory
 // April 13,2016
 Flight::route('/getEvents', function()
@@ -681,7 +680,7 @@ Flight::route('/addNewEvent', function()
 //June 23,2016
 Flight::route('/likeThisComment', function()
 {
-   enable_cors();	
+   enable_cors();	   
    services_included();	
 	$returnarray=likeThisComment();
 	header('Content-type:application/json;charset=utf-8');

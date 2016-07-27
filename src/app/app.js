@@ -137,6 +137,7 @@
 		.when('/events/:eventId', {
 			controller: 'EventsPageController',
 			templateUrl: 'app/components/events/eventsPageView.html',
+			resolve: {loggedIn: onlyLoggedIn},
 			controllerAs: 'vm'
 		})
 		.when('/members/:memberUserName/followers', {

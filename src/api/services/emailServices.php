@@ -2,6 +2,7 @@
 
 //Function to send new event notification mailto admin
 //June 21,2016
+//July 27,2016: SMTP mail sending
 function send_new_event_notification_to_admin($eventTag)
 {
 	if($eventTag !='')
@@ -37,7 +38,7 @@ function send_new_event_notification_to_admin($eventTag)
 			//http://entreprenity.co/app/api/services/testmail.php
 			$pathToFile				= "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 			$eventBaseURL			=  str_replace("api/finishThisEvent","others/event.php",$pathToFile);
-			//$eventBaseURL			=  str_replace("api/services/emailServices.php","others/event.php",$pathToFile);
+			//$eventBaseURL		=  str_replace("api/services/emailServices.php","others/event.php",$pathToFile);
 			
 			$eventAprovURL			= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=accept';
 			$eventRejectURL		= $eventBaseURL."?tagged=".urlencode($eventTagId).'&action=reject';
@@ -46,52 +47,57 @@ function send_new_event_notification_to_admin($eventTag)
 			include('email_templates/newEventsNotify.php');
 			$eventsNotify_template = ob_get_contents();			
 			ob_end_clean();
-			
-			$to = 'sean@flexiesolutions.com'; 
+						
 			//$to = 'dominic@cliffsupport.com'; 
-			/*$to = $to_email; //please uncomment this when in live*/
-			$strSubject = "New Event Request";
-			$message =  $eventsNotify_template;              
-			$headers = 'MIME-Version: 1.0'."\r\n";
-			$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-			$headers .= "From: eprty@test.com"; 
-			
-			if(mail($to, $strSubject, $message, $headers))
+			$to = ADMINEMAIL; 
+			$strSubject = EVENTREQ_CONST;
+			$message	= $eventsNotify_template;
+		
+			include('sendmail/sendmail.php');	
+			$mail->SetFrom(MS_SENTFROM, MS_SENTFROMNAME);
+			$mail->Subject = ($strSubject);
+			$mail->MsgHTML($message);
+			$mail->AddAddress($to);
+			$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
+			$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
+			if($mail->Send()) 
 			{
-				return 'Mail send successfully';
-			}
-			else
-			{
-				return 'Could not send email';
+		 		return "Mail send successfully";
 			} 
+			else 
+			{
+		  		return $mail->ErrorInfo;
+			}
+	
+	
 		}
 	}
 }
 
 
 /* To manage all the email notifications */
-function send_notification_mail($notification_array){
+//July 27,2016: SMTP mail sending
+function send_notification_mail($notification_array)
+{
 	
-	$type = $notification_array['type'];
-	
+	$type = $notification_array['type'];	
 	//To send follow notification email	
-	if($type === 'follow'){
-		
+	if($type === 'follow')
+	{		
 		$following_username = $notification_array['following_username'];
 		$followed_username = $notification_array['followed_username'];
-		$to_email = $followed_email = $notification_array['followed_email'];
-	
+		$to_email = $followed_email = $notification_array['followed_email'];	
 	}
 	//To send comment notification email	
-	elseif($type === 'comment'){
-		
+	elseif($type === 'comment')
+	{		
 		$commentAuthorUsername = $notification_array['commentAuthorUsername'];
 		$postAuthorUsername = $notification_array['postAuthorUsername'];
 		$to_email = $postAuthorEmail = $notification_array['postAuthorEmail'];
 	}
 	//To send like notification email	
-	elseif($type === 'like'){
-		
+	elseif($type === 'like')
+	{		
 		$likerUsername = $notification_array['likerUsername'];
 		$postAuthorUsername = $notification_array['postAuthorUsername'];
 		$to_email = $postAuthorEmail = $notification_array['postAuthorEmail'];
@@ -102,21 +108,27 @@ function send_notification_mail($notification_array){
 	$notification_template = ob_get_contents();			
 	ob_end_clean();
 	
-	
-	
 	//$to = 'dominic@cliffsupport.com'; 
-	$to = $to_email; //please uncomment this when in live
-	$strSubject = "Notification mail";
-	$message =  $notification_template;              
-	$headers = 'MIME-Version: 1.0'."\r\n";
-	$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-	$headers .= "From: eprty@test.com"; 
-	
-	if(mail($to, $strSubject, $message, $headers)){
-		return 'Mail send successfully';
-	}else{
-		return 'Could not send email';
+	$to = $to_email; 
+	$strSubject = NOTIFICATION_CONST;
+	$message	= $notification_template;
+
+	include('sendmail/sendmail.php');	
+	$mail->SetFrom(MS_SENTFROM, MS_SENTFROMNAME);
+	$mail->Subject = ($strSubject);
+	$mail->MsgHTML($message);
+	$mail->AddAddress($to);
+	$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
+	$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
+	if($mail->Send()) 
+	{
+ 		return "Mail send successfully";
 	} 
+	else 
+	{
+  		return $mail->ErrorInfo;
+	}
+
 	
 }
 

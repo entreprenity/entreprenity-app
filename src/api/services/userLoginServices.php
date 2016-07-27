@@ -49,25 +49,35 @@ function destroyUserToken()
 function validateUserToken()
 {
 	$resp= array();
-	$data = json_decode(file_get_contents("php://input"));
-	$token = $data->token;
-	$qry="SELECT * FROM client_login_tokens WHERE client_token='".$token."' AND status=1";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res); 
-	if($count_res==1)
+	session_start();
+	if(isset($_SESSION))
+ 	{
+		$data = json_decode(file_get_contents("php://input"));
+		$token = $data->token;
+		$qry="SELECT * FROM client_login_tokens WHERE client_token='".$token."' AND status=1";
+		$res=getData($qry);
+		$count_res=mysqli_num_rows($res); 
+		if($count_res==1)
+		{
+			$resp['msg']				=	"authorized";   
+			//$resp['msg']				=	$qry;   
+		} 
+		else 
+		{
+			if(!isset($_SESSION))
+	 		{
+	    		session_start();
+	  		}
+			session_destroy();
+			$resp['msg']				=	"unauthorized";   
+			//$resp['msg']				=	$qry;  
+		}
+  	}
+	else
 	{
-		$resp['msg']				=	"authorized";   
-		//$resp['msg']				=	$qry;   
-	} 
-	else 
-	{
-		if(!isset($_SESSION))
- 		{
-    		session_start();
-  		}
+		session_start();
 		session_destroy();
-		$resp['msg']				=	"unauthorized";   
-		//$resp['msg']				=	$qry;  
+		$resp['msg']		=	"unauthorized"; 
 	}
 	return $resp;
 }
@@ -75,6 +85,7 @@ function validateUserToken()
 
 //Function for forgot password feature
 //April 15, 2016
+//July 27,2016: SMTP mail sending
 function forgot_password()
 {
 	$data= array();
@@ -113,25 +124,28 @@ function forgot_password()
 		ob_end_clean();			
 
 		$to=$email; 
-		$strSubject="Password reset form";
+		$strSubject=FORGOTPASS_CONST;
 		$message =  $forgot_password_template;              
-		$headers = 'MIME-Version: 1.0'."\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-		$headers .= "From: eprty@test.com"; 
 
 		//$qry2="UPDATE entrp_login SET password='".md5($password)."' where email='".$email."' ";
 		$qry2="INSERT INTO entrp_forgot_password_tokens(clientid,emailid,forgotToken,requestTime,expireTime) VALUES(".$id.",'".$email."','".$passToken."','".$requestTime."','".$expireTime."') ";
 		if(setData($qry2))
 		{
-			$mail_to_enduser=mail($to, $strSubject, $message, $headers);  			
-			if($mail_to_enduser)
+			include('sendmail/sendmail.php');	
+			$mail->SetFrom(MS_SENTFROM, MS_SENTFROMNAME);
+			$mail->Subject = ($strSubject);
+			$mail->MsgHTML($message);
+			$mail->AddAddress($to);
+			//$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
+			//$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
+			if($mail->Send()) 
 			{
-				$data['success'] 		= true;
+		 		$data['success'] 		= true;
 				$data['msg'] 			= 'An email has been sent to you with your new password - Please check your email';
-			}
-			else
+			} 
+			else 
 			{
-				$data['success'] 		= false;
+		  		$data['success'] 		= false;
 				$data['msg'] 			= 'We did not recognize that email';
 			}
 		}
