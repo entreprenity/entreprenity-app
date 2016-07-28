@@ -131,13 +131,7 @@ function addNewEvent()
 //Function to fetch members directory
 // April 13,2015
 function getMembers()
-{
-	$records=1;
-	$start=0;
-	$limit=12;
-	$end=12;
-	
-	
+{	
 	//the defaults starts
 	global $myStaticVars;
 	extract($myStaticVars);  // make static vars local
@@ -150,31 +144,23 @@ function getMembers()
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends	
 	
-	
-	
+	$limit = 10;
 	if(isset($_GET['page']))
 	{
-		$records=$_GET['page'];
-		if($records==1)
+		$page = validate_input($_GET['page']);
+		if($page)
 		{
-			$start=0;
-			$end=12;
-		}
-		else if($records==1)
-		{
-			$start=$limit+$records;
-			$end=$end+$limit;
+			$start = ($page - 1) * $limit;
 		}
 		else
 		{
-			$start=($limit*$records)+1;
-			$end=$limit*$records;
-		}
-		
+			$start = 0;
+		}		
 	}
-	
-	$limit=$start * $records;
-	
+	else
+	{
+		$start = 0;
+	}	
 	
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];	
@@ -184,8 +170,9 @@ function getMembers()
 	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
-	      WHERE CI.clientid!=".$my_session_id." 
+	      WHERE CI.clientid!=".$my_session_id."
 	      ORDER BY CI.clientid ASC 
+	      LIMIT $start, $limit 	      
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -272,17 +259,7 @@ function getMembers()
 			$i++;
       }	
    }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['firstName']		=	"";
-		$data[$i]['lastName']		=	"";
-		$data[$i]['avatar']			=	"";
-		$data[$i]['position']		=	"";
-		$data[$i]['companyName']	=	"";
-		$data[$i]['city']				=	"";
-		$data[$i]['userName']		=	"";
-   }
+
 	return $data;
 }
 
@@ -305,14 +282,32 @@ function getCompanies()
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends
 
-
+	$limit = 10;
+	if(isset($_GET['page']))
+	{
+		$page = validate_input($_GET['page']);
+		if($page)
+		{
+			$start = ($page - 1) * $limit;
+		}
+		else
+		{
+			$start = 0;
+		}		
+	}
+	else
+	{
+		$start = 0;
+	}
+	
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 			
 	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,CP.company_username,LI.location_desc AS city 
 			FROM company_profiles AS CP
-			LEFT JOIN location_info as LI ON LI.id=CP.client_location ";
+			LEFT JOIN location_info as LI ON LI.id=CP.client_location 
+			LIMIT $start, $limit";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -339,15 +334,7 @@ function getCompanies()
 			$i++;
       }	
    }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['companyName']	=	"";
-		$data[$i]['description']	=	"";
-		$data[$i]['avatar']			=	"";
-		$data[$i]['city']				=	"";
-		$data[$i]['userName']		=	"";
-   }
+
 	return $data;	
 }
 
@@ -371,9 +358,29 @@ function getEvents()
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends	
 	
+	$limit = 10;
+	if(isset($_GET['page']))
+	{
+		$page = validate_input($_GET['page']);
+		if($page)
+		{
+			$start = ($page - 1) * $limit;
+		}
+		else
+		{
+			$start = 0;
+		}		
+	}
+	else
+	{
+		$start = 0;
+	}	
+	
 	$data= array();
 	
-	$qry="SELECT * FROM entrp_events WHERE status=1";
+	$qry="SELECT * FROM entrp_events 
+			WHERE status=1 
+			LIMIT $start, $limit";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -400,17 +407,6 @@ function getEvents()
 			$data[$i]['joining']			=	goingForThisEventorNot($data[$i]['id']);
 			$i++;
       }	
-   }
-   else
-   {
-   	$data[$i]['id']				=	"";
-		$data[$i]['eventName']		=	"";
-		$data[$i]['eventTagId']		=	"";
-		$data[$i]['description']	=	"";
-		$data[$i]['poster']			=	"";
-		$data[$i]['city']				=	"";
-		$data[$i]['date']				=	"";
-		$data[$i]['time']				=	"";
    }
 	
 	return $data;
