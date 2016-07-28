@@ -102,6 +102,7 @@
 			};
 
 			Members.prototype.nextPage = function() {
+				console.log('vm.members.nextPage');
 				if (this.busy) return;
 				this.busy = true;
 				
@@ -114,7 +115,7 @@
 					}
 					
 					this.pageNumber++;
-					//this.busy = false;
+					this.busy = false;
 				}.bind(this));
 			};
 			return Members;
@@ -140,7 +141,7 @@
 					}
 					
 					this.pageNumber++;
-					//this.busy = false;
+					this.busy = false;
 				}.bind(this));
 			};
 			return Companies;
@@ -165,7 +166,7 @@
 					}
 					
 					this.pageNumber++;
-					//this.busy = false;
+					this.busy = false;
 				}.bind(this));
 			};
 			return Events;
@@ -248,6 +249,5 @@
 				var index = items.indexOf(clickedObject);
 				return index;
 			}
-			
 		});
 })();

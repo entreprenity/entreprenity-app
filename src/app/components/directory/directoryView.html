@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-members" infinite-scroll='vm.members.nextPage()' infinite-scroll-disabled='vm.members.busy'  infinite-scroll-distance='0'>
+					<ul class="directory-members" infinite-scroll='vm.members.nextPage()' infinite-scroll-disabled='vm.activeTab != 0 || vm.members.busy'  infinite-scroll-distance='0.8' style="overflow-y: auto;">
 						<li class="item" ng-repeat="member in vm.members.items | filter:searchedMember | filter:selectedCity">
 							<a ng-href="#/members/{{member.userName}}">
 								<div>
@@ -36,8 +36,8 @@
 								<a class="btn btn-primary" ng-click="vm.unFollow_member(member.id)" ng-show="vm.members.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
 						</li>
-						<!-- <div ng-show='vm.members.busy'>Loading data...</div> -->
-					</ul>		
+						<div ng-show='vm.members.busy'>Loading data...</div>
+					</ul>
 				</div>
 			</uib-tab>
 			<uib-tab index="1" heading="Companies">
@@ -57,7 +57,7 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-companies" infinite-scroll='vm.companies.nextPage()' infinite-scroll-disabled='vm.companies.busy'  infinite-scroll-distance='0'>
+					<ul class="directory-companies" infinite-scroll='vm.companies.nextPage()' infinite-scroll-disabled='vm.activeTab != 1 || vm.companies.busy'  infinite-scroll-distance='0' style="overflow-y: auto;">
 						<li ng-repeat="company in vm.companies.items | filter:searchedCompany | filter:selectedCity2">
 							<a ng-href="#/companies/{{company.userName}}">
 								<div>
@@ -75,7 +75,7 @@
 								<a class="btn btn-primary" ng-click="vm.unFollow_company(company.id)" ng-show="vm.companies.items[{{$index}}].followed">UNFOLLOW</a>
 							</div>
 						</li>
-						<!-- <div ng-show='vm.companies.busy'>Loading data...</div> -->
+						<div ng-show='vm.companies.busy'>Loading data...</div>
 					</ul>
 				</div>
 			</uib-tab>
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					<ul class="directory-events" infinite-scroll='vm.events.nextPage()' infinite-scroll-disabled='vm.events.busy'  infinite-scroll-distance='0'>
+					<ul class="directory-events" infinite-scroll='vm.events.nextPage()' infinite-scroll-disabled='vm.activeTab != 2 || vm.events.busy'  infinite-scroll-distance='0' style="overflow-y: auto;">
 						<li ng-repeat="event in vm.events.items | filter:searchedEvent | filter:selectedCity3">
 							<a ng-href="#/events/{{event.eventTagId}}">
 								<img ng-src="{{event.poster}}">
@@ -120,7 +120,7 @@
 								<a class="btn btn-primary" ng-click="vm.notGoing_event(event.id)" ng-show="vm.events.items[{{$index}}].joining">NOT JOINING ANYMORE</a>
 							</div>
 						</li>
-						<!-- <div ng-show='vm.events.busy'>Loading data...</div> -->
+						<div ng-show='vm.events.busy'>Loading data...</div>
 					</ul>					
 				</div>
 			</uib-tab>
