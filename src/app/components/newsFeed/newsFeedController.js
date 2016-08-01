@@ -176,7 +176,7 @@
 					{
 						//home page all posts
 						case '1':
-							newsFeedService.getAllPosts(vm.pageNumber).success(function(data) {
+							newsFeedService.getAllPosts().success(function(data) {
 								vm.posts = data;
 							});
 						break;

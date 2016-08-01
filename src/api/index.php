@@ -534,8 +534,8 @@ Flight::route('/unlikeThisPost', function()
 });
 
 
-//43 Route to prfile settings
-// May 24,2016
+//43 Route to profile settings
+// May 24,2016 (myProfileServices.php)
 //Arshad
 Flight::route('/getMyPreferences', function()
 {
@@ -548,7 +548,7 @@ Flight::route('/getMyPreferences', function()
 });
 
 //44 Route to update preferences
-// May 25,2016
+// May 25,2016 (myProfileServices.php)
 //Arshad
 Flight::route('/updateMyPreferences', function()
 {
@@ -798,8 +798,8 @@ Flight::route('/getBusinessOpportunitiesForMe', function()
 	echo json_encode($returnarray);
 });
 
-//63 Route to delete a timeline post (timelineServices.php)
-//July 19,2016
+//63 Route to delete a timeline post 
+//July 19,2016 (timelineServices.php)
 Flight::route('/deleteTimlinePost', function()
 {
    enable_cors();
@@ -810,8 +810,8 @@ Flight::route('/deleteTimlinePost', function()
 });
 
 
-//63 Route to edit a timeline post (timelineServices.php)
-//July 19,2016
+//63 Route to edit a timeline post 
+//July 19,2016 (timelineServices.php)
 Flight::route('/editTimelinePost', function()
 {
    enable_cors();
