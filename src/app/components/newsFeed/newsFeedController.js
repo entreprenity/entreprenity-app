@@ -150,9 +150,9 @@
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
 				vm.editState = false; // initial state is false, set to true if edit post is clicked
 				vm.triggernextpage = false; // initial state is false, set to true if infinite scroll is triggered
-				this.pageNumber = 1;
-				this.items = [];
-				this.busy = false;
+				vm.pageNumber = 1;
+				vm.posts = [];
+				vm.busy = false;
 
 				$scope.$watch('vm.triggernextpage', function() {
 					if (vm.triggernextpage) {
@@ -212,26 +212,24 @@
 					{
 						//home page all posts
 						case '1':
-							if (this.busy) return;
-							this.busy = true;
+							if (vm.busy) return;
+							vm.busy = true;
 							/*
 							newsFeedService.getAllPosts(this.pageNumber).success(function(data) {
 								vm.posts = data;
 							});
 							*/
-							newsFeedService.getAllPosts(this.pageNumber).success(function(data) {
-								vm.posts = data;
-								var itemData = vm.posts;
+							newsFeedService.getAllPosts(vm.pageNumber).success(function(data) {
+								var itemData = data;
 								
 								for (var i = 0; i < itemData.length; i++) {
 									//itemData[i].followed = false;
-									this.items.push(itemData[i]);
+									vm.posts.push(itemData[i]);
 								}
 								
-								this.pageNumber++;
-								this.busy = false;
-							}.bind(this));
-							
+								vm.pageNumber++;
+								vm.busy = false;
+							});
 						break;
 
 						//member profile timeline posts
