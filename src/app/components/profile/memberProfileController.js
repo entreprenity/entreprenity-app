@@ -39,7 +39,7 @@
 			};
 		})
 
-		.controller('MemberProfileController', function($routeParams, memberProfileService) {
+		.controller('MemberProfileController', function($routeParams, memberProfileService,$scope) {
 			var vm = this;
 			vm.memberUserName = $routeParams.memberUserName;
 			
@@ -61,6 +61,12 @@
 					vm.member = data; //return user_info, with updated followers and followed status
 				});	
 			};
+			
+			$scope.triggerNextPage = function () 
+			{
+				vm.isTriggerNextUserProfilePosts = true;
+			}
+		
 		});			
 })();
 

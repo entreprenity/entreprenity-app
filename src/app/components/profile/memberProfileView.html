@@ -72,8 +72,8 @@
 					</div>
 				</div>
 
-				<div class="col-md-8">
-					<news-feed poststype="2" istextareahidden="true" username="vm.memberUserName"></news-feed>
+				<div class="col-md-8" infinite-scroll='triggerNextPage()'  infinite-scroll-distance='0'>
+					<news-feed poststype="2" istextareahidden="true" username="vm.memberUserName" triggernextpage="vm.isTriggerNextUserProfilePosts"></news-feed>
 				</div>
 			</div>
 		</div>

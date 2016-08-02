@@ -155,32 +155,14 @@
 				vm.busy = false;
 
 				$scope.$watch('vm.triggernextpage', function() {
-					if (vm.triggernextpage) {
-						console.log('Load Next Page');
-						//var postsType = vm.poststype;
-						//var username = vm.username;
-						//console.log(postsType +' '+ username);
+					if (vm.triggernextpage) 
+					{
+						console.log('Loading');
 						vm.getPosts();
-						/*
-						
-							if (this.busy) return;
-							this.busy = true;
-							
-							newsFeedService.getMembers(this.pageNumber).success(function(data) {
-								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									//itemData[i].followed = false;
-									this.items.push(itemData[i]);
-								}
-								
-								this.pageNumber++;
-								this.busy = false;
-							}.bind(this));
-							*/
-						/*------------------ insert load nextpage of posts service here ------------------*/
 						vm.triggernextpage = false;
-					} else {
+					} 
+					else 
+					{
 						console.log('triggernextpage is false')
 					}
 				});
@@ -212,21 +194,15 @@
 					{
 						//home page all posts
 						case '1':
+						
 							if (vm.busy) return;
 							vm.busy = true;
-							/*
-							newsFeedService.getAllPosts(this.pageNumber).success(function(data) {
-								vm.posts = data;
-							});
-							*/
 							newsFeedService.getAllPosts(vm.pageNumber).success(function(data) {
 								var itemData = data;
 								
 								for (var i = 0; i < itemData.length; i++) {
-									//itemData[i].followed = false;
 									vm.posts.push(itemData[i]);
 								}
-								
 								vm.pageNumber++;
 								vm.busy = false;
 							});
@@ -234,51 +210,114 @@
 
 						//member profile timeline posts
 						case '2':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getMemberPosts(this.pageNumber,username).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 							});
 						break;
 
 						//home page followed posts
 						case '3':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getFollowedMembersPosts(this.pageNumber,username).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 							});
 						break;
 
 						//company profile timeline posts
 						case '4':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getCompanyPosts(this.pageNumber,username).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 							});
 						break;
 
 						//business all opportunities page
 						case '5':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getAllBusinessOpportunities(this.pageNumber).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 								vm.busoppPost = true;
 							});
 						break;
 						
 						//my company profile timeline posts
 						case '6':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getMyCompanyPosts(this.pageNumber,username).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 							});
 						break;
 						
 						//home page my posts timeline
 						case '7':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getmyMemberPosts(this.pageNumber,username).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 							});
 						break;
 						
 						//matched business opportunities
 						case '8':
+							
+							if (vm.busy) return;
+							vm.busy = true;
 							newsFeedService.getBusinessOpportunitiesForMe(this.pageNumber).success(function(data) {
-								vm.posts = data;
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									vm.posts.push(itemData[i]);
+								}
+								vm.pageNumber++;
+								vm.busy = false;
 								vm.busoppPost = true;
 							});
 						break;

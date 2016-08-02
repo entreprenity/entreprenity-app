@@ -75,7 +75,6 @@ angular
 				$log.info('Modal dismissed at: ' + new Date());
 			});
 		};
-
 	
 		//vm.memberUserName = "";
 		//vm.memberUserName = $routeParams.memberUserName;
@@ -103,5 +102,13 @@ angular
 				vm.editState = false;
 			});	
 		};
+		
+		$scope.triggerNextPage = function () 
+		{
+			vm.isTriggerNextmyProfilePosts = true;
+		}
+
+
+
 	});
 })();

@@ -88,6 +88,14 @@
 				vm.editState = false;
 			});	
 		};
+		
+		$scope.triggerNextPage = function () 
+		{
+			vm.isTriggerNextmyCompanyPosts = true;
+		}
+
+
+
 	});
 })();
 

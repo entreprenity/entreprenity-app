@@ -74,6 +74,18 @@
 				$scope.isActive = !$scope.isActive;
 				$scope.isSlide = !$scope.isSlide;
 			}
+			
+			$scope.triggerNextPage = function () 
+			{
+				if (vm.activeTab == 0) 
+				{					
+					vm.isTriggerNextPageMatchedBO = true;					
+				} 
+				else if (vm.activeTab == 1) 
+				{					
+					vm.isTriggerNextPageOtherBO = true;					
+				} 
+			}
 
 		});
 })();

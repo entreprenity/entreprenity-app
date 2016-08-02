@@ -42,7 +42,7 @@
 		};
 	})
 
-		.controller('CompanyProfileController', function($routeParams, companyProfileService) {
+		.controller('CompanyProfileController', function($routeParams, companyProfileService,$scope) {
 		var vm = this;
 		vm.companyUserName = $routeParams.companyUserName;
 		
@@ -63,6 +63,11 @@
 				vm.company = data; //return company info, with updated followers and followed status
 			});	
 		};
+		
+		$scope.triggerNextPage = function () 
+		{
+			vm.isTriggerNextUserCompanyPosts = true;
+		}
 		
 		//Fetch events hosted by this company
 		/*

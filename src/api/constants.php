@@ -76,6 +76,8 @@ if (!defined('EVENTREQ_CONST')) 		define('EVENTREQ_CONST','Sean Lim');
 if (!defined('FORGOTPASS_CONST')) 	define('FORGOTPASS_CONST','Sean Lim');
 
 
+if (!defined('TIMELINE_POSTS_LIMIT')) 	  define('TIMELINE_POSTS_LIMIT', 4);
+
 /*
  	//the defaults starts
 global $myStaticVars;
