@@ -100,5 +100,20 @@
 				$scope.isSlide = !$scope.isSlide;
 			}
 
+			$scope.triggerNextPage = function () {
+				if (vm.activeTab == 0) {
+					
+					vm.isTriggerNextPageAll = true;
+					
+				} else if (vm.activeTab == 1) {
+					
+					vm.isTriggerNextPageFollowed = true;
+					
+				} else if (vm.activeTab == 2) {
+					
+					vm.isTriggerNextPageMy = true;
+					
+				}
+			}
 		});
 })();

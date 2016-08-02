@@ -148,6 +148,17 @@
 				vm.busoppPost = false; // initial state is false, set to true if a business opportunity post
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
 				vm.editState = false; // initial state is false, set to true if edit post is clicked
+				vm.triggernextpage = false; // initial state is false, set to true if infinite scroll is triggered
+
+				$scope.$watch('vm.triggernextpage', function() {
+					if (vm.triggernextpage) {
+						console.log('Load Next Page');
+						/*------------------ insert load nextpage of posts service here ------------------*/
+						vm.triggernextpage = false;
+					} else {
+						console.log('triggernextpage is false')
+					}
+				});
 
 				$scope.loadTags = function(query) { //load tag Categories
 					 var categories = [];
@@ -483,6 +494,10 @@
 					vm.indexOfEditedPost = index;
 					vm.editState = true;
 				}
+
+				vm.nextPage = function() {
+					console.log('trigger nextpage');
+				}
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';
@@ -492,7 +507,8 @@
 				scope: {
 					poststype: '@',
 					istextareahidden: '=',
-					username: '='
+					username: '=',
+					triggernextpage: '=',
 				},
 				controller: controller,
 				controllerAs: 'vm',

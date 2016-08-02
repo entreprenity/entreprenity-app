@@ -29,7 +29,7 @@
 			<a class="button-toggle" ng-click="toggleMenu()"> <i class="fa fa-compass fa-2x" aria-hidden="true"></i></a>
 		</div>
 		<div id="page-content-wrapper">
-			<div class="container">
+			<div class="container"  infinite-scroll='triggerNextPage()' infinite-scroll-disabled='vm.isTriggerNextPageAll || vm.isTriggerNextPageFollowed || vm.isTriggerNextPageMy'  infinite-scroll-distance='0'>
 				<div class="row">
 					<div class="col-md-2">
 						<div id="myProfile" class="card">
@@ -85,15 +85,15 @@
 						</div>
 						<div>
 
-							<uib-tabset active="active">
+							<uib-tabset active="vm.activeTab">
 								<uib-tab index="0" heading="All Posts">
-									<news-feed  poststype="1" istextareahidden="false" username="userName"></news-feed>
+									<news-feed  poststype="1" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageAll"></news-feed>
 								</uib-tab>
 								<uib-tab index="1" heading="Followed Posts">
-									<news-feed  poststype="3" istextareahidden="false" username="userName"></news-feed>
+									<news-feed  poststype="3" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageFollowed"></news-feed>
 								</uib-tab>
 								<uib-tab index="2" heading="My Posts">
-									<news-feed  poststype="7" istextareahidden="false" username="userName"></news-feed>
+									<news-feed  poststype="7" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageMy	"></news-feed>
 								</uib-tab>
 							</uib-tabset>
 						</div>
