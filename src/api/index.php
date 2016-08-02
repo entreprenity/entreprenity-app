@@ -477,7 +477,7 @@ Flight::route('/getMembersPost', function()
 
 
 //38 Route to get timeline feeds of users I follow
-//May 30,2016
+//May 30,2016  (timelineServices.php)
 Flight::route('/getFollowedMembersPosts', function()
 {
    enable_cors();
@@ -488,7 +488,7 @@ Flight::route('/getFollowedMembersPosts', function()
 });
 
 //39 Route to get timeline feeds of all users
-//May 30,2016
+//May 30,2016 (timelineServices.php)
 Flight::route('/getAllPosts', function()
 {
    enable_cors();
@@ -499,7 +499,7 @@ Flight::route('/getAllPosts', function()
 });
 
 //40 Route to post a new comment for a timeline post
-//May 20,2016
+//May 20,2016 (timelineServices.php)
 Flight::route('/postThisComment', function()
 {
    enable_cors();
@@ -510,8 +510,8 @@ Flight::route('/postThisComment', function()
 });
 
 
-//41 Route to like a timeline post (timelineServices.php)
-//May 20,2016
+//41 Route to like a timeline post 
+//May 20,2016 (timelineServices.php)
 Flight::route('/likeThisPost', function()
 {
    enable_cors();
@@ -522,8 +522,8 @@ Flight::route('/likeThisPost', function()
 });
 
 
-//42 Route to unlike a timeline post (timelineServices.php)
-//May 20,2016
+//42 Route to unlike a timeline post
+//May 20,2016 (timelineServices.php)
 Flight::route('/unlikeThisPost', function()
 {
    enable_cors();

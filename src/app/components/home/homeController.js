@@ -70,7 +70,6 @@
 						vm.businessOpportunities = data;
 					});
 					
-					
 					//to get basic user information
 					myHomeService.getBasicUserInfo().success(function(data) {
 						vm.firstName 	= data.firstName;

@@ -1287,6 +1287,24 @@ function getAllPosts()
 	//the defaults ends
 	
 	$data= array();
+	
+	$limit = 3;
+	if(isset($_GET['page']))
+	{
+		$page = validate_input($_GET['page']);
+		if($page)
+		{
+			$start = ($page - 1) * $limit;
+		}
+		else
+		{
+			$start = 0;
+		}		
+	}
+	else
+	{
+		$start = 0;
+	}		
 		
 	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 			FROM entrp_user_timeline AS EUT
@@ -1294,7 +1312,8 @@ function getAllPosts()
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE EUT.status=1 AND EUT.business_opp!=1
-			ORDER BY EUT.created_at DESC";
+			ORDER BY EUT.created_at DESC 
+			LIMIT $start, $limit ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count

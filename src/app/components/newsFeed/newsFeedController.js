@@ -7,45 +7,46 @@
 			
 			return {
 				
-				getAllPosts: function() 
+				getAllPosts: function(pageNumber) 
 				{ 
-					return $http.get(baseUrl+ 'getAllPosts');
+					return $http.get(baseUrl+ 'getAllPosts?page='+pageNumber);
 				},
-				getMemberPosts: function(username) 
+				getMemberPosts: function(pageNumber,username) 
 				{
-					return $http.get(baseUrl+ 'getMembersPost?user='+username);
+					return $http.get(baseUrl+ 'getMembersPost?user='+username+'&page='+pageNumber);
 				},
-                getmyMemberPosts: function(username) 
+            getmyMemberPosts: function(pageNumber,username) 
 				{
-					return $http.get(baseUrl+ 'getmyTimeLinePost');
+					return $http.get(baseUrl+ 'getmyTimeLinePost?page='+pageNumber);
 				},
-				getFollowedMembersPosts: function(username) 
+				getFollowedMembersPosts: function(pageNumber,username) 
 				{
-					return $http.get(baseUrl+ 'getFollowedMembersPosts');
+					return $http.get(baseUrl+ 'getFollowedMembersPosts?page='+pageNumber);
 				},
+				getCompanyPosts: function(pageNumber,username) 
+				{
+					return $http.get(baseUrl+ 'getCompanyPosts?company='+username+'&page='+pageNumber);
+				},
+            getMyCompanyPosts: function(pageNumber,username) 
+				{
+					return $http.get(baseUrl+ 'getmyCompanyPosts?page='+pageNumber);
+				},				
+				getAllBusinessOpportunities:function(pageNumber) 
+				{
+					return $http.get(baseUrl + 'getAllBusinessOpportunities?page='+pageNumber);
+				},
+				getBusinessOpportunitiesForMe:function(pageNumber) 
+				{
+					return $http.get(baseUrl + 'getBusinessOpportunitiesForMe?page='+pageNumber);
+				},
+				
 				getBasicUserInfo:function()
 				{
 					return $http.get(baseUrl + 'getBasicUserInformation');
 				},
-				getCompanyPosts: function(username) 
-				{
-					return $http.get(baseUrl+ 'getCompanyPosts?company='+username);
-				},
-            getMyCompanyPosts: function(username) 
-				{
-					return $http.get(baseUrl+ 'getmyCompanyPosts');
-				},
 				getTagCategories:function() 
 				{
 					return $http.get(baseUrl + 'getTagCategories');
-				},
-				getAllBusinessOpportunities:function() 
-				{
-					return $http.get(baseUrl + 'getAllBusinessOpportunities');
-				},
-				getBusinessOpportunitiesForMe:function() 
-				{
-					return $http.get(baseUrl + 'getBusinessOpportunitiesForMe');
 				},
 				postCurrentPost: function(newPost,imgString,timelineId,ucUsername) 
 				{
@@ -149,10 +150,34 @@
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
 				vm.editState = false; // initial state is false, set to true if edit post is clicked
 				vm.triggernextpage = false; // initial state is false, set to true if infinite scroll is triggered
+				this.pageNumber = 1;
+				this.items = [];
+				this.busy = false;
 
 				$scope.$watch('vm.triggernextpage', function() {
 					if (vm.triggernextpage) {
 						console.log('Load Next Page');
+						//var postsType = vm.poststype;
+						//var username = vm.username;
+						//console.log(postsType +' '+ username);
+						vm.getPosts();
+						/*
+						
+							if (this.busy) return;
+							this.busy = true;
+							
+							newsFeedService.getMembers(this.pageNumber).success(function(data) {
+								var itemData = data;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									//itemData[i].followed = false;
+									this.items.push(itemData[i]);
+								}
+								
+								this.pageNumber++;
+								this.busy = false;
+							}.bind(this));
+							*/
 						/*------------------ insert load nextpage of posts service here ------------------*/
 						vm.triggernextpage = false;
 					} else {
@@ -187,35 +212,52 @@
 					{
 						//home page all posts
 						case '1':
-							newsFeedService.getAllPosts().success(function(data) {
+							if (this.busy) return;
+							this.busy = true;
+							/*
+							newsFeedService.getAllPosts(this.pageNumber).success(function(data) {
 								vm.posts = data;
 							});
+							*/
+							newsFeedService.getAllPosts(this.pageNumber).success(function(data) {
+								vm.posts = data;
+								var itemData = vm.posts;
+								
+								for (var i = 0; i < itemData.length; i++) {
+									//itemData[i].followed = false;
+									this.items.push(itemData[i]);
+								}
+								
+								this.pageNumber++;
+								this.busy = false;
+							}.bind(this));
+							
 						break;
 
 						//member profile timeline posts
 						case '2':
-							newsFeedService.getMemberPosts(username).success(function(data) {
+							newsFeedService.getMemberPosts(this.pageNumber,username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
 
 						//home page followed posts
 						case '3':
-							newsFeedService.getFollowedMembersPosts(username).success(function(data) {
+							newsFeedService.getFollowedMembersPosts(this.pageNumber,username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
 
 						//company profile timeline posts
 						case '4':
-							newsFeedService.getCompanyPosts(username).success(function(data) {
+							newsFeedService.getCompanyPosts(this.pageNumber,username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
 
 						//business all opportunities page
 						case '5':
-							newsFeedService.getAllBusinessOpportunities().success(function(data) {
+							newsFeedService.getAllBusinessOpportunities(this.pageNumber).success(function(data) {
 								vm.posts = data;
 								vm.busoppPost = true;
 							});
@@ -223,21 +265,21 @@
 						
 						//my company profile timeline posts
 						case '6':
-							newsFeedService.getMyCompanyPosts(username).success(function(data) {
+							newsFeedService.getMyCompanyPosts(this.pageNumber,username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
 						
 						//home page my posts timeline
 						case '7':
-							newsFeedService.getmyMemberPosts(username).success(function(data) {
+							newsFeedService.getmyMemberPosts(this.pageNumber,username).success(function(data) {
 								vm.posts = data;
 							});
 						break;
 						
 						//matched business opportunities
 						case '8':
-							newsFeedService.getBusinessOpportunitiesForMe().success(function(data) {
+							newsFeedService.getBusinessOpportunitiesForMe(this.pageNumber).success(function(data) {
 								vm.posts = data;
 								vm.busoppPost = true;
 							});
