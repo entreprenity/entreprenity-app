@@ -1633,7 +1633,8 @@ function likeThisPost()
 					$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
 			
 					if($my_session_id !== $postAuthorDetails['clientid'])
-					{				
+					{	
+						/*			
 						$myPreferences = getMyPreferences();
 					
 						if($myPreferences['likes'] == 'true')
@@ -1646,6 +1647,7 @@ function likeThisPost()
 														 );
 							$data['mail_send'] = send_notification_mail($notification_array);
 						}
+						*/
 						
 						$Host=$postAuthorDetails['clientid'];
 						$notify_type="like";
@@ -1676,7 +1678,8 @@ function likeThisPost()
 				$postAuthorDetails = fetchLoginInfoUsingPostid($postId);
 			
 				if($my_session_id !== $postAuthorDetails['clientid'])
-				{				
+				{
+					/*				
 					$myPreferences = getMyPreferences();
 				
 					if($myPreferences['likes'] == 'true')
@@ -1689,6 +1692,7 @@ function likeThisPost()
 													 );
 						$data['mail_send'] = send_notification_mail($notification_array);
 					}
+					*/
 					$Host=$postAuthorDetails['clientid'];
 					$notify_type="like";
 					$notify_to=$Host;
@@ -1798,6 +1802,7 @@ function postThisComment()
 			
 			if($my_session_id !== $postAuthorDetails['clientid'])
 			{
+				/*
 				$myPreferences = getMyPreferences();
 			
 				if($myPreferences['comments'] == 'true'){
@@ -1809,6 +1814,7 @@ function postThisComment()
 												 );
 					$data['mail_send'] = send_notification_mail($notification_array);
 				}
+				*/
 				
 				$Host=$postAuthorDetails['clientid'];
 				$notify_type="comment";

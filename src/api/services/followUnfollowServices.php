@@ -365,7 +365,7 @@ function followUser()
 		$post_id=0;
 		$notify_for="user";
 		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
-		
+		/*
 		$data['myPreferences'] = getMyPreferences();
 		
 		if($data['myPreferences']['followers'] == 'true'){
@@ -378,6 +378,7 @@ function followUser()
 										);
 			$data['mail_send'] = send_notification_mail($notification_array);
 		}
+		*/
 	}
 	else
 	{
@@ -447,7 +448,7 @@ function followThisUser()
 		$post_id=0;
 		$notify_for="user";
 		addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for);
-		
+		/*
 		$data['myPreferences'] = getMyPreferences();
 		
 		if($data['myPreferences']['followers'] == 'true'){
@@ -460,6 +461,7 @@ function followThisUser()
 										);
 			$data['mail_send'] = send_notification_mail($notification_array);
 		}
+		*/
 	}
 	else
 	{
