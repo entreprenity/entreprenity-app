@@ -822,6 +822,17 @@ Flight::route('/editTimelinePost', function()
 });
 
 
+//63 Route to change user password
+//August 03,2016 (userLoginServices.php)
+Flight::route('/resetPassword', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=resetPassword();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*

@@ -20,7 +20,8 @@
 		<script src="assets/lib/ng-infinite-scroll.min.js"></script>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA45LYlctoPmymw-O8YAzwkUTX6FqwNHnU&libraries=places,geometry"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-google-maps/2.0.11/angular-google-maps.js"></script>
-
+		<script src="https://code.angularjs.org/1.3.0-rc.2/angular-messages.js"></script>
+		
 		<script src="app/components/login/loginController.js"></script>
 		<script src="app/components/login/logoutController.js"></script>
 		<script src="app/common/headerController.js"></script>
@@ -45,6 +46,7 @@
 		<script src="app/components/externalservices/callAnswerController.js"></script>
 		<script src="app/components/externalservices/spacesController.js"></script>
 		<script src="app/components/busopp/busoppController.js"></script>
+		<script src="app/components/resetpassword/resetPasswordController.js"></script>
 
 		<script src='assets/lib/lodash.min.js'></script>
 		<script src='assets/lib/angular-simple-logger.min.js'></script>
@@ -60,7 +62,7 @@
 		<script src="assets/lib/angular-moment.min.js"></script>
 		<script src="assets/lib/angular-slider.min.js"></script>
 		<script src="assets/lib/range-picker.min.js"></script>
-
+		
 		<script src="app/app.js"></script>
 		<script src="app/AuthenticationService.js"></script>
 		<style type="text/css">
@@ -68,6 +70,26 @@
 			{
 			  width: 450px;
 			  height: 450px;
+			}
+			
+			.ng-invalid 
+			{
+			    border-color: red;
+			    outline-color: red;
+			}
+			
+			.ng-valid 
+			{
+			    border-color: green;
+			    outline-color: green;
+			}
+			
+			.messages 
+			{
+			  font-size: smaller;
+			  padding-top: 5px;
+			  padding-bottom: 10px;
+			  color: red;
 			}
 		</style>
 	</head>

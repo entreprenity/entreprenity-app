@@ -23,6 +23,7 @@
 	
 	angular.module('entreprenityApp', [
 		'ngRoute',
+		'ngMessages',
 		'ngAnimate',
 		'ngTouch',
 		'ui.bootstrap',
@@ -58,7 +59,7 @@
 		'entreprenityApp.spaces',
 		'entreprenityApp.eventPlaced',
 		'entreprenityApp.bussOpp',
-		//'entreprenityApp.imageUploadPostsCtrl'
+		'entreprenityApp.resetpassword'
 	])
 	.factory('AuthService2', ["$http", "$location", function($http, $location){
 	   //var vm = this;
@@ -218,20 +219,24 @@
 			resolve: {loggedIn: onlyLoggedIn},		
 			controllerAs: 'vm'
 		})
-        .when('/eventPlaced', {
+      .when('/eventPlaced', {
 			controller: 'eventPlacedController',
 			templateUrl: 'app/components/events/eventPlaced.html',
 			resolve: {loggedIn: onlyLoggedIn},		
 			controllerAs: 'vm'
 		})
-	
 		.when('/add-image-to-post', {
 			controller: 'imageUploadPostsCtrl',
 			templateUrl: 'app/components/modal/imageUploadPostsView.html',
 			resolve: {loggedIn: onlyLoggedIn},		
 			controllerAs: 'vm'
 		})
-	
+		.when('/resetpassword', {
+			controller: 'ResetpasswordController',
+			templateUrl: 'app/components/resetpassword/resetpasswordView.html',
+			resolve: {loggedIn: onlyLoggedIn},	
+			controllerAs: 'vm'
+		})
 		.otherwise({
 			redirectTo: '/login'
 		});

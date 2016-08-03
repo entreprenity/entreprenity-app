@@ -17,7 +17,7 @@
 					return $http.get(baseUrl + 'getEvents?page='+pageNumber);
 				},	
 				getLocations:function() {
-					return $http.get(baseUrl + 'getLocations');
+					return $http.get(baseUrl + 'getLocations',{cache: true});
 				},
 				postMemberFollow: function(memberId) 
 				{

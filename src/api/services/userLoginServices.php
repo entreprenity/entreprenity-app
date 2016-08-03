@@ -1,5 +1,52 @@
 <?php
 
+//Function to reset a user's password
+//August 03.2016
+function resetPassword()
+{
+	$data= array();
+	$data['msg']	=	"Unable to process the request";    
+	
+	$currentPassword=validate_input($_POST['currentPassword']);
+	$newPassword=validate_input($_POST['newPassword']);
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];	
+	if($my_session_id)
+	{
+		if($currentPassword != $newPassword)
+		{
+			$qry="SELECT clientid FROM entrp_login WHERE clientid=".$my_session_id." AND password='".md5($currentPassword)."' AND status=1 ";
+			$res=getData($qry);
+			$count_res=mysqli_num_rows($res);
+			if($count_res>0)
+			{
+				$qry2="UPDATE entrp_login SET password='".md5($newPassword)."' WHERE clientid=".$my_session_id." ";
+				if(setData($qry2))
+				{
+					$data['msg']	=	"Password successfully changed";  
+				}
+				else
+				{
+					$data['msg']	=	"Unable to process the request"; 
+				}			  
+			}
+			else
+			{
+				$data['msg']	=	"Current password submitted is wrong.";   
+			}		
+		}
+		else
+		{
+			$data['msg']	=	"Current and new password cannot be same.";   
+		}
+		
+
+		
+	}
+	return $data;
+}
+
 
 //Function to generate unique password token
 //July 22,2016
