@@ -29,7 +29,7 @@
 			<a class="button-toggle" ng-click="toggleMenu()"> <i class="fa fa-compass fa-2x" aria-hidden="true"></i></a>
 		</div>
 		<div id="page-content-wrapper">
-			<div class="container">
+			<div class="container" infinite-scroll='triggerNextPage()' infinite-scroll-disabled=''  infinite-scroll-distance='0'>
 				<div class="row">
 					<div class="col-md-2">
 						<div id="myProfile" class="card">
@@ -67,12 +67,12 @@
 					</div>
 					<div class="col-md-6">
 						<div>
-							<div id="busopp" infinite-scroll='triggerNextPage()' infinite-scroll-disabled='vm.isTriggerNextPageMatchedBO || vm.isTriggerNextPageOtherBO'  infinite-scroll-distance='0'>
+							<div id="busopp">
 						        <div class="title no-margin">
 						            <h3>Business Opportunities<i class="fa fa-briefcase fa-lg pull-right"></i></h3>
 
 						        </div>
-								<uib-tabset active="active">
+								<uib-tabset active="vm.activeTab">
 									<uib-tab index="0" heading="Matched Business Opportunities">
 										<news-feed poststype="8" istextareahidden="false" username="vm.userName" triggernextpage="vm.isTriggerNextPageMatchedBO"></news-feed>
 									</uib-tab>
