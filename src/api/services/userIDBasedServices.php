@@ -2,15 +2,108 @@
 
 /* Functions and services based on userid begins */
 
+//Function to get company description using company-user relationship
+//August 10,2016
+function getCompanyDescriptionUsingCompUserRelation($companyID)
+{
+	$companyDesc= '';
+ 	$qry="SELECT description
+			FROM company_profiles 
+			WHERE id=".$companyID."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$companyDesc			=	$row['description'];
+		}
+   	   	
+   }
+   return $companyDesc;
+}
+
+//Function to get company name using company-user relationship
+//August 10,2016
+function getCompanyNameUsingCompUserRelation($companyID)
+{
+	$companyN= '';
+ 	$qry="SELECT company_name
+			FROM company_profiles 
+			WHERE id=".$companyID."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$companyN			=	$row['company_name'];
+		}   	   	
+   }
+   return $companyN;
+
+}
+
+//Function to get company username using company-user relationship
+//August 10,2016
+function getCompanyUserNameUsingCompUserRelation($companyID)
+{
+	$companyUN= '';
+ 	$qry="SELECT company_username
+			FROM company_profiles 
+			WHERE id=".$companyID."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$companyUN			=	$row['company_username'];
+		}
+   	   	
+   }
+   return $companyUN;
+
+}
+
+//Function to get company id of a user from company-user relationship
+//August 10,2016
+function getCompanyIDFromCompUserRelation($userID)
+{
+	$companyid= '';
+ 	$qry="SELECT companyid
+			FROM entrp_company_members 
+			WHERE clientid=".$userID."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$companyid			=	$row['companyid'];
+		}
+   	   	
+   }
+   return $companyid;
+}
+
+
 //Function to fetch user image path based on user id
 //July 22,2016
+//August 10, 2016: Changes after implementing company-user relation
 function getCompanyProfilePicFromUserID($clientid)
 {
-
-	$avatar= '';
+	
+	$avatar= '';	
+	$companyID	=	getCompanyIDFromCompUserRelation($clientid);
+	//Earlier this query fetch using clientid
  	$qry="SELECT avatar
 			FROM company_profiles
-			WHERE clientid=".$clientid."
+			WHERE id=".$companyID."
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -193,11 +286,14 @@ function fetchEventDetailsBasedonEventTAG($eventTag)
 
 //Function to get company id from user id
 //June 15,2016
+//August 10, 2016: Changes after implementing company-user relation
 function getCompanyIDfromUserID($userID)
 {
 	//SELECT id FROM company_profiles WHERE clientid=1;
+	$companyID	=	getCompanyIDFromCompUserRelation($userID);
+	
 	$qry="SELECT id FROM company_profiles  
-			WHERE clientid='".$userID."' ";
+			WHERE id='".$companyID."' ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -920,6 +1016,7 @@ function fetch_company_categories($company_id)
 
 //Function to get a user's own company details based on user id
 //May 03,2016
+//August 10, 2016: Changes after implementing company-user relation
 function fetch_company_information_from_userid($clientid)
 {
 	//the defaults starts
@@ -935,13 +1032,22 @@ function fetch_company_information_from_userid($clientid)
 	//the defaults ends
 	
 	$data= array();
-
+	/*
 	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
 			FROM company_profiles
 			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
 			WHERE company_profiles.clientid=".$clientid."
 	      ";
+	*/
+	$companyID	=	getCompanyIDFromCompUserRelation($clientid);
+	$qry="SELECT company_profiles.*,
+			 		 location_info.location_desc
+			FROM company_profiles
+			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
+			WHERE company_profiles.id=".$companyID."
+	      ";
+	      
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -1103,6 +1209,7 @@ function user_followers($clientid)
 
 //Function to get user information based on id
 //May 03, 2016
+//August 10, 2016: Changes after implementing company-user relation
 //Sibling to viewUserProfile
 function fetch_user_information_from_id($clientid)
 {
@@ -1129,7 +1236,7 @@ function fetch_user_information_from_id($clientid)
 	LEFT JOIN company_profiles ON company_profiles.clientid=client_info.clientid
 	*/
 
-
+   /*
   $qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 		 client_profile.secondary_mobile,
@@ -1139,6 +1246,16 @@ function fetch_user_information_from_id($clientid)
 			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 			LEFT JOIN location_info ON location_info.id=client_profile.client_location
 			LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+			WHERE entrp_login.clientid=".$clientid."
+	      ";
+	 */
+	$qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
+			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
+			 		 client_profile.secondary_mobile,
+			 		 location_info.location_desc
+			FROM entrp_login
+			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+			LEFT JOIN location_info ON location_info.id=client_profile.client_location
 			WHERE entrp_login.clientid=".$clientid."
 	      ";
 	$res=getData($qry);
@@ -1179,13 +1296,15 @@ function fetch_user_information_from_id($clientid)
 			$data['mobile'] 		=  $row['mobile'];
 			$data['tel'] 			=  $row['secondary_mobile'];
 			$data['userName']			=	$row['username'];
-			$data['company']['companyName'] 		= $row['company_name'];
-			$data['company']['companyDesc'] 		= $row['company_name'];
 
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
 		}
 
+		$companyID	=	getCompanyIDFromCompUserRelation($clientid);
+		$data['company']['companyName'] 		= getCompanyNameUsingCompUserRelation($companyID);	
+		$data['company']['companyDesc'] 		= getCompanyDescriptionUsingCompUserRelation($companyID);	
+		
    	$data['skills'] 		= get_user_skill_sets($clientid);
    	$data['interests'] 	= get_user_interest_sets($clientid);
    	

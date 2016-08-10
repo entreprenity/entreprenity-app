@@ -102,7 +102,7 @@
 			};
 
 			Members.prototype.nextPage = function() {
-				console.log('vm.members.nextPage');
+				//console.log('vm.members.nextPage');
 				if (this.busy) return;
 				this.busy = true;
 				
@@ -119,7 +119,7 @@
 				}.bind(this));
 			};
 			return Members;
-			console.log(vm.members);
+			//console.log(vm.members);
 		})
 	
 		.factory('Companies', function(directoryService) {

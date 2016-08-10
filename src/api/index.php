@@ -868,8 +868,44 @@ function services_included()
 	require_once 'services/sectionServices.php'; 
 	require_once 'services/notificationServices.php'; 
 	require_once 'services/externalServices.php'; 
+	
+	
 }
 
+//Function to compress an image
+function compress($source, $destination, $quality) 
+{
+	$info = getimagesize($source);
+
+	if ($info['mime'] == 'image/jpeg') 
+		$image = imagecreatefromjpeg($source);
+
+	elseif ($info['mime'] == 'image/gif') 
+		$image = imagecreatefromgif($source);
+
+	elseif ($info['mime'] == 'image/png') 
+		$image = imagecreatefrompng($source);
+
+	imagejpeg($image, $destination, $quality);
+
+	return $destination;
+}
+
+
+//Function to cache an image
+function cacheThisImage($img)
+{
+	require_once 'externalLibraries/ImageCache.php';
+	$baseurl=base_url();
+	$imagecache = new ImageCache();
+	//$imagecache->cached_image_directory = $baseurl. 'entreprenity/api/cachedImages/';
+	$imagecache->cached_image_directory = dirname(__FILE__) . '/cachedImages';
+
+	$cached_src_one = $imagecache->cache($img);
+	//return $imagecache->cached_image_directory;
+	return $cached_src_one;
+
+}
 
 //Arshad
 //For base_url()
@@ -878,7 +914,7 @@ function base_url(){
 	$base_url .= "://".$_SERVER['HTTP_HOST'].'/'; //will give : http(s)://somewebsite.com/
 	
 	/*----- Want to change something then change it here ------*/
-	$base_url .= 'projects/entreprenity/#/'; 
+	//$base_url .= 'projects/entreprenity/#/'; 
 	
 	return $base_url;
 }
@@ -1139,6 +1175,7 @@ function getMemberFollowing()
 
 //Function to fetch basic user information
 //May 09,2016
+//August 10, 2016: Changes after implementing company-user relation
 function getBasicUserInformation()
 {
 	//the defaults starts
@@ -1161,12 +1198,20 @@ function getBasicUserInformation()
 	$userid=$my_session_id;
 	if($userid)
 	{
+			/*
 			$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,
 					 		 client_profile.avatar,client_profile.designation,client_profile.company_name,client_profile.cover_pic,
 					 		 company_profiles.company_username
 					FROM entrp_login
 					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
-					LEFT JOIN company_profiles ON entrp_login.clientid=company_profiles.clientid
+					//LEFT JOIN company_profiles ON entrp_login.clientid=company_profiles.clientid
+					WHERE entrp_login.clientid=".$userid."
+			      ";
+			 */
+			$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,
+					 		 client_profile.avatar,client_profile.designation,client_profile.company_name,client_profile.cover_pic 
+					FROM entrp_login
+					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 					WHERE entrp_login.clientid=".$userid."
 			      ";
 			$res=getData($qry);
@@ -1238,7 +1283,7 @@ function getBasicUserInformation()
    				{
    					$data['myOffice']				=	'';
    				}
-   				
+   				/*
    				if($row['company_username']!='')
    				{
    					$data['companyUserName']				=	$row['company_username'];
@@ -1247,7 +1292,11 @@ function getBasicUserInformation()
    				{
    					$data['companyUserName']				=	'';
    				}
-		   	}		   	   
+   				*/
+		   	}	
+		   	
+		   	$companyID	=	getCompanyIDFromCompUserRelation($userid);
+		   	$data['companyUserName']	=	getCompanyUserNameUsingCompUserRelation($companyID);	   	   
 		   }
 		   else
 		   {
@@ -1384,6 +1433,7 @@ function viewEventDetail()
 //April 22,2016
 //Updated on May 03, 2016: to fetch secondary mobile and designation
 //Updated May 11, 2016: To check if I follow this user or not
+//August 10, 2016: Changes after implementing company-user relation
 function viewUserProfile()
 {
 	//$clientid=validate_input($_GET['id']);
@@ -1413,7 +1463,8 @@ function viewUserProfile()
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends
 
-  $qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
+	/*
+   $qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
 			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
 			 		 client_profile.secondary_mobile,
 			 		 location_info.location_desc,
@@ -1422,6 +1473,17 @@ function viewUserProfile()
 			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 			LEFT JOIN location_info ON location_info.id=client_profile.client_location
 			LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+			WHERE entrp_login.clientid=".$clientid."
+	      ";
+	*/
+	
+	$qry="SELECT entrp_login.clientid,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.city,client_profile.country,client_profile.contact_email as email,
+			 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.website,client_profile.about_me,
+			 		 client_profile.secondary_mobile,
+			 		 location_info.location_desc
+			FROM entrp_login
+			LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+			LEFT JOIN location_info ON location_info.id=client_profile.client_location
 			WHERE entrp_login.clientid=".$clientid."
 	      ";
 	$res=getData($qry);
@@ -1463,14 +1525,16 @@ function viewUserProfile()
 			$data['email'] 		=  $row['email'];
 			$data['website'] 		=  $row['website'];
 			$data['mobile'] 		=  $row['mobile'];
-			$data['tel'] 			=  $row['secondary_mobile'];
-			
-			$data['company']['companyName'] 		= $row['company_name'];
-			$data['company']['companyDesc'] 		= $row['description'];
+			$data['tel'] 			=  $row['secondary_mobile'];			
 
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
 		}
+		
+		$companyID	=	getCompanyIDFromCompUserRelation($clientid);
+		   	
+		$data['company']['companyName'] 		= getCompanyNameUsingCompUserRelation($companyID);	
+		$data['company']['companyDesc'] 		= getCompanyDescriptionUsingCompUserRelation($companyID);	
 		   	
    	$data['skills'] 		= get_user_skill_sets($clientid);
    	$data['interests'] 	= get_user_interest_sets($clientid);

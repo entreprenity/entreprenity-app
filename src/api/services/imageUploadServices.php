@@ -16,11 +16,6 @@ function uploadTimelineImage($uploadImg,$uploadType)
 	$upAt=date('YmdHis');
 	
 	// $uploadType values
-	// 1- member profile pic
-   // 2- company profile pic
-	// 3- events poster
-	// 4- client profile cover photo
-	// 5- client company profile photo
 	// 6- timeline post pic
 	// 7- buss opp post pic
 
@@ -61,7 +56,10 @@ function uploadTimelineImage($uploadImg,$uploadType)
 		$filePath 	  = BUSSOPP_POST_PIC_UPL.'bussoppimg'.$my_session_username.$upAt.$extension;
 	}
 	
+	
 	$success = file_put_contents($filePath, $data);
+	//$compressThisImg= 'http://myvoffice.me/entreprenity/'.$fileName;
+	//$d = compress($compressThisImg, $fileName, 80);
 	$result  = $success ? 1 : 0;
 	
 	
@@ -76,7 +74,43 @@ function uploadTimelineImage($uploadImg,$uploadType)
 
 }
 
+/*
+function uploadTimelineImage($base64Img,$h,$w)
+{
+    $im = imagecreatefromstring($base64Img);
+    if ($im !== false) 
+    {
+        $width = imagesx($im);
+        $height = imagesy($im);
+        $r = $width / $height; // ratio of image
 
+        // calculating new size for maintain ratio of image
+        if ($w/$h > $r) 
+        {
+            $newwidth = $h*$r; 
+            $newheight = $h;
+        } else {
+            $newheight = $w/$r;
+            $newwidth = $w;
+        }
+
+        $dst = imagecreatetruecolor($newwidth, $newheight);
+        imagecopyresampled($dst, $im, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+        imagedestroy($im);
+
+        $fileName  = 'img'.date('Ymd').'.jpeg';
+        $filepath =  'folder/'.$fileName  ;
+        imagejpeg($dst,$filepath);
+
+        imagedestroy($dst);
+        return $fileName;
+    }
+    else
+    {
+        return "";
+    }
+}
+*/
 
 //Function to update user avatar, company avatar, event poster
 //May 06,2016

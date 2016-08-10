@@ -172,7 +172,7 @@ function getMembers()
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CI.clientid!=".$my_session_id."
 	      ORDER BY CI.clientid ASC 
-	      LIMIT $start, $limit 	      
+	      LIMIT  $start, $limit	      
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -219,6 +219,8 @@ function getMembers()
 			
 			if(!empty($row['avatar']))
       	{
+      		//$img= '../'.$row['avatar'];
+      		//$data[$i]['avatar']			=	cacheThisImage($img);
       		$data[$i]['avatar']			=	$row['avatar'];
       	}
       	else

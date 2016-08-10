@@ -157,13 +157,13 @@
 				$scope.$watch('vm.triggernextpage', function() {
 					if (vm.triggernextpage) 
 					{
-						console.log('Loading');
+						//console.log('Loading');
 						vm.getPosts();
 						vm.triggernextpage = false;
 					} 
 					else 
 					{
-						console.log('triggernextpage is false')
+						//console.log('triggernextpage is false')
 					}
 				});
 
@@ -575,7 +575,7 @@
 				}
 
 				vm.nextPage = function() {
-					console.log('trigger nextpage');
+					//console.log('trigger nextpage');
 				}
 			};
 		

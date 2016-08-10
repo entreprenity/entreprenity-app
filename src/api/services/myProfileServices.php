@@ -158,6 +158,7 @@ function getMyProfileDetails()
 	$userid=$my_session_id;
 	if($userid)
 	{
+			/*
 			$qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
 					 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.secondary_mobile,client_profile.website,client_profile.about_me,
 					 		 location_info.location_desc,
@@ -166,6 +167,15 @@ function getMyProfileDetails()
 					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
 					LEFT JOIN location_info ON location_info.id=client_profile.client_location
 					LEFT JOIN company_profiles ON company_profiles.clientid=entrp_login.clientid
+					WHERE entrp_login.clientid=".$userid."
+			      ";
+			*/
+			$qry="SELECT entrp_login.clientid,entrp_login.username,entrp_login.firstname,entrp_login.lastname,client_profile.city,client_profile.country,client_profile.contact_email,
+					 		 client_profile.avatar,client_profile.cover_pic,client_profile.designation,client_profile.mobile,client_profile.secondary_mobile,client_profile.website,client_profile.about_me,
+					 		 location_info.location_desc 
+					FROM entrp_login
+					LEFT JOIN client_profile ON entrp_login.clientid=client_profile.clientid
+					LEFT JOIN location_info ON location_info.id=client_profile.client_location
 					WHERE entrp_login.clientid=".$userid."
 			      ";
 			$res=getData($qry);

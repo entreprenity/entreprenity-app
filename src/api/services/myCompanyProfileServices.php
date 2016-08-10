@@ -86,6 +86,7 @@ function updateMyCompanyDetails()
 
 //Function to get a user's own company details
 //May 03,2016
+//August 10, 2016: Changes after implementing company-user relation
 function getMyCompanyProfileDetails()
 {
 	//the defaults starts
@@ -99,12 +100,12 @@ function getMyCompanyProfileDetails()
 	$events_default				= $events_default;
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends	
-	
-	
+		
 	$data= array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
-
+	$companyID	=	getCompanyIDFromCompUserRelation($my_session_id);
+	/*
 	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
 			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
 			 		 location_info.location_desc
@@ -112,6 +113,15 @@ function getMyCompanyProfileDetails()
 			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
 			WHERE company_profiles.clientid=".$my_session_id."
 	      ";
+	 */     
+	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
+			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
+			 		 location_info.location_desc
+			FROM company_profiles
+			LEFT JOIN location_info ON location_info.id=company_profiles.client_location
+			WHERE company_profiles.id=".$companyID."
+	      ";
+	       
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
 	if($count_res>0)
