@@ -103,55 +103,55 @@ function recommendedBusinessOpportunities()
 				}
 			}
 			
-             $postIdArrayStringUF = array_filter($postIdArrays);
+          $postIdArrayStringUF = array_filter($postIdArrays);
 		    if (!empty($postIdArrayStringUF)) 
-            {
-                 $postIdArrayString = implode(",", $postIdArrayStringUF);
-                $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+          {
+	          $postIdArrayString = implode(",", $postIdArrayStringUF);
+	          $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
 					FROM entrp_user_timeline AS EUT
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 					WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
 					ORDER BY EUT.created_at DESC LIMIT 3
-                    ";
-			$res=getData($qry);
-		   $count_res=mysqli_num_rows($res);
-		   $i=0; //to initiate count
-		   if($count_res>0)
-		   {
-		   	while($row=mysqli_fetch_array($res))
-		      {
-		      	$post_id														=	$row['post_id'];
-		      	
-		      	$data[$i]['post_id']										=	$row['post_id'];      	
-		      	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
-					$data[$i]['content']										=	$row['content'];
-					$data[$i]['image']										=	$row['post_img'];
-					$data[$i]['created_at']									=	$row['created_at'];
-					
-					$data[$i]['post_author']['id']						=	$row['clientid'];
-					$data[$i]['post_author']['firstName']				=	$row['firstname'];
-					$data[$i]['post_author']['lastName']				=	$row['lastname'];
-					if($row['avatar']!='')
-					{
-						$data[$i]['post_author']['avatar']				=	$row['avatar'];
-					}
-					else
-					{
-						$data[$i]['post_author']['avatar']				=	$member_default_avatar;
-					}
-		   				
-					$data[$i]['post_author']['position']				=	$row['designation'];
-					$data[$i]['post_author']['companyName']			=	$row['company_name'];
-					$data[$i]['post_author']['userName']				=	$row['username'];
-					$data[$i]['post_author']['location']				=	$row['location_desc'];
-		
-					$i++;
-		      }	
-		   }
+	                 ";
+				$res=getData($qry);
+			   $count_res=mysqli_num_rows($res);
+			   $i=0; //to initiate count
+			   if($count_res>0)
+			   {
+			   	while($row=mysqli_fetch_array($res))
+			      {
+			      	$post_id														=	$row['post_id'];
+			      	
+			      	$data[$i]['post_id']										=	$row['post_id'];      	
+			      	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
+						$data[$i]['content']										=	$row['content'];
+						$data[$i]['image']										=	$row['post_img'];
+						$data[$i]['created_at']									=	$row['created_at'];
+						
+						$data[$i]['post_author']['id']						=	$row['clientid'];
+						$data[$i]['post_author']['firstName']				=	$row['firstname'];
+						$data[$i]['post_author']['lastName']				=	$row['lastname'];
+						if($row['avatar']!='')
+						{
+							$data[$i]['post_author']['avatar']				=	$row['avatar'];
+						}
+						else
+						{
+							$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+						}
+			   				
+						$data[$i]['post_author']['position']				=	$row['designation'];
+						$data[$i]['post_author']['companyName']			=	$row['company_name'];
+						$data[$i]['post_author']['userName']				=	$row['username'];
+						$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+						$i++;
+			      }	
+			   }
                 
-            }
+         }
 				
 		}	
 	}

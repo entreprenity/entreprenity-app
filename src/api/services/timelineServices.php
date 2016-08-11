@@ -362,6 +362,7 @@ function getBusinessOpportunitiesForMe()
 			}
 			
           $postIdArrayStringUF = array_filter($postIdArrays);
+          //$postIdArrayStringUF = $postIdArrays;
 		    if (!empty($postIdArrayStringUF)) 
           {
             $postIdArrayString = implode(",", $postIdArrayStringUF);
@@ -407,7 +408,7 @@ function getBusinessOpportunitiesForMe()
 						
 						$post_by														=	$row['posted_by'];   
 						$companyId													=	getCompanyIDfromUserID($post_by);
-						$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyID);
+						$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 
 			
 						$i++;
@@ -1251,6 +1252,7 @@ function getThisPost()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//August 11,2016: Added array empty check
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -1293,62 +1295,66 @@ function getFollowedMembersPosts()
 	$myUserId	= $my_session_id;
 	
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
-	$usersIFollowString = implode(",", $usersIFollow);
-		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
-			FROM entrp_user_timeline AS EUT
-			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
-			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
-			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
-			ORDER BY EUT.created_at DESC 
-			LIMIT $start, $limit";
-	$res=getData($qry);
-   $count_res=mysqli_num_rows($res);
-   $i=0; //to initiate count
-   if($count_res>0)
-   {
-   	while($row=mysqli_fetch_array($res))
-      {
-      	$post_id														=	$row['post_id'];
-      	
-      	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
-			$data[$i]['image']										=	$row['post_img'];
-			$data[$i]['created_at']									=	$row['created_at'];
-			$data[$i]['bussOpp']										=	$row['business_opp'];
-			$data[$i]['post_author']['id']						=	$row['clientid'];
-			$data[$i]['post_author']['firstName']				=	$row['firstname'];
-			$data[$i]['post_author']['lastName']				=	$row['lastname'];
-			if($row['avatar']!='')
-			{
-				$data[$i]['post_author']['avatar']				=	$row['avatar'];
-			}
-			else
-			{
-				$data[$i]['post_author']['avatar']				=	$member_default_avatar;
-			}
-   				
-			$data[$i]['post_author']['position']				=	$row['designation'];
-			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
-			$data[$i]['post_author']['userName']				=	$row['username'];
-			$data[$i]['post_author']['location']				=	$row['location_desc'];
+	
+	if (!empty($usersIFollow)) 
+	{
+		$usersIFollowString = implode(",", $usersIFollow);
 			
-			$post_by														=	$row['posted_by'];   
-			$companyId													=	getCompanyIDfromUserID($post_by);
-			$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
-			
-			$data[$i]['isLiked']										= doILikeThisPost($post_id);
-			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
-			$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
-			$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
-			$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
-			$data[$i]['comments']									= userCommentsForThisPost($post_id);
-			
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   $i=0; //to initiate count
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {
+	      	$post_id														=	$row['post_id'];
+	      	
+	      	$data[$i]['post_id']										=	$row['post_id'];      	
+				$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+				$data[$i]['image']										=	$row['post_img'];
+				$data[$i]['created_at']									=	$row['created_at'];
+				$data[$i]['bussOpp']										=	$row['business_opp'];
+				$data[$i]['post_author']['id']						=	$row['clientid'];
+				$data[$i]['post_author']['firstName']				=	$row['firstname'];
+				$data[$i]['post_author']['lastName']				=	$row['lastname'];
+				if($row['avatar']!='')
+				{
+					$data[$i]['post_author']['avatar']				=	$row['avatar'];
+				}
+				else
+				{
+					$data[$i]['post_author']['avatar']				=	$member_default_avatar;
+				}
+	   				
+				$data[$i]['post_author']['position']				=	$row['designation'];
+				//$data[$i]['post_author']['companyName']			=	$row['company_name'];
+				$data[$i]['post_author']['userName']				=	$row['username'];
+				$data[$i]['post_author']['location']				=	$row['location_desc'];
+				
+				$post_by														=	$row['posted_by'];   
+				$companyId													=	getCompanyIDfromUserID($post_by);
+				$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
+				
+				$data[$i]['isLiked']										= doILikeThisPost($post_id);
+				$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+				$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+				$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+				$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+				$data[$i]['comments']									= userCommentsForThisPost($post_id);				
+	
+				$i++;
+	      }	
+	   }		
+	}
 
-			$i++;
-      }	
-   }
 	return $data;	
 
 	
