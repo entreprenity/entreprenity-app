@@ -352,7 +352,8 @@
                 opened: false
             };
 			$scope.dateDisplayFormat = 'dd-MMMM-yyyy';
-
+			
+			/*
 			// Time Range Objects and Functions (angular dateTimeRangePicker)
 			// show only time slider
 			// config for timerangepicker
@@ -373,12 +374,14 @@
 				//vm.eventEndTime = $scope.timeRangePicker.time.to;
 				vm.eventEndTime = data.to;
 			};
+			*/
 
 			// Time Picker Objects and Functions (angular ui bootstrap datepicker)
-			$scope.mytime = new Date();
+			var now = new Date();
+			var oneHourLater = new Date(now.getTime() + (1*1000*60*60));
 
-			$scope.hstep = 1;
-			$scope.mstep = 15;
+			vm.eventStartTime = now;
+			vm.eventEndTime = oneHourLater;
 
 			$scope.options = {
 				hstep: [1, 2, 3],
@@ -398,11 +401,12 @@
 			};
 
 			$scope.changed = function () {
-				$log.log('Time changed to: ' + $scope.mytime);
+				//$log.log('Time changed to: ' + $scope.mytime);
 			};
 
 			$scope.clear = function() {
-				$scope.mytime = null;
+				vm.eventStartTime = null;
+				vm.eventEndTime = null;
 			};
         });
 })();

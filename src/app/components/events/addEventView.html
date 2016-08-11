@@ -31,8 +31,17 @@
                         </span>
                         </p>
                     </div>
-                    <div>
-                        <div rg-range-picker="timeRangePicker" on-time-change="whenTimeChange" labels="myDatetimeLabels" ></div>
+                    <div class="clearfix">
+                        <br>
+                       <!-- <div rg-range-picker="timeRangePicker" on-time-change="whenTimeChange" labels="myDatetimeLabels" ></div> -->
+                    </div>
+                    <div class="col-sm-6" style="text-align: center">
+                        <label>Start Time</label>
+                        <uib-timepicker ng-model="vm.eventStartTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></uib-timepicker>
+                    </div>
+                    <div class="col-sm-6" style="text-align: center">
+                        <label>End Time</label>
+                        <uib-timepicker ng-model="vm.eventEndTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></uib-timepicker>
                     </div>
                     <span ng-show="addEventForm.eventDate.$dirty && addEventForm.eventDate.$error.required" class="help-block">{{getError(addEventForm.eventDate.$error, 'Event Date')}}</span>
                 </div>
@@ -68,10 +77,5 @@
 
             <hr>
         </form>
-
-        <h3>UPLOAD IMAGE</h3>
-
-        <uib-timepicker ng-model="mytime" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></uib-timepicker>
-
     </div>
 </div>
