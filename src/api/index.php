@@ -1274,7 +1274,7 @@ function getBasicUserInformation()
    				{
    					$data['position']				=	'';
    				}
-   				
+   				/*
    				if($row['company_name']!='')
    				{
    					$data['myOffice']				=	$row['company_name'];
@@ -1283,7 +1283,7 @@ function getBasicUserInformation()
    				{
    					$data['myOffice']				=	'';
    				}
-   				/*
+   				
    				if($row['company_username']!='')
    				{
    					$data['companyUserName']				=	$row['company_username'];
@@ -1296,7 +1296,8 @@ function getBasicUserInformation()
 		   	}	
 		   	
 		   	$companyID	=	getCompanyIDFromCompUserRelation($userid);
-		   	$data['companyUserName']	=	getCompanyUserNameUsingCompUserRelation($companyID);	   	   
+		   	$data['companyUserName']	=	getCompanyUserNameUsingCompUserRelation($companyID);	
+		   	$data['myOffice']				=  getCompanyNameUsingCompUserRelation($companyID);	   
 		   }
 		   else
 		   {

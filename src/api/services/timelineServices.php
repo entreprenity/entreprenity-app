@@ -289,6 +289,8 @@ function deleteTimlinePost()
 //Function to fetch matching business opportunities
 //July 16,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -363,7 +365,7 @@ function getBusinessOpportunitiesForMe()
 		    if (!empty($postIdArrayStringUF)) 
           {
             $postIdArrayString = implode(",", $postIdArrayStringUF);
-            $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+            $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -399,9 +401,14 @@ function getBusinessOpportunitiesForMe()
 						}
 			   				
 						$data[$i]['post_author']['position']				=	$row['designation'];
-						$data[$i]['post_author']['companyName']			=	$row['company_name'];
+						//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 						$data[$i]['post_author']['userName']				=	$row['username'];
 						$data[$i]['post_author']['location']				=	$row['location_desc'];
+						
+						$post_by														=	$row['posted_by'];   
+						$companyId													=	getCompanyIDfromUserID($post_by);
+						$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyID);
+
 			
 						$i++;
 			      }	
@@ -418,6 +425,8 @@ function getBusinessOpportunitiesForMe()
 //Function to refetch a single timeline post
 //July 14,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function refetchThisPost($post_id)
 {
 	//the defaults starts
@@ -444,7 +453,7 @@ function refetchThisPost($post_id)
 	if($posted_by==$my_session_id)
 	{
 		//This post is mine. I'm the author
-		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -475,9 +484,13 @@ function refetchThisPost($post_id)
 				}
 	   				
 				$data['post_author']['position']				=	$row['designation'];
-				$data['post_author']['companyName']			=	$row['company_name'];
+				//$data['post_author']['companyName']			=	$row['company_name'];
 				$data['post_author']['userName']				=	$row['username'];
 				$data['post_author']['location']				=	$row['location_desc'];
+				
+				$post_by												=	$row['posted_by'];   
+				$companyId											=	getCompanyIDfromUserID($post_by);
+				$data['post_author']['companyName'] 		=  getCompanyNameUsingCompUserRelation($companyID);
 				
 				$data['isLiked']									= doILikeThisPost($post_id);
 				$data['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -498,6 +511,8 @@ function refetchThisPost($post_id)
 //Function to refetch a company timeline post based on company username
 //July 14,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function refetchCompanyPosts($companyUserName)
 {
 	//the defaults starts
@@ -521,10 +536,10 @@ function refetchCompanyPosts($companyUserName)
 	$companyId=getCompanyIdfromCompanyUserName($companyUserName);
 
 	$companyMembers= getAllCompanyMemberIDs($companyId);
-	//$companyMembersString = implode(",", $companyMembers);
-	$companyMembersString = '1,2,3';
+	$companyMembersString = implode(",", $companyMembers);
+	//$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -558,9 +573,13 @@ function refetchCompanyPosts($companyUserName)
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyID);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -579,6 +598,8 @@ function refetchCompanyPosts($companyUserName)
 //Function to refetch timeline posts of a member's profile
 //July 14,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function refetchMemberNewsFeed($username)
 {
 	//the defaults starts
@@ -597,7 +618,7 @@ function refetchMemberNewsFeed($username)
    
 	$my_id	= getUserIdfromUserName($username);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by 
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
@@ -631,9 +652,14 @@ function refetchMemberNewsFeed($username)
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyID);
+
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -653,6 +679,8 @@ function refetchMemberNewsFeed($username)
 //Function to fetch all business opportunities
 //June 15,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getAllBusinessOpportunities()
 {
 	//the defaults starts
@@ -687,7 +715,7 @@ function getAllBusinessOpportunities()
 		$start = 0;
 	}	
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -722,9 +750,14 @@ function getAllBusinessOpportunities()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -770,7 +803,7 @@ function postABusinessOpportunity()
 {
 	$data= array();
 	$categories=array();
-    $post_img='';
+   $post_img='';
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	
@@ -907,6 +940,8 @@ function postABusinessOpportunity()
 //Function to fetch my company timeline post based on company username
 //June 13,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getmyCompanyPosts()
 {
 	//the defaults starts
@@ -950,10 +985,10 @@ function getmyCompanyPosts()
 	$companyId=getCompanyIDfromUserID($my_session_id);
 
 	$companyMembers= getAllCompanyMemberIDs($companyId);
-	//$companyMembersString = implode(",", $companyMembers);
-	$companyMembersString = '1,2,3';
+	$companyMembersString = implode(",", $companyMembers);
+	//$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -988,9 +1023,13 @@ function getmyCompanyPosts()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -1010,6 +1049,8 @@ function getmyCompanyPosts()
 //Function to fetch a company timeline post based on company username
 //June 13,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getCompanyPosts()
 {
 	//the defaults starts
@@ -1054,10 +1095,10 @@ function getCompanyPosts()
 	$companyId=getCompanyIdfromCompanyUserName($companyUserName);
 
 	$companyMembers= getAllCompanyMemberIDs($companyId);
-	//$companyMembersString = implode(",", $companyMembers);
-	$companyMembersString = '1,2,3';
+	$companyMembersString = implode(",", $companyMembers);
+	//$companyMembersString = '1,2,3';
 	
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -1092,9 +1133,13 @@ function getCompanyPosts()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -1113,6 +1158,8 @@ function getCompanyPosts()
 //Function to fetch a single timeline post
 //June 08,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getThisPost()
 {
 	//the defaults starts
@@ -1142,7 +1189,7 @@ function getThisPost()
 	if($posted_by==$my_session_id)
 	{
 		//This post is mine. I'm the author
-		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -1173,9 +1220,13 @@ function getThisPost()
 				}
 	   				
 				$data['post_author']['position']				=	$row['designation'];
-				$data['post_author']['companyName']			=	$row['company_name'];
+				//$data['post_author']['companyName']			=	$row['company_name'];
 				$data['post_author']['userName']				=	$row['username'];
 				$data['post_author']['location']				=	$row['location_desc'];
+				
+				$post_by												=	$row['posted_by'];   
+				$companyId											=	getCompanyIDfromUserID($post_by);
+				$dat['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
 				
 				$data['isLiked']									= doILikeThisPost($post_id);
 				$data['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -1198,6 +1249,8 @@ function getThisPost()
 //June 06, 2016: Added location (client centre location)
 //July 10,2016: temp fix- user id equal session id.
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -1242,7 +1295,7 @@ function getFollowedMembersPosts()
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
 	$usersIFollowString = implode(",", $usersIFollow);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -1277,9 +1330,13 @@ function getFollowedMembersPosts()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -1366,6 +1423,8 @@ function getFollowedMembersPosts()
 //May 30,2016
 //June 06,2016: Added user location (centre location)
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getAllPosts()
 {
 	//the defaults starts
@@ -1400,7 +1459,7 @@ function getAllPosts()
 		$start = 0;
 	}		
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -1435,9 +1494,13 @@ function getAllPosts()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -2005,6 +2068,7 @@ function postThisComment()
 
 //Function to fetch users who liked this comment
 //May 19,2016
+//August 11, 2016: Changes after implementing company-user relation
 function usersWhoLikedThisComment($commentId)
 {
 
@@ -2097,6 +2161,9 @@ function usersWhoLikedThisComment($commentId)
 					$data[$i]['position']			=	'';
 				}
 				
+				$companyId								=	getCompanyIDfromUserID($data[$i]['id']);
+				$data[$i]['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
+				/*
 				if($row['company_name']!='')
 				{
 					$data[$i]['companyName']		=	$row['company_name'];
@@ -2105,6 +2172,7 @@ function usersWhoLikedThisComment($commentId)
 				{
 					$data[$i]['companyName']		=	'';
 				}
+				*/
 				$i++;
 	   	}		   	   
 	   }
@@ -2173,6 +2241,7 @@ function howManyCommentsThisPostReceived($post_id)
 
 //Function to fetch users who commented on this timeline post
 //May 19,2016
+//August 11, 2016: Changes after implementing company-user relation
 function usersWhoCommentedThisPost($post_id)
 {
 	/*
@@ -2278,6 +2347,9 @@ function usersWhoCommentedThisPost($post_id)
 					$data[$i]['position']			=	'';
 				}
 				
+				$companyId								=	getCompanyIDfromUserID($data[$i]['id']);
+				$data[$i]['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
+				/*
 				if($row['company_name']!='')
 				{
 					$data[$i]['companyName']		=	$row['company_name'];
@@ -2286,6 +2358,7 @@ function usersWhoCommentedThisPost($post_id)
 				{
 					$data[$i]['companyName']		=	'';
 				}
+				*/
 				$i++;
 	   	}		   	   
 	   }
@@ -2308,6 +2381,8 @@ function usersWhoCommentedThisPost($post_id)
 //May 19,2016
 //June 06,2016: Added user location (centre location)
 //June 14,2016: Sorted comments based on datetime posted
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function userCommentsForThisPost($post_id)
 {
 	
@@ -2334,7 +2409,7 @@ function userCommentsForThisPost($post_id)
 	$i=0;
    
 	$data= array();
-	$qry="SELECT ETC.post_comments_id,ETC.post_id,ETC.comment,ETC.commented_by,ETC.commented_at,
+	$qry="SELECT ETC.post_comments_id,ETC.post_id,ETC.comment,ETC.commented_by,ETC.commented_at, 
 			EP.firstname,EP.lastname,EP.username,
 			CP.avatar,CP.designation,CP.company_name,LI.location_desc
 			FROM entrp_user_timeline_post_comments AS ETC
@@ -2369,10 +2444,14 @@ function userCommentsForThisPost($post_id)
 				$data[$i]['comment_author']['avatar']		=	$member_default_avatar;
 			} 
 			
-			$data[$i]['comment_author']['location']				=	$row['location_desc'];
+			$data[$i]['comment_author']['location']		=	$row['location_desc'];
 			$data[$i]['comment_author']['position']		=	$row['designation'];
-			$data[$i]['comment_author']['companyName']	=	$row['company_name'];
+			//$data[$i]['comment_author']['companyName']	=	$row['company_name'];
 			$data[$i]['comment_author']['userName']		=	$row['username'];
+			
+			$commented_by											=	$row['commented_by']; 
+			$companyId												=	getCompanyIDfromUserID($commented_by);
+			$data[$i]['comment_author']['companyName']	=  getCompanyNameUsingCompUserRelation($companyId);
 			 			
 			$i++;
 		}		
@@ -2444,6 +2523,7 @@ function doILikeThisPost($postid)
 
 //Function to fetch users who like this timeline post
 //May 19,2016
+//August 11, 2016: Changes after implementing company-user relation
 function usersWhoLikesThisPost($post_id)
 {
 	//SELECT liked_user_ids FROM entrp_user_timeline_post_likes WHERE post_id=1
@@ -2538,6 +2618,9 @@ function usersWhoLikesThisPost($post_id)
 					$data[$i]['position']			=	'';
 				}
 				
+				$companyId								=	getCompanyIDfromUserID($data[$i]['id']);
+				$data[$i]['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
+				/*
 				if($row['company_name']!='')
 				{
 					$data[$i]['companyName']		=	$row['company_name'];
@@ -2546,6 +2629,7 @@ function usersWhoLikesThisPost($post_id)
 				{
 					$data[$i]['companyName']		=	'';
 				}
+				*/
 				$i++;
 	   	}		   	   
 	   }
@@ -2593,6 +2677,8 @@ function howManyLikesThisPostReceived($post_id)
 //Function to fetch myprofile/my timeline posts to show in home and my profile
 //July 09,2016
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getMyOwnNewsFeed()
 {
 	//the defaults starts
@@ -2632,7 +2718,7 @@ function getMyOwnNewsFeed()
 	//$my_id	= getUserIdfromUserName($username);
 	$my_id	=$my_session_id;
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
@@ -2668,9 +2754,13 @@ function getMyOwnNewsFeed()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by										=	$row['posted_by'];   
+			$companyId									=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] = getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -2693,6 +2783,8 @@ function getMyOwnNewsFeed()
 //May 18,2016
 //June 06, 2016: Added location (client centre location)
 //July 19, 2016: fetch buss opp flag
+//August 11, 2016: Fetch post_by of timeline post
+//August 11, 2016: Changes after implementing company-user relation
 function getMyNewsFeed()
 {
 	//the defaults starts
@@ -2730,7 +2822,7 @@ function getMyNewsFeed()
    $username=validate_input($_GET['user']);
 	$my_id	= getUserIdfromUserName($username);
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc 
+	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
@@ -2766,9 +2858,13 @@ function getMyNewsFeed()
 			}
    				
 			$data[$i]['post_author']['position']				=	$row['designation'];
-			$data[$i]['post_author']['companyName']			=	$row['company_name'];
+			//$data[$i]['post_author']['companyName']			=	$row['company_name'];
 			$data[$i]['post_author']['userName']				=	$row['username'];
 			$data[$i]['post_author']['location']				=	$row['location_desc'];
+			
+			$post_by														=	$row['posted_by'];   
+			$companyId													=	getCompanyIDfromUserID($post_by);
+			$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);

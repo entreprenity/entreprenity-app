@@ -347,7 +347,6 @@ function getCompanies()
 //June 22,2016: added WHERE clause
 function getEvents()
 {
-
 	//the defaults starts
 	global $myStaticVars;
 	extract($myStaticVars);  // make static vars local
