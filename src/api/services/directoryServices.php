@@ -129,7 +129,8 @@ function addNewEvent()
 }
 
 //Function to fetch members directory
-// April 13,2015
+//April 13,2015
+//August 11, 2016: Changes after implementing company-user relation
 function getMembers()
 {	
 	//the defaults starts
@@ -237,6 +238,9 @@ function getMembers()
       		$data[$i]['position']		=	"";
       	}
 			
+			$companyId							=	getCompanyIDfromUserID($data[$i]['id']);
+			$data[$i]['companyName'] 		= getCompanyNameUsingCompUserRelation($companyId);
+			/*
 			if(!empty($row['company_name']))
       	{
       		$data[$i]['companyName']	=	$row['company_name'];
@@ -245,6 +249,7 @@ function getMembers()
       	{
       		$data[$i]['companyName']	=	"";
       	}
+			*/
 			
 			if(!empty($row['city']))
       	{
