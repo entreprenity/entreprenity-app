@@ -276,16 +276,23 @@
                 if (isValid)
                 {
                 	 //alert('i am valid');
-                	if(vm.name && vm.eventCategory && vm.description && vm.eventDate && vm.eventStartTime && vm.eventEndTime && vm.source_point && vm.src_lat && vm.src_long && vm.eventCity)
+                	 //&& vm.eventStartTime && vm.eventEndTime
+                	if(vm.name && vm.eventCategory && vm.description && vm.eventDate  && vm.source_point && vm.src_lat && vm.src_long && vm.eventCity)
                 	{
+                		var startTime = new Date(vm.eventStartTime);
+							var eventstartTime = startTime.getHours()+':'+startTime.getMinutes()+':'+startTime.getSeconds();
+							
+							var endTime = new Date(vm.eventEndTime);
+							var eventendTime = endTime.getHours()+':'+endTime.getMinutes()+':'+endTime.getSeconds();
+							
 	                	var dataPost = 
 	                			{
 	                				eventName			: vm.name,
 	                				eventCategory		: vm.eventCategory,
 	                				eventDescription	: vm.description,
 	                				eventDate			: vm.eventDate,
-	                				eventStartTime		: vm.eventStartTime,
-	                				eventEndTime		: vm.eventEndTime,
+	                				eventStartTime		: eventstartTime,
+	                				eventEndTime		: eventendTime,
 	                				eventLocation		: vm.source_point,
 	                				eventLocLat			: vm.src_lat,
 	                				eventLocLong		: vm.src_long,

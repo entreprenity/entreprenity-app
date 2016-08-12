@@ -37,11 +37,11 @@
                     </div>
                     <div class="col-sm-6" style="text-align: center">
                         <label>Start Time</label>
-                        <uib-timepicker ng-model="vm.eventStartTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></uib-timepicker>
+                        <uib-timepicker ng-model="vm.eventStartTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false" show-seconds="false" second-step="30" ></uib-timepicker>
                     </div>
                     <div class="col-sm-6" style="text-align: center">
                         <label>End Time</label>
-                        <uib-timepicker ng-model="vm.eventEndTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="ismeridian"></uib-timepicker>
+                        <uib-timepicker ng-model="vm.eventEndTime" ng-change="changed()" hour-step="1" minute-step="1" show-meridian="false" show-seconds="false" second-step="30"></uib-timepicker>
                     </div>
                     <span ng-show="addEventForm.eventDate.$dirty && addEventForm.eventDate.$error.required" class="help-block">{{getError(addEventForm.eventDate.$error, 'Event Date')}}</span>
                 </div>
