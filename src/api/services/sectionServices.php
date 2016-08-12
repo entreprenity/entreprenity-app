@@ -51,6 +51,7 @@ function getAllBusinessOpportunityTags()
 
 //Function to fetch business opportunities (as a section) to show in home page
 //June 29,2016
+//August 12, 2016: Changes after implementing company-user relation
 function recommendedBusinessOpportunities()
 {
 	//the defaults starts
@@ -143,9 +144,13 @@ function recommendedBusinessOpportunities()
 						}
 			   				
 						$data[$i]['post_author']['position']				=	$row['designation'];
-						$data[$i]['post_author']['companyName']			=	$row['company_name'];
+						
 						$data[$i]['post_author']['userName']				=	$row['username'];
 						$data[$i]['post_author']['location']				=	$row['location_desc'];
+						
+						$post_by														=	$row['clientid'];  
+						$companyId													=	getCompanyIDfromUserID($post_by);
+						$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 						$i++;
 			      }	
@@ -290,6 +295,7 @@ function getMostTimelinePostPublishers()
 
 //Function to fetch top contributors from the community
 //June 02,2016
+//August 12, 2016: Changes after implementing company-user relation
 function getTopContributors()
 {
 	
@@ -513,6 +519,7 @@ function getTopContributors()
       		$data[$i]['position']		=	"";
       	}
 			
+			/*
 			if(!empty($row['company_name']))
       	{
       		$data[$i]['company']	=	$row['company_name'];
@@ -521,6 +528,11 @@ function getTopContributors()
       	{
       		$data[$i]['company']	=	"";
       	}
+      	*/
+      	
+      	$post_by							=	$row['clientid'];   
+			$companyId						=	getCompanyIDfromUserID($post_by);
+			$data[$i]['company']			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			if(!empty($row['city']))
       	{
@@ -678,6 +690,7 @@ function getLatestEvents()
 
 //Function to fetch newly registered members list
 //April 21,2016
+//August 12, 2016: Changes after implementing company-user relation
 function getNewMembers()
 {
 	//the defaults starts
@@ -771,7 +784,7 @@ function getNewMembers()
       	{
       		$data[$i]['position']		=	"";
       	}
-			
+			/*
 			if(!empty($row['company_name']))
       	{
       		$data[$i]['company']	=	$row['company_name'];
@@ -780,6 +793,10 @@ function getNewMembers()
       	{
       		$data[$i]['company']	=	"";
       	}
+      	*/
+      	$post_by							=	$row['clientid'];   
+			$companyId						=	getCompanyIDfromUserID($post_by);
+			$data[$i]['company']			=  getCompanyNameUsingCompUserRelation($companyId);
 			
 			if(!empty($row['city']))
       	{

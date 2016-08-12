@@ -427,6 +427,7 @@ function getAllUserIDsIFollow($myUserId)
 
 //Function to get a company's follower list
 //May 13,.2016
+//August 12, 2016: Changes after implementing company-user relation
 function getThisCompanyfollowerObjects($companyid)
 {
 	//the defaults starts
@@ -482,7 +483,11 @@ function getThisCompanyfollowerObjects($companyid)
 			 
 			
 			$data[$i]['position']						=	$row['designation'];
-			$data[$i]['company']['companyName']		=	$row['company_name'];
+			//$data[$i]['company']['companyName']		=	$row['company_name'];
+			
+			$post_by											=	$row['clientid'];   
+			$companyId										=	getCompanyIDfromUserID($post_by);
+			$data[$i]['company']['companyName'] 	=  getCompanyNameUsingCompUserRelation($companyId);
 			 			
 			$i++;
 		}		
@@ -494,6 +499,7 @@ function getThisCompanyfollowerObjects($companyid)
 
 //Function to get a user's follower objects
 //May 13,2016
+//August 12, 2016: Changes after implementing company-user relation
 function getThisUserfollowerObjects($clientid)
 {
 	//the defaults starts
@@ -548,7 +554,11 @@ function getThisUserfollowerObjects($clientid)
 			 
 			
 			$data[$i]['position']						=	$row['designation'];
-			$data[$i]['company']['companyName']		=	$row['company_name'];
+			//$data[$i]['company']['companyName']		=	$row['company_name'];
+			
+			$post_by											=	$row['clientid'];   
+			$companyId										=	getCompanyIDfromUserID($post_by);
+			$data[$i]['company']['companyName']		=  getCompanyNameUsingCompUserRelation($companyId);
 			 			
 			$i++;
 		}		
