@@ -17,6 +17,12 @@
 								</div>
 								<div class="clearfix"></div>
 								<div class="post-content">{{vm.npost.content}}</div>
+								<div  class="post-content image"><img ng-src="{{vm.npost.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
+								<div class="post-content category-tags" ng-if="vm.npost.bussOpp == 1">
+									<ul>
+										<li ng-repeat="category in vm.npost.postTags"><a href="" class="tags-item">{{category}}</a></li>
+									</ul>
+								</div>
 								<hr>
 								<div class="post-buttonGroup">
 									<a ng-click="vm.likePost(vm.npost)" ng-hide="vm.npost.isLiked">Like</a>	

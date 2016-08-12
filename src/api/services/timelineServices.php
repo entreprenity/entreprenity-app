@@ -1161,6 +1161,7 @@ function getCompanyPosts()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//August 12, 2016: Fetch buss opp tags
 function getThisPost()
 {
 	//the defaults starts
@@ -1208,6 +1209,7 @@ function getThisPost()
 				$data['image']										=	$row['post_img'];
 				$data['created_at']								=	$row['created_at'];
 				$data['bussOpp']									=	$row['business_opp'];
+				$data['postTags']									=	getTimelinePostTags($row['post_id']);
 				$data['post_author']['id']						=	$row['clientid'];
 				$data['post_author']['firstName']			=	$row['firstname'];
 				$data['post_author']['lastName']				=	$row['lastname'];
