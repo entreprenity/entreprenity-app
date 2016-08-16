@@ -291,6 +291,7 @@ function deleteTimlinePost()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//August 16,2016: Fetching likes, comments and such details
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -335,7 +336,8 @@ function getBusinessOpportunitiesForMe()
 	if($my_session_id)
 	{
 		$myCompanyID			=	getCompanyIDfromUserID($my_session_id); //get company id
-		$myCompanyTagsUF		=  fetch_company_categories($myCompanyID); //get company categories json (my company tags)			
+		//$myCompanyTagsUF		=  fetch_company_categories($myCompanyID); //get company categories json (my company tags)		
+		$myCompanyTagsUF		=  get_user_skill_sets($my_session_id); //get company categories json (my company tags)			
 		$allTags 				=  getAllBusinessOpportunityTags(); 	//get All business opportunity tags
 	
 		$myCompanyTags = array_filter($myCompanyTagsUF);
@@ -409,7 +411,13 @@ function getBusinessOpportunitiesForMe()
 						$post_by														=	$row['posted_by'];   
 						$companyId													=	getCompanyIDfromUserID($post_by);
 						$data[$i]['post_author']['companyName'] 			=  getCompanyNameUsingCompUserRelation($companyId);
-
+						
+						$data[$i]['isLiked']										= doILikeThisPost($post_id);
+						$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
+						$data[$i]['likers']										= usersWhoLikesThisPost($post_id);
+						$data[$i]['comments_count']							= howManyCommentsThisPostReceived($post_id);
+						$data[$i]['commenters']									= usersWhoCommentedThisPost($post_id);
+						$data[$i]['comments']									= userCommentsForThisPost($post_id);
 			
 						$i++;
 			      }	

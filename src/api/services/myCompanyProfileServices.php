@@ -87,6 +87,7 @@ function updateMyCompanyDetails()
 //Function to get a user's own company details
 //May 03,2016
 //August 10, 2016: Changes after implementing company-user relation
+//August 16,2016: HTML character encoding support	
 function getMyCompanyProfileDetails()
 {
 	//the defaults starts
@@ -132,7 +133,7 @@ function getMyCompanyProfileDetails()
 			$data['companyUserName']=	$row['company_username'];								
 			$data['companyName']		=	$row['company_name'];  			
 			$data['location']			=	$row['location_desc'];  			
-			$data['companyDesc']		=	$row['description'];  			
+			$data['companyDesc']		=	htmlspecialchars_decode($row['description'],ENT_QUOTES);	
 			$data['email']				=	$row['email'];  			
 			$data['website']			=	$row['website'];  			
 			$data['mobile']			=	$row['mobile'];  			
@@ -206,6 +207,7 @@ function getMyCompanyProfileDetails()
 
 //Function to fetch a company profile
 //April 25,2016
+//August 16,2016: HTML character encoding support
 function viewCompanyProfile()
 {
 		/*
@@ -304,7 +306,7 @@ function viewCompanyProfile()
    		$data['mobile']			=	$row['mobile'];
    		$data['tel']				=	$row['telephone'];
    		$data['fax']				=	$row['fax'];
-   		$data['desc']				=	$row['description'];
+   		$data['desc']				=	htmlspecialchars_decode($row['description'],ENT_QUOTES);
    		
    		$data['followers']		=	entrp_company_follows($companyid);
    		$data['categories']		=  fetch_company_categories($companyid);

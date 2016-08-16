@@ -922,6 +922,7 @@ function base_url(){
 
 //Function to fetch events hosted by a company using companyid
 //June 28,2016
+//August 16,2016: HTML character encoding support
 function fetchCompanyEvents($companyid)
 {
 
@@ -950,7 +951,7 @@ function fetchCompanyEvents($companyid)
       	$data[$i]['id']				=	$row['id'];
 			$data[$i]['eventName']		=	$row['eventName'];
 			$data[$i]['eventTagId']		=	$row['eventTagId'];
-			$data[$i]['description']	=	$row['description'];
+			$data[$i]['description']	=	htmlspecialchars_decode($row['description'],ENT_QUOTES);
 			if($row['poster']!='')
 			{
 				$data[$i]['poster']			=	$row['poster'];
@@ -1318,6 +1319,7 @@ function getBasicUserInformation()
 
 //Function to get an event's details
 //April 25, 2016
+//August 16,2016: HTML character encoding support
 function viewEventDetail()
 {
 		/*
@@ -1397,7 +1399,8 @@ function viewEventDetail()
 	   		{
 	   			$data['poster']	=	$events_default;
 	   		}
-	   		$data['about']			=	$row['description'];
+	   		
+	   		$data['about']			=	htmlspecialchars_decode($row['description'],ENT_QUOTES);
 	   		$data['category']		=	$row['category_name'];
 	   		$data['map']['center']['latitude']		=	$row['location_lat'];
 				$data['map']['center']['longitude']		=	$row['location_long'];
@@ -1435,6 +1438,7 @@ function viewEventDetail()
 //Updated on May 03, 2016: to fetch secondary mobile and designation
 //Updated May 11, 2016: To check if I follow this user or not
 //August 10, 2016: Changes after implementing company-user relation
+//August 16,2016: HTML character encoding support
 function viewUserProfile()
 {
 	//$clientid=validate_input($_GET['id']);
@@ -1522,7 +1526,7 @@ function viewUserProfile()
 			
 			$data['city'] 			= 	$row['city'];
 			
-			$data['aboutMe'] 		=  $row['about_me'];
+			$data['aboutMe'] 		=  htmlspecialchars_decode($row['about_me'],ENT_QUOTES);
 			$data['email'] 		=  $row['email'];
 			$data['website'] 		=  $row['website'];
 			$data['mobile'] 		=  $row['mobile'];

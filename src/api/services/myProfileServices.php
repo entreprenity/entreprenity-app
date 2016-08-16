@@ -110,6 +110,7 @@ function updateMyProfileDetails()
 
 //Function to fetch a user's own details
 //April 28,2016
+//August 16,2016: HTML character encoding support
 function getMyProfileDetails()
 {
 	
@@ -198,7 +199,7 @@ function getMyProfileDetails()
 		   		$data['lastName']			=	$row['lastname'];
 		   		$data['position']			=	$row['designation'];
 		   		$data['Location']			=	$row['location_desc'];
-		   		$data['aboutMe']			=	$row['about_me'];
+		   		$data['aboutMe']			=	htmlspecialchars_decode($row['about_me'],ENT_QUOTES);
 		   		$data['email']				=	$row['contact_email'];
 		   		$data['website']			=	$row['website'];
 		   		$data['mobile']			=	$row['mobile'];

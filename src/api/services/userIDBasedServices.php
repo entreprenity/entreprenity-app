@@ -1121,6 +1121,7 @@ function fetch_company_information_from_userid($clientid)
 
 //Function to fetch a user's skill set
 //May 02, 2016
+//August 16: Change tags to lowercase
 function get_user_skill_sets($userid)
 {
 	
@@ -1133,7 +1134,7 @@ function get_user_skill_sets($userid)
 	{
 		while($row=mysqli_fetch_array($res))
 		{
-			$data		=	json_decode($row['skills']);  					
+			$data		=	json_decode(strtolower($row['skills']));  					
 		}
 	}   
 	return $data;	

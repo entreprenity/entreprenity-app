@@ -24,6 +24,7 @@ function getTimelinePostTags($post_id)
 
 //Function to fetch all business opportunity tags
 //July 07,2016 (This is redundant, already a function for fetching company tags in readonly services)
+//August 16: Change tags to lowercase
 function getAllBusinessOpportunityTags()
 {
 	$data= array();
@@ -40,7 +41,7 @@ function getAllBusinessOpportunityTags()
       	
       	$data[$i]['post_id']			=	$row['id'];      	
       	$data[$i]['postid']			=	$row['postid'];      	
-			$data[$i]['tags']				=	json_decode($row['business_tags']);
+			$data[$i]['tags']				=	json_decode(strtolower($row['business_tags']));
 
 			$i++;
       }	
@@ -78,7 +79,8 @@ function recommendedBusinessOpportunities()
 	if($my_session_id)
 	{
 		$myCompanyID			=	getCompanyIDfromUserID($my_session_id); //get company id
-		$myCompanyTagsUF			=  fetch_company_categories($myCompanyID); //get company categories json (my company tags)			
+		//$myCompanyTagsUF		=  fetch_company_categories($myCompanyID); //get company categories json (my company tags)	
+		$myCompanyTagsUF		=  get_user_skill_sets($my_session_id); 		
 		$allTags 				=  getAllBusinessOpportunityTags(); 	//get All business opportunity tags
 	
 		$myCompanyTags = array_filter($myCompanyTagsUF);

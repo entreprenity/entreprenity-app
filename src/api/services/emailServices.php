@@ -58,8 +58,10 @@ function send_new_event_notification_to_admin($eventTag)
 			$mail->Subject = ($strSubject);
 			$mail->MsgHTML($message);
 			$mail->AddAddress($to);
+			//$mail->AddBCC(RECIPIENTEMAIL1, RECIPIENTNAME1);
+			//$mail->AddBCC(RECIPIENTEMAIL2, RECIPIENTNAME2);
 			$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
-			$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
+			//$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
 			if($mail->Send()) 
 			{
 		 		return "Mail send successfully";
@@ -118,8 +120,10 @@ function send_notification_mail($notification_array)
 	$mail->Subject = ($strSubject);
 	$mail->MsgHTML($message);
 	$mail->AddAddress($to);
-	$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
-	$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
+	//$mail->AddBCC(RECIPIENTEMAIL1, RECIPIENTNAME1);
+	//$mail->AddBCC(RECIPIENTEMAIL2, RECIPIENTNAME2);		
+	//$mail->AddAddress(RECIPIENTEMAIL1, RECIPIENTNAME1);
+	//$mail->AddAddress(RECIPIENTEMAIL2, RECIPIENTNAME2);
 	if($mail->Send()) 
 	{
  		return "Mail send successfully";
