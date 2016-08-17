@@ -204,9 +204,12 @@
 							vm.busy = true;
 							newsFeedService.getAllPosts(vm.pageNumber).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -220,9 +223,12 @@
 							vm.busy = true;
 							newsFeedService.getMemberPosts(this.pageNumber,username).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -236,9 +242,12 @@
 							vm.busy = true;
 							newsFeedService.getFollowedMembersPosts(this.pageNumber,username).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -252,9 +261,12 @@
 							vm.busy = true;
 							newsFeedService.getCompanyPosts(this.pageNumber,username).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -268,9 +280,12 @@
 							vm.busy = true;
 							newsFeedService.getAllBusinessOpportunities(this.pageNumber).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -285,9 +300,12 @@
 							vm.busy = true;
 							newsFeedService.getMyCompanyPosts(this.pageNumber,username).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -301,9 +319,12 @@
 							vm.busy = true;
 							newsFeedService.getmyMemberPosts(this.pageNumber,username).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
@@ -317,9 +338,12 @@
 							vm.busy = true;
 							newsFeedService.getBusinessOpportunitiesForMe(this.pageNumber).success(function(data) {
 								var itemData = data;
-								
-								for (var i = 0; i < itemData.length; i++) {
-									vm.posts.push(itemData[i]);
+								if (vm.pageNumber == 1) {
+									vm.posts = itemData;
+								} else {
+									for (var i = 0; i < itemData.length; i++) {
+										vm.posts.push(itemData[i]);
+									}
 								}
 								vm.pageNumber++;
 								vm.busy = false;
