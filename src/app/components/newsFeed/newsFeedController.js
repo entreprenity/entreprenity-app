@@ -150,20 +150,25 @@
 				vm.isAnImagePost = false; // initial state is false, set to true if image upload is clicked
 				vm.editState = false; // initial state is false, set to true if edit post is clicked
 				vm.triggernextpage = false; // initial state is false, set to true if infinite scroll is triggered
+				vm.reloadnewsfeed = false; // initial state is false, set to true if reload newsfeed is triggered
 				vm.pageNumber = 1;
 				vm.posts = [];
 				vm.busy = false;
 
 				$scope.$watch('vm.triggernextpage', function() {
-					if (vm.triggernextpage) 
-					{
+					if (vm.triggernextpage) {
 						//console.log('Loading');
 						vm.getPosts();
 						vm.triggernextpage = false;
-					} 
-					else 
-					{
-						//console.log('triggernextpage is false')
+					}
+				});
+
+				$scope.$watch('vm.reloadnewsfeed', function() {
+					if (vm.reloadnewsfeed) {
+						alert('vm.reloadnewsfeed');
+						vm.pageNumber = 1;
+						vm.getPosts();
+						vm.reloadnewsfeed = false;
 					}
 				});
 
@@ -588,6 +593,7 @@
 					istextareahidden: '=',
 					username: '=',
 					triggernextpage: '=',
+					reloadnewsfeed: '='
 				},
 				controller: controller,
 				controllerAs: 'vm',

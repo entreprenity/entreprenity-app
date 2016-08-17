@@ -84,16 +84,15 @@
 							</div>
 						</div>
 						<div>
-
 							<uib-tabset active="vm.activeTab">
 								<uib-tab index="0" heading="All Posts">
-									<news-feed  poststype="1" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageAll"></news-feed>
+									<news-feed  poststype="1" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageAll" reloadnewsfeed="vm.isReloadAll"></news-feed>
 								</uib-tab>
 								<uib-tab index="1" heading="Followed Posts">
-									<news-feed  poststype="3" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageFollowed"></news-feed>
+									<news-feed  poststype="3" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageFollowed" reloadnewsfeed="vm.isReloadFollowed"></news-feed>
 								</uib-tab>
 								<uib-tab index="2" heading="My Posts">
-									<news-feed  poststype="7" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageMy	"></news-feed>
+									<news-feed  poststype="7" istextareahidden="false" username="userName" triggernextpage="vm.isTriggerNextPageMy" reloadnewsfeed="vm.isReloadMy"></news-feed>
 								</uib-tab>
 							</uib-tabset>
 						</div>
