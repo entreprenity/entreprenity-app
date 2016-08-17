@@ -457,7 +457,7 @@ function getTopContributors()
 	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
-	      WHERE CI.clientid IN (".$topContributorsUserIDString.") 
+	      WHERE CI.clientid IN (".$topContributorsUserIDString.") AND CI.clientid NOT IN (1) 
 	      LIMIT 3 
 	      ";
 	$res=getData($qry);

@@ -165,7 +165,7 @@
 
 				$scope.$watch('vm.reloadnewsfeed', function() {
 					if (vm.reloadnewsfeed) {
-						alert('vm.reloadnewsfeed');
+						//alert('vm.reloadnewsfeed');
 						vm.pageNumber = 1;
 						vm.getPosts();
 						vm.reloadnewsfeed = false;

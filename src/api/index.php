@@ -1439,6 +1439,7 @@ function viewEventDetail()
 //Updated May 11, 2016: To check if I follow this user or not
 //August 10, 2016: Changes after implementing company-user relation
 //August 16,2016: HTML character encoding support
+//August 17,2016: Check if I am me
 function viewUserProfile()
 {
 	//$clientid=validate_input($_GET['id']);
@@ -1549,6 +1550,16 @@ function viewUserProfile()
 		
 		//Function to get total followings of a user
 		$data['following'] 	= user_following($clientid);
+		
+		//if i am me
+		if($data['id']==$my_session_id)
+		{
+			$data['myProfile'] 	= 1;
+		}
+		else
+		{
+			$data['myProfile'] 	= 0;
+		}
    	   	
    }
    else
