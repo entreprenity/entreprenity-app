@@ -92,6 +92,7 @@ angular
 			myProfileService.postMemberProfile(userdata).success(function(data) {
 				vm.member = data;
 				vm.editState = false;
+				vm.isReloadAll = true;
 			});	
 		};
 		

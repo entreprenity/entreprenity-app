@@ -78,6 +78,7 @@
 			myCompanyProfileService.postCompanyProfile(userdata).success(function(data) {
 				vm.company = data;
 				vm.editState = false;
+				vm.isReloadAll = true;
 			});	
 		};
 

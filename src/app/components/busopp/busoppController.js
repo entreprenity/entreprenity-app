@@ -19,7 +19,9 @@
 		})
 		
 		.controller('BusinessOpportunityController', function($scope, $routeParams, businessOpportunityService, AuthService) {
-				var vm = this;		
+				var vm = this;
+				vm.isReloadMatched = false;
+				vm.isReloadAll = false;
 			    //If user is not logged in
 				var token;
 				if (localStorage['entrp_token'])
@@ -86,6 +88,18 @@
 					vm.isTriggerNextPageOtherBO = true;					
 				} 
 			}
+
+			$scope.$watch('vm.activeTab', function() {
+				alert('active tab changed' + vm.activeTab);
+				if (vm.activeTab == 0)
+				{
+					vm.isReloadMatched = true;
+				}
+				else if (vm.activeTab == 1)
+				{
+					vm.isReloadAll = true;
+				}
+			});
 
 		});
 })();
