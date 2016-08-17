@@ -90,7 +90,7 @@
 			}
 
 			$scope.$watch('vm.activeTab', function() {
-				alert('active tab changed' + vm.activeTab);
+				//alert('active tab changed' + vm.activeTab);
 				if (vm.activeTab == 0)
 				{
 					vm.isReloadMatched = true;
