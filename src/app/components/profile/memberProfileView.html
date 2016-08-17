@@ -20,7 +20,7 @@
 								<a ng-href="#/members/{{vm.member.userName}}/followers"><span>{{vm.member.followers}}</span>Followers</a>
 								<a ng-href="#/members/{{vm.member.userName}}/following"><span>{{vm.member.following}}</span>Following</a>
 							</div>
-							<div class="btn-group">
+							<div class="btn-group" ng-if="vm.member.myProfile == 0" >
 								<a class="btn btn-default" ng-click="vm.follow_this_member(vm.member.userName)" ng-hide="vm.member.followed">FOLLOW</a>
 								<a class="btn btn-primary" ng-click="vm.unFollow_this_member(vm.member.userName)" ng-show="vm.member.followed">UNFOLLOW</a>
 							</div>

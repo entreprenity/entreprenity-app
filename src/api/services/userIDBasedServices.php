@@ -2,6 +2,32 @@
 
 /* Functions and services based on userid begins */
 
+
+//Function to fetch event id from event tag
+//August 17,2016
+function getEventTagfromEventId($eventId)
+{
+	
+	$qry="SELECT eventTagId FROM entrp_events  
+			WHERE id=".$eventId." ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$eventTagId		=	$row['eventTagId'];  					
+		}
+		return $eventTagId;
+	}
+	else
+	{
+		return null;
+	}   
+	
+}
+
+
 //Function to get company description using company-user relationship
 //August 10,2016
 function getCompanyDescriptionUsingCompUserRelation($companyID)

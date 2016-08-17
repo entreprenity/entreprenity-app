@@ -95,6 +95,15 @@ function getMyNotifications()
 				$data[$i]['post_id']								=	$row['post_id'];
 				$data[$i]['created_at']							=	$row['created_at'];
 				
+				if($data[$i]['notif_type']=='attend')
+				{
+					$data[$i]['event_tag'] =	getEventTagfromEventId($data[$i]['post_id']);
+				}
+				else
+				{
+					$data[$i]['event_tag']='';
+				}
+				
 						
 				$i++;
 			}		
