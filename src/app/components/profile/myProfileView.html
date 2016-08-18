@@ -20,11 +20,11 @@
 								</div>
 								<h3 ng-hide="vm.editState">{{vm.member.firstName + ' ' + vm.member.lastName}}</h3>
 								<div>
-									<input type="text" name="firstName" ng-model="vm.member.firstName" ng-show="vm.editState">
-									<input type="text" name="lastName" ng-model="vm.member.lastName" ng-show="vm.editState">
+									<input type="text" name="firstName" ng-model="vm.member.firstName" ng-show="vm.editState" placeholder="First name here">
+									<input type="text" name="lastName" ng-model="vm.member.lastName" ng-show="vm.editState" placeholder="Last name here">
 								</div>
 								<p ng-hide="vm.editState">{{vm.member.position}}</p>
-								<input type="text" name="position" ng-model="vm.member.position" ng-show="vm.editState">
+								<input type="text" name="position" ng-model="vm.member.position" ng-show="vm.editState" placeholder="Add designation here">
 								<br>
 								<div class="followers">
 									<a ng-href="#/members/{{vm.member.userName}}/followers"><span>{{vm.member.followers}}</span>Followers</a>
@@ -47,7 +47,7 @@
 							<h4>ABOUT ME</h4>
 							<div class="content">
 								<p ng-hide="vm.editState">{{vm.member.aboutMe}}</p>
-								<textarea type="text" name="position" ng-model="vm.member.aboutMe" rows="3" ng-show="vm.editState"></textarea>
+								<textarea type="text" name="position" ng-model="vm.member.aboutMe" rows="3" ng-show="vm.editState" placeholder="Tell us a little about yourself" ></textarea>
 							</div>
 						</div>
 						<div class="contact">
@@ -59,9 +59,9 @@
 									<p><span>m:</span>{{vm.member.mobile}}</p>
 								</div>
 								<div ng-show="vm.editState">
-									<p><span>w:</span><input type="text" name="website" ng-model="vm.member.website"></p>
-									<p><span>e: </span><input type="text" name="email" ng-model="vm.member.email"></p>
-									<p><span>m:</span><input type="text" name="mobile" ng-model="vm.member.mobile"></p>
+									<p><span>w:</span><input type="text" name="website" ng-model="vm.member.website" placeholder="Your website address"></p>
+									<p><span>e: </span><input type="text" name="email" ng-model="vm.member.email" placeholder="Your email Id"></p>
+									<p><span>m:</span><input type="text" name="mobile" ng-model="vm.member.mobile" placeholder="Your mobile number"></p>
 								</div>
 							</div>
 						</div>
