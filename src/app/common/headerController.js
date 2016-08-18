@@ -1,18 +1,21 @@
 (function() {
 
 	angular
-		.module('entreprenityApp.common', [])
+		.module('entreprenityApp.common', ['ngRoute'])
 		
 		.factory('myCommonService', function($http) {
 			var baseUrl = 'api/';
 			return {
 				getBasicUserInfo:function() {
 					return $http.get(baseUrl + 'getBasicUserInformation');
+				},
+				getAllUnreadNotifications:function() {
+					return $http.get(baseUrl + 'getAllUnreadNotifications');
 				}
 			};
 		})
 		
-		.controller('CommonController', function($scope, $routeParams, myCommonService, AuthService) {
+		.controller('CommonController', function($scope, $routeParams, myCommonService, AuthService,AuthService3,$rootScope) {
 				var vm = this;		
 			    //If user is not logged in
 				var token;
@@ -51,8 +54,44 @@
 					}
 					AuthService.logOut(token);
 				}
+				/*
+				$rootScope.$on("$routeChangeStart", function (event, next, current) 
+				{
+               if (next && next.$$route && next.$$route.loggedIn) {
+               */ 
+               /*	
+				$rootScope.$on('$routeChangeSuccess', function (event, current, previous) 
+				{
+					if ($route.current.$$route.loggedIn) 
+					{
+						AuthService3.fetchUnreadNotifications().then(function (res)
+				      {
+				      	//console.log(res.data.totalUnread);
+				      	$scope.numOfNotifications =res.data.totalUnread;
+				      });
+					}
+				  }
+				);
+				*/
+				
+				/*
+				if(localStorage['notifications'])
+				{
+					$scope.numOfNotifications = localStorage['notifications'];
+				}
+				else
+				{
+					$scope.numOfNotifications = 0;
+				}
+				*/
+				//$scope.numOfNotifications = notificationCount;
+				/*
+				myCommonService.getAllUnreadNotifications().success(function(data) {
 					
-				$scope.numOfNotifications = 5;// need a service that will store the number of unred notif to this variable
+						$scope.numOfNotifications = data.totalUnread;// need a service that will store the number of unred notif to this variable
+				});
+				*/
+				
 				
 		});
 	

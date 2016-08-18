@@ -8,7 +8,7 @@
 	  		if(res.data.msg == "authorized")
 	  		{
 	      	//console.log("Logged In");
-	         deferred.resolve();
+	         deferred.resolve();	         
 	      }
 	      else
 	      {
@@ -19,6 +19,19 @@
 	  });
 	  return deferred.promise;
 	};	
+	
+	var countAllUnreads = function($location, $q, AuthService3) 
+	{
+		var deferred = $q.defer();
+		AuthService3.fetchUnreadNotifications().then(function (res)
+      {
+      	//console.log(res.data.totalUnread);
+      	localStorage.notifications = res.data.totalUnread;
+      	//$scope.numOfNotifications =res.data.totalUnread;
+      	deferred.resolve(res.data.totalUnread);
+      });
+      return deferred.promise;
+	}
 	
 	
 	angular.module('entreprenityApp', [
@@ -76,12 +89,25 @@
 			  token = "";
 		  }	 
         var data = {token: token};	
-        return $http.post(baseUrl + 'validateUserToken', {token: token });			       
+        
+        return	$http.post(baseUrl + 'validateUserToken', {token: token });	      
       }    
 	    
 		return {isLogin: isLogin} ; 
 	}])
-	
+	.factory('AuthService3', ["$http", "$location", function($http, $location){
+	   //var vm = this;
+	   var baseUrl = 'api/';
+      var fetchUnreadNotifications = function()
+ 	   {
+        
+        return	$http.post(baseUrl + 'getAllUnreadNotifications');	     
+        
+                
+      }    
+	    
+		return {fetchUnreadNotifications: fetchUnreadNotifications} ; 
+	}])
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 		.when('/login', {
@@ -115,6 +141,7 @@
 			controller: 'MyProfileController',
 			templateUrl: 'app/components/profile/myProfileView.html',
 			resolve: {loggedIn: onlyLoggedIn},		
+			//resolve: {loggedIn: onlyLoggedIn,notificationCount:countAllUnreads},		
 			controllerAs: 'vm'
 		})
 		.when('/members/:memberUserName', {

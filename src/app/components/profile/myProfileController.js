@@ -37,7 +37,7 @@ angular
 		};
 	})
 
-	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal, $http) {
+	.controller('MyProfileController', function($routeParams, myProfileService, $scope, $uibModal, $http,notificationCount) {
 		var vm = this;
 	
 		vm.open = function () {		
@@ -52,6 +52,8 @@ angular
 					}
 				}
 			});
+			
+			$scope.numOfNotifications = notificationCount;			
 			
 			modalInstance.result.then(function (myCroppedImage) {
 				vm.member.avatar = myCroppedImage;

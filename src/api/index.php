@@ -833,6 +833,17 @@ Flight::route('/resetPassword', function()
 	echo json_encode($returnarray);
 });
 
+//64 Route to read total unread notifications
+//August 18,2016 
+Flight::route('/getAllUnreadNotifications', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getAllUnreadNotifications();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -871,6 +882,39 @@ function services_included()
 	
 	
 }
+
+
+//Function to read total unread notifications
+//August 18,2016 
+function getAllUnreadNotifications()
+{
+	$data= array();
+	//$data['totalUnread']	=	0;	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	//if($my_session_id)
+	//{
+		//SELECT COUNT(notify_id) AS totalUnread FROM entrp_user_notifications WHERE notify_to=1 AND status=0
+		$qry="SELECT COUNT(notify_id) AS totalUnread FROM entrp_user_notifications WHERE notify_to=".$my_session_id." AND read_unread=0";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	   	{
+	   		$data['totalUnread']	=	$row['totalUnread'];
+	   		//$data['totalUnread']	=	$qry;
+	   	}	   
+	   }
+	   else
+	   {
+			$data['totalUnread']	=	0;	   
+	   }
+	//}	
+	return $data;
+}
+
 
 //Function to compress an image
 function compress($source, $destination, $quality) 
