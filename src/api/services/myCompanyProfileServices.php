@@ -4,6 +4,96 @@
 
 
 
+//Function to fetch company members
+//August 18,2016
+function fetchThisCompanyMembers($companyId)
+{	
+	$data= array();	
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	$allCompanyMemberIds=getAllCompanyMemberIDs($companyId);
+	
+	if(!empty($allCompanyMemberIds))
+	{
+		$allCompanyMemberString = implode(",", $allCompanyMemberIds);
+	
+		$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.avatar 
+		      FROM entrp_login AS CI 
+		      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+		      WHERE CI.clientid IN (".$allCompanyMemberString.") AND CI.status=1
+		      ORDER BY CI.clientid ASC	      
+		      ";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   $i=0; //to initiate count
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	      {
+	      	if(!empty($row['clientid']))
+	      	{
+	      		$data[$i]['id']				=	$row['clientid'];
+	      	}
+	      	else
+	      	{
+	      		$data[$i]['id']				=	"";
+	      	}
+	      	
+	      	if(!empty($row['firstname']))
+	      	{
+	      		$data[$i]['firstName']		=	$row['firstname'];
+	      	}
+	      	else
+	      	{
+	      		$data[$i]['firstName']		=	"";
+	      	}
+	      	
+	      	if(!empty($row['username']))
+	      	{
+	      		$data[$i]['username']		=	$row['username'];
+	      	}
+	      	else
+	      	{
+	      		$data[$i]['username']		=	"";
+	      	}
+				
+				if(!empty($row['lastname']))
+	      	{
+	      		$data[$i]['lastName']		=	$row['lastname'];
+	      	}
+	      	else
+	      	{
+	      		$data[$i]['lastName']		=	"";
+	      	}
+				
+				if(!empty($row['avatar']))
+	      	{
+	      		$data[$i]['profilePhoto']			=	$row['avatar'];
+	      	}
+	      	else
+	      	{
+	      		$data[$i]['profilePhoto']			=	$member_default;
+	      	}
+				
+				$i++;
+	      }	
+	   }		
+	}
+	return $data;
+}
+
+
 
 //Function to insert company categories
 //May 05,2016
@@ -164,6 +254,7 @@ function getMyCompanyProfileDetails()
 		$data['categories']	= fetch_company_categories($company_id);	
 		$data['followers']	= entrp_company_follows($company_id);
 		$data['companyEvents']	=  fetchCompanyEvents($company_id);	
+		$data['companyMembers']	=  fetchThisCompanyMembers($company_id);	
 	}
 	else 
 	{
@@ -311,6 +402,7 @@ function viewCompanyProfile()
    		$data['followers']		=	entrp_company_follows($companyid);
    		$data['categories']		=  fetch_company_categories($companyid);
    		$data['companyEvents']	=  fetchCompanyEvents($companyid);
+   		$data['companyMembers']	=  fetchThisCompanyMembers($companyid);	
 
    	}
    	

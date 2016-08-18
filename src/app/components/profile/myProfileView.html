@@ -61,7 +61,7 @@
 								<div ng-show="vm.editState">
 									<p><span>w:</span><input type="text" name="website" ng-model="vm.member.website" placeholder="Your website address"></p>
 									<p><span>e: </span><input type="text" name="email" ng-model="vm.member.email" placeholder="Your email Id"></p>
-									<p><span>m:</span><input type="text" name="mobile" ng-model="vm.member.mobile" placeholder="Your mobile number"></p>
+									<p><span>m:</span><input type="text" pattern="\d*" title="numbers only" name="mobile" ng-model="vm.member.mobile" placeholder="Your mobile number"></p>
 								</div>
 							</div>
 						</div>
