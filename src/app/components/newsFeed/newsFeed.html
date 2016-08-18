@@ -46,7 +46,7 @@
 							<a href="#/members/{{post.post_author.userName}}" class="author-name"><strong >{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
 							<div class="author-company">{{post.post_author.companyName}}</div>
 							<small class="text-muted"><span am-time-ago="post.created_at"></span></small>,
-							<small class="text-muted">{{post.post_author.location}}</small>
+							<small class="text-muted pull-right">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>
 						<div ng-hide="$index == vm.indexOfEditedPost" class="post-content">{{post.content}}</div>
@@ -69,6 +69,7 @@
 							<a ng-click="vm.likePost(post)" ng-hide="post.isLiked">Like</a>	
 							<a ng-click="vm.unLikePost(post)" ng-show="post.isLiked">Liked</a>
 							<a ng-click="vm.focusCommentBox(post.post_id)">Comment</a>
+							<small class="text-muted pull-right">{{post.post_author.location}}</small>
 						</div>
 					</div>
 

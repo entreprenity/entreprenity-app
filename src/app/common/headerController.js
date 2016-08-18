@@ -52,6 +52,11 @@
 					AuthService.logOut(token);
 				}
 				
+				vm.readNotifications = function() {
+					//service to update notif read number to 0
+					//add ng-click="vm.readNotifications()"
+				}
+				
 		});
 	
 		
