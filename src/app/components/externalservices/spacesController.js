@@ -31,11 +31,13 @@
 			spacesService.invokeSpaces(token).success(function(data) {
 				//vm.locations = data;
 				//console.log(data);
-				vm.data='http://entreprenity.co/app/others/spaceAuthVerify.php?auth='+data;
+				//vm.data='http://entreprenity.co/app/others/spaceAuthVerify.php?auth='+data;
+				vm.data='http://myvoffice.me/spaces/spaceAuthVerify.php?auth='+data;
 				if(data !='failed')
 				{	
 					//http://entreprenity.co/spaces/login.html				
-					window.open('http://entreprenity.co/app/others/spaceAuthVerify.php?auth='+data, '_blank');	
+					window.open('http://myvoffice.me/spaces/spaceAuthVerify.php?auth='+data, '_blank');	
+					//window.open('http://entreprenity.co/app/others/spaceAuthVerify.php?auth='+data, '_blank');	
 				}
 			});
 						

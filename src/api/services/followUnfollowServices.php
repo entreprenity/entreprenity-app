@@ -422,6 +422,7 @@ function unfollowUser()
 
 //Function to follow a user from his/her profile view
 //May 11,2016
+//August 18,2016: No more fetching whole user info
 function followThisUser()
 {
 	$data= array();
@@ -438,7 +439,7 @@ function followThisUser()
 	      ";
 	if(setData($qry))
 	{
-		$data=fetch_user_information_from_id($clientid);
+		//$data=fetch_user_information_from_id($clientid);
 		$data['followed']=true;
 		
 		$Host=$clientid;
@@ -465,7 +466,7 @@ function followThisUser()
 	}
 	else
 	{
-		$data=fetch_user_information_from_id($clientid);
+		//$data=fetch_user_information_from_id($clientid);
 		$data['followed']=false;
 	}
 	return $data;
@@ -474,6 +475,7 @@ function followThisUser()
 
 //Function to un-follow a user from his/her profile view
 //May 11,2016
+//August 18,2016: No more fetching whole user info
 function unfollowThisUser()
 {
 	$data= array();
@@ -488,7 +490,7 @@ function unfollowThisUser()
 	      
 	if(setData($qry))
 	{
-		$data=fetch_user_information_from_id($clientid);
+		//$data=fetch_user_information_from_id($clientid);
 		$data['followed']=false;
 		
 		$Host=$clientid;
@@ -501,7 +503,7 @@ function unfollowThisUser()
 	}
 	else
 	{
-		$data=fetch_user_information_from_id($clientid);
+		//$data=fetch_user_information_from_id($clientid);
 		$data['followed']=true;
 	}
 	return $data;

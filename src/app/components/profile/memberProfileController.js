@@ -51,14 +51,16 @@
 			//when user click follow, will post data to follow member and update in backend
 			vm.follow_this_member = function(memberUserName) {
 				memberProfileService.postMemberFollow(memberUserName).success(function(data) {
-					vm.member = data; //return user_info, with updated followers and followed status
+					//vm.member = data; //return user_info, with updated followers and followed status
+					vm.member.followed= data.followed;
 				});	
 			};
 
 			//when user click unfollow, will post data to unfollow member and update in backend
 			vm.unFollow_this_member = function(memberUserName) {
 				memberProfileService.postMemberUnFollow(memberUserName).success(function(data) {
-					vm.member = data; //return user_info, with updated followers and followed status
+					//vm.member = data; //return user_info, with updated followers and followed status
+					vm.member.followed= data.followed;
 				});	
 			};
 			
