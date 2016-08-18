@@ -51,8 +51,9 @@
 					}
 					AuthService.logOut(token);
 				}
-				
-				vm.readNotifications = function() {
+					
+				$scope.numOfNotifications = 5;// need a service that will store the number of unred notif to this variable
+				$scope.readNotifications = function() {
 					//service to update notif read number to 0
 					//add ng-click="vm.readNotifications()"
 				}
