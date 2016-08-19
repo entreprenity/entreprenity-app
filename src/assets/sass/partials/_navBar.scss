@@ -28,7 +28,26 @@
     color: #9d9d9d;
     padding: 6px 0;
   }
-  @media (max-width: 768px) {
-  // hello
+
+  .show-in-mobile {
+     display: none;
+   }
+
+  @media (max-width: 767px) {
+    .show-in-mobile {
+      display: block;
+    }
+    .hide-in-mobile {
+      display: none;
+    }
   }
+  @media (max-width: 480px) {
+    .button-home {
+      right: 80px;
+    }
+    .button-notif {
+      display: none;
+    }
+  }
+
 }
