@@ -2,6 +2,27 @@
 
 /* Functions and services based on userid begins */
 
+//Function to fetch a user designation from company member relation table
+//August 19,2016
+function getUserDesignationFromCompUserRelation($userID)
+{
+	$designation= '';
+ 	$qry="SELECT designation
+			FROM entrp_company_members 
+			WHERE clientid=".$userID."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$designation	=	$row['designation'];
+		}   	   	
+   }
+   return $designation;
+}
+
 
 //Function to fetch event id from event tag
 //August 17,2016

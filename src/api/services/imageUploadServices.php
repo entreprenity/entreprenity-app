@@ -216,7 +216,8 @@ function uploadTheImage()
 	//client company profile pic
 	if($uploadType==2)
 	{
-		$qry2="UPDATE company_profiles SET avatar='".$fileName."' WHERE clientid=".$my_session_id." ";
+		$companyID	=	getCompanyIDFromCompUserRelation($my_session_id);
+		$qry2="UPDATE company_profiles SET avatar='".$fileName."' WHERE id=".$companyID." ";
 		if(setData($qry2))
 		{
 			$data='success';

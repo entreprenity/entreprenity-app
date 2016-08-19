@@ -196,6 +196,7 @@ function getMyCompanyProfileDetails()
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
 	$companyID	=	getCompanyIDFromCompUserRelation($my_session_id);
+	$role			=	getUserDesignationFromCompUserRelation($my_session_id);
 	/*
 	$qry="SELECT company_profiles.id,company_profiles.company_name,company_profiles.company_username,company_profiles.description,company_profiles.avatar,company_profiles.city,company_profiles.cover_photo,
 			 		 company_profiles.website,company_profiles.email,company_profiles.mobile,company_profiles.telephone,company_profiles.fax,
@@ -255,6 +256,7 @@ function getMyCompanyProfileDetails()
 		$data['followers']	= entrp_company_follows($company_id);
 		$data['companyEvents']	=  fetchCompanyEvents($company_id);	
 		$data['companyMembers']	=  fetchThisCompanyMembers($company_id);	
+		$data['role']	=  $role;	
 	}
 	else 
 	{
