@@ -57,7 +57,7 @@
 									<li ng-repeat="employee in vm.company.companyMembers | limitTo:6">
 										<a ng-href="#/members/{{employee.username}}">
 											<img class="img-circle" ng-src="{{employee.profilePhoto}}">
-											<p>{{employee.firstName + " " + employee.lastName}}</p>
+											<p style="text-align: center;">{{employee.firstName + " " + employee.lastName}}</p>
 										</a>
 									</li>
 								</ul>

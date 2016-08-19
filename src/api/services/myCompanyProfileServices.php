@@ -144,10 +144,10 @@ function updateMyCompanyDetails()
 			$company_categories[$i]=$_POST['categories'][$i]['text'];
 		}
 	}	
-	
+	$companyID=getCompanyIDFromCompUserRelation($my_session_id);
 	$qry="UPDATE company_profiles SET company_name='".$companyName."', description='".$companyDesc."', email='".$email."',website='".$website."',mobile='".$mobile."'
 			,telephone='".$telephone."',fax='".$fax."' 
-			WHERE clientid=".$my_session_id." ";
+			WHERE id=".$companyID." ";
    if(setData($qry))
    {
    	//updation successful
