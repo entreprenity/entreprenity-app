@@ -21,11 +21,29 @@
 										data: $.param(dataContent),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 							 });
+				},
+				linkFacebookAccount: function(response,response2) 
+				{
+					var dataContent = {
+			            'fid' 			: response.id,
+			            'first_name' 	: response.first_name,
+			            'last_name' 	: response.last_name,
+			            'gender' 		: response.gender,
+			            'email' 			: response.email,
+			            'fbImage' 		: response2.data.url
+			        };
+			        
+					return $http({ 
+										method: 'post',
+										url: baseUrl+'saveFacebookAuthData',
+										data: $.param(dataContent),
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							 });
 				}
 			};
 		})
 
-		.controller('SettingsPageController', function($routeParams, settingsService) {
+		.controller('SettingsPageController', function($routeParams, settingsService,$scope) {
 			var vm = this;
 			vm.memberUserName = $routeParams.memberUserName;
 		
@@ -70,5 +88,54 @@
 				});	
 				
 			};
+				
+			$scope.FBConnect= function()
+			{
+				FB.login(function(response) 
+				{
+				    if (response.authResponse) 
+				    {
+				     //console.log('Welcome!  Fetching your information.... ');
+				     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
+				       console.log('Good to see you, ' + response.name + '.');
+				       console.log(response.first_name);
+				       console.log(response.last_name);
+				       console.log(response.gender);
+				       console.log(response.email);
+				       
+				       
+				       if(response.id)
+				       {
+				       	var accessToken=FB.getAuthResponse();
+				       	//console.log(accessToken);
+				       	
+				       	FB.api(
+							    "/"+response.id+"/picture?type=large",
+							    function (response2) 
+							    {
+							      if (response2 && !response2.error) 
+							      {
+							        var imageUrl=response2.data.url;
+							        //console.log(imageUrl);
+							      }
+							      settingsService.linkFacebookAccount(response,response2).success(function(data) {
+										vm.FBConnect = data;
+									});
+							    }
+							);
+							
+							
+				       }				       
+				       
+				     });
+				    } 
+				    else 
+				    {
+				     console.log('User cancelled login or did not fully authorize.');
+				    }
+				});
+							
+			};
+			
 		});
 })();
