@@ -322,7 +322,7 @@ function getCompanies()
    {
    	while($row=mysqli_fetch_array($res))
       {
-      	$data[$i]['id']				=	$row['clientid'];
+      	$data[$i]['id']				=	$row['id'];
 			$data[$i]['companyName']	=	$row['company_name'];
 			$data[$i]['description']	=	$row['description'];
 
