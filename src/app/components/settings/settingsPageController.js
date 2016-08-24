@@ -39,6 +39,14 @@
 										data: $.param(dataContent),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 							 });
+				},
+				unlinkFacebookAccount: function() 
+				{
+					return $http.get(baseUrl+ 'unlinkFacebookAccount');
+				},
+				checkFBConnectedorNot: function() 
+				{
+					return $http.get(baseUrl+ 'checkFBConnectedorNot');
 				}
 			};
 		})
@@ -88,21 +96,29 @@
 				});	
 				
 			};
-				
+
+			
+			//Function to check facebook linked or not
+			settingsService.checkFBConnectedorNot().success(function(data) {
+				vm.FBConnect = data;
+			});
+			
+			//Function to unlink a facebook profile	      
+	      $scope.FBUnlink = function() {
+				settingsService.unlinkFacebookAccount().success(function(data) {
+					vm.FBConnect = data;
+				});	
+			};
+			
+			//Link a facebook profile				
 			$scope.FBConnect= function()
 			{
 				FB.login(function(response) 
 				{
 				    if (response.authResponse) 
 				    {
-				     //console.log('Welcome!  Fetching your information.... ');
+
 				     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
-				       console.log('Good to see you, ' + response.name + '.');
-				       console.log(response.first_name);
-				       console.log(response.last_name);
-				       console.log(response.gender);
-				       console.log(response.email);
-				       
 				       
 				       if(response.id)
 				       {
@@ -124,15 +140,17 @@
 							    }
 							);
 							
-							
-				       }				       
+				     }				       
 				       
-				     });
-				    } 
-				    else 
-				    {
-				     console.log('User cancelled login or did not fully authorize.');
-				    }
+				 });
+			} 
+	      else 
+	      {
+	        console.log('User cancelled login or did not fully authorize.');
+	      }
+	      
+
+
 				});
 							
 			};

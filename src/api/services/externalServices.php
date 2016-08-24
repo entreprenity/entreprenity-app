@@ -1,5 +1,92 @@
 <?php
 
+//Function to check facebook connected or not
+//August 24,2016
+function checkFBConnectedorNot()
+{
+	$data = array();	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id) 
+	{
+		$qry="SELECT facebookID FROM entrp_login  
+				WHERE clientid=".$my_session_id." ";
+		$res=getData($qry);
+		while($row=mysqli_fetch_array($res))
+		{
+			$facebookID		=	$row['facebookID'];  					
+		}
+		
+		if($facebookID=='')
+		{
+			$data='notconnected';
+		}
+		else if($facebookID==0)
+		{
+			$data='notconnected';
+		}
+		else
+		{
+			$data='connected';
+		}
+	}	
+	return $data;
+}
+
+//Function to revoke facebook connect
+//August 24,2016
+function unlinkFacebookAccount()
+{
+	$data = array();	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	$qry="UPDATE entrp_login 
+				SET facebookID='',facebookEmail='' 
+				WHERE clientid=".$my_session_id." ";
+	if(setData($qry))
+	{
+		$data='notconnected';
+	}	
+	return $data;
+}
+
+//Function to save facebook connect data
+//August 24,2016
+function saveFacebookAuthData()
+{
+	$data = array();	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id) 
+	{
+		$fid				=	validate_input($_POST['fid']);
+		$firstnameFB	=	validate_input($_POST['first_name']);
+		$lastnameFB		=	validate_input($_POST['last_name']);
+		$gender			=	validate_input($_POST['gender']);
+		$email			=	validate_input($_POST['email']);
+		$fbImage			=	validate_input($_POST['fbImage']);
+
+		if($fbImage!='' && $fid!='')
+		{
+			$imgSRC= "//graph.facebook.com/".$fid."/picture?type=large";
+			$qry0="UPDATE client_profile 
+					SET avatar='".$imgSRC."'
+					WHERE clientid=".$my_session_id." ";
+			setData($qry0); 
+		}		
+		
+		$qry="UPDATE entrp_login 
+				SET facebookID='".$fid."',facebookEmail='".$email."',firstname='".$firstnameFB."',lastname='".$lastnameFB."',gender='".$gender."' 
+				WHERE clientid=".$my_session_id." ";
+		if(setData($qry))
+		{
+			$data='connected';
+		}		
+	}
+	return $data;
+}
+
 
 //Function to invoke spaces service
 //July 05,2016

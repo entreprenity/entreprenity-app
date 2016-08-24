@@ -1,5 +1,60 @@
 <?php
 
+//Function to login with facebook
+//August 24,2016
+function loginWithFaceBook()
+{
+	$data= array();
+	$fid=validate_input($_POST['fid']);
+
+	$qry="SELECT * FROM entrp_login where facebookID='".$fid."' ";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data['firstname']	=	$row['firstname'];
+			$data['lastname']		=	$row['lastname'];
+			$data['id']				=	$row['clientid'];
+			$data['username']		=	$row['username'];
+			$data['success'] 		= true;
+			$data['msg'] 			= 'Valid User';
+
+			//generate a client token
+			$client_session_token=generate_login_token();
+
+            
+            // server should keep session data for AT LEAST 1 hour
+            //ini_set('session.gc_maxlifetime', 36000);
+
+            // each client should remember their session id for EXACTLY 1 hour
+            //session_set_cookie_params(36000);
+            
+			//set session
+			session_start();
+			$_SESSION['id'] 				= $data['id'];
+			$_SESSION['firstname'] 		= $data['firstname'];
+			$_SESSION['lastname'] 		= $data['lastname'];
+			$_SESSION['login_token'] 	= $client_session_token;
+			$_SESSION['username'] 	   = $data['username']; //added by arshad
+
+			set_client_session_token($client_session_token,$row['clientid']);
+			$data['login_token'] 		= $client_session_token;
+
+		}
+	}
+	else
+	{
+		$data['success'] = false;
+		$data['msg'] = 'Incorrect facebook credentials.';
+	}
+
+	return $data;
+
+}
+
+
 //Function to reset a user's password
 //August 03.2016
 function resetPassword()

@@ -19,7 +19,6 @@
 				// check to make sure the form is completely valid
 				if (isValid) 
 				{
-					 //alert('isValid');
 				    $http({
 				      method: 'post',
 				      url: baseUrl+'login',
@@ -30,8 +29,6 @@
 				    {
 				    	if(data.success)
 				    	{
-				    		//alert(data.msg);
-				    		//localStorage.clear();
 					    	if (localStorage['entrp_token'])
 					    	{
 					    		localStorage.removeItem('entrp_token');
@@ -42,31 +39,92 @@
 				    	}
 				    	else
 				    	{
-				    		//alert('invalid 1');
-							//alert(data.msg);
-							
 					    	if (localStorage['entrp_token'])
 					    	{
 					    		localStorage.removeItem('entrp_token');
 					    	}
-				    		
-				    		//localStorage.clear();
 							vm.errorMessage = data.msg;
 				    	}
 		    		}).
 		    		error(function(data, status, headers, config) 
 		    		{
-		    			//alert('invalid 2');
 			    		if (localStorage['entrp_token'])
 				    	{
 				    		localStorage.removeItem('entrp_token');
 				    	}
-		    			//localStorage.clear();
 						vm.errorMessage = data.msg;
 		    		});
 				}
 			};
 			
+	
+			//Login with facebook profile				
+			$scope.FBLogin= function()
+			{
+				FB.login(function(response) 
+				{
+				    if (response.authResponse) 
+				    {
+
+				     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
+				       
+				       if(response.id)
+				       {
+				       	//var accessToken=FB.getAuthResponse();
+				       	//console.log(accessToken);
+				       	var dataContent = {
+			            'fid' 			: response.id
+			            //'accessToken' 	: accessToken
+			        		};
+			        		$http({
+						      method: 'post',
+						      url: baseUrl+'loginWithFaceBook',
+						      data: $.param(dataContent),
+						      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+						    })
+						    .success(function(data, status, headers, config) 
+						    {
+						    	if(data.success)
+						    	{
+							    	if (localStorage['entrp_token'])
+							    	{
+							    		localStorage.removeItem('entrp_token');
+							    	}					    		
+							    	localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
+						    		localStorage.isLogged = 'true';
+						    		$location.path('/home');
+						    	}
+						    	else
+						    	{
+							    	if (localStorage['entrp_token'])
+							    	{
+							    		localStorage.removeItem('entrp_token');
+							    	}
+									vm.errorMessage = data.msg;
+						    	}
+				    		}).
+				    		error(function(data, status, headers, config) 
+				    		{
+					    		if (localStorage['entrp_token'])
+						    	{
+						    		localStorage.removeItem('entrp_token');
+						    	}
+								vm.errorMessage = data.msg;
+				    		});
+							
+				      }				       
+				       
+				 		});
+					}				
+				});
+			} 
+			/*
+	      else 
+	      {
+	        console.log('User cancelled login with facebook.');
+	      }	
+	      */
+	
 			
 			//Function to validate login form
 			//April 15,2016

@@ -844,6 +844,52 @@ Flight::route('/getAllUnreadNotifications', function()
 	echo json_encode($returnarray);
 });
 
+
+//65 Route to save facebook connect data
+//August 18,2016 (externalServices.php)
+Flight::route('/saveFacebookAuthData', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=saveFacebookAuthData();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//66 Route to unlink a facebook account
+//August 18,2016 (externalServices.php)
+Flight::route('/unlinkFacebookAccount', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=unlinkFacebookAccount();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//67 Route to check facebook conected or not
+//August 18,2016 (externalServices.php)
+Flight::route('/checkFBConnectedorNot', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=checkFBConnectedorNot();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//68 Route to allow login with facebook
+//August 18,2016 (userLoginServices.php)
+Flight::route('/loginWithFaceBook', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=loginWithFaceBook();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
 //Route to test timeline posts
 //November 31,2016
 /*
