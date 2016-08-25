@@ -37,12 +37,14 @@
 				</div>
 				<div class="form-actions">
 					<button type="submit" ng-disabled="loginForm.$invalid || vm.dataLoading" ng-class="{ 'disabled': loginForm.$invalid || vm.dataLoading }" class="btn btn-primary">LOGIN</button>
-					<br>
+					<hr>
+					<a ng-click="FBLogin()" class="btn btn-block btn-social btn-facebook">
+						<span class="fa fa-facebook"></span>
+						Login using Facebook
+					</a>
 					<a href="#/forgotpassword" class="btn btn-link">Forgot Password</a>
 				</div>
 			</form>
-			<hr>
-			<a ng-click="FBLogin()"><i  class="fa fa-lg fa-facebook-official" ></i></a>
 		</div>
 	</div>
 </div>
