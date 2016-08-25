@@ -13,12 +13,17 @@
 					<div class="info pull-left">
 						Facebook
 					</div>
+
 					<div ng-if="vm.FBConnect == 'notconnected'" class="selection pull-right">
-						<a class="btn btn-default" ng-click="FBConnect()" ><i  class="fa fa-lg fa-facebook-official" aria-hidden="true"></i></a>
+						<a ng-click="FBConnect()" class="btn btn-block btn-social btn-facebook">
+							<span class="fa fa-facebook"></span> Connect to Facebook
+						</a>
 					</div>
-					
-					<div ng-if="vm.FBConnect == 'connected'" class="button-container pull-right">	
-						<a class="btn btn-default" ng-click="FBUnlink()" >Click to unlink</a>
+
+					<div  ng-if="vm.FBConnect == 'connected'" class="selection pull-right">
+						<a ng-click="FBUnlink()" class="btn btn-block btn-social btn-facebook">
+							<span class="fa fa-facebook"></span> Unlink Facebook
+						</a>
 					</div>
 				</div>
 
