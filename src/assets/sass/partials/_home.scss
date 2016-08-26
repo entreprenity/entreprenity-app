@@ -314,6 +314,11 @@ $tabs-text-color: $primary-text-color;
 			}
 		}
 	}
+	
+	#connectWithFacebook {
+		color: #ffffff !important;
+		a {text-align: center;}
+	}
 }
 
 @media (max-width: 977px) {
