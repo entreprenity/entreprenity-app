@@ -82,8 +82,8 @@
 									<table cellpadding="0" cellspacing="0" style="border-collapse:separate;" >
 										<tr>
 											<td align="center" style="padding-left:10px;padding-right:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
-												<h1 style="font-size:32px;font-weight:bold;border-bottom-style:dotted;border-bottom-color:#f29b13;border-bottom-width:2px;padding-bottom:0;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;color:#202020;line-height:1.4;padding-top:15px;margin-top:0px;margin-bottom:0px;" ><?php echo (isset($userName) && $userName != '' ? '@'.$userName : ''); ?></h1>
-												<p style="padding-top:30px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Your Entreprinity account is now Activated! Please find the login info below.</p>
+												<h1 style="font-size:32px;font-weight:bold;border-bottom-style:dotted;border-bottom-color:#f29b13;border-bottom-width:2px;padding-bottom:0;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;color:#202020;line-height:1.4;padding-top:15px;margin-top:0px;margin-bottom:0px;" ><?php echo (isset($fullName) && $fullName != '' ? 'Hi, '.$fullName : ''); ?></h1>
+												<p style="padding-top:30px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Your Entreprenity account is now Activated! Please find the login info below.</p>
 											</td>
 										</tr>
 									</table>
@@ -92,7 +92,7 @@
 							<tr>
 								<td align="center" style="height:50px;padding-left:15%;padding-right:15%;padding-bottom:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 									<div style="padding-top:10px;padding-bottom:10px;padding-left:10px;padding-right:10px;border-color:#f29b13;border-width:1px;border-style:solid;cursor:pointer;" >
-										<p style="color:inherit;text-decoration:none;padding-bottom:3px;padding-top:3px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:1.4;margin-top:0px;margin-bottom:0px;" ><strong>WEB APP URL :</strong> http://entreprenity.co/app</p>
+										<p style="color:inherit;text-decoration:none;padding-bottom:3px;padding-top:3px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:1.4;margin-top:0px;margin-bottom:0px;" ><strong>WEB APP URL :</strong> https://entreprenity.co/app</p>
 										<p style="color:inherit;text-decoration:none;padding-bottom:3px;padding-top:3px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:1.4;margin-top:0px;margin-bottom:0px;" ><strong>YOUR USERNAME :</strong> <?php echo (isset($userEmail) && $userEmail != '' ? $userEmail : ''); ?> </p>
 										<p style="color:inherit;text-decoration:none;padding-bottom:3px;padding-top:3px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;line-height:1.4;margin-top:0px;margin-bottom:0px;" ><strong>YOUR PASSWORD :</strong> <?php echo (isset($userPass) && $userPass != '' ? $userPass : ''); ?> </p>
 									</div>
@@ -100,7 +100,7 @@
 							</tr>
 							<tr>
 								<td align="center" style="padding-left:10px;padding-right:10px;padding-bottom:20px;padding-top:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
-									<a href="http://entreprenity.co/app" style="text-decoration:none;background-color:#000000;color:#ffffff;font-size:18px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;" ><strong>CLICK HERE TO LOGIN</strong></a>
+									<a href="https://entreprenity.co/app" style="text-decoration:none;background-color:#000000;color:#ffffff;font-size:18px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;" ><strong>CLICK HERE TO LOGIN</strong></a>
 								</td>
 							</tr>
 							<tr>
@@ -110,7 +110,7 @@
 											<td align="center" style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 												<div>
 													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Login today to immediately connect with other business owners via the main Time Line section.</p>
-													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Seeking a graphic designer for your latest brochure? Or perhaps you are a web developer who can provide services to other Entreprenity members? Post it on the Business Opportunities section to get automatic Service Seeker and Provider matching.</p>
+													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Seeking a graphic designer for your latest brochure? Or perhaps you are a web developer who can provide services to other Entreprenity members?</p>
 													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Post it on the Business Opportunities section to get automatic Service Seeker and Provider matching</p>
 												</div>
 											</td>
@@ -133,17 +133,17 @@
 											</td>
 											<td class="drop-column" width="50%" align="center" style="padding-top:20px;padding-bottom:20px;padding-right:20px;padding-left:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 												<img src="http://entreprenity.co/app/assets/img/entrp-welcome-call.png" alt="" style="width:80px;display:block;border-width:0;" />
-												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Let you book a Meeting Room & Work Space</p>
+												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Check your incoming call logs taken by our professional call answering team.</p>
 											</td>
 										</tr>
 										<tr>
 											<td class="drop-column" width="50%" align="center" style="padding-top:20px;padding-bottom:20px;padding-right:20px;padding-left:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 												<img src="http://entreprenity.co/app/assets/img/entrp-welcome-calendar.png" alt="" style="width:80px;display:block;border-width:0;" />
-												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Let you book a Meeting Room & Work Space</p>
+												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Add an event in which you are going to be organizing in our space.</p>
 											</td>
 											<td class="drop-column" width="50%" align="center" style="padding-top:20px;padding-bottom:20px;padding-right:20px;padding-left:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 												<img src="http://entreprenity.co/app/assets/img/entrp-welcome-key.png" alt="" style="width:80px;display:block;border-width:0;" />
-												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Let you book a Meeting Room & Work Space</p>
+												<p style="font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;padding-top:15px;padding-bottom:15px;margin-top:0px;margin-bottom:0px;" >Let you check in and out of spaces.</p>
 											</td>
 										</tr>
 									</table>
@@ -156,7 +156,7 @@
 							</tr>
 							<tr>
 								<td align="center" style="padding-left:10px;padding-right:10px;padding-bottom:40px;padding-top:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
-									<a href="http://entreprenity.co" style="text-decoration:none;background-color:#f29b13;color:#ffffff;font-size:18px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;" ><strong>GO TO WEBSITE</strong></a>
+									<a href="https://entreprenity.co" style="text-decoration:none;background-color:#f29b13;color:#ffffff;font-size:18px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;" ><strong>GO TO WEBSITE</strong></a>
 								</td>
 							</tr>
 							<tr>

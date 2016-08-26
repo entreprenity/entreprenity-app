@@ -158,10 +158,7 @@
 						       {
 						       	var accessToken=FB.getAuthResponse();
 						       	//console.log(accessToken);				       	
-						       	FB.api(
-									    "/"+response.id+"/picture?type=large",
-									    function (response2) 
-									    {
+						       	FB.api("/"+response.id+"/picture?type=large",function (response2) {
 									      if (response2 && !response2.error) 
 									      {
 									        var imageUrl=response2.data.url;
@@ -170,27 +167,44 @@
 									      settingsService.linkFacebookAccount(response,response2).success(function(data) {
 												vm.FBConnect = data;
 											});
-									    }
-									);							
-						     }				       				       
+									 });							
+						       }	
+						       });	
+						     }		       				       
 						});
 				  } 
 				  else 
 				  {
 				    // the user isn't logged in to Facebook.
-				    console.log('user canceled authorization');
-				  }
+				    
+				     FB.login(function(response) 
+					  {
+						    if (response.authResponse) 
+						    {
+						     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
+						       
+						       if(response.id)
+						       {
+						       	var accessToken=FB.getAuthResponse();
+						       	//console.log(accessToken);				       	
+						       	FB.api("/"+response.id+"/picture?type=large",function (response2) {
+									      if (response2 && !response2.error) 
+									      {
+									        var imageUrl=response2.data.url;
+									        //console.log(imageUrl);
+									      }
+									      settingsService.linkFacebookAccount(response,response2).success(function(data) {
+												vm.FBConnect = data;
+											});
+									    });							
+						        }  				       				       
+						      });
+				           }
 				  
-				});				
+				      });				
 				
-			} 
-	      else 
-	      {
-	        console.log('User canceled login or did not fully authorize.');
-	      }
-	      
-
-
+			       }
+			
 				});
 							
 			};
