@@ -1,6 +1,6 @@
 <?php
 
-require_once ('../api/Query2.php'); 
+require_once ('../api/Query.php'); 
 
 //Step 1: Feed client ids from client_info to the script
 //Step 2: Fetch data from client_info wrt clientid
@@ -150,8 +150,8 @@ if(!empty($clientIDArray))
 					
 					
 					//Adding Users to Entreprenity starts
-					//for($i=0;$i<count($data);$i++)
-					for($i=0;$i<10;$i++)
+					for($i=0;$i<count($data);$i++)
+					//for($i=0;$i<10;$i++)
 					{
 						//add user to entrp_login
 						//add client profile
