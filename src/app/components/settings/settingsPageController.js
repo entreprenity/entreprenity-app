@@ -47,6 +47,18 @@
 				checkFBConnectedorNot: function() 
 				{
 					return $http.get(baseUrl+ 'checkFBConnectedorNot');
+				},
+				saveFacebookIdandAuthorize: function(fbId) 
+				{
+					var dataContent = {
+			            'fid' 			: fbId
+			        };			        
+					return $http({ 
+										method: 'post',
+										url: baseUrl+'saveFacebookIdandAuthorize',
+										data: $.param(dataContent),
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+							 });
 				}
 			};
 		})
@@ -113,40 +125,68 @@
 			//Link a facebook profile				
 			$scope.FBConnect= function()
 			{
-				FB.login(function(response) 
+				//new code here
+				FB.getLoginStatus(function(response) 
 				{
-				    if (response.authResponse) 
-				    {
-
-				     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
-				       
-				       if(response.id)
-				       {
-				       	var accessToken=FB.getAuthResponse();
-				       	//console.log(accessToken);
-				       	
-				       	FB.api(
-							    "/"+response.id+"/picture?type=large",
-							    function (response2) 
-							    {
-							      if (response2 && !response2.error) 
-							      {
-							        var imageUrl=response2.data.url;
-							        //console.log(imageUrl);
-							      }
-							      settingsService.linkFacebookAccount(response,response2).success(function(data) {
-										vm.FBConnect = data;
-									});
-							    }
-							);
-							
-				     }				       
-				       
-				 });
+				  //console.log(response);
+				
+				  if (response.status === 'connected') 
+				  {
+				    // the user is logged in and has authenticated your
+				    // app, and response.authResponse supplies
+				    // the user's ID, a valid access token, a signed
+				    // request, and the time the access token 
+				    // and signed request each expire
+				    var uid = response.authResponse.userID;
+				    var accessToken = response.authResponse.accessToken;
+				    
+				    settingsService.saveFacebookIdandAuthorize(uid).success(function(data) {
+						 vm.FBConnect = data;
+					 });
+				  } 
+				  else if (response.status === 'not_authorized') 
+				  {
+				      // the user is logged in to Facebook, 
+				      // but has not authenticated your app
+				      FB.login(function(response) 
+						{
+						    if (response.authResponse) 
+						    {
+						     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
+						       
+						       if(response.id)
+						       {
+						       	var accessToken=FB.getAuthResponse();
+						       	//console.log(accessToken);				       	
+						       	FB.api(
+									    "/"+response.id+"/picture?type=large",
+									    function (response2) 
+									    {
+									      if (response2 && !response2.error) 
+									      {
+									        var imageUrl=response2.data.url;
+									        //console.log(imageUrl);
+									      }
+									      settingsService.linkFacebookAccount(response,response2).success(function(data) {
+												vm.FBConnect = data;
+											});
+									    }
+									);							
+						     }				       				       
+						});
+				  } 
+				  else 
+				  {
+				    // the user isn't logged in to Facebook.
+				    console.log('user canceled authorization');
+				  }
+				  
+				});				
+				
 			} 
 	      else 
 	      {
-	        console.log('User cancelled login or did not fully authorize.');
+	        console.log('User canceled login or did not fully authorize.');
 	      }
 	      
 

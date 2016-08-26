@@ -846,7 +846,7 @@ Flight::route('/getAllUnreadNotifications', function()
 
 
 //65 Route to save facebook connect data
-//August 18,2016 (externalServices.php)
+//August 24,2016 (externalServices.php)
 Flight::route('/saveFacebookAuthData', function()
 {
    enable_cors();
@@ -857,7 +857,7 @@ Flight::route('/saveFacebookAuthData', function()
 });
 
 //66 Route to unlink a facebook account
-//August 18,2016 (externalServices.php)
+//August 24,2016 (externalServices.php)
 Flight::route('/unlinkFacebookAccount', function()
 {
    enable_cors();
@@ -868,7 +868,7 @@ Flight::route('/unlinkFacebookAccount', function()
 });
 
 //67 Route to check facebook conected or not
-//August 18,2016 (externalServices.php)
+//August 24,2016 (externalServices.php)
 Flight::route('/checkFBConnectedorNot', function()
 {
    enable_cors();
@@ -879,12 +879,23 @@ Flight::route('/checkFBConnectedorNot', function()
 });
 
 //68 Route to allow login with facebook
-//August 18,2016 (userLoginServices.php)
+//August 24,2016 (userLoginServices.php)
 Flight::route('/loginWithFaceBook', function()
 {
    enable_cors();
    services_included();	
 	$returnarray=loginWithFaceBook();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//69 Route to save facebook Id and authorize facebok login
+//August 24,2016 (externalServices.php)
+Flight::route('/saveFacebookIdandAuthorize', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=saveFacebookIdandAuthorize();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 });

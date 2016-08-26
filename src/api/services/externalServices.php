@@ -1,5 +1,38 @@
 <?php
 
+//Function to save facebook id and authorize facebook login
+//August 24,2016
+function saveFacebookIdandAuthorize()
+{
+	$data = array();	
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id) 
+	{
+		$fid		=	validate_input($_POST['fid']);
+		if($fid!='')
+		{
+			$qry="UPDATE entrp_login 
+					SET facebookID='".$fid."' 
+					WHERE clientid=".$my_session_id." ";
+			if(setData($qry))
+			{
+				$data='connected';
+			}
+			else
+			{
+				$data='notconnected';
+			}		
+		}
+		else
+		{
+			$data='notconnected';
+		}
+	}		
+	return $data;
+}
+
+
 //Function to check facebook connected or not
 //August 24,2016
 function checkFBConnectedorNot()
@@ -40,13 +73,15 @@ function unlinkFacebookAccount()
 	$data = array();	
 	$session_values = get_user_session();
 	$my_session_id	= $session_values['id'];
-	
-	$qry="UPDATE entrp_login 
+	if($my_session_id) 
+	{
+		$qry="UPDATE entrp_login 
 				SET facebookID='',facebookEmail='' 
 				WHERE clientid=".$my_session_id." ";
-	if(setData($qry))
-	{
-		$data='notconnected';
+		if(setData($qry))
+		{
+			$data='notconnected';
+		}
 	}	
 	return $data;
 }

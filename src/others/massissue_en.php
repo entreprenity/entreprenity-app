@@ -41,9 +41,8 @@ if(!empty($clientIDArray))
       	$clientIDs[]			=	$row['clientid']; //feeded
 		}
 		
-		//print_r($clientIDs);	
-		$qry2="SELECT vof_clientid FROM entrp_login";
-		
+		//Select all voffice clients from entreprenity
+		$qry2="SELECT vof_clientid FROM entrp_login";		
 		$res2=getData($qry2);
    	$count_res2=mysqli_num_rows($res2);
    	if($count_res2>0)
@@ -52,8 +51,7 @@ if(!empty($clientIDArray))
       	{
       		$clientENVOF[]	=	$row2['vof_clientid']; //fetched
 			}
-   	}
-   	//print_r($clientENVOF);	
+   	}	
    	
    	if( !empty($clientIDs) && !empty($clientENVOF) )
    	{

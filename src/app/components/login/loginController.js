@@ -60,22 +60,24 @@
 	
 			//Login with facebook profile				
 			$scope.FBLogin= function()
-			{
-				FB.login(function(response) 
-				{
-				    if (response.authResponse) 
-				    {
+			{				
 
-				     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
-				       
-				       if(response.id)
-				       {
-				       	//var accessToken=FB.getAuthResponse();
-				       	//console.log(accessToken);
+				FB.getLoginStatus(function(response) 
+				{
+				  //if already connected
+				  if (response.status === 'connected') 
+				  {
+						    // the user is logged in and has authenticated your
+						    // app, and response.authResponse supplies
+						    // the user's ID, a valid access token, a signed
+						    // request, and the time the access token 
+						    // and signed request each expire
+				    		var uid = response.authResponse.userID;
+
 				       	var dataContent = {
-			            'fid' 			: response.id
-			            //'accessToken' 	: accessToken
+			            'fid' 			: uid
 			        		};
+			        		
 			        		$http({
 						      method: 'post',
 						      url: baseUrl+'loginWithFaceBook',
@@ -111,12 +113,72 @@
 						    	}
 								vm.errorMessage = data.msg;
 				    		});
-							
-				      }				       
-				       
-				 		});
-					}				
+
+
+				  } 
+				  else if (response.status === 'not_authorized') 
+				  {				
+
+						FB.login(function(response) 
+						{
+						    if (response.authResponse) 
+						    {
+		
+						     FB.api('/me?fields=email,first_name,last_name,gender', function(response) {
+						       
+						       if(response.id)
+						       {
+						       	//var accessToken=FB.getAuthResponse();
+						       	//console.log(accessToken);
+						       	var dataContent = {
+					            'fid' 			: response.id
+					            //'accessToken' 	: accessToken
+					        		};
+					        		$http({
+								      method: 'post',
+								      url: baseUrl+'loginWithFaceBook',
+								      data: $.param(dataContent),
+								      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+								    })
+								    .success(function(data, status, headers, config) 
+								    {
+								    	if(data.success)
+								    	{
+									    	if (localStorage['entrp_token'])
+									    	{
+									    		localStorage.removeItem('entrp_token');
+									    	}					    		
+									    	localStorage.setItem("entrp_token", JSON.stringify(data.login_token));
+								    		localStorage.isLogged = 'true';
+								    		$location.path('/home');
+								    	}
+								    	else
+								    	{
+									    	if (localStorage['entrp_token'])
+									    	{
+									    		localStorage.removeItem('entrp_token');
+									    	}
+											vm.errorMessage = data.msg;
+								    	}
+						    		}).
+						    		error(function(data, status, headers, config) 
+						    		{
+							    		if (localStorage['entrp_token'])
+								    	{
+								    		localStorage.removeItem('entrp_token');
+								    	}
+										vm.errorMessage = data.msg;
+						    		});
+									
+						      }				       
+						       
+						 		});
+							}				
+						});
+				  }
+				  
 				});
+				
 			} 
 			/*
 	      else 
