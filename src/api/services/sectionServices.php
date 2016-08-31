@@ -170,6 +170,7 @@ function recommendedBusinessOpportunities()
 function getMostTimeLineCommenters()
 {
 	//SELECT count(post_comments_id) AS comment_count,commented_by FROM entrp_user_timeline_post_comments WHERE status=1 GROUP BY commented_by ORDER BY commented_by ASC
+	$commentPoints=2;
 	$data= array();
 	$i=0;
 	$qry="SELECT count(post_comments_id) AS comment_count,commented_by 
@@ -177,7 +178,7 @@ function getMostTimeLineCommenters()
 			WHERE status=1 
 			GROUP BY commented_by 
 			ORDER BY commented_by ASC
-			LIMIT 5";
+			";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -192,7 +193,7 @@ function getMostTimeLineCommenters()
 		foreach ($data as $key => $row) 
 		{
     		// replace 0 with the field's index/key
-    		$commentSort[$key]  = $row['points'];
+    		$commentSort[$key]  = $commentPoints*$row['points'];
 		}
 
 		array_multisort($commentSort, SORT_DESC, $data);		
@@ -205,14 +206,14 @@ function getMostTimeLineCommenters()
 function getMostTimelineLikeReceivers()
 {
 	//SELECT EUTPL.post_id,EUTPL.liked_user_ids,EUT.posted_by FROM entrp_user_timeline_post_likes AS EUTPL LEFT JOIN entrp_user_timeline AS EUT ON EUT.post_id=EUTPL.post_id WHERE EUT.status=1
-	
+	$likePoints=1;
 	$data= array();
 	$i=0;
 	$qry="SELECT EUTPL.post_id,EUTPL.liked_user_ids,EUT.posted_by 
 			FROM entrp_user_timeline_post_likes AS EUTPL 
 			LEFT JOIN entrp_user_timeline AS EUT ON EUT.post_id=EUTPL.post_id 
 			WHERE EUT.status=1
-			LIMIT 5";
+			";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -247,7 +248,7 @@ function getMostTimelineLikeReceivers()
 		foreach ($listUserLike as $key => $row) 
 		{
     		// replace 0 with the field's index/key
-    		$likeSort[$key]  = $row['points'];
+    		$likeSort[$key]  = $likePoints*$row['points'];
 		}
 
 		array_multisort($likeSort, SORT_DESC, $listUserLike);	
@@ -263,7 +264,7 @@ function getMostTimelineLikeReceivers()
 function getMostTimelinePostPublishers()
 {
 	//SELECT COUNT(post_id) AS total_posts, posted_by FROM entrp_user_timeline WHERE status=1  GROUP BY posted_by ORDER BY posted_by ASC
-	
+	$postPoints=3;
 	$data= array();
 	$i=0;
 	$qry="SELECT COUNT(post_id) AS total_posts, posted_by 
@@ -271,7 +272,7 @@ function getMostTimelinePostPublishers()
 			WHERE status=1  
 			GROUP BY posted_by 
 			ORDER BY posted_by ASC
-			LIMIT 5";
+			";
 	$res=getData($qry);
 	$count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -286,7 +287,7 @@ function getMostTimelinePostPublishers()
 		foreach ($data as $key => $row) 
 		{
     		// replace 0 with the field's index/key
-    		$postSort[$key]  = $row['points'];
+    		$postSort[$key]  = $postPoints*$row['points'];
 		}
 
 		array_multisort($postSort, SORT_DESC, $data);		
@@ -409,6 +410,7 @@ function getTopContributors()
 	    }
 	}
 	
+	
 	// Posts
 	if (!empty($post_array)) 
 	{
@@ -458,7 +460,7 @@ function getTopContributors()
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CI.clientid IN (".$topContributorsUserIDString.") AND CI.clientid NOT IN (1) 
-	      LIMIT 3 
+	      LIMIT 4 
 	      ";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);

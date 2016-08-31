@@ -24,16 +24,16 @@ if($password!='' && $client!='')
 		}
 		
 		ob_start();
-		include('email_templates/password_changed.php');
+		include('../api/email_templates/password_changed.php');
 		$password_changed_template = ob_get_contents();			
 		ob_end_clean();			
 	
 		$to=$email; 
-		$strSubject="Password reset form";
+		$strSubject="Password Changed";
 		$message =  $password_changed_template;              
 		$headers = 'MIME-Version: 1.0'."\r\n";
 		$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-		$headers .= "From: eprty@test.com"; 
+		$headers .= "From: ".MS_SENTFROM; 
 	
 		$qry2="UPDATE entrp_login SET password='".md5($password)."' where email='".$email."' AND clientid=".$client." ";
 		if(setData($qry2))

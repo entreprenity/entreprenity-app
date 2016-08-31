@@ -1097,6 +1097,7 @@ function fetch_company_information_from_userid($clientid)
 			WHERE company_profiles.clientid=".$clientid."
 	      ";
 	*/
+	$role			=	getUserDesignationFromCompUserRelation($clientid);
 	$companyID	=	getCompanyIDFromCompUserRelation($clientid);
 	$qry="SELECT company_profiles.*,
 			 		 location_info.location_desc
@@ -1142,7 +1143,8 @@ function fetch_company_information_from_userid($clientid)
 			$data['companyDesc']		=	$row['description'];   
 			
 			$data['followers']		=	entrp_company_follows($data['id']);
-			$data['categories']		= fetch_company_categories($data['id']);			
+			$data['categories']		= fetch_company_categories($data['id']);
+			$data['role']	=  $role;				
 		}
 	}
 	else 

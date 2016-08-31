@@ -37,7 +37,7 @@ if(!empty($clientIDArray))
 			AND email!='' AND email!='n/a n/a' 
 			AND coname!='' AND coname NOT IN ('Myvoffice DEMO account','Voffice Demo','na','none yettttttttttttttt') 
 			GROUP BY email";
-	
+	echo $qry;
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
 	if($count_res>0)
@@ -77,6 +77,7 @@ if(!empty($clientIDArray))
 				$i=0;
 				//equivalent to SELECT clientid, firstname,lastname,coname,address,postcode,city,state,country,email,website,location,dob FROM client_info
 				$qry3="SELECT * FROM client_info WHERE clientid IN(".$addToENString.") AND status=1 ORDER BY coname ";
+				echo $qry3;
 				$res3=getData($qry3);
    			$count_res3=mysqli_num_rows($res3);
 				if($count_res3>0)
@@ -148,9 +149,8 @@ if(!empty($clientIDArray))
 					}
 					echo '</table>';
 					
-					
-					//Adding Users to Entreprenity starts
 					/*
+					//Adding Users to Entreprenity starts
 					for($i=0;$i<count($data);$i++)
 					//for($i=0;$i<10;$i++)
 					{
@@ -221,13 +221,13 @@ if(!empty($clientIDArray))
 							$welcomeTemplate = ob_get_contents();			
 							ob_end_clean();			
 							
-							//$to='dominic@cliffsupport.com'; 
-							$to=$userEmail; 
+							$to='dominic@cliffsupport.com'; 
+							//$to=$userEmail; 
 							$strSubject="Welcome to Entreprenity";
 							$message =  $welcomeTemplate;              
 							$headers = 'MIME-Version: 1.0'."\r\n";
 							$headers .= 'Content-type: text/html; charset=iso-8859-1'."\r\n";
-							$headers .= "From: reply@entreprenity.co"; 
+							$headers .= "From: eprty@test.com"; 
 							
 							$mail_to_enduser=mail($to, $strSubject, $message, $headers);						
 							if($mail_to_enduser)
@@ -237,8 +237,8 @@ if(!empty($clientIDArray))
 						}
 		      		
 					}
-									
-					*/
+					*/			
+					
 					//Adding users to Entreprenity ends 					
 					
 					
@@ -247,7 +247,15 @@ if(!empty($clientIDArray))
 					
 					
 				}
+				else
+				{
+					echo 'No users to add 2';
+				}
 				
+			}
+			else
+			{
+				echo 'all users added';			
 			}
    	}
    	//style='color:red'

@@ -126,6 +126,7 @@ function updateMyCompanyDetails()
 	$company_categories=array();
 	$session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
+	$role			=	getUserDesignationFromCompUserRelation($my_session_id);
 	
 	$companyName		=validate_input($_POST['companyName']);
 	$companyDesc		=validate_input($_POST['companyDesc']);

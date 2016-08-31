@@ -243,7 +243,7 @@ function forgot_password()
 			if($mail->Send()) 
 			{
 		 		$data['success'] 		= true;
-				$data['msg'] 			= 'An email has been sent to you with your new password - Please check your email';
+				$data['msg'] 			= 'An email has been sent to you. Please check your email';
 			} 
 			else 
 			{

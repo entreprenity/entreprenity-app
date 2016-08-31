@@ -171,16 +171,18 @@
 						vm.reloadnewsfeed = false;
 					}
 				});
-
+				
 				$scope.loadTags = function(query) { //load tag Categories
+				    /*
 					 var categories = [];
 					 newsFeedService.getTagCategories().success(function(data) {
 					 	vm.categories = data;						
 											 	
 					 });
 					 return vm.categories;
-
+					*/
 				};
+				
 
 				vm.keypressEventListener = function($event, post){
 					var keyCode = $event.which || $event.keyCode;

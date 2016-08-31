@@ -56,7 +56,7 @@ if (!defined('MS_PASSWORD')) define('MS_PASSWORD', 'pIFV2yDX0mbvs');
 if (!defined('MS_PORT')) 	  define('MS_PORT', 587);
 
 
-if (!defined('MS_SENTFROM')) 	  	define('MS_SENTFROM', 'eprty@entreprenity.co');
+if (!defined('MS_SENTFROM')) 	  	define('MS_SENTFROM', 'noreply@entreprenity.co');
 if (!defined('MS_SENTFROMNAME'))	define('MS_SENTFROMNAME', 'entreprenity.co');
 
 if (!defined('RECIPIENTNAME1')) define('RECIPIENTNAME1','Dominic Gmail');
@@ -72,8 +72,8 @@ if (!defined('ADMINEMAIL')) define('ADMINEMAIL','sean@flexiesolutions.com');
 
 //Email Subjects
 if (!defined('NOTIFICATION_CONST')) define('NOTIFICATION_CONST','Notification mail');
-if (!defined('EVENTREQ_CONST')) 		define('EVENTREQ_CONST','Sean Lim');
-if (!defined('FORGOTPASS_CONST')) 	define('FORGOTPASS_CONST','Sean Lim');
+if (!defined('EVENTREQ_CONST')) 		define('EVENTREQ_CONST','New Event Request');
+if (!defined('FORGOTPASS_CONST')) 	define('FORGOTPASS_CONST','Password Reset');
 
 
 if (!defined('TIMELINE_POSTS_LIMIT')) 	  define('TIMELINE_POSTS_LIMIT', 4);
