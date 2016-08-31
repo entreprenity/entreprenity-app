@@ -20,6 +20,20 @@
 		border: 1px solid;
 		border-color: $primary-border-color;
 		margin-bottom: 10px;
+		.post-wysiwyg-editor {
+			.form-control {
+				height: 100px;
+				overflow: auto;
+				.ng-valid {
+					border: none;
+					outline: none;
+					resize: none;
+					-webkit-box-shadow: none;
+					-moz-box-shadow: none;
+					box-shadow: none;
+				}
+			}
+		}
 		.button-container {
 			position: relative;
 			background-color: $secondary-bg-color;

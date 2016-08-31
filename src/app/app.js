@@ -47,6 +47,7 @@
 		'angularMoment',
 		'vr.directives.slider',
 		'rgkevin.datetimeRangePicker',
+		'textAngular',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
@@ -72,7 +73,8 @@
 		'entreprenityApp.spaces',
 		'entreprenityApp.eventPlaced',
 		'entreprenityApp.bussOpp',
-		'entreprenityApp.resetpassword'
+		'entreprenityApp.resetpassword',
+		'entreprenityApp.register'
 	])
 	.factory('AuthService2', ["$http", "$location", function($http, $location){
 	   //var vm = this;
