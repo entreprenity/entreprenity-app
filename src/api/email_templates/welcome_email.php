@@ -103,6 +103,13 @@
 									<a href="https://entreprenity.co/app" style="text-decoration:none;background-color:#000000;color:#ffffff;font-size:18px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;" ><strong>CLICK HERE TO LOGIN</strong></a>
 								</td>
 							</tr>
+							
+							<tr>
+								<td align="center" style="padding-left:10px;padding-right:10px;padding-bottom:20px;padding-top:20px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
+									<div style="text-decoration:none;color:#3b5998;font-size:15px;padding-left:20px;padding-right:20px;padding-top:15px;padding-bottom:15px;"  ><strong>Do click on the Connect with Facebook button after initial login to enable Facebook login to Entreprenity.</strong></div>
+								</td>
+							</tr>
+
 							<tr>
 								<td align="center" style="padding-top:10px;padding-left:15%;padding-right:15%;text-align:center;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
 									<table cellpadding="0" cellspacing="0" style="border-collapse:separate;" >
@@ -112,6 +119,7 @@
 													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Login today to immediately connect with other business owners via the main Time Line section.</p>
 													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Seeking a graphic designer for your latest brochure? Or perhaps you are a web developer who can provide services to other Entreprenity members?</p>
 													<p style="padding-top:10px;padding-bottom:10px;padding-right:10px;padding-left:10px;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;margin-top:0px;margin-bottom:0px;" >Post it on the Business Opportunities section to get automatic Service Seeker and Provider matching</p>
+													
 												</div>
 											</td>
 										</tr>
@@ -161,7 +169,7 @@
 							</tr>
 							<tr>
 								<td class="footer" align="center" valign="center" style="height:56px;border-top-color:#C9CBCD;border-top-width:1px;border-top-style:solid;padding-left:15%;padding-right:15%;padding-bottom:2%;padding-top:2%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;font-size:14px;color:#202020;line-height:1.4;" >
-                                 <span style="color:#C9CBCD;font-size:12px;" >Entreprenity is currently in BETA phase. So please, do let us know what issues you are facing while using the app. Do feed back to us at <a style="text-decoration:none;color:#00788a;" >feedback@entreprininty.co</a>
+                                 <span style="color:#C9CBCD;font-size:12px;" >Entreprenity is currently in BETA phase. So please, do let us know what issues you are facing while using the app. Do feed back to us at <a href="mailto:feedback@entreprenity.co" style="text-decoration:none;color:#00788a;" >feedback@entreprenity.co</a>
                                  when you found one.</span>
 								</td>
 							</tr>

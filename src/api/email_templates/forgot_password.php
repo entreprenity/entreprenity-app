@@ -54,7 +54,7 @@
 											<table cellpadding="0" cellspacing="0" style="width: 100%;">
 												<tr>
 													<td align="center" style="width: 100%; padding-left: 10px;  padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
-														<img src="http://entreprenity.co/app/assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
+														<img src="https://entreprenity.co/app/assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
 													</td>
 												</tr>
 											</table>
@@ -85,7 +85,7 @@
 												<tr>
 													<td align="left" style="padding-left: 10px;  padding-right: 10px;">
 														<!--<p>If you ignore this message, your password won't be changed.</p>-->
-														<p>If you didn't request a password reset, <a>let us know</a>.</p>
+														<p>If you didn't request a password reset, <a href="mailto:feedback@entreprenity.co">let us know</a>.</p>
 													</td>
 												</tr>	
 											</table>
@@ -93,7 +93,7 @@
 									</tr>																						
 									<tr>
 										<td class="footer" align="center" valign="center" style="height: 56px; border-top-color: #C9CBCD; border-top-width: 1px; border-top-style: solid; padding-left: 15%; padding-right: 15%;">
-											<span style="color: #C9CBCD; font-size: 12px; ">If this is not your account you can <a href="#">remove your email from it</a></span> 
+											<span style="color: #C9CBCD; font-size: 12px; ">If this is not your account you can <a href="https://entreprenity.co/app/">remove your email from it</a></span> 
 										</td>
 									</tr>
 								</table>

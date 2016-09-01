@@ -292,6 +292,7 @@ function deleteTimlinePost()
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
 //August 16,2016: Fetching likes, comments and such details
+//September 01,2016: Added html decode for wysiwyg editor
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -387,7 +388,7 @@ function getBusinessOpportunitiesForMe()
 			      	
 			      	$data[$i]['post_id']										=	$row['post_id'];      	
 			      	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
-			      	$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			      	$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 						$data[$i]['image']										=	$row['post_img'];
 						$data[$i]['created_at']									=	$row['created_at'];
 						$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -436,6 +437,7 @@ function getBusinessOpportunitiesForMe()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function refetchThisPost($post_id)
 {
 	//the defaults starts
@@ -476,7 +478,7 @@ function refetchThisPost($post_id)
 	      {
 	      	//$post_id												=	$row['post_id'];	      	
 	      	$data['post_id']									=	$row['post_id'];  
-	      	$data['content']									=	htmlspecialchars_decode($row['content'],ENT_QUOTES);    	
+	      	$data['content']									=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 				$data['image']										=	$row['post_img'];
 				$data['created_at']								=	$row['created_at'];
 				$data['bussOpp']									=	$row['business_opp'];
@@ -499,7 +501,7 @@ function refetchThisPost($post_id)
 				
 				$post_by												=	$row['posted_by'];   
 				$companyId											=	getCompanyIDfromUserID($post_by);
-				$data['post_author']['companyName'] 		=  getCompanyNameUsingCompUserRelation($companyID);
+				$data['post_author']['companyName'] 		=  getCompanyNameUsingCompUserRelation($companyId);
 				
 				$data['isLiked']									= doILikeThisPost($post_id);
 				$data['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -522,6 +524,7 @@ function refetchThisPost($post_id)
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function refetchCompanyPosts($companyUserName)
 {
 	//the defaults starts
@@ -565,7 +568,7 @@ function refetchCompanyPosts($companyUserName)
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -588,7 +591,7 @@ function refetchCompanyPosts($companyUserName)
 			
 			$post_by														=	$row['posted_by'];   
 			$companyId													=	getCompanyIDfromUserID($post_by);
-			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyID);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
 			$data[$i]['likes_count']								= howManyLikesThisPostReceived($post_id);
@@ -609,6 +612,7 @@ function refetchCompanyPosts($companyUserName)
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function refetchMemberNewsFeed($username)
 {
 	//the defaults starts
@@ -644,7 +648,7 @@ function refetchMemberNewsFeed($username)
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id']; 
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -667,7 +671,7 @@ function refetchMemberNewsFeed($username)
 			
 			$post_by														=	$row['posted_by'];   
 			$companyId													=	getCompanyIDfromUserID($post_by);
-			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyID);
+			$data[$i]['post_author']['companyName'] 			= getCompanyNameUsingCompUserRelation($companyId);
 
 			
 			$data[$i]['isLiked']										= doILikeThisPost($post_id);
@@ -690,6 +694,7 @@ function refetchMemberNewsFeed($username)
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getAllBusinessOpportunities()
 {
 	//the defaults starts
@@ -742,7 +747,7 @@ function getAllBusinessOpportunities()
       	$post_id														=	$row['post_id'];
          $data[$i]['postTags']									=	getTimelinePostTags($post_id);
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -951,6 +956,7 @@ function postABusinessOpportunity()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getmyCompanyPosts()
 {
 	//the defaults starts
@@ -1015,7 +1021,7 @@ function getmyCompanyPosts()
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -1060,6 +1066,7 @@ function getmyCompanyPosts()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getCompanyPosts()
 {
 	//the defaults starts
@@ -1125,7 +1132,7 @@ function getCompanyPosts()
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -1170,6 +1177,7 @@ function getCompanyPosts()
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
 //August 12, 2016: Fetch buss opp tags
+//September 01,2016: Added html decode for wysiwyg editor
 function getThisPost()
 {
 	//the defaults starts
@@ -1263,6 +1271,7 @@ function getThisPost()
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
 //August 11,2016: Added array empty check
+//September 01,2016: Added html decode for wysiwyg editor
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -1328,7 +1337,7 @@ function getFollowedMembersPosts()
 	      	$post_id														=	$row['post_id'];
 	      	
 	      	$data[$i]['post_id']										=	$row['post_id'];      	
-				$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+				$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 				$data[$i]['image']										=	$row['post_img'];
 				$data[$i]['created_at']									=	$row['created_at'];
 				$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -1441,6 +1450,7 @@ function getFollowedMembersPosts()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getAllPosts()
 {
 	//the defaults starts
@@ -1493,7 +1503,7 @@ function getAllPosts()
       	$post_id														=	$row['post_id'];
       	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
       	$data[$i]['post_id']										=	$row['post_id'];      	
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -2695,6 +2705,7 @@ function howManyLikesThisPostReceived($post_id)
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getMyOwnNewsFeed()
 {
 	//the defaults starts
@@ -2753,7 +2764,7 @@ function getMyOwnNewsFeed()
       	
       	$data[$i]['post_id']										=	$row['post_id'];  
         
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['created_at']									=	$row['created_at'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
@@ -2801,6 +2812,7 @@ function getMyOwnNewsFeed()
 //July 19, 2016: fetch buss opp flag
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
+//September 01,2016: Added html decode for wysiwyg editor
 function getMyNewsFeed()
 {
 	//the defaults starts
@@ -2856,7 +2868,7 @@ function getMyNewsFeed()
       	$post_id														=	$row['post_id'];
       	
       	$data[$i]['post_id']										=	$row['post_id']; 
-			$data[$i]['content']										=	htmlspecialchars_decode($row['content'],ENT_QUOTES);
+			$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 			$data[$i]['image']										=	$row['post_img'];
 			$data[$i]['bussOpp']										=	$row['business_opp'];
 			$data[$i]['created_at']									=	$row['created_at'];

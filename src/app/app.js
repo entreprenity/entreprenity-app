@@ -45,6 +45,7 @@
 		'ngTagsInput',
 		'ngImgCrop',
 		'angularMoment',
+		'textAngular',
 		'vr.directives.slider',
 		'rgkevin.datetimeRangePicker',
 		'textAngular',

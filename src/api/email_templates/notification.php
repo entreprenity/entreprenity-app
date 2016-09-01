@@ -54,7 +54,7 @@
 											<table cellpadding="0" cellspacing="0" style="width: 100%;">
 												<tr>
 													<td align="center" style="width: 100%; padding-left: 10px;  padding-right: 10px; padding-top: 10px; padding-bottom: 10px;">
-														<img src="http://entreprenity.co/app/assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
+														<img src="https://entreprenity.co/app/assets/img/entreprenity-logo.png" alt="" style="width: 200px; display: block; border: 0;" />
 													</td>
 												</tr>
 											</table>
@@ -118,7 +118,8 @@
 									<?php } ?>																					
 									<tr>
 										<td class="footer" align="center" valign="center" style="height: 56px; border-top-color: #C9CBCD; border-top-width: 1px; border-top-style: solid; padding-left: 15%; padding-right: 15%;">
-											<span style="color: #C9CBCD; font-size: 12px; ">If you don't want to receive notifications you can change your settings <a href="#">here</a>.</span> 
+											 <span style="color:#C9CBCD;font-size:12px;" >Entreprenity is currently in BETA phase. So please, do let us know what issues you are facing while using the app. Do feed back to us at <a href="mailto:feedback@entreprenity.co" style="text-decoration:none;color:#00788a;" >feedback@entreprenity.co</a>
+                                 when you found one.</span>
 										</td>
 									</tr>
 								</table>

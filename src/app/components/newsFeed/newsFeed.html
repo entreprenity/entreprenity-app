@@ -67,7 +67,7 @@
 							<small class="text-muted show-in-mobile">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>
-						<div ng-hide="$index == vm.indexOfEditedPost" class="post-content">{{post.content}}</div>
+						<div ng-hide="$index == vm.indexOfEditedPost" class="post-content" ng-bind-html="post.content"></div>
 						<!-- <textarea ng-show="$index == vm.indexOfEditedPost" class="form-control textarea-edit" rows="3" ng-model="post.content" ng-keypress="vm.keypressEventListener($event, post)" style="margin-bottom: 5px;"></textarea> -->
 						<text-angular
 								ng-show="$index == vm.indexOfEditedPost"
@@ -76,6 +76,7 @@
 								ta-disabled="vm.disabled"
 								ta-toolbar="[]"
 								class="textangular-editor"
+								rows="3"
 								required
 						></text-angular>
 						<tags-input class="bootstrap"
