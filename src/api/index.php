@@ -567,7 +567,7 @@ Flight::route('/getTopContributors', function()
 {
    enable_cors();	
    services_included();	
-	$returnarray=getTopContributors();
+	$returnarray=getTopContributorsBeta();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 

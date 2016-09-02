@@ -296,9 +296,35 @@ function getMostTimelinePostPublishers()
 }
 
 
+//Function to fetch top 10 post publishers
+//September 02,2016
+function getTopThreePostPublishers()
+{
+	//SELECT posted_by, count(post_id) AS totalPosts FROM `entrp_user_timeline` WHERE status=1 GROUP BY posted_by ORDER BY totalPosts DESC LIMIT 10
+	$data= array();
+	$qry="SELECT posted_by, count(post_id) AS totalPosts 
+			FROM entrp_user_timeline 
+			WHERE status=1 AND posted_by NOT IN (1)
+			GROUP BY posted_by 
+			ORDER BY totalPosts DESC 
+			LIMIT 3
+			";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]	=	$row['posted_by'];	
+		}			
+	}
+	return $data;
+}
+
 //Function to fetch top contributors from the community
 //June 02,2016
 //August 12, 2016: Changes after implementing company-user relation
+
 function getTopContributors()
 {
 	
@@ -567,6 +593,102 @@ function getTopContributors()
    }
 	return $data;		
 
+}
+
+
+//Function to find top contributors based on total posts made
+//September 02,2016
+function getTopContributorsBeta()
+{
+	$data= array();	
+	$topThree=getTopThreePostPublishers();
+	$topContributorsUserIDString = implode(",", $topThree);
+		
+	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
+	      FROM entrp_login AS CI 
+	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
+	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
+	      WHERE CI.clientid IN (".$topContributorsUserIDString.") AND CI.clientid NOT IN (1) 
+	      LIMIT 3 
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	if(!empty($row['clientid']))
+      	{
+      		$data[$i]['id']				=	$row['clientid'];
+      	}
+      	else
+      	{
+      		$data[$i]['id']				=	"";
+      	}
+      	
+      	if(!empty($row['firstname']))
+      	{
+      		$data[$i]['firstName']		=	$row['firstname'];
+      	}
+      	else
+      	{
+      		$data[$i]['firstName']		=	"";
+      	}
+			
+			if(!empty($row['lastname']))
+      	{
+      		$data[$i]['lastName']		=	$row['lastname'];
+      	}
+      	else
+      	{
+      		$data[$i]['lastName']		=	"";
+      	}
+      	
+      	if(!empty($row['username']))
+      	{
+      		$data[$i]['userName']		=	$row['username'];
+      	}
+      	else
+      	{
+      		$data[$i]['userName']		=	"";
+      	}
+			
+			if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	$member_default_avatar;
+      	}
+			
+			if(!empty($row['designation']))
+      	{
+      		$data[$i]['position']		=	$row['designation'];
+      	}
+      	else
+      	{
+      		$data[$i]['position']		=	"";
+      	}
+      	
+      	$post_by							=	$row['clientid'];   
+			$companyId						=	getCompanyIDfromUserID($post_by);
+			$data[$i]['company']			=  getCompanyNameUsingCompUserRelation($companyId);
+			
+			if(!empty($row['city']))
+      	{
+      		$data[$i]['city']				=	$row['city'];
+      	}
+      	else
+      	{
+      		$data[$i]['city']				=	"";
+      	}
+      	
+			$i++;
+      }	
+   }
+	return $data;
 }
 
 
