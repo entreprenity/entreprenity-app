@@ -1386,6 +1386,7 @@ function fetch_user_information_from_id($clientid)
 //Function to get user information based on id
 //May 25, 2016
 //Arshad
+//September 05,2016: Fetch firstname and lastname
 function fetch_info_from_entrp_login($clientid)
 {
 	$data = array();		
@@ -1401,9 +1402,11 @@ function fetch_info_from_entrp_login($clientid)
 
    	while($row = mysqli_fetch_array($res))
       {
-      	$data['clientid'] = $row['clientid'];
-      	$data['username'] = $row['username'];
-      	$data['email'] = $row['email'];
+      	$data['clientid'] 	= $row['clientid'];
+      	$data['username'] 	= $row['username'];
+      	$data['email'] 		= $row['email'];
+      	$data['firstname'] 	= $row['firstname'];
+      	$data['lastname'] 	= $row['lastname'];
 			      	
 			
 			$data['success'] = 'true';

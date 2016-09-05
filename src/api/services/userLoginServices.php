@@ -1,5 +1,81 @@
 <?php
 
+//Function to check validity and expiration of an entreprenity token
+//September 05,2016
+function checkEntrpTokenExpiration()
+{
+	$resp= array();
+	$data= array();
+	$token = validate_input($_POST['entrpToken']);
+	if(isset($token))
+	{
+		$qry="SELECT * FROM client_login_tokens WHERE client_token='".$token."' AND status=1";
+		$res=getData($qry);
+		$count_res=mysqli_num_rows($res); 
+		if($count_res==1)
+		{
+			while($row=mysqli_fetch_array($res))
+			{
+				$clientid =	$row['clientid'];
+			}
+			
+			//$resp['msg']				=	"authorized";  //valid token
+			
+			if(isset($_SESSION) && !empty($_SESSION)) 
+			{
+			   $resp['msg']				=	"authorized"; 
+			}
+			else
+			{
+				if(!isset($_SESSION))
+		 		{
+	    			session_start();
+	    		}	    	
+	    			
+	    		$data = fetch_info_from_entrp_login($clientid);
+	    		
+	    		if(!empty($data))
+	    		{
+	    			if($data['success'] == 'true')
+	    			{
+	    				$_SESSION['id'] 				= $data['clientid'];
+						$_SESSION['firstname'] 		= $data['firstname'];
+						$_SESSION['lastname'] 		= $data['lastname'];
+						$_SESSION['login_token'] 	= $token;
+						$_SESSION['username'] 	   = $data['username']; 
+						
+						$resp['msg']				=	"authorized";
+	    			}
+	    			else
+	    			{
+	    				$resp['msg']				=	"unauthorized";  
+	    			}
+	    		}
+	    		else
+	    		{
+	    			$resp['msg']				=	"unauthorized";  
+	    		}	    		 
+			}			
+			 
+		} 
+		else 
+		{
+			if(!isset($_SESSION))
+	 		{
+	    		session_start();
+	  		}
+			session_destroy();
+			$resp['msg']				=	"authorized";   //invalid token
+		}	
+	}
+	else
+	{
+		$resp['msg']				=	"authorized";	//invalid token
+	}
+	
+	return $resp;
+}
+
 //Function to login with facebook
 //August 24,2016
 function loginWithFaceBook()
@@ -95,9 +171,6 @@ function resetPassword()
 		{
 			$data['msg']	=	"Current and new password cannot be same.";   
 		}
-		
-
-		
 	}
 	return $data;
 }
@@ -148,9 +221,11 @@ function destroyUserToken()
 
 //Function to validate a user token
 //May 17,2016
+//September 05,2016: Fixed session variables empty issue
 function validateUserToken()
 {
 	$resp= array();
+	$data= array();
 	session_start();
 	if(isset($_SESSION))
  	{
@@ -161,8 +236,47 @@ function validateUserToken()
 		$count_res=mysqli_num_rows($res); 
 		if($count_res==1)
 		{
-			$resp['msg']				=	"authorized";   
-			//$resp['msg']				=	$qry;   
+			while($row=mysqli_fetch_array($res))
+			{
+				$clientid =	$row['clientid'];
+			}
+			
+			if(isset($_SESSION) && !empty($_SESSION)) 
+			{
+			   $resp['msg']				=	"authorized"; 
+			}
+			else
+			{
+				if(!isset($_SESSION) )
+		 		{
+	    			session_start();
+	    		}	    	
+	    			
+	    		$data = fetch_info_from_entrp_login($clientid);
+	    		
+	    		if(!empty($data))
+	    		{
+	    			if($data['success'] == 'true')
+	    			{
+	    				$_SESSION['id'] 				= $data['clientid'];
+						$_SESSION['firstname'] 		= $data['firstname'];
+						$_SESSION['lastname'] 		= $data['lastname'];
+						$_SESSION['login_token'] 	= $token;
+						$_SESSION['username'] 	   = $data['username']; 
+						
+						$resp['msg']				=	"authorized";
+	    			}
+	    			else
+	    			{
+	    				$resp['msg']				=	"unauthorized";  
+	    			}
+	    		}
+	    		else
+	    		{
+	    			$resp['msg']				=	"unauthorized";  
+	    		}	    		 
+			}		
+			
 		} 
 		else 
 		{

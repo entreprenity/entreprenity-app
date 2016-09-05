@@ -13,6 +13,47 @@
 			
 			var baseUrl = 'api/';
 
+			
+			//Auto login or not
+			if (localStorage['entrp_token'])
+	    	{
+	    		//fetch token
+	    		var entrpToken=localStorage['entrp_token'];
+	    		
+	    		//check token valid or not
+	    		var dataPost = {entrpToken: entrpToken};	
+    			$http({
+			      method: 'post',
+			      url: baseUrl+'checkEntrpTokenExpiration',
+			      data: $.param(dataPost),
+			      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			    })
+			    .success(function(data, status, headers, config) 
+			    {
+			    	if(data.msg=='authorized')
+			    	{
+			    		localStorage.isLogged = 'true';
+			    		$location.path('/home');
+			    	}
+			    	else
+			    	{
+				    	if (localStorage['entrp_token'])
+				    	{
+				    		localStorage.removeItem('entrp_token');
+				    	}
+			    	}
+	    		}).
+	    		error(function(data, status, headers, config) 
+	    		{
+		    		if (localStorage['entrp_token'])
+			    	{
+			    		localStorage.removeItem('entrp_token');
+			    	}
+	    		});
+	    	}	
+	    	
+
+
 			// function to submit the form after all validation has occurred            
 			vm.login = function(isValid) 
 			{

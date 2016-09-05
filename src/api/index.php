@@ -900,6 +900,18 @@ Flight::route('/saveFacebookIdandAuthorize', function()
 	echo json_encode($returnarray);
 });
 
+//70 Route to check whether entreprenity token expired or not
+//August 24,2016 (userLoginServices.php)
+Flight::route('/checkEntrpTokenExpiration', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=checkEntrpTokenExpiration();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
 
 //Route to test timeline posts
 //November 31,2016
