@@ -183,7 +183,7 @@
 					*/
 				};
 				
-
+				/*
 				vm.keypressEventListener = function($event, post){
 					var keyCode = $event.which || $event.keyCode;
 					if (keyCode === 13) {
@@ -192,6 +192,7 @@
 						vm.editPost(post);
 					}
 				};
+				*/
 				
 				vm.getPosts = function () {
 					var postsType = vm.poststype;

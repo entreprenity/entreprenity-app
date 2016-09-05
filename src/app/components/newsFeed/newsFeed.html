@@ -71,7 +71,6 @@
 						<text-angular
 								ng-show="$index == vm.indexOfEditedPost"
 								ng-model="post.content"
-								ng-keypress="vm.keypressEventListener($event, post)"
 								ta-disabled="vm.disabled"
 								ta-toolbar="[]"
 								class="post-wysiwyg-editor"
@@ -85,6 +84,10 @@
 									ng-show="$index == vm.indexOfEditedPost && vm.busoppPost">
 									<auto-complete source="loadTags($query)"></auto-complete>
 						</tags-input>
+						<div class="button-container" ng-show="$index == vm.indexOfEditedPost">
+							<a class="btn btn-primary btn-sm btn-post" ng-hide="vm.busoppPost" ng-click="vm.editPost(post)">Post</a>
+							<a class="btn btn-primary btn-sm btn-post" ng-show="vm.busoppPost" ng-click="vm.editPost(post)">Post</a>
+						</div>
 						<div  class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags" ng-if="post.bussOpp == 1">
 							<ul ng-show="vm.busoppPost && !vm.editState">
