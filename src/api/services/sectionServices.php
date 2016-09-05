@@ -129,7 +129,7 @@ function recommendedBusinessOpportunities()
 			      	
 			      	$data[$i]['post_id']										=	$row['post_id'];      	
 			      	$data[$i]['postTags']									=	getTimelinePostTags($post_id);
-						$data[$i]['content']										=	$row['content'];
+						$data[$i]['content']										=	html_entity_decode(htmlspecialchars_decode($row['content'],ENT_QUOTES));
 						$data[$i]['image']										=	$row['post_img'];
 						$data[$i]['created_at']									=	$row['created_at'];
 						
