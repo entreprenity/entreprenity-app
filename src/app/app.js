@@ -48,7 +48,7 @@
 		'textAngular',
 		'vr.directives.slider',
 		'rgkevin.datetimeRangePicker',
-		'textAngular',
+		'textAngularSetup',
 		'entreprenityApp.login',
 		'entreprenityApp.home',
 		'entreprenityApp.directory',
@@ -275,6 +275,7 @@
 	  window.fbAsyncInit = function() {
 	    FB.init({
 	      appId      : '1814309605470540',
+	      //appId      : '1815342028700631', //test app id
 	      xfbml      : true,
 	      version    : 'v2.7'
 	    });
