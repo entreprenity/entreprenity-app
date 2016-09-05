@@ -68,14 +68,13 @@
 						</div>
 						<div class="clearfix"></div>
 						<div ng-hide="$index == vm.indexOfEditedPost" class="post-content" ng-bind-html="post.content"></div>
-						<!-- <textarea ng-show="$index == vm.indexOfEditedPost" class="form-control textarea-edit" rows="3" ng-model="post.content" ng-keypress="vm.keypressEventListener($event, post)" style="margin-bottom: 5px;"></textarea> -->
 						<text-angular
 								ng-show="$index == vm.indexOfEditedPost"
 								ng-model="post.content"
 								ng-keypress="vm.keypressEventListener($event, post)"
 								ta-disabled="vm.disabled"
 								ta-toolbar="[]"
-								class="textangular-editor"
+								class="post-wysiwyg-editor"
 								rows="3"
 								required
 						></text-angular>
@@ -84,7 +83,7 @@
 									placeholder="Add key words for service matching with other members e.g. marketing, SEO, legal service, etc."
 									replace-spaces-with-dashes="false"
 									ng-show="$index == vm.indexOfEditedPost && vm.busoppPost">
-							<auto-complete source="loadTags($query)"></auto-complete>
+									<auto-complete source="loadTags($query)"></auto-complete>
 						</tags-input>
 						<div  class="post-content image"><img ng-src="{{post.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 						<div class="post-content category-tags" ng-if="post.bussOpp == 1">
