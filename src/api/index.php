@@ -911,6 +911,29 @@ Flight::route('/checkEntrpTokenExpiration', function()
 	echo json_encode($returnarray);
 });
 
+//71 Route to fetch country locations (selected countries)
+//September 07,2016 (readOnlyServices.php)
+Flight::route('/getCountries', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getSelectedCountries();
+	//$returnarray=getAllCountries();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//72 Route to fetch locations based on countries
+//September 07,2016 (readOnlyServices.php)
+Flight::route('/getLocationsInCountry', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getLocationsUnderCountry();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
 
 
 //Route to test timeline posts

@@ -40,6 +40,24 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
+		
+		<div id="newsFeedFilters">
+			<div class="select-style">
+				<select ng-model="selectedCountry" ng-change="vm.fetchCenters(selectedCountry)">
+					<option value="">All Countries</option>
+					<option ng-repeat="country in vm.countries" value="{{country.country_code}}">{{country.country}}</option>
+				</select>
+			</div>
+			
+			<div class="select-style">
+				<select ng-model="selectedCenter">
+					<option value="">All Centers</option>
+					<option ng-repeat="center in vm.centers" ng-disabled="!selectedCountry" value="{{center.id}}">{{center.location_desc}}</option>
+				</select>
+			</div>			
+		</div>
+		
+		<div class="clearfix"></div>
 		<div >
 			<ul class="media-list">
 				<li class="media post animate-repeat" ng-repeat="post in vm.posts">

@@ -1,5 +1,77 @@
 <?php
 
+
+
+
+//Function to fetch locations based on countries
+//September 07,2016
+function getLocationsUnderCountry()
+{
+	$data= array();	
+	
+	$ccode = validate_input($_GET['country']);
+	//SELECT id,location_desc,country_code FROM location_info
+	$qry="SELECT id,location_desc,country_code FROM location_info WHERE country_code=".$ccode."";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data[$i]['id']				=	$row['id'];
+			$data[$i]['location_desc']	=	$row['location_desc'];
+			$i++;
+      }	
+   }
+	return $data;
+}
+
+
+//Function to fetch country locations (selected countries)
+//September 07,2016
+function getSelectedCountries()
+{
+	//Just Indonesia, Singapore, Philippines Malaysia for now
+	$data= array();	
+	$qry="SELECT * FROM vo_country_list WHERE country IN ('Indonesia','Singapore','Philippines','Malaysia')";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+	if($count_res>0)
+   {
+		while($row=mysqli_fetch_array($res))
+	   {
+	   	$data[$i]['country']			=	$row['country'];
+			$data[$i]['country_code']	=	$row['country_code'];
+			$i++;
+	   }
+   }	
+	return $data;
+}
+
+//Function to fetch country locations (selected countries)
+//September 07,2016
+function getAllCountries()
+{
+	$data= array();	
+	$qry="SELECT * FROM vo_country_list";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   $i=0; //to initiate count
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$data[$i]['country']			=	$row['country'];
+			$data[$i]['country_code']	=	$row['country_code'];
+			$i++;
+      }	
+   }
+	return $data;
+}
+
+
 //Function to get all Event Categories
 //June 20,2016
 function getAllEventCatgories()

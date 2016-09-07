@@ -110,6 +110,14 @@
 										data: $.param(dataPost),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				getCountries:function() 
+				{
+					return $http.get(baseUrl + 'getCountries');
+				},
+				getCentersInCountry:function(country) 
+				{
+					return $http.get(baseUrl+ 'getLocationsInCountry?country='+country);
 				}
 				
 			};
@@ -193,6 +201,21 @@
 					}
 				};
 				*/
+				
+				newsFeedService.getCountries().success(function(data) {
+					vm.countries = data;
+				});
+				
+				
+				
+				vm.fetchCenters = function (selectedCountry) {
+					if(selectedCountry)
+					{
+						newsFeedService.getCentersInCountry(selectedCountry).success(function(data) {
+							vm.centers = data;
+						});
+					}
+				};
 				
 				vm.getPosts = function () {
 					var postsType = vm.poststype;
