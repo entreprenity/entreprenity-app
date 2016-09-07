@@ -52,7 +52,7 @@
 			<div class="select-style">
 				<select ng-model="selectedCenter" >
 					<option value="" >All Centers</option>
-					<option ng-repeat="center in vm.centers" ng-disabled="!selectedCountry" value="{{center.id}}">{{center.location_desc}}</option>
+					<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
 				</select>
 			</div>			
 		</div>

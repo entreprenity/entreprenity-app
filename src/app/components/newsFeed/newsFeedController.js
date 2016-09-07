@@ -118,6 +118,9 @@
 				getCentersInCountry:function(country) 
 				{
 					return $http.get(baseUrl+ 'getLocationsInCountry?country='+country);
+				},
+				getLocations:function() {
+					return $http.get(baseUrl + 'getLocations');
 				}
 				
 			};
@@ -206,7 +209,9 @@
 					vm.countries = data;
 				});
 				
-				
+				newsFeedService.getLocations().success(function(data) {
+							vm.centers = data;
+						});
 				
 				vm.fetchCenters = function (selectedCountry) {
 					if(selectedCountry)
