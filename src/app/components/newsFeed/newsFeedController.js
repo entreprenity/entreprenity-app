@@ -223,6 +223,10 @@
 			
 				};
 				
+				vm.fetchFeedsforCenter = function (selectedCenter) {					
+					vm.getPosts();			
+				};
+				
 				vm.getPosts = function () {
 					var postsType = vm.poststype;
 					var username = vm.username;

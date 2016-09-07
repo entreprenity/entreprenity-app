@@ -50,7 +50,7 @@
 			</div>
 			
 			<div class="select-style">
-				<select ng-model="selectedCenter" >
+				<select ng-model="selectedCenter" ng-change="vm.fetchFeedsforCenter(selectedCenter)">
 					<option value="" >All Centers</option>
 					<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
 				</select>
