@@ -1483,16 +1483,51 @@ function getAllPosts()
 	else
 	{
 		$start = 0;
-	}		
+	}	
+	
+	//location
+	if(isset($_GET['location']))
+	{
+		$location = validate_input($_GET['location']);		
+	}
+	else
+	{
+		$location = 0;
+	}
+	
+	//center code
+	if(isset($_GET['country']))
+	{
+		$country = validate_input($_GET['country']);		
+	}
+	else
+	{
+		$country = 0;
+	}	
 		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+	if($location >0)
+	{
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.status=1 AND EUT.business_opp!=1
+			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location."
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
+	}
+	else
+	{
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.status=1 AND EUT.business_opp!=1 
+			ORDER BY EUT.created_at DESC 
+			LIMIT $start, $limit ";
+	}
+	
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -1539,6 +1574,8 @@ function getAllPosts()
 			$i++;
       }	
    }
+	
+
 	return $data;	
 
 	

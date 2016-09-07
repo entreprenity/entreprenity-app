@@ -7,9 +7,9 @@
 			
 			return {
 				
-				getAllPosts: function(pageNumber) 
+				getAllPosts: function(pageNumber,countryCode,centerCode) 
 				{ 
-					return $http.get(baseUrl+ 'getAllPosts?page='+pageNumber);
+					return $http.get(baseUrl+ 'getAllPosts?page='+pageNumber+'&country='+countryCode+'&location='+centerCode);
 				},
 				getMemberPosts: function(pageNumber,username) 
 				{
@@ -215,12 +215,35 @@
 							vm.centers = data;
 						});
 					}
+			
 				};
 				
 				vm.getPosts = function () {
 					var postsType = vm.poststype;
 					var username = vm.username;
 
+					var selectedCountry	= $scope.selectedCountry;
+					var selectedCenter	= $scope.selectedCenter;
+					
+					if(selectedCountry)
+					{
+						var countryCode	=	selectedCountry;
+					}
+					else
+					{
+						var countryCode	=	0;
+					}
+					
+					if(selectedCenter)
+					{
+						var centerCode		=	selectedCenter;
+					}
+					else
+					{
+						var centerCode		=	0;
+					}
+					
+					
 					switch(postsType)
 					{
 						//home page all posts
@@ -228,7 +251,7 @@
 						
 							if (vm.busy) return;
 							vm.busy = true;
-							newsFeedService.getAllPosts(vm.pageNumber).success(function(data) {
+							newsFeedService.getAllPosts(vm.pageNumber,countryCode,centerCode).success(function(data) {
 								var itemData = data;
 								if (vm.pageNumber == 1) {
 									vm.posts = itemData;
