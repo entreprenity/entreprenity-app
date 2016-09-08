@@ -42,14 +42,14 @@
 		<div class="clearfix"></div>
 		
 		<div id="newsFeedFilters">
-			<div class="select-style">
+			<div class="col-md-4">
 				<select ng-model="selectedCountry" ng-change="vm.fetchCenters(selectedCountry)">
 					<option value="" >All Countries</option>
 					<option ng-repeat="country in vm.countries" value="{{country.country_code}}">{{country.country}}</option>
 				</select>
 			</div>
 			
-			<div class="select-style">
+			<div class="col-md-4">
 				<select ng-model="selectedCenter" ng-change="vm.fetchFeedsforCenter(selectedCenter)">
 					<option value="" >All Centers</option>
 					<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
