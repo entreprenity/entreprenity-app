@@ -205,26 +205,38 @@
 				};
 				*/
 				
+				//Service to get country list
 				newsFeedService.getCountries().success(function(data) {
 					vm.countries = data;
 				});
 				
+				//Service to get locations
 				newsFeedService.getLocations().success(function(data) {
 							vm.centers = data;
-						});
+				});
 				
-				vm.fetchCenters = function (selectedCountry) {
+				//Service to fetch centers based on country
+				vm.fetchCenters = function (selectedCountry) 
+				{
 					if(selectedCountry)
 					{
 						newsFeedService.getCentersInCountry(selectedCountry).success(function(data) {
 							vm.centers = data;
 						});
+						vm.pageNumber = 1;
+						vm.posts = [];				
+						vm.getPosts();
+						vm.reloadnewsfeed = false;
 					}
 			
 				};
 				
-				vm.fetchFeedsforCenter = function (selectedCenter) {					
-					vm.getPosts();			
+				//Service to Fetch feeds for center (on center change)
+				vm.fetchFeedsforCenter = function (selectedCenter) {	
+					vm.pageNumber = 1;
+					vm.posts = [];				
+					vm.getPosts();	
+					vm.reloadnewsfeed = false;		
 				};
 				
 				vm.getPosts = function () {

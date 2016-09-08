@@ -1,8 +1,6 @@
 <?php
 
 
-
-
 //Function to fetch locations based on countries
 //September 07,2016
 function getLocationsUnderCountry()

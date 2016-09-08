@@ -1,5 +1,26 @@
 <?php
 
+
+//Fetch location ids for all centers under a country
+//September 08,2016
+function fetchLocationIDsUnderCountry($ccode)
+{
+	$data= array();
+	
+	$qry="SELECT id FROM location_info WHERE country_code=".$ccode."";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]			=	$row['id'];
+		}		
+	}
+	return $data;
+}
+
+
 /* Functions and services based on userid begins */
 
 //Function to fetch a user designation from company member relation table

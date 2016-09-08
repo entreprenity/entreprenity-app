@@ -1451,6 +1451,7 @@ function getFollowedMembersPosts()
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
 //September 01,2016: Added html decode for wysiwyg editor
+//September 08,2016: Fetch data based on country and location filter
 function getAllPosts()
 {
 	//the defaults starts
@@ -1504,8 +1505,8 @@ function getAllPosts()
 	{
 		$country = 0;
 	}	
-		
-	if($location >0)
+	
+	if($country >0 && $location > 0)
 	{
 		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
@@ -1515,6 +1516,46 @@ function getAllPosts()
 			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location."
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
+	}
+	else if($country ==0 && $location > 0)
+	{
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location."
+			ORDER BY EUT.created_at DESC 
+			LIMIT $start, $limit ";
+	}		
+	else if($country >0 && $location ==0)
+	{
+		//fetch all locations for this country
+		$locationIds		= fetchLocationIDsUnderCountry($country);
+		if(!empty($locationIds))
+		{
+			$locationIdString = implode(",", $locationIds);		
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location IN (".$locationIdString.")
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit ";
+		}
+		else
+		{
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.business_opp!=1 
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit ";
+		}
+		
 	}
 	else
 	{
