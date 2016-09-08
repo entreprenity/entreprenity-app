@@ -293,6 +293,7 @@ function deleteTimlinePost()
 //August 11, 2016: Changes after implementing company-user relation
 //August 16,2016: Fetching likes, comments and such details
 //September 01,2016: Added html decode for wysiwyg editor
+//September 08,2016: Fetch data based on country and location filter
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -329,6 +330,26 @@ function getBusinessOpportunitiesForMe()
 	else
 	{
 		$start = 0;
+	}
+	
+	//location
+	if(isset($_GET['location']))
+	{
+		$location = validate_input($_GET['location']);		
+	}
+	else
+	{
+		$location = 0;
+	}
+	
+	//center code
+	if(isset($_GET['country']))
+	{
+		$country = validate_input($_GET['country']);		
+	}
+	else
+	{
+		$country = 0;
 	}
 	
 	$session_values=get_user_session();
@@ -369,14 +390,68 @@ function getBusinessOpportunitiesForMe()
 		    if (!empty($postIdArrayStringUF)) 
           {
             $postIdArrayString = implode(",", $postIdArrayStringUF);
-            $qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
-				FROM entrp_user_timeline AS EUT
-				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
-				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
-				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-				WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
-				ORDER BY EUT.created_at DESC 
-				LIMIT $start, $limit ";
+            
+				if($country >0 && $location > 0)
+				{
+					$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+						FROM entrp_user_timeline AS EUT
+						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location."
+						ORDER BY EUT.created_at DESC 
+						LIMIT $start, $limit ";
+				}
+				else if($country ==0 && $location > 0)
+				{			
+					$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+						FROM entrp_user_timeline AS EUT
+						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location."
+						ORDER BY EUT.created_at DESC 
+						LIMIT $start, $limit ";
+				}		
+				else if($country >0 && $location ==0)
+				{
+					//fetch all locations for this country
+					$locationIds		= fetchLocationIDsUnderCountry($country);
+					if(!empty($locationIds))
+					{
+						$locationIdString = implode(",", $locationIds);			
+						$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+							FROM entrp_user_timeline AS EUT
+							LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+							LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+							LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location IN (".$locationIdString.")
+							ORDER BY EUT.created_at DESC 
+							LIMIT $start, $limit ";
+					}
+					else
+					{
+						$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+							FROM entrp_user_timeline AS EUT
+							LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+							LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+							LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
+							ORDER BY EUT.created_at DESC 
+							LIMIT $start, $limit ";
+					}
+				}
+				else
+				{
+					$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+						FROM entrp_user_timeline AS EUT
+						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
+						ORDER BY EUT.created_at DESC 
+						LIMIT $start, $limit ";
+				}
 				$res=getData($qry);
 			   $count_res=mysqli_num_rows($res);
 			   $i=0; //to initiate count
@@ -695,6 +770,7 @@ function refetchMemberNewsFeed($username)
 //August 11, 2016: Fetch post_by of timeline post
 //August 11, 2016: Changes after implementing company-user relation
 //September 01,2016: Added html decode for wysiwyg editor
+//September 08,2016: Fetch data based on country and location filter
 function getAllBusinessOpportunities()
 {
 	//the defaults starts
@@ -728,8 +804,80 @@ function getAllBusinessOpportunities()
 	{
 		$start = 0;
 	}	
-		
-	$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+	
+	//location
+	if(isset($_GET['location']))
+	{
+		$location = validate_input($_GET['location']);		
+	}
+	else
+	{
+		$location = 0;
+	}
+	
+	//center code
+	if(isset($_GET['country']))
+	{
+		$country = validate_input($_GET['country']);		
+	}
+	else
+	{
+		$country = 0;
+	}
+	
+	if($country >0 && $location > 0)
+	{
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.status=1 AND EUT.business_opp=1 AND CP.client_location=".$location."
+			ORDER BY EUT.created_at DESC 
+			LIMIT $start, $limit ";
+	}
+	else if($country ==0 && $location > 0)
+	{			
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+			FROM entrp_user_timeline AS EUT
+			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+			WHERE EUT.status=1 AND EUT.business_opp=1 AND CP.client_location=".$location."
+			ORDER BY EUT.created_at DESC 
+			LIMIT $start, $limit ";
+	}		
+	else if($country >0 && $location ==0)
+	{
+		//fetch all locations for this country
+		$locationIds		= fetchLocationIDsUnderCountry($country);
+		if(!empty($locationIds))
+		{
+			$locationIdString = implode(",", $locationIds);			
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.business_opp=1 AND CP.client_location IN (".$locationIdString.")
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit ";
+		}
+		else
+		{
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.status=1 AND EUT.business_opp=1
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit ";
+		}
+	}
+	else
+	{
+		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 			FROM entrp_user_timeline AS EUT
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
@@ -737,6 +885,8 @@ function getAllBusinessOpportunities()
 			WHERE EUT.status=1 AND EUT.business_opp=1
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
+	}	
+		
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -1272,6 +1422,7 @@ function getThisPost()
 //August 11, 2016: Changes after implementing company-user relation
 //August 11,2016: Added array empty check
 //September 01,2016: Added html decode for wysiwyg editor
+//September 08,2016: Fetch data based on country and location filter
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -1304,7 +1455,27 @@ function getFollowedMembersPosts()
 	else
 	{
 		$start = 0;
-	}   
+	}
+	
+	//location
+	if(isset($_GET['location']))
+	{
+		$location = validate_input($_GET['location']);		
+	}
+	else
+	{
+		$location = 0;
+	}
+	
+	//center code
+	if(isset($_GET['country']))
+	{
+		$country = validate_input($_GET['country']);		
+	}
+	else
+	{
+		$country = 0;
+	}	   
    
    $session_values=get_user_session();
 	$my_session_id	= $session_values['id'];
@@ -1318,15 +1489,69 @@ function getFollowedMembersPosts()
 	if (!empty($usersIFollow)) 
 	{
 		$usersIFollowString = implode(",", $usersIFollow);
-			
-		$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+
+		if($country >0 && $location > 0)
+		{
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
 				FROM entrp_user_timeline AS EUT
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-				WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1
 				ORDER BY EUT.created_at DESC 
 				LIMIT $start, $limit";
+		}
+		else if($country ==0 && $location > 0)
+		{				
+			$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+				FROM entrp_user_timeline AS EUT
+				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1
+				ORDER BY EUT.created_at DESC 
+				LIMIT $start, $limit";
+		}		
+		else if($country >0 && $location ==0)
+		{
+			//fetch all locations for this country
+			$locationIds		= fetchLocationIDsUnderCountry($country);
+			if(!empty($locationIds))
+			{
+				$locationIdString = implode(",", $locationIds);							
+				$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+					FROM entrp_user_timeline AS EUT
+					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location IN (".$locationIdString.") AND EUT.status=1 AND EUT.business_opp!=1
+					ORDER BY EUT.created_at DESC 
+					LIMIT $start, $limit";
+			}
+			else
+			{
+				$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+					FROM entrp_user_timeline AS EUT
+					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+					ORDER BY EUT.created_at DESC 
+					LIMIT $start, $limit";
+			}			
+		}
+		else
+		{
+				$qry="SELECT EUT.post_id,EUT.content,EUT.post_img,EUT.created_at,EUT.business_opp,EL.clientid,EL.firstname,EL.lastname,EL.username,CP.company_name,CP.designation,CP.avatar,LI.location_desc,EUT.posted_by  
+					FROM entrp_user_timeline AS EUT
+					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
+					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
+					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+					ORDER BY EUT.created_at DESC 
+					LIMIT $start, $limit";
+		}
+
 		$res=getData($qry);
 	   $count_res=mysqli_num_rows($res);
 	   $i=0; //to initiate count

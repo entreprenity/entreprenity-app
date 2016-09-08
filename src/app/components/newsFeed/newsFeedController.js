@@ -19,9 +19,9 @@
 				{
 					return $http.get(baseUrl+ 'getmyTimeLinePost?page='+pageNumber);
 				},
-				getFollowedMembersPosts: function(pageNumber,username) 
+				getFollowedMembersPosts: function(pageNumber,username,countryCode,centerCode) 
 				{
-					return $http.get(baseUrl+ 'getFollowedMembersPosts?page='+pageNumber);
+					return $http.get(baseUrl+ 'getFollowedMembersPosts?page='+pageNumber+'&country='+countryCode+'&location='+centerCode);
 				},
 				getCompanyPosts: function(pageNumber,username) 
 				{
@@ -31,13 +31,13 @@
 				{
 					return $http.get(baseUrl+ 'getmyCompanyPosts?page='+pageNumber);
 				},				
-				getAllBusinessOpportunities:function(pageNumber) 
+				getAllBusinessOpportunities:function(pageNumber,countryCode,centerCode) 
 				{
-					return $http.get(baseUrl + 'getAllBusinessOpportunities?page='+pageNumber);
+					return $http.get(baseUrl + 'getAllBusinessOpportunities?page='+pageNumber+'&country='+countryCode+'&location='+centerCode);
 				},
-				getBusinessOpportunitiesForMe:function(pageNumber) 
+				getBusinessOpportunitiesForMe:function(pageNumber,countryCode,centerCode) 
 				{
-					return $http.get(baseUrl + 'getBusinessOpportunitiesForMe?page='+pageNumber);
+					return $http.get(baseUrl + 'getBusinessOpportunitiesForMe?page='+pageNumber+'&country='+countryCode+'&location='+centerCode);
 				},
 				
 				getBasicUserInfo:function()
@@ -220,6 +220,7 @@
 				{
 					if(selectedCountry)
 					{
+						vm.centers = [];
 						newsFeedService.getCentersInCountry(selectedCountry).success(function(data) {
 							vm.centers = data;
 						});
@@ -310,7 +311,7 @@
 							
 							if (vm.busy) return;
 							vm.busy = true;
-							newsFeedService.getFollowedMembersPosts(this.pageNumber,username).success(function(data) {
+							newsFeedService.getFollowedMembersPosts(this.pageNumber,username,countryCode,centerCode).success(function(data) {
 								var itemData = data;
 								if (vm.pageNumber == 1) {
 									vm.posts = itemData;
@@ -348,7 +349,7 @@
 							
 							if (vm.busy) return;
 							vm.busy = true;
-							newsFeedService.getAllBusinessOpportunities(this.pageNumber).success(function(data) {
+							newsFeedService.getAllBusinessOpportunities(this.pageNumber,countryCode,centerCode).success(function(data) {
 								var itemData = data;
 								if (vm.pageNumber == 1) {
 									vm.posts = itemData;
@@ -406,7 +407,7 @@
 							
 							if (vm.busy) return;
 							vm.busy = true;
-							newsFeedService.getBusinessOpportunitiesForMe(this.pageNumber).success(function(data) {
+							newsFeedService.getBusinessOpportunitiesForMe(this.pageNumber,countryCode,centerCode).success(function(data) {
 								var itemData = data;
 								if (vm.pageNumber == 1) {
 									vm.posts = itemData;

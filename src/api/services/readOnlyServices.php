@@ -225,7 +225,11 @@ function get_all_timezones()
 function getLocations_dropdown()
 {
 	$data= array();	
-	$qry="SELECT  id,location_desc FROM location_info WHERE id NOT IN (3,4,19,20,31,42,49)";
+	//$qry="SELECT  id,location_desc FROM location_info WHERE id NOT IN (3,4,19,20,31,42,49)";
+	$qry="SELECT  id,location_desc 
+			FROM location_info 
+			WHERE id NOT IN (3,4,19,20,31,42,49) 
+			AND country_code IN (SELECT country_code FROM vo_country_list WHERE country IN ('Indonesia','Singapore','Philippines','Malaysia'))";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
