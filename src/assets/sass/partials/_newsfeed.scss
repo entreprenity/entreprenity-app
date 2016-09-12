@@ -16,6 +16,19 @@
 	a:hover {
 		text-decoration: underline;
 	}
+
+	.location-filters {
+		background-color: #ffffff;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		margin-bottom: 10px;
+		label {
+			display: block;
+		}
+		select {
+			padding: 5px 10px;
+		}
+	}
 	.post-textarea {
 		border: 1px solid;
 		border-color: $primary-border-color;
