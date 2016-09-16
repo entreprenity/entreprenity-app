@@ -1752,6 +1752,7 @@ function enable_cors()
 	header('Access-Control-Allow-Methods: GET, POST');
 	header("Access-Control-Allow-Headers: X-Requested-With");	
 	date_default_timezone_set('asia/singapore');
+	//date_default_timezone_set('UTC');
 }
 
 

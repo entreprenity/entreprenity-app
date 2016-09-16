@@ -1,7 +1,19 @@
 <?php
 
+//Function to update last login date time
+//September 15,2016
+function update_lastlogin_datetime($clientid)
+{
+	date_default_timezone_set('UTC');
+	$requestTime=date('Y-m-d H:i:s');
+	//UPDATE entrp_login SET last_login_dt = '2016-09-05 00:00:00' WHERE clientid = 2;
+	$qry="UPDATE entrp_login SET last_login_dt = '".$requestTime."' WHERE clientid = ".$clientid." ";
+	setData($qry);
+}
+
 //Function to check validity and expiration of an entreprenity token
 //September 05,2016
+//September 15,2016: Added last login date time marking
 function checkEntrpTokenExpiration()
 {
 	$resp= array();
@@ -44,6 +56,8 @@ function checkEntrpTokenExpiration()
 						$_SESSION['login_token'] 	= $token;
 						$_SESSION['username'] 	   = $data['username']; 
 						
+						update_lastlogin_datetime($data['clientid']);
+						
 						$resp['msg']				=	"authorized";
 	    			}
 	    			else
@@ -78,6 +92,7 @@ function checkEntrpTokenExpiration()
 
 //Function to login with facebook
 //August 24,2016
+//September 15,2016: Added last login date time marking
 function loginWithFaceBook()
 {
 	$data= array();
@@ -116,6 +131,7 @@ function loginWithFaceBook()
 			$_SESSION['username'] 	   = $data['username']; //added by arshad
 
 			set_client_session_token($client_session_token,$row['clientid']);
+			update_lastlogin_datetime($row['clientid']);
 			$data['login_token'] 		= $client_session_token;
 
 		}
@@ -398,6 +414,7 @@ function generateRandomAlphaNumeric($length = 4)
 
 //Function to login
 //April 15, 2016
+//September 15,2016: Added last login date time marking
 function login()
 {
 	$data= array();
@@ -437,6 +454,7 @@ function login()
 			$_SESSION['username'] 	   = $data['username']; //added by arshad
 
 			set_client_session_token($client_session_token,$row['clientid']);
+			update_lastlogin_datetime($row['clientid']);
 			$data['login_token'] 			= $client_session_token;
 
 		}

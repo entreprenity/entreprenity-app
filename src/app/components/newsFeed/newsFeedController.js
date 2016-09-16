@@ -218,17 +218,28 @@
 				//Service to fetch centers based on country
 				vm.fetchCenters = function (selectedCountry) 
 				{
+
 					if(selectedCountry)
 					{
-						vm.centers = [];
 						newsFeedService.getCentersInCountry(selectedCountry).success(function(data) {
 							vm.centers = data;
 						});
-						vm.pageNumber = 1;
-						vm.posts = [];				
-						vm.getPosts();
-						vm.reloadnewsfeed = false;
 					}
+					else
+					{
+						vm.centers = {};
+						newsFeedService.getLocations().success(function(data) {
+							vm.centers = data;
+						});
+						
+						selectedCenter = vm.centers[0];
+					}
+					
+					vm.pageNumber = 1;
+					vm.posts = [];				
+					vm.getPosts();
+					vm.reloadnewsfeed = false;
+					
 			
 				};
 				

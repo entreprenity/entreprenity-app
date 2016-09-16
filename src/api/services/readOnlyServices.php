@@ -9,7 +9,7 @@ function getLocationsUnderCountry()
 	
 	$ccode = validate_input($_GET['country']);
 	//SELECT id,location_desc,country_code FROM location_info
-	$qry="SELECT id,location_desc,country_code FROM location_info WHERE country_code=".$ccode."";
+	$qry="SELECT id,location_desc,country_code FROM location_info WHERE country_code=".$ccode." AND id NOT IN (10)";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
    $i=0; //to initiate count
@@ -228,7 +228,7 @@ function getLocations_dropdown()
 	//$qry="SELECT  id,location_desc FROM location_info WHERE id NOT IN (3,4,19,20,31,42,49)";
 	$qry="SELECT  id,location_desc 
 			FROM location_info 
-			WHERE id NOT IN (3,4,19,20,31,42,49) 
+			WHERE id NOT IN (3,4,10,19,20,31,42,49) 
 			AND country_code IN (SELECT country_code FROM vo_country_list WHERE country IN ('Indonesia','Singapore','Philippines','Malaysia'))";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);

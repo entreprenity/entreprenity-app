@@ -5,7 +5,7 @@
 				<label>Select by Country
 					<div class="select-style">
 						<select ng-model="selectedCountry" ng-change="vm.fetchCenters(selectedCountry)">
-							<option value="" >All Countries</option>
+							<option value="" selected>All Countries</option>
 							<option ng-repeat="country in vm.countries" value="{{country.country_code}}">{{country.country}}</option>
 						</select>
 					</div>
@@ -14,8 +14,8 @@
 			<div class="col-md-6">
 				<label>Select by Center
 					<div class="select-style">
-						<select ng-model="selectedCenter" ng-change="vm.fetchFeedsforCenter(selectedCenter)">
-							<option value="" >All Centers</option>
+						<select ng-model="selectedCenter"  ng-change="vm.fetchFeedsforCenter(selectedCenter)">
+							<option value="" selected >All Centers</option>
 							<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
 						</select>
 					</div>
@@ -83,7 +83,7 @@
 							</a>
 							<a href="#/members/{{post.post_author.userName}}" class="author-name"><strong >{{post.post_author.firstName + ' ' + post.post_author.lastName}}</strong></a>
 							<div class="author-company">{{post.post_author.companyName}}</div>
-							<small class="text-muted"><span am-time-ago="post.created_at"></span></small>,
+							<small class="text-muted"><span am-time-ago="post.created_at | UTCToNow"></span></small>,
 							<small class="text-muted show-in-mobile">{{post.post_author.location}}</small>
 						</div>
 						<div class="clearfix"></div>

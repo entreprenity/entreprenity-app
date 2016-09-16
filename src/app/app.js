@@ -77,6 +77,19 @@
 		'entreprenityApp.resetpassword',
 		'entreprenityApp.register'
 	])
+	.filter('UTCToNow', ['moment', function (moment) {
+	     return function (input, format) {
+	            if(format)
+	            {
+	                return moment.utc(input).local().format('dddd, MMMM Do YYYY, h:mm:ss a');
+	            }
+	            else
+	            {
+	                return moment.utc(input).local();
+	            }
+	        };
+	    }]
+	)
 	.factory('AuthService2', ["$http", "$location", function($http, $location){
 	   //var vm = this;
 	   var baseUrl = 'api/';

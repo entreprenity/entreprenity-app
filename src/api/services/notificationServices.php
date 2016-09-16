@@ -12,8 +12,10 @@ function deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_i
 
 //Function to add a notification to notification table
 //June 07,2016
+//September 15, 2016: Notification time set to UTC
 function addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for)
 {
+	date_default_timezone_set('UTC');
 	$created_at=date('Y-m-d H:i:s');
 		
 	$qry="INSERT INTO entrp_user_notifications (notify_type,notify_to,notify_from,post_id,created_at,notify_for) 

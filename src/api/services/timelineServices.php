@@ -963,6 +963,7 @@ function getLastTimelinePostID($posted_by,$created_at,$content)
 //Function to post a business opportunity
 //June 15,2016
 //July 14,2016: Timeline id and type added and if else if ladder
+//September 15, 2016: post time set to UTC
 function postABusinessOpportunity()
 {
 	$data= array();
@@ -1022,7 +1023,7 @@ function postABusinessOpportunity()
             
 			$business_op=0;
 		}
-		
+		date_default_timezone_set('UTC');
 		$created_at=date('Y-m-d H:i:s');
 		$posted_by=$my_session_id;
 		
@@ -3280,6 +3281,7 @@ function getMyNewsFeed()
 //Function to add new feed to timeline
 //May 18,2016
 //July 14,2016: Timeline id and type added and if else if ladder
+//September 15, 2016: post time set to UTC
 function postCurrentPost()
 {
 	$data= array();
@@ -3307,7 +3309,7 @@ function postCurrentPost()
 		{
 			$post_img='';
 		}
-		
+		date_default_timezone_set('UTC');
 		$created_at=date('Y-m-d H:i:s');
 		$posted_by=$my_session_id;
 		

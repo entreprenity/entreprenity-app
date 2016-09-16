@@ -22,7 +22,7 @@
 						<span class="animate-switch" ng-switch-when="comment">commented on your <a ng-href="#/posts/{{notification.post_id}}">post</a></span>
 						<span class="animate-switch" ng-switch-default>liked your <a ng-href="#/posts/{{notification.post_id}}">post</a></span>
 					</span>
-					<p><small class="text-muted"><span am-time-ago="notification.created_at"></span></small></p>
+					<p><small class="text-muted"><span am-time-ago="notification.created_at | UTCToNow"></span></small></p>
 				</div>
 			</li>
 		</ul>
