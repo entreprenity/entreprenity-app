@@ -47,7 +47,7 @@ if (!defined('PROFILE_PIC_UPL')) define('PROFILE_PIC_UPL', '../assets/img/member
 if (!defined('COMPANY_PIC_UPL')) define('COMPANY_PIC_UPL', '../assets/img/companies/');
 if (!defined('EVENT_POSTER_UPL')) define('EVENT_POSTER_UPL', '../assets/img/events/');
 
-
+if (!defined('QRCODE_PATH')) define('QRCODE_PATH', 'assets/img/qrcodes/');
 
 //Mail settings (mailgun)
 if (!defined('MS_HOSTNAME')) define('MS_HOSTNAME', 'mailgun.securesvr.net');

@@ -1376,7 +1376,7 @@ function fetch_user_information_from_id($clientid)
 			$data['website'] 		=  $row['website'];
 			$data['mobile'] 		=  $row['mobile'];
 			$data['tel'] 			=  $row['secondary_mobile'];
-			$data['userName']			=	$row['username'];
+			$data['userName']		=	$row['username'];
 
 			$data['success'] = true;
 			$data['msg'] = 'Profile fetched';
@@ -1408,10 +1408,10 @@ function fetch_user_information_from_id($clientid)
 //May 25, 2016
 //Arshad
 //September 05,2016: Fetch firstname and lastname
+//September 17,2016: Fetch voffice clientid
 function fetch_info_from_entrp_login($clientid)
 {
 	$data = array();		
-	
 	$qry="SELECT *
 			FROM entrp_login as L
 			WHERE L.clientid=".$clientid."
@@ -1420,7 +1420,6 @@ function fetch_info_from_entrp_login($clientid)
    $count_res = mysqli_num_rows($res);
 	if($count_res > 0)
    {
-
    	while($row = mysqli_fetch_array($res))
       {
       	$data['clientid'] 	= $row['clientid'];
@@ -1428,11 +1427,11 @@ function fetch_info_from_entrp_login($clientid)
       	$data['email'] 		= $row['email'];
       	$data['firstname'] 	= $row['firstname'];
       	$data['lastname'] 	= $row['lastname'];
-			      	
+      	$data['voffStaff']	= $row['voff_staff'];
+			$data['vofClientId']	= $row['vof_clientid'];			      	
 			
 			$data['success'] = 'true';
 		}
-
    }
    else
    {

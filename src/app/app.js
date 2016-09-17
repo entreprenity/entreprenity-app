@@ -75,7 +75,8 @@
 		'entreprenityApp.eventPlaced',
 		'entreprenityApp.bussOpp',
 		'entreprenityApp.resetpassword',
-		'entreprenityApp.register'
+		'entreprenityApp.register',
+		'entreprenityApp.qrcode'
 	])
 	.filter('UTCToNow', ['moment', function (moment) {
 	     return function (input, format) {
@@ -277,6 +278,12 @@
 		.when('/resetpassword', {
 			controller: 'ResetpasswordController',
 			templateUrl: 'app/components/resetpassword/resetpasswordView.html',
+			resolve: {loggedIn: onlyLoggedIn},	
+			controllerAs: 'vm'
+		})
+		.when('/myqrcode', {
+			controller: 'qrcodeController',
+			templateUrl: 'app/components/qrcode/qrcodeView.html',
 			resolve: {loggedIn: onlyLoggedIn},	
 			controllerAs: 'vm'
 		})

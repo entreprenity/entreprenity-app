@@ -20,6 +20,7 @@
 				<li class="dropdown" ng-class="{ open : dd1 }" ng-init="dd1 = false" ng-click="dd1 = !dd1">
 					<a 	class="dropdown-toggle hide-in-mobile" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars fa-lg"></i></a>
 					<ul class="dropdown-menu hide-in-mobile">
+						<li><a href="#/myqrcode">My ID</a></li>
 						<li><a href="#/myprofile">My Profile</a></li>
 						<li><a href="#/mycompany">Company Profile</a></li>
 						<!--<li><a href="#/business-opportunities">Business Opportunities</a></li>-->
@@ -31,6 +32,7 @@
 						<li><a href="#/settings">Settings</a></li>
 						<li><a href="#/logout">Logout</a></li>
 					</ul>
+					<li><a class="show-in-mobile" href="#/myqrcode">My ID</a></li>
 					<li><a class="show-in-mobile" href="#/myprofile">My Profile</a></li>
 					<li><a class="show-in-mobile" href="#/mycompany">Company Profile</a></li>
 					<li><a class="show-in-mobile" href="#/notifications" ng-click="readNotifications()"><span class="badge pull-right">{{numOfNotifications}}</span>Notifications </a></li>

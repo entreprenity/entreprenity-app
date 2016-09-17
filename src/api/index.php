@@ -935,6 +935,16 @@ Flight::route('/getLocationsInCountry', function()
 	echo json_encode($returnarray);
 });
 
+//73 Route to fetch a user's QR code
+//September 17,2016 (readOnlyServices.php)
+Flight::route('/getMyQRCode', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=getUserQRCode();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
 
 //Route to test timeline posts
 //November 31,2016
@@ -973,6 +983,84 @@ function services_included()
 	require_once 'services/externalServices.php'; 
 	
 	
+}
+
+
+//Function to generate qrcode for a user
+//September 17,2016
+function getUserQRCode()
+{
+	 //the defaults starts
+	 global $myStaticVars;
+	 extract($myStaticVars);  // make static vars local
+	 $member_default_avatar 	= $member_default_avatar;
+	 $member_default_cover		= $member_default_cover;
+	 $member_default				= $member_default;
+	 $company_default_cover		= $company_default_cover;
+	 $company_default_avatar	= $company_default_avatar;
+	 $events_default				= $events_default;
+	 $event_default_poster		= $event_default_poster;
+	 //the defaults ends	
+	
+	 $session_values=get_user_session();
+	 $my_session_id	= $session_values['id'];
+	 if($my_session_id>0)
+	 {
+	 	 require_once 'externalLibraries/qrcode/qrlib.php';
+	    // how to build raw content - QRCode with Business Card (VCard) + photo 	     
+	    $tempDir = QRCODE_PATH; 
+	     
+	    $data			=	fetch_info_from_entrp_login($my_session_id);
+	    $userProPic	=	getUserProfilePicFromUserID($my_session_id);
+	    
+	    if($userProPic!='')
+	    {
+	    	$userAvatar = $userProPic;
+	    }
+	    else
+	    {
+	    	$userAvatar = $member_default;
+	    }
+	    
+	    
+	    $clientid 		= $data['clientid'];
+   	 $username 		= $data['username'];
+   	 $email 			= $data['email'];
+   	 $firstname 	= $data['firstname'];
+   	 $lastname 		= $data['lastname'];
+   	 $voffStaff		= $data['voffStaff'];
+		 $vofClientId	= $data['vofClientId'];	
+		 
+	    // here our data 
+	    $name = $firstname.' '.$lastname;
+	     
+	    // WARNING! here jpeg file is only 40x40, grayscale, 50% quality! 
+	    // with bigger images it will simply be TOO MUCH DATA for QR Code to handle! 
+	     
+	    // we building raw data 
+	    $codeContents  = 'BEGIN:VCARD'."\n"; 
+	    $codeContents .= 'FN:'.$name."\n"; 
+	    $codeContents .= 'ID:'.$vofClientId."\n"; 
+	    $codeContents .= 'EMAIL:'.$email."\n"; 
+	    $codeContents .= 'PHOTO;JPEG;ENCODING=BASE64:'.base64_encode(file_get_contents('../'.$userAvatar))."\n"; 
+	    $codeContents .= 'END:VCARD'; 
+	     
+	    // generating 
+	    QRcode::png($codeContents, $tempDir.$clientid.'.png', 4, 3); 
+	     
+	
+		 //write code into file, Error corection lecer is lowest, L (one form: L,M,Q,H)
+		 //each code square will be 4x4 pixels (4x zoom)
+		 //code will have 2 code squares white boundary around 
+		 //QRcode::png($codeContents, $tempDir.'027.png', 'L', 4, 2); 
+	    
+	    // displaying 
+	    return QRCODE_PATH.$clientid.'.png'; 
+	 }	 
+	 
+	 
+
+
 }
 
 
