@@ -3,6 +3,8 @@
 require_once ('Query.php'); 
 require_once 'constants.php';
 require 'flight/Flight.php';
+//require_once 'externalLibraries/qrcode/qrlib.php';
+require_once 'externalLibraries/qrcode.php';
 
 //01 Route to events directory
 // April 13,2016
@@ -990,6 +992,7 @@ function services_included()
 //September 17,2016
 function getUserQRCode()
 {
+	 $qr = new qrcode();
 	 //the defaults starts
 	 global $myStaticVars;
 	 extract($myStaticVars);  // make static vars local
@@ -1006,7 +1009,6 @@ function getUserQRCode()
 	 $my_session_id	= $session_values['id'];
 	 if($my_session_id>0)
 	 {
-	 	 require_once 'externalLibraries/qrcode/qrlib.php';
 	    // how to build raw content - QRCode with Business Card (VCard) + photo 	     
 	    $tempDir = QRCODE_PATH; 
 	     
@@ -1036,31 +1038,36 @@ function getUserQRCode()
 	     
 	    // WARNING! here jpeg file is only 40x40, grayscale, 50% quality! 
 	    // with bigger images it will simply be TOO MUCH DATA for QR Code to handle! 
-	     
+	   // $getImage=file_get_contents('../'.$userAvatar);
 	    // we building raw data 
 	    $codeContents  = 'BEGIN:VCARD'."\n"; 
 	    $codeContents .= 'FN:'.$name."\n"; 
 	    $codeContents .= 'ID:'.$vofClientId."\n"; 
 	    $codeContents .= 'EMAIL:'.$email."\n"; 
-	    $codeContents .= 'PHOTO;JPEG;ENCODING=BASE64:'.base64_encode(file_get_contents('../'.$userAvatar))."\n"; 
+	    //$codeContents .= 'PHOTO;JPEG;ENCODING=BASE64:'.base64_encode($getImage)."\n"; 
 	    $codeContents .= 'END:VCARD'; 
 	     
 	    // generating 
-	    QRcode::png($codeContents, $tempDir.$clientid.'.png', 4, 3); 
+	   // QRcode::png($codeContents, $tempDir.$clientid.'.png', 4, 3); 
 	     
 	
 		 //write code into file, Error corection lecer is lowest, L (one form: L,M,Q,H)
 		 //each code square will be 4x4 pixels (4x zoom)
 		 //code will have 2 code squares white boundary around 
-		 //QRcode::png($codeContents, $tempDir.'027.png', 'L', 4, 2); 
+		 //QRcode::png($codeContents, $tempDir.$clientid.'.png', 'L', 4, 2); 
 	    
 	    // displaying 
-	    return QRCODE_PATH.$clientid.'.png'; 
+	    //return QRCODE_PATH.$clientid.'.png'; 
+	    
+	    $imgpath = QRCODE_PATH.$clientid.'.png';
+	    //return $imgpath;
+	    
+	    $qr->text($clientid);
+		 // echo "<p>UTF8 text</p>";
+		 //return "<p><img src='".$qr->get_link()."' border='0'/></p>";
+		 //$src = 'data: '.mime_content_type($imgpath).';base64,'.base64_encode(file_get_contents($imgpath));
+       return $qr->get_link();
 	 }	 
-	 
-	 
-
-
 }
 
 
