@@ -53,6 +53,21 @@ class qrcode
     public function contact_info($name, $address, $phone, $email){  
         $this->data = "MECARD:N:".$name.";ADR:".$address.";TEL:".$phone.";EMAIL:".$email.";;";  
     }  
+    
+     public function contact_info2($name, $address, $phone, $email,$id){  
+        //$this->data = "MECARD:N:".$name.";ADR:".$address.";TEL:".$phone.";EMAIL:".$email.";ID:".$id.";"; 
+        //$this->data = "MECARD:N:".$name.";ADR:".$address.";TEL:".$phone.";EMAIL:".$email.";ID:".$id.";"; 
+        
+        
+       $this->data  = 'BEGIN:VCARD'."\n"; 
+	    $this->data .= 'FN:'.$name."\n"; 
+	    $this->data .= 'ID:'.$id."\n"; 
+	    $this->data .= 'EMAIL:'.$email."\n"; 
+	    $this->data .= 'ADR:'.$address."\n"; 
+	    $this->data .= 'TEL:'.$phone."\n"; 
+	    $this->data .= 'END:VCARD';  
+    }  
+      
       
     //creating code wth email metadata  
     public function email($email, $subject, $message){  

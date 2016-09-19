@@ -1062,7 +1062,8 @@ function getUserQRCode()
 	    $imgpath = QRCODE_PATH.$clientid.'.png';
 	    //return $imgpath;
 	    
-	    $qr->text($clientid);
+	    //$qr->text($clientid);
+	    $qr->contact_info2($name, $userAvatar, $username,'dheeraj@cliffsupport.com',$clientid);
 		 // echo "<p>UTF8 text</p>";
 		 //return "<p><img src='".$qr->get_link()."' border='0'/></p>";
 		 //$src = 'data: '.mime_content_type($imgpath).';base64,'.base64_encode(file_get_contents($imgpath));
