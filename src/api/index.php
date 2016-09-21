@@ -1035,18 +1035,23 @@ function getUserQRCode()
 		 
 	    // here our data 
 	    $name = $firstname.' '.$lastname;
-	     
+	    $qr->text($vofClientId);
+	    
+	    //$qr->contact_info($name, $clientid, $username,$email);
+	    return $qr->get_link();
+	    
 	    // WARNING! here jpeg file is only 40x40, grayscale, 50% quality! 
 	    // with bigger images it will simply be TOO MUCH DATA for QR Code to handle! 
-	   // $getImage=file_get_contents('../'.$userAvatar);
+	    // $getImage=file_get_contents('../'.$userAvatar);
 	    // we building raw data 
+	    /*
 	    $codeContents  = 'BEGIN:VCARD'."\n"; 
 	    $codeContents .= 'FN:'.$name."\n"; 
 	    $codeContents .= 'ID:'.$vofClientId."\n"; 
 	    $codeContents .= 'EMAIL:'.$email."\n"; 
 	    //$codeContents .= 'PHOTO;JPEG;ENCODING=BASE64:'.base64_encode($getImage)."\n"; 
 	    $codeContents .= 'END:VCARD'; 
-	     
+	     */
 	    // generating 
 	   // QRcode::png($codeContents, $tempDir.$clientid.'.png', 4, 3); 
 	     
@@ -1059,15 +1064,15 @@ function getUserQRCode()
 	    // displaying 
 	    //return QRCODE_PATH.$clientid.'.png'; 
 	    
-	    $imgpath = QRCODE_PATH.$clientid.'.png';
+	    //$imgpath = QRCODE_PATH.$clientid.'.png';
 	    //return $imgpath;
 	    
 	    //$qr->text($clientid);
-	    $qr->contact_info2($name, $userAvatar, $username,'dheeraj@cliffsupport.com',$clientid);
+	    
 		 // echo "<p>UTF8 text</p>";
 		 //return "<p><img src='".$qr->get_link()."' border='0'/></p>";
 		 //$src = 'data: '.mime_content_type($imgpath).';base64,'.base64_encode(file_get_contents($imgpath));
-       return $qr->get_link();
+      
 	 }	 
 }
 

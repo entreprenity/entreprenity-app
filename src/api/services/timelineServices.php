@@ -2277,6 +2277,7 @@ function likeThisPost()
 //Function to post a comment for a timeline post
 //May 20,2016
 //July 14,2016: Timeline id and type added and if else if ladder
+//September 20,2016: Comments are in UTC time
 function postThisComment()
 {
 	$data= array();
@@ -2298,6 +2299,7 @@ function postThisComment()
 		$timeLine=validate_input($timelineId);
 		
 		$post_img='';
+		date_default_timezone_set('UTC');
 		$created_at=date('Y-m-d H:i:s');
 		$posted_by=$my_session_id;
 

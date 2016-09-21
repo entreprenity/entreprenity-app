@@ -1,5 +1,21 @@
 <?php
 
+//Function to remove company profile pic path from table
+//September 21,2016
+function removeCompanyProfilePicPathFromDB($userID)
+{
+	$companyID	=	getCompanyIDFromCompUserRelation($userID);
+	$qry="UPDATE company_profiles SET avatar='' WHERE id=".$companyID." ";
+	setData($qry);
+}
+
+//Function to remove user image path from table
+//September 21,2016
+function removeUserProfilePicPathFromDB($userID)
+{
+	$qry="UPDATE client_profile SET avatar='' WHERE clientid=".$userID." ";
+	setData($qry);
+}
 
 //Fetch location ids for all centers under a country
 //September 08,2016

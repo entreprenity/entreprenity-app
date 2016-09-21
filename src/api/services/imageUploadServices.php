@@ -1,7 +1,82 @@
 <?php
 
+//Function to generate unique timeline image name
+//September 21,2016
+function uniqueTimelineImageName()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 10 digit token
+	//SELECT * FROM `entrp_user_timeline` where post_img like '%timelineimgdominic.ronquillo20160816080631.jpeg%'
+   $qry = "SELECT * FROM entrp_user_timeline where post_img like '%$token%'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      uniqueTimelineImageName();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+//Function to generate unique user profile pic name
+//September 21,2016
+function uniqueUserProfilePicName()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 10 digit token
+   $qry = "SELECT * FROM client_profile where avatar like '%$token%'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      uniqueUserProfilePicName();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+//Function to generate unique company profile pic name
+//September 21,2016
+function uniqueCompanyProfilePicName()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 10 digit token
+   $qry = "SELECT * FROM company_profiles where avatar like '%$token%'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      uniqueCompanyProfilePicName();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+//Function to generate unique event poster name
+//September 21,2016
+function uniqueEventPostersName()
+{	
+	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 10 digit token
+   $qry = "SELECT * FROM entrp_events where poster like '%$token%'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      uniqueEventPostersName();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+
 //Function to upload timeline post image
 //July 16,2016
+//September 21,2016: Unique filenames for posts published
 function uploadTimelineImage($uploadImg,$uploadType)
 {
 	$data= array();
@@ -46,14 +121,20 @@ function uploadTimelineImage($uploadImg,$uploadType)
 	
 	if($uploadType==6)
 	{
-		$fileName 	 = TIMELINE_POST_PIC.'timelineimg'.$my_session_username.$upAt.$extension;
-		$filePath 	 = TIMELINE_POST_PIC_UPL.'timelineimg'.$my_session_username.$upAt.$extension;
+		$timeLineImageName=uniqueTimelineImageName();
+		$fileName 	 = TIMELINE_POST_PIC.$timeLineImageName.$extension;
+		$filePath 	 = TIMELINE_POST_PIC_UPL.$timeLineImageName.$extension;
+		//$fileName 	 = TIMELINE_POST_PIC.'timelineimg'.$my_session_username.$upAt.$extension;
+		//$filePath 	 = TIMELINE_POST_PIC_UPL.'timelineimg'.$my_session_username.$upAt.$extension;
 	}
 	
 	if($uploadType==7)
 	{
-		$fileName     = BUSSOPP_POST_PIC.'bussoppimg'.$my_session_username.$upAt.$extension;
-		$filePath 	  = BUSSOPP_POST_PIC_UPL.'bussoppimg'.$my_session_username.$upAt.$extension;
+		$timeLineImageName=uniqueTimelineImageName();
+		$fileName 	 = TIMELINE_POST_PIC.$timeLineImageName.$extension;
+		$filePath 	 = TIMELINE_POST_PIC_UPL.$timeLineImageName.$extension;
+		//$fileName     = BUSSOPP_POST_PIC.'bussoppimg'.$my_session_username.$upAt.$extension;
+		//$filePath 	  = BUSSOPP_POST_PIC_UPL.'bussoppimg'.$my_session_username.$upAt.$extension;
 	}
 	
 	
@@ -115,6 +196,7 @@ function uploadTimelineImage($base64Img,$h,$w)
 //Function to update user avatar, company avatar, event poster
 //May 06,2016
 //June 16,2016: convert base64 to img, save path to db
+//September 21,2016: Unique filenames for user profile pic, company profile pic, event poster
 function uploadTheImage()
 {
 	$data= array();
@@ -174,10 +256,13 @@ function uploadTheImage()
 		if($userImg!='')
 		{
 			deleteTimelinePostImageFromServer($userImg);
+			removeUserProfilePicPathFromDB($my_session_id);
 		}
-		
-		$fileName 	 = PROFILE_PIC.$my_session_username.$upAt.$extension;
-		$filePath 	 = PROFILE_PIC_UPL.$my_session_username.$upAt.$extension;		
+		$userFileName=uniqueUserProfilePicName();
+		$fileName 	 = PROFILE_PIC.$userFileName.$extension;
+		$filePath 	 = PROFILE_PIC_UPL.$userFileName.$extension;
+		//$fileName 	 = PROFILE_PIC.$my_session_username.$upAt.$extension;
+		//$filePath 	 = PROFILE_PIC_UPL.$my_session_username.$upAt.$extension;		
 	}
 	
    // 2- company profile pic
@@ -187,16 +272,19 @@ function uploadTheImage()
 		if($userImg!='')
 		{
 			deleteTimelinePostImageFromServer($userImg);
+			removeCompanyProfilePicPathFromDB($my_session_id);
 		}
-		$fileName     = COMPANY_PIC.$my_session_username.$upAt.$extension;
-		$filePath 	  = COMPANY_PIC_UPL.$my_session_username.$upAt.$extension;
+		$companyProfilePicName=uniqueCompanyProfilePicName();
+		$fileName     = COMPANY_PIC.$companyProfilePicName.$extension;
+		$filePath 	  = COMPANY_PIC_UPL.$companyProfilePicName.$extension;
 	}
 	
    // 3- events poster
 	if($uploadType==3)
 	{
-		$fileName 	 = EVENT_POSTER.$my_session_username.$upAt.$extension;
-		$filePath 	 = EVENT_POSTER_UPL.$my_session_username.$upAt.$extension;
+		$eventPosterName=uniqueEventPostersName();
+		$fileName 	 = EVENT_POSTER.$eventPosterName.$extension;
+		$filePath 	 = EVENT_POSTER_UPL.$eventPosterName.$extension;
 	}
 	
 		
