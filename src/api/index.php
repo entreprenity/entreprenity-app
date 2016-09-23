@@ -1,6 +1,7 @@
 <?php
 
 require_once ('Query.php'); 
+require_once ('userDefinedFunctions.php'); 
 require_once 'constants.php';
 require 'flight/Flight.php';
 //require_once 'externalLibraries/qrcode/qrlib.php';
@@ -987,6 +988,56 @@ function services_included()
 	
 }
 
+//Function to fetch qrcode from database, if already generated
+//September 22,2016
+function fetchUserQRCodeFromDB($clientid)
+{
+	$qrCode= '';
+ 	$qry="SELECT qrCode
+			FROM entrp_login 
+			WHERE clientid=".$clientid."
+	      ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+	if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+      {
+      	$qrCode	=	$row['qrCode'];
+		}   	   	
+   }
+   return $qrCode;
+}
+
+//Function to generate qrcode identifier
+//September 22,2016
+function uniqueQRCodeToken()
+{
+	$token = substr(md5(uniqid(rand(), true)),0,32);  // creates a 32 digit token
+	//SELECT * FROM entrp_login where qrCode='70f804625753d84827ef993329c3b1b8'
+   $qry = "SELECT * FROM entrp_login WHERE qrCode='".$token."'";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      uniqueQRCodeToken();
+   } 
+   else 
+   {
+      return $token;
+   }	
+}
+
+
+//Function to save QR code of the user in database
+//September 22,2016
+function saveQRCOdeforUser($clientid,$qrCodeToken)
+{
+	date_default_timezone_set('UTC');
+	$updatedAt=date('Y-m-d H:i:s');
+	$qry="UPDATE entrp_login SET qrCode='".$qrCodeToken."',qrCodeUpdatedDateTime='".$updatedAt."' WHERE clientid=".$clientid." ";
+	setData($qry);
+}
 
 //Function to generate qrcode for a user
 //September 17,2016
@@ -1010,20 +1061,9 @@ function getUserQRCode()
 	 if($my_session_id>0)
 	 {
 	    // how to build raw content - QRCode with Business Card (VCard) + photo 	     
-	    $tempDir = QRCODE_PATH; 
+	    //$tempDir = QRCODE_PATH; 
 	     
 	    $data			=	fetch_info_from_entrp_login($my_session_id);
-	    $userProPic	=	getUserProfilePicFromUserID($my_session_id);
-	    
-	    if($userProPic!='')
-	    {
-	    	$userAvatar = $userProPic;
-	    }
-	    else
-	    {
-	    	$userAvatar = $member_default;
-	    }
-	    
 	    
 	    $clientid 		= $data['clientid'];
    	 $username 		= $data['username'];
@@ -1033,46 +1073,21 @@ function getUserQRCode()
    	 $voffStaff		= $data['voffStaff'];
 		 $vofClientId	= $data['vofClientId'];	
 		 
-	    // here our data 
-	    $name = $firstname.' '.$lastname;
-	    $qr->text($vofClientId);
+		 //Fetch qr-code from db if already generated
+		 $qrCode= fetchUserQRCodeFromDB($clientid);
 	    
-	    //$qr->contact_info($name, $clientid, $username,$email);
-	    return $qr->get_link();
+	    if($qrCode=='')
+	    {
+	    	$qrCodeToken	=	uniqueQRCodeToken();
+	    	saveQRCOdeforUser($clientid,$qrCodeToken);
+	    }
+	    else
+	    {
+	    	$qrCodeToken	= $qrCode;
+	    }
 	    
-	    // WARNING! here jpeg file is only 40x40, grayscale, 50% quality! 
-	    // with bigger images it will simply be TOO MUCH DATA for QR Code to handle! 
-	    // $getImage=file_get_contents('../'.$userAvatar);
-	    // we building raw data 
-	    /*
-	    $codeContents  = 'BEGIN:VCARD'."\n"; 
-	    $codeContents .= 'FN:'.$name."\n"; 
-	    $codeContents .= 'ID:'.$vofClientId."\n"; 
-	    $codeContents .= 'EMAIL:'.$email."\n"; 
-	    //$codeContents .= 'PHOTO;JPEG;ENCODING=BASE64:'.base64_encode($getImage)."\n"; 
-	    $codeContents .= 'END:VCARD'; 
-	     */
-	    // generating 
-	   // QRcode::png($codeContents, $tempDir.$clientid.'.png', 4, 3); 
-	     
-	
-		 //write code into file, Error corection lecer is lowest, L (one form: L,M,Q,H)
-		 //each code square will be 4x4 pixels (4x zoom)
-		 //code will have 2 code squares white boundary around 
-		 //QRcode::png($codeContents, $tempDir.$clientid.'.png', 'L', 4, 2); 
-	    
-	    // displaying 
-	    //return QRCODE_PATH.$clientid.'.png'; 
-	    
-	    //$imgpath = QRCODE_PATH.$clientid.'.png';
-	    //return $imgpath;
-	    
-	    //$qr->text($clientid);
-	    
-		 // echo "<p>UTF8 text</p>";
-		 //return "<p><img src='".$qr->get_link()."' border='0'/></p>";
-		 //$src = 'data: '.mime_content_type($imgpath).';base64,'.base64_encode(file_get_contents($imgpath));
-      
+	    $qr->text($qrCodeToken);
+	    return $qr->get_link();  
 	 }	 
 }
 
@@ -1830,31 +1845,6 @@ function get_user_session()
 	return $sessions;
 }
 
-
-
-
-
-
-
-//Function to validate inputs
-function validate_input($input) 
-{	
-  $input = trim($input);
-  //$input = stripslashes($input);
-  $input = addslashes($input);
-  $input = htmlspecialchars($input);
-  return $input;
-}
-
-//Function to enable CORS
-function enable_cors() 
-{
-	header('Access-Control-Allow-Origin: *');
-	header('Access-Control-Allow-Methods: GET, POST');
-	header("Access-Control-Allow-Headers: X-Requested-With");	
-	date_default_timezone_set('asia/singapore');
-	//date_default_timezone_set('UTC');
-}
 
 
 ?>
