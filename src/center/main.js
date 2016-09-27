@@ -185,6 +185,7 @@ function load()
 
 function setwebcam()
 {
+
 	document.getElementById("result").innerHTML="- scanning -";
     if(stype==1)
     {

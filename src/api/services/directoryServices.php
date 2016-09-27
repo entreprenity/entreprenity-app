@@ -167,12 +167,13 @@ function getMembers()
 	$my_session_id	= $session_values['id'];	
 	
 	$data= array();	
+	//ORDER BY CI.clientid ASC 
 	$qry="SELECT CI.clientid,CI.firstname,CI.lastname,CI.username,CP.designation,CP.company_name,CP.avatar,LI.location_desc AS city 
 	      FROM entrp_login AS CI 
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CI.clientid!=".$my_session_id."
-	      ORDER BY CI.clientid ASC 
+	      ORDER BY CP.avatar DESC
 	      LIMIT  $start, $limit	      
 	      ";
 	$res=getData($qry);
@@ -314,6 +315,7 @@ function getCompanies()
 	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,CP.company_username,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location 
+			ORDER BY CP.avatar  DESC
 			LIMIT $start, $limit";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);

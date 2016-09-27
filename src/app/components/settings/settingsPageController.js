@@ -59,6 +59,14 @@
 										data: $.param(dataContent),
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 							 });
+				},
+				changeQRCode: function() 
+				{
+					return $http.get(baseUrl+ 'changeQRCode');
+				},
+				fetchQRCodeUpdatedTime: function() 
+				{
+					return $http.get(baseUrl+ 'fetchQRCodeUpdatedTime');
 				}
 			};
 		})
@@ -114,6 +122,19 @@
 			settingsService.checkFBConnectedorNot().success(function(data) {
 				vm.FBConnect = data;
 			});
+			
+			
+			//Function to fetch last Updated Time of QR Code
+			settingsService.fetchQRCodeUpdatedTime().success(function(data) {
+				vm.lastUpdated = data.lastUpdatedAt;
+			});
+			
+			//Function to change user QR Code	      
+	      $scope.changeQRCode = function() {
+				settingsService.changeQRCode().success(function(data) {
+					vm.lastUpdated = data.lastUpdatedAt;
+				});	
+			};
 			
 			//Function to unlink a facebook profile	      
 	      $scope.FBUnlink = function() {

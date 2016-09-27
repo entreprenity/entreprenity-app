@@ -949,6 +949,28 @@ Flight::route('/getMyQRCode', function()
 	echo json_encode($returnarray);
 });
 
+//74 Route to change a user's QR code
+//September 27,2016 
+Flight::route('/changeQRCode', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=changeQRCode();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//75 Route to fetch last updated time of user's QR code
+//September 27,2016 
+Flight::route('/fetchQRCodeUpdatedTime', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=fetchQRCodeUpdatedTime();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -986,6 +1008,54 @@ function services_included()
 	require_once 'services/externalServices.php'; 
 	
 	
+}
+
+//Function to fetch last updated time of QR Code
+//September 27,2016
+function fetchQRCodeUpdatedTime()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id>0)
+	{
+	   $data=getLastUpdatedTimeQRCode($my_session_id);
+	}
+	return $data;
+}
+
+//Function to fetch last updated time for QR Codes
+//September 27,2016
+function getLastUpdatedTimeQRCode($clientid)
+{
+	$data= array();
+	$qry="SELECT qrCodeUpdatedDateTime FROM entrp_login WHERE clientid=".$clientid." ";
+	$res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res>0)
+   {
+   	while($row=mysqli_fetch_array($res))
+   	{
+   		$data['lastUpdatedAt']	=	$row['qrCodeUpdatedDateTime'];
+   	}	   
+   }
+	return $data;
+}
+
+//Function to change a user's QR Code
+//September 27,2016
+function changeQRCode()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id>0)
+	{
+		$qrCodeToken	=	uniqueQRCodeToken();
+	   saveQRCOdeforUser($my_session_id,$qrCodeToken);
+	   $data=getLastUpdatedTimeQRCode($my_session_id);
+	}
+	return $data;
 }
 
 //Function to fetch qrcode from database, if already generated
