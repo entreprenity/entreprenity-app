@@ -110,7 +110,13 @@ function read(a)
     document.getElementById("result").innerHTML=html;
     
 	var dataString = { send : true , credential : htmlEntities(a) };
-		
+
+
+	//var fullUrl='http://192.168.11.13/projects/entreprenity/center/index.php?location=8a8c';
+	var fullURL=window.location.href;	
+	var sub='center';
+	var string =  fullURL.substring(0, fullURL.indexOf('center'));
+
 	$.ajax({
 
 		type: "POST",
@@ -124,7 +130,7 @@ function read(a)
 			if(data.success == true)
 			{
            alert("You have successfully checked in!");
-           $("#activeUsersTable > tbody").append("<tr><td>"+data.firstname+" "+data.lastname+"</td><td>CompanyName</td><td>"+data.avatar+"</td><td>"+data.checkInDateTime+"</td></tr>");
+           $("#activeUsersTable > tbody").append("<tr><td><img src='"+string+data.avatar+"'></td><td>"+data.firstname+" "+data.lastname+"</td><td>"+data.company+"</td><td>"+data.checkInDateTime+"</td></tr>");
 			  
 			} 
 			else 

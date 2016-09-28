@@ -30,28 +30,45 @@
 				</thead>
 				<tbody>
 					<?php
+							//$fullUrl='http://192.168.11.13/projects/entreprenity/center/index.php?location=8a8c';
+							$fullUrl=fullURL();
+							$sub='center';
+							$basePath = substr($fullUrl, 0, strpos($fullUrl, $sub));
+							$loginDateTime=date("Y-m-d");
 							$qry="SELECT ECL.entrpID,ECL.checkIn ,EL.firstname,EL.lastname,CP.avatar
 									FROM entrp_center_login AS ECL
 									LEFT JOIN entrp_login AS EL ON EL.clientid=ECL.entrpID
 									LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid
-									WHERE ECL.status=1
+									WHERE ECL.status=1 AND loginDate='".$loginDateTime."'
 								  ";
+								  
 						   $res = getData($qry);
 						   $count_res = mysqli_num_rows($res);
 							if($count_res > 0)
 							{
-							while($row = mysqli_fetch_array($res))
-							{
-							$entrpID		= $row['entrpID'];
-							$checkIn		= $row['checkIn'];
-							$firstname	= $row['firstname'];
-							$lastname	= $row['lastname'];
-							$avatar		= $row['avatar'];
+								while($row = mysqli_fetch_array($res))
+								{
+									$entrpID		= $row['entrpID'];
+									
+									$checkIn		= $row['checkIn'];
+									$firstname	= $row['firstname'];
+									$lastname	= $row['lastname'];
+									
+									$companyName= getCompanyName($entrpID);
+									if($row['avatar']!='')
+				   				{
+				   					$avatar	=	$row['avatar'];
+				   				}
+				   				else
+				   				{
+				   					$avatar	=	'assets/img/members/member-default.jpg';
+				   				}
+		   				
 							?>
 							<tr id="<?php echo $entrpID; ?>">
-							    <td><img src="../<?php echo $avatar; ?>"></td>
+								<td><img src="<?php echo $basePath.$avatar; ?>"></td>
 								<td><?php echo $firstname.' '.$lastname; ?></td>
-								<td>Company</td>
+								<td><?php echo $companyName; ?></td>
 								<td><?php echo $checkIn; ?></td>
 							</tr>
 							<?php

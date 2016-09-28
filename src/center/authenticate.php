@@ -33,6 +33,8 @@ if(isset($_POST['send']))
 		$arr['vofClientId'] 		= $data['vofClientId'];
 		$arr['avatar'] 			= $data['avatar'];
 		$arr['checkInDateTime'] = $checkInDateTime;
+		$arr['company'] 			= getCompanyName($data['clientid']);
+		
 		
 		$locId = $_SESSION['locId'];
 		logUserIntoThisCenter($data['clientid'],$data['vofClientId'],$locId);

@@ -1,5 +1,37 @@
 <?php
 
+//Function to get user's company name
+function getCompanyName($entrpID)
+{
+	$companyName 	= 'Not Specified';
+	//SELECT company_profiles.company_name FROM entrp_company_members LEFT JOIN company_profiles ON company_profiles.id=entrp_company_members.companyid WHERE entrp_company_members.clientid=1
+	$qry = "SELECT company_profiles.company_name 
+			  FROM entrp_company_members 
+			  LEFT JOIN company_profiles ON company_profiles.id=entrp_company_members.companyid 
+			  WHERE entrp_company_members.clientid=".$entrpID."";
+   $res=getData($qry);
+   $count_res=mysqli_num_rows($res);
+   if($count_res > 0)
+   {
+      while($row = mysqli_fetch_array($res))
+      {
+      	$companyName 	= $row['company_name'];
+		}
+   } 
+	return $companyName;
+}
+
+
+function fullURL()
+{
+  return sprintf(
+    "%s://%s%s",
+    isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+    $_SERVER['SERVER_NAME'],
+    $_SERVER['REQUEST_URI']
+  );
+}
+
 //Function to login a user into center
 function logUserIntoThisCenter($clientid,$vofClientId,$locId)
 {
@@ -33,7 +65,15 @@ function fetchUserInfoUsingQRCode($qrCode)
       	$data['lastname'] 	= $row['lastname'];
       	$data['voffStaff']	= $row['voff_staff'];
 			$data['vofClientId']	= $row['vof_clientid'];			      	
-			$data['avatar']	= $row['avatar'];			      	
+			
+			if($row['avatar']!='')
+			{
+				$data['avatar']	=	$row['avatar'];
+			}
+			else
+			{
+				$data['avatar']	=	'assets/img/members/member-default.jpg';
+			}	      	
 			
 			$data['success'] = 'true';
 		}
