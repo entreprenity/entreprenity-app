@@ -111,7 +111,7 @@ function read(a)
     
 	var dataString = { send : true , credential : htmlEntities(a) };
 
-
+	$("#checkedInUser").html("");
 	//var fullUrl='http://192.168.11.13/projects/entreprenity/center/index.php?location=8a8c';
 	var fullURL=window.location.href;	
 	var sub='center';
@@ -126,17 +126,25 @@ function read(a)
 		cache : false,
 		success: function(data)
 		{
-
 			if(data.success == true)
 			{
-           alert("You have successfully checked in!");
-           $("#activeUsersTable > tbody").append("<tr><td><img src='"+string+data.avatar+"'></td><td>"+data.firstname+" "+data.lastname+"</td><td>"+data.company+"</td><td>"+data.checkInDateTime+"</td></tr>");
+           //alert("You have successfully checked in!");
+           
+           $("#checkedInUser").html(data.firstname+" "+data.lastname);
+			  $('#successModal').show();
+           setTimeout(function(){
+			      $("#successModal").hide();
+			  }, 5000);
+           //$("#activeUsersTable > tbody").append("<tr><td><img src='"+string+data.avatar+"'></td><td>"+data.firstname+" "+data.lastname+"</td><td>"+data.company+"</td><td>"+data.checkInDateTime+"</td></tr>");
 			  
 			} 
 			else 
 			{
-           alert("The credentials not match!");
-           //self.location.replace('index.php');
+           //alert("The credentials not match!");
+           $('#failureModal').show();
+           setTimeout(function(){
+			      $("#failureModal").hide();
+			  }, 5000);
          }							
 			setwebcam();
 			
