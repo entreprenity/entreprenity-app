@@ -6,8 +6,8 @@
 	require_once ('../api/services/userLoginServices.php'); 
 	require_once ('../api/externalLibraries/Mobile_Detect.php'); 
 	
-	//$authToken	=	validate_input($_GET['auth']);	
-	$authToken	=	'z1eb853b889a1a1c0712de8721624550';	
+	$authToken	=	validate_input($_GET['auth']);	
+	//$authToken	=	'z1eb853b889a1a1c0712de8721624550';	
 
 	$detect = new Mobile_Detect();
 	//$fullUrl='http://192.168.11.13/projects/entreprenity/others/voffRequestVerifier.php';
