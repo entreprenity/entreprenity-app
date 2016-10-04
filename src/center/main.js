@@ -130,7 +130,8 @@ function read(a)
 			{
            //alert("You have successfully checked in!");
            
-           $("#checkedInUser").html(data.firstname+" "+data.lastname);
+           $("#checkedInUser").html(data.firstname + " " + data.lastname);
+            $("#checkedInUserImage").attr("src", data.avatar);
 			  $('#successModal').show();
            setTimeout(function(){
 			      $("#successModal").hide();

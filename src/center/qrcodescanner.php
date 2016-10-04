@@ -24,11 +24,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Check-In</h4>
+                <img id="checkedInUserImage" class="img-circle" src="../assets/img/members/kurt20160704204150.png" alt="Avatar">
             </div>
             <div id="welcomeMsgDiv" class="modal-body" style="color:black;">
-                Welcome, <span id="checkedInUser"></span>
+                <div class="arrow-down"></div>
+                <p>Welcome, <span id="checkedInUser"></span>!</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#successModal">CONTINUE</button>
             </div>
         </div>
     </div> 
@@ -38,11 +39,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Check-In</h4>
+                 <img id="errorIcon" class="img-circle" src="../assets/img/qr-code-scanner-fail.png" alt="Avatar" width="80">
+                 <h1>Code Scanning Failed!</h1>
             </div>
             <div id="errorMsgDiv" class="modal-body" style="color:black;">
-                <h3>Code Scanning Failed! Please try again.</h3>
+                <div class="arrow-down"></div>
+                <p>Please try again</p>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#failureModal">TRY AGAIN</button>
             </div>
         </div>
     </div> 
