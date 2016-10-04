@@ -32,13 +32,13 @@
 						<li><a href="#/settings">Settings</a></li>
 						<li><a href="#/logout">Logout</a></li>
 					</ul>
-					<li><a class="show-in-mobile" href="#/myqrcode">My ID</a></li>
-					<li><a class="show-in-mobile" href="#/myprofile">My Profile</a></li>
-					<li><a class="show-in-mobile" href="#/mycompany">Company Profile</a></li>
-					<li><a class="show-in-mobile" href="#/notifications" ng-click="readNotifications()"><span class="badge pull-right">{{numOfNotifications}}</span>Notifications </a></li>
-					<li><a class="show-in-mobile" href="#/resetpassword">Reset Password</a></li>
-					<li><a class="show-in-mobile" href="#/settings">Settings</a></li>
-					<li><a class="show-in-mobile" href="#/logout">Logout</a></li>
+					<li><a class="show-in-mobile" href="#/myqrcode" ng-click="navCollapsed = !navCollapsed">My ID</a></li>
+					<li><a class="show-in-mobile" href="#/myprofile" ng-click="navCollapsed = !navCollapsed">My Profile</a></li>
+					<li><a class="show-in-mobile" href="#/mycompany" ng-click="navCollapsed = !navCollapsed">Company Profile</a></li>
+					<li><a class="show-in-mobile" href="#/notifications" ng-click="readNotifications();navCollapsed = !navCollapsed"><span class="badge pull-right">{{numOfNotifications}}</span>Notifications </a></li>
+					<li><a class="show-in-mobile" href="#/resetpassword" ng-click="navCollapsed = !navCollapsed">Reset Password</a></li>
+					<li><a class="show-in-mobile" href="#/settings" ng-click="navCollapsed = !navCollapsed">Settings</a></li>
+					<li><a class="show-in-mobile" href="#/logout" ng-click="navCollapsed = !navCollapsed">Logout</a></li>
 				</li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
