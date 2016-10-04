@@ -24,7 +24,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <img id="checkedInUserImage" class="img-circle" src="../assets/img/members/kurt20160704204150.png" alt="Avatar">
+                <img id="checkedInUserImage" class="img-circle" src="" alt="Avatar">
             </div>
             <div id="welcomeMsgDiv" class="modal-body" style="color:black;">
                 <div class="arrow-down"></div>

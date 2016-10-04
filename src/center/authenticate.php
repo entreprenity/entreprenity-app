@@ -9,6 +9,11 @@ require_once ('../api/userDefinedFunctions.php');
 require_once ('../api/externalLibraries/Mobile_Detect.php'); 
 require_once ('centerFunctions.php'); 
 
+
+$fullUrl=fullURL();
+$sub='center';
+$basePath = substr($fullUrl, 0, strpos($fullUrl, $sub));
+
 $detect = new Mobile_Detect();
 
 if(isset($_POST['send']))
@@ -31,7 +36,16 @@ if(isset($_POST['send']))
 		$arr['lastname'] 			= $data['lastname'];
 		$arr['clientid'] 			= $data['clientid'];
 		$arr['vofClientId'] 		= $data['vofClientId'];
-		$arr['avatar'] 			= $data['avatar'];
+		
+		if (strpos($data['avatar'], 'facebook') !== false) 
+		{
+		    $arr['avatar'] 			= $data['avatar'];
+		}
+		else
+		{
+			$arr['avatar'] 			= $basePath.$data['avatar'];
+		}
+		
 		$arr['checkInDateTime'] = $checkInDateTime;
 		$arr['company'] 			= getCompanyName($data['clientid']);
 		
