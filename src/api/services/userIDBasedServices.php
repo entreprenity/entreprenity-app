@@ -1,5 +1,43 @@
 <?php
 
+//Function to get list of user whose posts i don't wanna see
+//October 07,2016
+function postsFromUsersIdontLike($userID)
+{
+	$data= array();	
+	$qry="SELECT clientId FROM entrp_hide_user_feeds WHERE myId=".$userID."";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]			=	$row['clientId'];
+		}		
+	}
+	return $data;
+}
+
+
+//Function to get list of posts I don't wanna see
+//October 7,2016
+function postsIdontLike($userID)
+{
+	$data= array();	
+	$qry="SELECT postID FROM entrp_hide_user_post WHERE myId=".$userID."";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		while($row=mysqli_fetch_array($res))
+		{
+			$data[]			=	$row['postID'];
+		}		
+	}
+	return $data;
+}
+
+
 //Function to remove company profile pic path from table
 //September 21,2016
 function removeCompanyProfilePicPathFromDB($userID)

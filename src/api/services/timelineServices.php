@@ -15,6 +15,71 @@ function unlikeThisComment()
 
 }
 
+//Function to hide one user's all posts from the timelines
+//September 27,2016
+function hideAllPostsOfThisUser()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$timelinePostID = $requestData->postID;
+		$postID=validate_input($timelinePostID);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
+		
+		$clientId=whoIsTheAuthorOfThisPost($postID);
+		
+		$qry="INSERT INTO entrp_hide_user_feeds(myId,clientId) VALUES(".$my_session_id.",".$clientId.") ";
+		if(setData($qry))
+		{
+			$data['response']='success';
+		}
+		else
+		{
+			$data['response']='failed';
+		}
+	}
+	return $data;
+}
+
+
+//Function to hide a particular post from a user's timelines
+//September 27,2016
+function hideThisPost()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$timelinePostID = $requestData->postID;
+		$postID=validate_input($timelinePostID);
+		
+		$timelineId = $requestData->timeLine;
+		$timeLine=validate_input($timelineId);
+		
+		$qry="INSERT INTO entrp_hide_user_post(myId,postID) VALUES(".$my_session_id.",".$postID.") ";
+		if(setData($qry))
+		{
+			$data['response']='success';
+		}
+		else
+		{
+			$data['response']='failed';
+		}
+	}
+	return $data;
+}
+
 
 //Function to edit a timeline post
 //June 20,2016
@@ -294,6 +359,8 @@ function deleteTimlinePost()
 //August 16,2016: Fetching likes, comments and such details
 //September 01,2016: Added html decode for wysiwyg editor
 //September 08,2016: Fetch data based on country and location filter
+//October 07,2016: Added filtering to hide posts I don't like
+//October 07,2016: Added filtering to hide all post from people I don't like
 function getBusinessOpportunitiesForMe()
 {
 	//the defaults starts
@@ -385,6 +452,26 @@ function getBusinessOpportunitiesForMe()
 				}
 			}
 			
+			$hidePosts	= postsIdontLike($my_session_id);
+			if(!empty($hidePosts))
+			{
+				$hidePostsString = implode(",", $hidePosts);
+			}
+			else
+			{
+				$hidePostsString ="''";
+			}
+			
+			$hidePeoplePosts	= postsFromUsersIdontLike($my_session_id);
+			if(!empty($hidePeoplePosts))
+			{
+				$hidePeoplePostsString = implode(",", $hidePeoplePosts);
+			}
+			else
+			{
+				$hidePeoplePostsString ="''";
+			}
+			
           $postIdArrayStringUF = array_filter($postIdArrays);
           //$postIdArrayStringUF = $postIdArrays;
 		    if (!empty($postIdArrayStringUF)) 
@@ -398,7 +485,8 @@ function getBusinessOpportunitiesForMe()
 						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location."
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location." 
+
 						ORDER BY EUT.created_at DESC 
 						LIMIT $start, $limit ";
 				}
@@ -409,7 +497,8 @@ function getBusinessOpportunitiesForMe()
 						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location."
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location=".$location." 
+
 						ORDER BY EUT.created_at DESC 
 						LIMIT $start, $limit ";
 				}		
@@ -425,7 +514,8 @@ function getBusinessOpportunitiesForMe()
 							LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 							LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 							LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location IN (".$locationIdString.")
+							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") AND CP.client_location IN (".$locationIdString.") 
+
 							ORDER BY EUT.created_at DESC 
 							LIMIT $start, $limit ";
 					}
@@ -436,7 +526,8 @@ function getBusinessOpportunitiesForMe()
 							LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 							LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 							LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
+							WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") 
+
 							ORDER BY EUT.created_at DESC 
 							LIMIT $start, $limit ";
 					}
@@ -448,7 +539,8 @@ function getBusinessOpportunitiesForMe()
 						LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 						LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 						LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.")
+						WHERE EUT.status=1 AND EUT.business_opp=1 AND EUT.post_id IN (".$postIdArrayString.") 
+
 						ORDER BY EUT.created_at DESC 
 						LIMIT $start, $limit ";
 				}
@@ -619,6 +711,26 @@ function refetchCompanyPosts($companyUserName)
 	//I am the logged in user.
 	$session_values=get_user_session();
 	$my_session_id	= (int)$session_values['id'];
+	
+	$hidePosts	= postsIdontLike($my_session_id);
+	if(!empty($hidePosts))
+	{
+		$hidePostsString = implode(",", $hidePosts);
+	}
+	else
+	{
+		$hidePostsString ="''";
+	}
+	
+	$hidePeoplePosts	= postsFromUsersIdontLike($my_session_id);
+	if(!empty($hidePeoplePosts))
+	{
+		$hidePeoplePostsString = implode(",", $hidePeoplePosts);
+	}
+	else
+	{
+		$hidePeoplePostsString ="''";
+	}
 
 	$companyId=getCompanyIdfromCompanyUserName($companyUserName);
 
@@ -631,7 +743,7 @@ function refetchCompanyPosts($companyUserName)
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 AND EUT.business_opp!=1
+			WHERE EUT.posted_by IN (".$companyMembersString.") AND EUT.status=1 AND EUT.business_opp!=1 
 			ORDER BY EUT.created_at DESC";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
@@ -1424,6 +1536,8 @@ function getThisPost()
 //August 11,2016: Added array empty check
 //September 01,2016: Added html decode for wysiwyg editor
 //September 08,2016: Fetch data based on country and location filter
+//October 07,2016: Added filtering to hide posts I don't like
+//October 07,2016: Added filtering to hide all post from people I don't like
 function getFollowedMembersPosts()
 {
 	//the defaults starts
@@ -1485,6 +1599,26 @@ function getFollowedMembersPosts()
 	//$myUserId	= getUserIdfromUserName($username);
 	$myUserId	= $my_session_id;
 	
+	$hidePosts	= postsIdontLike($my_session_id);
+	if(!empty($hidePosts))
+	{
+		$hidePostsString = implode(",", $hidePosts);
+	}
+	else
+	{
+		$hidePostsString ="''";
+	}
+	
+	$hidePeoplePosts	= postsFromUsersIdontLike($my_session_id);
+	if(!empty($hidePeoplePosts))
+	{
+		$hidePeoplePostsString = implode(",", $hidePeoplePosts);
+	}
+	else
+	{
+		$hidePeoplePostsString ="''";
+	}	
+	
 	$usersIFollow= getAllUserIDsIFollow($myUserId);
 	
 	if (!empty($usersIFollow)) 
@@ -1498,7 +1632,8 @@ function getFollowedMembersPosts()
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1
+				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1 
+				AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 				ORDER BY EUT.created_at DESC 
 				LIMIT $start, $limit";
 		}
@@ -1509,7 +1644,8 @@ function getFollowedMembersPosts()
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1
+				WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location=".$location." AND EUT.status=1 AND EUT.business_opp!=1 
+				AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 				ORDER BY EUT.created_at DESC 
 				LIMIT $start, $limit";
 		}		
@@ -1525,7 +1661,8 @@ function getFollowedMembersPosts()
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-					WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location IN (".$locationIdString.") AND EUT.status=1 AND EUT.business_opp!=1
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND CP.client_location IN (".$locationIdString.") AND EUT.status=1 AND EUT.business_opp!=1 
+					AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 					ORDER BY EUT.created_at DESC 
 					LIMIT $start, $limit";
 			}
@@ -1536,7 +1673,8 @@ function getFollowedMembersPosts()
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1 
+					AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 					ORDER BY EUT.created_at DESC 
 					LIMIT $start, $limit";
 			}			
@@ -1548,7 +1686,8 @@ function getFollowedMembersPosts()
 					LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 					LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 					LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1
+					WHERE EUT.posted_by IN (".$usersIFollowString.") AND EUT.status=1 AND EUT.business_opp!=1 
+					AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 					ORDER BY EUT.created_at DESC 
 					LIMIT $start, $limit";
 		}
@@ -1678,6 +1817,8 @@ function getFollowedMembersPosts()
 //August 11, 2016: Changes after implementing company-user relation
 //September 01,2016: Added html decode for wysiwyg editor
 //September 08,2016: Fetch data based on country and location filter
+//October 07,2016: Added filtering to hide posts I don't like
+//October 07,2016: Added filtering to hide all post from people I don't like
 function getAllPosts()
 {
 	//the defaults starts
@@ -1691,6 +1832,29 @@ function getAllPosts()
 	$events_default				= $events_default;
 	$event_default_poster		= $event_default_poster;
 	//the defaults ends
+
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	$hidePosts	= postsIdontLike($my_session_id);
+	if(!empty($hidePosts))
+	{
+		$hidePostsString = implode(",", $hidePosts);
+	}
+	else
+	{
+		$hidePostsString ="''";
+	}
+	
+	$hidePeoplePosts	= postsFromUsersIdontLike($my_session_id);
+	if(!empty($hidePeoplePosts))
+	{
+		$hidePeoplePostsString = implode(",", $hidePeoplePosts);
+	}
+	else
+	{
+		$hidePeoplePostsString ="''";
+	}
+
 	
 	$data= array();
 	
@@ -1739,7 +1903,8 @@ function getAllPosts()
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location."
+			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location." 
+			AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
 	}
@@ -1750,7 +1915,8 @@ function getAllPosts()
 			LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location."
+			WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location=".$location." 
+			AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
 	}		
@@ -1766,7 +1932,8 @@ function getAllPosts()
 				LEFT JOIN entrp_login AS EL ON EL.clientid=EUT.posted_by
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
-				WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location IN (".$locationIdString.")
+				WHERE EUT.status=1 AND EUT.business_opp!=1 AND CP.client_location IN (".$locationIdString.") 
+				AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 				ORDER BY EUT.created_at DESC 
 				LIMIT $start, $limit ";
 		}
@@ -1778,6 +1945,7 @@ function getAllPosts()
 				LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 				LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 				WHERE EUT.status=1 AND EUT.business_opp!=1 
+				AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 				ORDER BY EUT.created_at DESC 
 				LIMIT $start, $limit ";
 		}
@@ -1791,6 +1959,7 @@ function getAllPosts()
 			LEFT JOIN client_profile AS CP ON CP.clientid=EL.clientid 
 			LEFT JOIN location_info AS LI ON LI.id=CP.client_location
 			WHERE EUT.status=1 AND EUT.business_opp!=1 
+			AND EUT.post_id NOT IN (".$hidePostsString.") AND EUT.posted_by NOT IN (".$hidePeoplePostsString.")
 			ORDER BY EUT.created_at DESC 
 			LIMIT $start, $limit ";
 	}

@@ -1,26 +1,36 @@
 <div>
 	<div id="newsFeed">
-		<div class="location-filters clearfix">
-			<div class="col-md-6">
-				<label>Select by Country
-					<div class="select-style">
-						<select ng-model="selectedCountry" ng-change="vm.fetchCenters(selectedCountry)">
-							<option value="" selected>All Countries</option>
-							<option ng-repeat="country in vm.countries" value="{{country.country_code}}">{{country.country}}</option>
-						</select>
-					</div>
-				</label>
+		<div class="location-filters clearfix" ng-init="showFilters=true">
+			<div>
+				<label class="control-label">
+	          <a href="" ng-show="!showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-caret-down"></i></a>
+	          <a href="" ng-show="showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-caret-up"></i></a>
+	          <a href="" ng-click="showFilters=!showFilters">Show/Hide</a>
+	         </label>
 			</div>
-			<div class="col-md-6">
-				<label>Select by Center
-					<div class="select-style">
-						<select ng-model="selectedCenter"  ng-change="vm.fetchFeedsforCenter(selectedCenter)">
-							<option value="" selected >All Centers</option>
-							<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
-						</select>
-					</div>
-				</label>
+			<div ng-show="showFilters">
+				<div class="col-md-6">
+					<label>Select by Country
+						<div class="select-style">
+							<select ng-model="selectedCountry" ng-change="vm.fetchCenters(selectedCountry)">
+								<option value="" selected>All Countries</option>
+								<option ng-repeat="country in vm.countries" value="{{country.country_code}}">{{country.country}}</option>
+							</select>
+						</div>
+					</label>
+				</div>
+				<div class="col-md-6">
+					<label>Select by Center
+						<div class="select-style">
+							<select ng-model="selectedCenter"  ng-change="vm.fetchFeedsforCenter(selectedCenter)">
+								<option value="" selected >All Centers</option>
+								<option ng-repeat="center in vm.centers" value="{{center.id}}">{{center.location_desc}}</option>
+							</select>
+						</div>
+					</label>
+				</div>	
 			</div>
+
 		</div>
 		<div class="post-textarea" ng-class="{ 'has-error': vm.currentPost.content.$dirty && vm.currentPost.content.$error.required, 'hidden': vm.istextareahidden }">
 			<text-angular
@@ -74,6 +84,17 @@
 									<li><a ng-click="vm.openPostToEdit($index)">Edit</a></li>
 									<!--<li><a ng-click="vm.editPostImage(post.post_id, post.image)">Edit Post Image</a></li>-->
 									<li><a ng-click="vm.deletePost(vm.posts,$index,post.post_id)">Delete</a></li>
+								</ul>
+							</span>
+						</div>
+						<div class="pull-right"  ng-if="vm.currentPost.post_author.id != post.post_author.id">
+							<span uib-dropdown on-toggle="toggled(open)">
+								<a href id="simple-dropdown" uib-dropdown-toggle>
+									<i class="fa fa-caret-down"></i>
+								</a>
+								<ul class="dropdown-menu" uib-dropdown-menu>
+									<li><a ng-click="vm.hideThisPost(vm.posts,$index,post.post_id)">Hide This Post</a></li>
+									<li><a ng-click="vm.hideAllPostsOfThisUser(vm.posts,$index,post.post_id)">Hide All Posts</a></li>
 								</ul>
 							</span>
 						</div>

@@ -4,6 +4,7 @@
 	require_once ('../api/constants.php');
 	require_once ('../api/userDefinedFunctions.php'); 
 	require_once ('../api/services/userLoginServices.php'); 
+	require_once ('../api/services/userIDBasedServices.php'); 
 	require_once ('../api/externalLibraries/Mobile_Detect.php'); 
 	
 	$authToken	=	validate_input($_GET['auth']);	
@@ -49,14 +50,53 @@
 			$newToken	= generate_login_token();
 			
 			set_client_session_token($newToken,$entreprenityId);
-			//Set local storage
-			//$loginTokenJSON= json_encode($newToken);
-			echo '<script>';
-			echo'localStorage.setItem("entrp_token", JSON.stringify("'.$newToken.'"));';
-			echo 'localStorage.isLogged = "true";';
-			echo '</script>';
-			echo("<script>window.location = '".$basePath."';</script>");
-			//header("Location: $basePath"); 
+			
+			$data= fetch_info_from_entrp_login($entreprenityId);
+			
+			if($data['success'] == 'false')
+			{
+				header("Location: $basePath");
+			}
+			else
+			{
+				session_start();
+				$_SESSION['id'] 				= $data['clientid'];
+				$_SESSION['firstname'] 		= $data['firstname'];
+				$_SESSION['lastname'] 		= $data['lastname'];
+				$_SESSION['login_token'] 	= $newToken;
+				$_SESSION['username'] 	   = $data['username']; //added by arshad
+				
+				//Log the action
+				$checkInDateTime= date('Y-m-d H:i:s');
+				$user_browser=user_browser();
+				$user_os=user_os();
+				$user_ip=getRealIpAddr();
+							
+				if ($detect->isMobile())
+				{
+					// mobile content
+					$device='Mobile';
+				}   				
+				else
+				{
+					// other content for desktops
+					$device='Desktop';
+				}
+		   				
+				$log_this = 'User with EN ID '.$entreprenityId.' and voffice ID '.$vofficeId.' redirected to EN on '.$checkInDateTime.' from '.$user_ip.' using '.$device.' through browser '.$user_browser.' ,OS: '.$user_os;
+		 		$myfile = file_put_contents('usersRedirectedLogins.txt', $log_this.PHP_EOL , FILE_APPEND);	
+				
+				
+				//Set local storage
+				//$loginTokenJSON= json_encode($newToken);
+				echo '<script>';
+				echo'localStorage.setItem("entrp_token", JSON.stringify("'.$newToken.'"));';
+				echo 'localStorage.isLogged = "true";';
+				echo '</script>';
+				echo("<script>window.location = '".$basePath."';</script>");
+				//header("Location: $basePath"); 			
+			}
+
 			
 		}
 		else

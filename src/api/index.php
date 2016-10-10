@@ -971,6 +971,28 @@ Flight::route('/fetchQRCodeUpdatedTime', function()
 	echo json_encode($returnarray);
 });
 
+//75 Route to hide a particular post from a user's timelines
+//September 27,2016 (timelineServices.php)
+Flight::route('/hideThisPost', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=hideThisPost();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+//75 Route to hide one user's all posts from the timelines
+//September 27,2016 (timelineServices.php)
+Flight::route('/hideAllPostsOfThisUser', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=hideAllPostsOfThisUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*

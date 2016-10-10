@@ -121,6 +121,24 @@
 				},
 				getLocations:function() {
 					return $http.get(baseUrl + 'getLocations');
+				},
+				hideThisPost: function(postID,timelineId,ucUsername) 
+				{
+					var dataPost = {postID: postID,timeLine: timelineId,username: ucUsername};														
+					return $http({ method: 'post',
+										url: baseUrl+'hideThisPost',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
+				},
+				hideAllPostsOfThisUser: function(postID,timelineId,ucUsername) 
+				{
+					var dataPost = {postID: postID,timeLine: timelineId,username: ucUsername};														
+					return $http({ method: 'post',
+										url: baseUrl+'hideAllPostsOfThisUser',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 				
 			};
@@ -637,6 +655,38 @@
 					if(postID)
 					{
 						newsFeedService.deleteTimlinePost(postID,vm.poststype,vm.username).success(function(data) 
+						{
+							if(data.response=='success')
+							{
+								postsArray.splice(postIndex, 1);
+							}							
+							//vm.posts = data;
+						});
+					}	
+				};
+				
+				//Hide a time-line post
+				vm.hideThisPost = function (postsArray, postIndex,postID) 
+				{				
+					if(postID)
+					{
+						newsFeedService.hideThisPost(postID,vm.poststype,vm.username).success(function(data) 
+						{
+							if(data.response=='success')
+							{
+								postsArray.splice(postIndex, 1);
+							}							
+							//vm.posts = data;
+						});
+					}	
+				};
+				
+				//Hide All posts of this user
+				vm.hideAllPostsOfThisUser = function (postsArray, postIndex,postID) 
+				{				
+					if(postID)
+					{
+						newsFeedService.hideAllPostsOfThisUser(postID,vm.poststype,vm.username).success(function(data) 
 						{
 							if(data.response=='success')
 							{
