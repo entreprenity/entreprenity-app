@@ -1,12 +1,9 @@
 <div>
 	<div id="newsFeed">
 		<div class="location-filters clearfix" ng-init="showFilters=true">
-			<div>
-				<label class="control-label">
-	          <a href="" ng-show="!showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-caret-down"></i></a>
-	          <a href="" ng-show="showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-caret-up"></i></a>
-	          <a href="" ng-click="showFilters=!showFilters">Show/Hide</a>
-	         </label>
+			<div class="col-md-12" style="text-align: right">
+				<a href="" ng-show="!showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-ellipsis-h"></i></a>
+				<a href="" ng-show="showFilters" ng-click="showFilters=!showFilters"><i class="fa fa-ellipsis-h"></i></a>
 			</div>
 			<div ng-show="showFilters">
 				<div class="col-md-6">
