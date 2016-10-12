@@ -32,6 +32,12 @@ If(isset($_GET["location"]))
 				$_SESSION['locName'] 		= $locationDesc;
 			}
 			$show=1;
+			
+			//fetch upcoming events 
+			$upcomingEvents = array();
+			$upcomingEvents= getUpcomingEventsForCenter($id);
+			
+			//print_r($upcomingEvents);
 	   } 
 	   else 
 	   {

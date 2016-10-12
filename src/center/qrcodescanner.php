@@ -26,45 +26,33 @@
                     <h3 style="border-bottom: 1px solid #f29b13; max-width: 200px; margin: 10px auto; padding: 5px;">Upcoming Events</h3>
                     <div>
                         <ul class="list-group">
+                        	<?php
+                        	if(!empty($upcomingEvents))
+                        	{
+                        	 for($i=0;$i<count($upcomingEvents);$i++)
+                        	 {
+                        	?>
                             <li class="list-group-item">
                                 <div class="content-left">
                                     <div class="date">
-                                        <h1>15</h1>
-                                        <p>OCT</p>
+                                        <h1><?php echo $upcomingEvents[$i]['eventDFormatted']; ?></h1>
+                                        <p><?php echo $upcomingEvents[$i]['monthFormatted']; ?></p>
                                     </div>
                                 </div>
                                 <div class="content-right">
-                                    <h1>Sweating is Good!</h1>
-                                    <h3>Sat, October 15, 8am - 10am</h3>
-                                    <p>CrossFit is constantly varied functional movements performed at high intensity. All CrossFit workouts are based on functional movements, and these movements reflect the best aspects of gymnastics, weightlifting, running, rowing and more.</p>
+                                    <h1><?php echo $upcomingEvents[$i]['eventName']; ?></h1>
+                                    <h3><?php echo $upcomingEvents[$i]['eventDayFormatted']; ?>, <?php echo $upcomingEvents[$i]['eventStartFormatted']; ?> - <?php echo $upcomingEvents[$i]['eventEndFormatted']; ?></h3>
+                                    <p><?php echo $upcomingEvents[$i]['description']; ?></p>
                                 </div>
                             </li>
-                            <li class="list-group-item">
-                                <div class="content-left">
-                                    <div class="date">
-                                        <h1>01</h1>
-                                        <p>NOV</p>
-                                    </div>
-                                </div>
-                                <div class="content-right">
-                                    <h1>Sweating is Good!</h1>
-                                    <h3>Sat, October 15, 8am - 10am</h3>
-                                    <p>CrossFit is constantly varied functional movements performed at high intensity. All CrossFit workouts are based on functional movements, and these movements reflect the best aspects of gymnastics, weightlifting, running, rowing and more.</p>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="content-left">
-                                    <div class="date">
-                                        <h1>28</h1>
-                                        <p>NOV</p>
-                                    </div>
-                                </div>
-                                <div class="content-right">
-                                    <h1>Sweating is Good!</h1>
-                                    <h3>Sat, October 15, 8am - 10am</h3>
-                                    <p>CrossFit is constantly varied functional movements performed at high intensity. All CrossFit workouts are based on functional movements, and these movements reflect the best aspects of gymnastics, weightlifting, running, rowing and more.</p>
-                                </div>
-                            </li>
+									<?php
+									  }
+									}
+									else
+									{
+										echo 'No Upcoming Events';
+									}
+									?>
                         </ul>
                     </div>
                 </div>

@@ -1,5 +1,65 @@
 <?php
 
+//Upcoming Event List
+function getUpcomingEventsForCenter($location)
+{
+	//SELECT * FROM entrp_events where clientid IN (SELECT clientid FROM client_profile where client_location=14)
+	$data = array();		
+	$today = date('Y-m-d'); 
+	$qry="SELECT * FROM entrp_events 
+			WHERE clientid IN (SELECT clientid FROM client_profile WHERE client_location=".$location.") AND status=1 and event_date>='".$today."' ";
+	$res = getData($qry);
+   $count_res = mysqli_num_rows($res);
+	if($count_res > 0)
+   {
+   	$i=0;
+   	while($row = mysqli_fetch_array($res))
+      {
+      	$data[$i]['id'] 				= $row['id'];
+      	$data[$i]['clientid'] 		= $row['clientid'];
+      	$data[$i]['eventName'] 		= $row['eventName'];
+      	$data[$i]['eventTagId'] 	= $row['eventTagId'];
+      	$data[$i]['category'] 		= $row['category'];
+      	$data[$i]['address']			= $row['address'];
+			$data[$i]['description']	= $row['description'];			      	
+			
+			if($row['poster']!='')
+			{
+				$data[$i]['poster']		=	$row['poster'];
+			}
+			else
+			{
+				$data[$i]['poster']		=	'assets/img/events/events-default.jpg';
+			}	      	
+			
+			$data[$i]['city'] 		  	= $row['city'];	
+			$data[$i]['eventDate'] 		= $row['event_date'];	
+			$data[$i]['eventTime'] 		= $row['event_time'];	
+			$data[$i]['eventDateTime'] = $row['event_date_time'];	
+			$data[$i]['startTime'] 		= $row['start_time'];	
+			$data[$i]['endTime'] 		= $row['end_time'];				
+
+			$eventDateTimestamp = strtotime($row['event_date']);
+			$eventDayFormatted = date('l, F d', $eventDateTimestamp);  //Saturday, January 30
+			$monthFormatted = date('F', $eventDateTimestamp);  //January
+			$eventDFormatted = date('d', $eventDateTimestamp);  //30
+			
+			$data[$i]['eventDayFormatted'] 		= $eventDayFormatted;	
+			$data[$i]['monthFormatted'] 		  	= $monthFormatted;	
+			$data[$i]['eventDFormatted'] 		  	= $eventDFormatted;	
+			
+			$eventStartFormatted			= date('h:i a', strtotime($row['start_time']));
+			$eventEndFormatted			= date('h:i a', strtotime($row['end_time']));
+			
+			$data[$i]['eventStartFormatted'] 	= $eventStartFormatted;	
+			$data[$i]['eventEndFormatted'] 		= $eventEndFormatted;	
+			$i++;
+		}
+   }
+   return $data;
+}
+
+
 //Function to get user's company name
 function getCompanyName($entrpID)
 {
