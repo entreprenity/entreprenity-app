@@ -22,16 +22,23 @@
                 </div>
             </div>
             <div class="col-md-6">
+                <div style="max-width: 400px; margin-top: 150px">
+                    <h2>Position your phone below the camera and align the QR code in the viewport on the left to scan</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <div class="events-container">
                     <h3 style="border-bottom: 1px solid #f29b13; max-width: 200px; margin: 10px auto; padding: 5px;">Upcoming Events</h3>
                     <div>
                         <ul class="list-group">
-                        	<?php
-                        	if(!empty($upcomingEvents))
-                        	{
-                        	 for($i=0;$i<count($upcomingEvents);$i++)
-                        	 {
-                        	?>
+                            <?php
+                            if(!empty($upcomingEvents))
+                            {
+                             for($i=0;$i<count($upcomingEvents);$i++)
+                             {
+                            ?>
                             <li class="list-group-item">
                                 <div class="content-left">
                                     <div class="date">
@@ -45,18 +52,19 @@
                                     <p><?php echo $upcomingEvents[$i]['description']; ?></p>
                                 </div>
                             </li>
-									<?php
-									  }
-									}
-									else
-									{
-										echo 'No Upcoming Events';
-									}
-									?>
+                                    <?php
+                                      }
+                                    }
+                                    else
+                                    {
+                                        echo 'No Upcoming Events';
+                                    }
+                                    ?>
                         </ul>
                     </div>
                 </div>
             </div>
+
         </div>
 
 
