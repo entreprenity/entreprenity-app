@@ -47,9 +47,9 @@
                                     </div>
                                 </div>
                                 <div class="content-right">
-                                    <h1><?php echo $upcomingEvents[$i]['eventName']; ?></h1>
-                                    <h3><?php echo $upcomingEvents[$i]['eventDayFormatted']; ?>, <?php echo $upcomingEvents[$i]['eventStartFormatted']; ?> - <?php echo $upcomingEvents[$i]['eventEndFormatted']; ?></h3>
-                                    <p><?php echo $upcomingEvents[$i]['description']; ?></p>
+                                    <h1><strong><?php echo $upcomingEvents[$i]['eventName']; ?></strong></h1>
+                                    <h3><strong><?php echo $upcomingEvents[$i]['eventDayFormatted']; ?>, <?php echo $upcomingEvents[$i]['eventStartFormatted']; ?> - <?php echo $upcomingEvents[$i]['eventEndFormatted']; ?></strong></h3>
+                                    <p><strong><?php echo $upcomingEvents[$i]['description']; ?></strong></p>
                                 </div>
                             </li>
                                     <?php

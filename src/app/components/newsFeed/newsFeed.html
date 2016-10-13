@@ -91,7 +91,7 @@
 								</a>
 								<ul class="dropdown-menu" uib-dropdown-menu>
 									<li><a ng-click="vm.hideThisPost(vm.posts,$index,post.post_id)">Hide This Post</a></li>
-									<li><a ng-click="vm.hideAllPostsOfThisUser(vm.posts,$index,post.post_id)">Hide All Posts</a></li>
+									<li><a ng-click="vm.hideAllPostsOfThisUser(vm.posts,$index,post.post_id)">Hide All From {{post.post_author.firstName + ' ' + post.post_author.lastName}}</a></li>
 								</ul>
 							</span>
 						</div>
