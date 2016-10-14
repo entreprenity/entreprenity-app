@@ -1,6 +1,57 @@
 <?php
 
 
+
+//Function to mark all notifications as read for a user
+//October 14,2016
+function markThisNotificationAsRead()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id!='')
+	{
+		date_default_timezone_set('UTC');
+		$readAt=date('Y-m-d H:i:s');
+	
+		//UPDATE entrp_user_notifications SET read_unread=1, read_at='2016-11-31 12:12:12' WHERE notify_to=3 AND read_unread=0
+		$qry2="UPDATE entrp_user_notifications SET read_unread=1, read_at='".$readAt."' WHERE notify_to=".$my_session_id." AND read_unread=0 ";
+		if(setData($qry2))
+		{
+			$data='success';
+		}
+		else
+		{
+			$data='failure';
+		}
+	}	
+	return $data;
+}
+
+//Function to mark all notifications as read for a user
+//October 14,2016
+function markAllNotificationsAsRead()
+{
+	$data= array();
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	
+	if($my_session_id!='')
+	{
+		date_default_timezone_set('UTC');
+		$readAt=date('Y-m-d H:i:s');
+	
+		//UPDATE entrp_user_notifications SET read_unread=1, read_at='2016-11-31 12:12:12' WHERE notify_to=3 AND read_unread=0
+		$qry2="UPDATE entrp_user_notifications SET read_unread=1, read_at='".$readAt."' WHERE notify_to=".$my_session_id." AND read_unread=0 ";
+		if(setData($qry2))
+		{
+			$data='success';
+		}
+	}	
+	return $data;
+}
+
 //Function to delete a notification from notification table
 //June 07,2016
 function deleteANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$notify_for)

@@ -971,8 +971,8 @@ Flight::route('/fetchQRCodeUpdatedTime', function()
 	echo json_encode($returnarray);
 });
 
-//75 Route to hide a particular post from a user's timelines
-//September 27,2016 (timelineServices.php)
+//76 Route to hide a particular post from a user's timelines
+//October 07,2016 (timelineServices.php)
 Flight::route('/hideThisPost', function()
 {
    enable_cors();
@@ -982,13 +982,25 @@ Flight::route('/hideThisPost', function()
 	echo json_encode($returnarray);
 });
 
-//75 Route to hide one user's all posts from the timelines
-//September 27,2016 (timelineServices.php)
+//77 Route to hide one user's all posts from the timelines
+//October 07,2016 (timelineServices.php)
 Flight::route('/hideAllPostsOfThisUser', function()
 {
    enable_cors();
    services_included();	
 	$returnarray=hideAllPostsOfThisUser();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
+
+//78 Route to mark all notifications as read
+//October 14,2016 (notificationServices.php)
+Flight::route('/markAllNotificationsAsRead', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=markAllNotificationsAsRead();
 	header('Content-type:application/json;charset=utf-8');
 	echo json_encode($returnarray);
 });
@@ -1269,7 +1281,6 @@ function base_url(){
 //August 16,2016: HTML character encoding support
 function fetchCompanyEvents($companyid)
 {
-
 	//the defaults starts
 	global $myStaticVars;
 	extract($myStaticVars);  // make static vars local
