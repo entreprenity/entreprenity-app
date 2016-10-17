@@ -17,6 +17,7 @@ body {
 .scanner-qr-code {
 	text-align: center;
 	color: #ffffff;
+	width: 100% !important;
 }
 
 .scanner-qr-code h1 {

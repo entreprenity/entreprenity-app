@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div style="max-width: 400px; margin-top: 150px">
+                <div style="max-width: 400px; margin: 0 auto; margin-top: 150px">
                     <h2>Position your phone below the camera and align the QR code in the viewport on the left to scan</h2>
                 </div>
             </div>
