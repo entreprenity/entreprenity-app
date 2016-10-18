@@ -17,7 +17,24 @@
 		
 		.controller('CommonController', function($scope, $routeParams, myCommonService, AuthService,AuthService3,$rootScope) {
 				var vm = this;		
-			    //If user is not logged in
+				var common = this;		
+				$scope.commonId=10;
+				var ctrl = this;
+			    var update = function() 
+			    {
+			        myCommonService.getAllUnreadNotifications().success(function(data) {
+					
+						$scope.numOfNotifications = data.totalUnread;// need a service that will store the number of unred notif to this variable
+						});
+			        //$scope.commonId=10;
+			        //console.log($scope.commonId);
+			    };
+			    update();
+			
+			    $scope.$on('$routeChangeSuccess', update);
+			    
+			    
+				//If user is not logged in
 				var token;
 				if (localStorage['entrp_token'])
 				{

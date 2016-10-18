@@ -48,9 +48,47 @@ function markAllNotificationsAsRead()
 		{
 			$data='success';
 		}
+		else
+		{
+			$data='failure';
+		}
 	}	
 	return $data;
 }
+
+
+//Function to read total unread notifications
+//August 18,2016 
+function getAllUnreadNotifications()
+{
+	$data= array();
+	//$data['totalUnread']	=	0;	
+	
+	$session_values=get_user_session();
+	$my_session_id	= $session_values['id'];
+	//if($my_session_id)
+	//{
+		//SELECT COUNT(notify_id) AS totalUnread FROM entrp_user_notifications WHERE notify_to=1 AND read_unread=0
+		$qry="SELECT COUNT(notify_id) AS totalUnread FROM entrp_user_notifications WHERE notify_to=".$my_session_id." AND read_unread=0";
+		$res=getData($qry);
+	   $count_res=mysqli_num_rows($res);
+	   if($count_res>0)
+	   {
+	   	while($row=mysqli_fetch_array($res))
+	   	{
+	   		$data['totalUnread']	=	$row['totalUnread'];
+	   		//$data['totalUnread']	=	$qry;
+	   	}	   
+	   }
+	   else
+	   {
+			$data['totalUnread']	=	0;	   
+	   }
+	//}	
+	return $data;
+}
+
+
 
 //Function to delete a notification from notification table
 //June 07,2016
@@ -77,6 +115,7 @@ function addANotificationForThis($notify_type,$notify_to,$notify_from,$post_id,$
 
 //Function to get a user notification
 //June 06,2016
+//October 18,2016: Removed read_unread condition from where clause
 function getMyNotifications()
 {
 	//the defaults starts
@@ -117,7 +156,7 @@ function getMyNotifications()
 				  LEFT JOIN entrp_login AS EL ON EL.clientid=EUN.notify_from 
 				  LEFT JOIN client_profile AS CP ON EL.clientid=CP.clientid 
 				  LEFT JOIN location_info AS LI ON LI.id=CP.client_location 
-				  WHERE EUN.notify_to=".$clientid." AND EUN.read_unread=0 				  
+				  WHERE EUN.notify_to=".$clientid."  				  
 				  ORDER BY EUN.created_at DESC
 				 ";
 		//$data[$i]['qry']		=	$qry;

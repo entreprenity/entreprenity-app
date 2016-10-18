@@ -48,6 +48,9 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				markAllNotificationsAsRead: function() {
+					return $http.get(baseUrl+ 'markAllNotificationsAsRead');
 				}
 			};
 		})
@@ -115,6 +118,12 @@
 						vm.notifications = data;
 					});	
 				});
+				
+				//To mark all notifications as read
+				notificationsService.markAllNotificationsAsRead().success(function(data) {
+					vm.notifResponse 		= data;	
+				});				
+				
 				
 				//to get basic user information
 				vm.basicInfo = function () {

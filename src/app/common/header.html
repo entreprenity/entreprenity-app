@@ -12,7 +12,7 @@
 		</div>
 
 		<a class="btn button-home" href="#/home">Home</a>
-		<a class="btn button-notif" href="#/notifications" ng-click="vm.readNotifications()"><span class="badge pull-right" style="margin-top: 3px;">{{numOfNotifications}}</span><i class="fa fa-bell fa-lg"></i></a>
+		<a class="btn button-notif" href="#/notifications" ng-click="vm.readNotifications()"><span class="badge pull-right" style="margin-top: 3px;" ng-if="numOfNotifications > 0" >{{numOfNotifications}}</span><i class="fa fa-bell fa-lg"></i></a>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
@@ -27,7 +27,7 @@
 						<!--<li><a href="#/home">Finance</a></li>-->
 						<!--<li><a href="#/home">Refer a Friend</a></li>-->
 						<li role="separator" class="divider"></li>
-						<li><a href="#/notifications" ng-click="readNotifications()"><span class="badge pull-right">{{numOfNotifications}}</span>Notifications </a></li>
+						<li><a href="#/notifications" ng-click="readNotifications()"><span class="badge pull-right" ng-if="numOfNotifications > 0">{{numOfNotifications}}</span>Notifications </a></li>
 						<li><a href="#/resetpassword">Reset Password</a></li>
 						<li><a href="#/settings">Settings</a></li>
 						<li><a href="#/logout">Logout</a></li>
@@ -35,7 +35,7 @@
 					<li><a class="show-in-mobile" href="#/myqrcode" ng-click="navCollapsed = !navCollapsed">My ID</a></li>
 					<li><a class="show-in-mobile" href="#/myprofile" ng-click="navCollapsed = !navCollapsed">My Profile</a></li>
 					<li><a class="show-in-mobile" href="#/mycompany" ng-click="navCollapsed = !navCollapsed">Company Profile</a></li>
-					<li><a class="show-in-mobile" href="#/notifications" ng-click="readNotifications();navCollapsed = !navCollapsed"><span class="badge pull-right">{{numOfNotifications}}</span>Notifications </a></li>
+					<li><a class="show-in-mobile" href="#/notifications" ng-click="readNotifications();navCollapsed = !navCollapsed"><span class="badge pull-right" ng-if="numOfNotifications > 0">{{numOfNotifications}}</span>Notifications </a></li>
 					<li><a class="show-in-mobile" href="#/resetpassword" ng-click="navCollapsed = !navCollapsed">Reset Password</a></li>
 					<li><a class="show-in-mobile" href="#/settings" ng-click="navCollapsed = !navCollapsed">Settings</a></li>
 					<li><a class="show-in-mobile" href="#/logout" ng-click="navCollapsed = !navCollapsed">Logout</a></li>
