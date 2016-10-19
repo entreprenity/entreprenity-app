@@ -6,6 +6,7 @@ require_once 'constants.php';
 require 'flight/Flight.php';
 //require_once 'externalLibraries/qrcode/qrlib.php';
 require_once 'externalLibraries/qrcode.php';
+require_once ('externalLibraries/Mobile_Detect.php'); 
 
 //01 Route to events directory
 // April 13,2016
@@ -1042,6 +1043,34 @@ function services_included()
 	require_once 'services/externalServices.php'; 
 	
 	
+}
+
+//Function to log action to text file
+//October 18,2016
+function logThisToTxtFile($logENID,$action)
+{
+	$detect = new Mobile_Detect();
+	
+	$user_browser=user_browser();
+	$user_os=user_os();
+	$user_ip=getRealIpAddr();
+				
+	if ($detect->isMobile())
+	{
+		// mobile content
+		$device='Mobile';
+	}   				
+	else
+	{
+		// other content for desktops
+		$device='Desktop';
+	}
+	date_default_timezone_set('UTC');	
+	$logDateTime= date('Y-m-d H:i:s');		
+	$log_this = 'EN client '.$logENID.': '.$action.' on UTC '.$logDateTime.' from '.$user_ip.' using '.$device.' through browser '.$user_browser.' ,OS: '.$user_os;
+	$filename= 'ENLog_'.date('MY').'.txt';
+ 	$myfile = file_put_contents($filename, $log_this.PHP_EOL , FILE_APPEND);	
+
 }
 
 //Function to fetch last updated time of QR Code

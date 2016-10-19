@@ -16,7 +16,7 @@
 									<small class="text-muted">{{vm.npost.post_author.location}}</small>
 								</div>
 								<div class="clearfix"></div>
-								<div class="post-content">{{vm.npost.content}}</div>
+								<div class="post-content" ng-bind-html="vm.npost.content"></div>
 								<div  class="post-content image"><img ng-src="{{vm.npost.image}}" style="max-width: 300px; width: 100%; height: auto;"/></div>
 								<div class="post-content category-tags" ng-if="vm.npost.bussOpp == 1">
 									<ul>

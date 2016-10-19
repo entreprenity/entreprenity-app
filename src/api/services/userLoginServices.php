@@ -412,61 +412,202 @@ function generateRandomAlphaNumeric($length = 4)
 	return $randomString;
 }
 
+
+//Function to validate client using voff clientid and entreprenity password
+//October 18,2016
+function checkLoginWithVoffIDEN($vofClientId,$password)
+{
+	$qry="SELECT * FROM entrp_login where vof_clientid=".$vofClientId." AND password='".md5($password)."' AND status=1 ";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+//Function to validate client using client_info clientid and password
+//October 18,2016
+function checkLoginWithVoffIDCI($clientid,$password)
+{
+	$qry="SELECT * FROM client_info where clientid=".$clientid." AND password='".md5($password)."' AND status=1 ";
+	$res=getData($qry);
+	$count_res=mysqli_num_rows($res);
+	if($count_res>0)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 //Function to login
 //April 15, 2016
 //September 15,2016: Added last login date time marking
+//October 18,2016: Login using voff clientid and EN password
+//October 18,2016: Login using voff clientid and voff password
 function login()
 {
 	$data= array();
 	$username=validate_input($_POST['username']);
 	$password=validate_input($_POST['password']);
-
-	$qry="SELECT * FROM entrp_login where email='".$username."' AND password='".md5($password)."' ";
-	$res=getData($qry);
-	$count_res=mysqli_num_rows($res);
-	if($count_res>0)
+	
+	//Check whether username is voff clientid	
+	if(ctype_digit($username))
 	{
-		while($row=mysqli_fetch_array($res))
+		//If yes, check for it's authenticity
+		//Pair: voff clientid and pass and check in entrp_login
+		$checkTokenEN=checkLoginWithVoffIDEN($username,$password);
+		if($checkTokenEN==1)
 		{
-			$data['firstname']	=	$row['firstname'];
-			$data['lastname']		=	$row['lastname'];
-			$data['id']				=	$row['clientid'];
-			$data['username']		=	$row['username'];
-			$data['success'] 		= true;
-			$data['msg'] 			= 'Valid User';
-
-			//generate a client token
-			$client_session_token=generate_login_token();
-
-            
-            // server should keep session data for AT LEAST 1 hour
-            //ini_set('session.gc_maxlifetime', 36000);
-
-            // each client should remember their session id for EXACTLY 1 hour
-            //session_set_cookie_params(36000);
-            
-			//set session
-			session_start();
-			$_SESSION['id'] 				= $data['id'];
-			$_SESSION['firstname'] 		= $data['firstname'];
-			$_SESSION['lastname'] 		= $data['lastname'];
-			$_SESSION['login_token'] 	= $client_session_token;
-			$_SESSION['username'] 	   = $data['username']; //added by arshad
-
-			set_client_session_token($client_session_token,$row['clientid']);
-			update_lastlogin_datetime($row['clientid']);
-			$data['login_token'] 			= $client_session_token;
-
+			$qry="SELECT * FROM entrp_login where vof_clientid=".$username." AND password='".md5($password)."' AND status=1";
+			$res=getData($qry);
+			$count_res=mysqli_num_rows($res);
+			if($count_res>0)
+			{
+				while($row=mysqli_fetch_array($res))
+				{
+					$data['firstname']	=	$row['firstname'];
+					$data['lastname']		=	$row['lastname'];
+					$data['id']				=	$row['clientid'];
+					$data['username']		=	$row['username'];
+					$data['success'] 		= true;
+					$data['msg'] 			= 'Valid User';
+		
+					//generate a client token
+					$client_session_token=generate_login_token();
+		            
+					//set session
+					session_start();
+					$_SESSION['id'] 				= $data['id'];
+					$_SESSION['firstname'] 		= $data['firstname'];
+					$_SESSION['lastname'] 		= $data['lastname'];
+					$_SESSION['login_token'] 	= $client_session_token;
+					$_SESSION['username'] 	   = $data['username']; //added by arshad
+		
+					set_client_session_token($client_session_token,$row['clientid']);
+					update_lastlogin_datetime($row['clientid']);
+					$data['login_token'] 			= $client_session_token;
+					
+					//Log the action
+					$logENID = $data['id'];
+					$action  = 'login success using voff clientid and EN pass ';
+					logThisToTxtFile($logENID,$action);
+				}
+			}
+			else
+			{
+				$data['success'] = false;
+				$data['msg'] = 'Please check your credentials once again';
+			}		
+		
+		}
+		else
+		{
+			// Pair: voff clientid and pass and check in client_info
+			$checkTokenCI=checkLoginWithVoffIDCI($username,$password);
+			if($checkTokenCI==1)
+			{
+				$qry="SELECT * FROM entrp_login where vof_clientid=".$username." AND voff_staff=1 AND status=1";
+				$res=getData($qry);
+				$count_res=mysqli_num_rows($res);
+				if($count_res>0)
+				{
+					while($row=mysqli_fetch_array($res))
+					{
+						$data['firstname']	=	$row['firstname'];
+						$data['lastname']		=	$row['lastname'];
+						$data['id']				=	$row['clientid'];
+						$data['username']		=	$row['username'];
+						$data['success'] 		= true;
+						$data['msg'] 			= 'Valid User';
+			
+						//generate a client token
+						$client_session_token=generate_login_token();
+			            
+						//set session
+						session_start();
+						$_SESSION['id'] 				= $data['id'];
+						$_SESSION['firstname'] 		= $data['firstname'];
+						$_SESSION['lastname'] 		= $data['lastname'];
+						$_SESSION['login_token'] 	= $client_session_token;
+						$_SESSION['username'] 	   = $data['username']; //added by arshad
+			
+						set_client_session_token($client_session_token,$row['clientid']);
+						update_lastlogin_datetime($row['clientid']);
+						$data['login_token'] 			= $client_session_token;
+						
+						//Log the action
+						$logENID = $data['id'];
+						$action  = 'login success using voff clientid and pass ';
+						logThisToTxtFile($logENID,$action);
+					}
+				}
+				else
+				{
+					$data['success'] = false;
+					$data['msg'] = 'Please check your credentials once again';
+				}	
+			}
+			else
+			{
+				$data['success'] = false;
+				$data['msg'] = 'Please check your credentials once again';
+			}
 		}
 	}
 	else
 	{
-		$data['success'] = false;
-		$data['msg'] = 'Please check your credentials once again';
+		$qry="SELECT * FROM entrp_login where email='".$username."' AND password='".md5($password)."' AND status=1 ";
+		$res=getData($qry);
+		$count_res=mysqli_num_rows($res);
+		if($count_res>0)
+		{
+			while($row=mysqli_fetch_array($res))
+			{
+				$data['firstname']	=	$row['firstname'];
+				$data['lastname']		=	$row['lastname'];
+				$data['id']				=	$row['clientid'];
+				$data['username']		=	$row['username'];
+				$data['success'] 		= true;
+				$data['msg'] 			= 'Valid User';
+	
+				//generate a client token
+				$client_session_token=generate_login_token();
+	            
+				//set session
+				session_start();
+				$_SESSION['id'] 				= $data['id'];
+				$_SESSION['firstname'] 		= $data['firstname'];
+				$_SESSION['lastname'] 		= $data['lastname'];
+				$_SESSION['login_token'] 	= $client_session_token;
+				$_SESSION['username'] 	   = $data['username']; //added by arshad
+	
+				set_client_session_token($client_session_token,$row['clientid']);
+				update_lastlogin_datetime($row['clientid']);
+				$data['login_token'] 			= $client_session_token;
+				
+				//Log the action
+				$logENID = $data['id'];
+				$action  = 'login success using EN email and pass ';
+				logThisToTxtFile($logENID,$action);
+			}
+		}
+		else
+		{
+			$data['success'] = false;
+			$data['msg'] = 'Please check your credentials once again';
+		}		
 	}
-
+	
+	
 	return $data;
-
 }
 
 //Function to set a login token
@@ -492,8 +633,6 @@ function generate_login_token()
 	{
 		return $token;
 	}	
-
-
 }
 
 

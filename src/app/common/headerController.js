@@ -16,10 +16,8 @@
 		})
 		
 		.controller('CommonController', function($scope, $routeParams, myCommonService, AuthService,AuthService3,$rootScope) {
-				var vm = this;		
-				var common = this;		
-				$scope.commonId=10;
-				var ctrl = this;
+				var vm = this;			
+
 			    var update = function() 
 			    {
 			        myCommonService.getAllUnreadNotifications().success(function(data) {
@@ -31,9 +29,8 @@
 			    };
 			    update();
 			
-			    $scope.$on('$routeChangeSuccess', update);
-			    
-			    
+			    $scope.$on('$routeChangeSuccess', update);	
+
 				//If user is not logged in
 				var token;
 				if (localStorage['entrp_token'])
@@ -62,6 +59,7 @@
 						$scope.userName 			= data.userName;
 						$scope.companyUserName 	= data.companyUserName;
 					});
+
 				}
 				
 				
