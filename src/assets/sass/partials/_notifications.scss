@@ -18,6 +18,10 @@
 			border-bottom: 1px solid $primary-divider-color;
 			margin: 0;
 			padding: 10px 15px;
+			background-color: $secondary-bg-color;
+			&.isRead {
+				background-color: #ffffff;
+			}
 		}
 	}
 }
