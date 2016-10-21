@@ -186,7 +186,7 @@ function getMyNotifications()
 				$data[$i]['notif_author']["location"]		=	$row['location_desc'];
 				$data[$i]['post_id']								=	$row['post_id'];
 				$data[$i]['created_at']							=	$row['created_at'];
-				$data[$i]['readStatus']							=	$row['read_unread'];
+				$data[$i]['isRead']								=	$row['read_unread'];
 				
 				if($data[$i]['notif_type']=='attend')
 				{
