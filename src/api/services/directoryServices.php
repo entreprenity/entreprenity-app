@@ -173,7 +173,7 @@ function getMembers()
 	      LEFT JOIN client_profile AS CP ON CP.clientid=CI.clientid
 	      LEFT JOIN location_info as LI ON LI.id=CP.client_location
 	      WHERE CI.clientid!=".$my_session_id."
-	      ORDER BY CP.avatar DESC
+	      ORDER BY if(CP.avatar = '' or CP.avatar is null,1,0), CI.clientid
 	      LIMIT  $start, $limit	      
 	      ";
 	$res=getData($qry);
@@ -315,7 +315,7 @@ function getCompanies()
 	$qry="SELECT  CP.id,CP.clientid,CP.company_name,CP.description,CP.avatar,CP.company_username,LI.location_desc AS city 
 			FROM company_profiles AS CP
 			LEFT JOIN location_info as LI ON LI.id=CP.client_location 
-			ORDER BY CP.avatar  DESC
+			ORDER BY if(CP.avatar = '' or CP.avatar is null,1,0), CP.company_username
 			LIMIT $start, $limit";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);

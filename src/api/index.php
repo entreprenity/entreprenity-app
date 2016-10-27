@@ -1006,6 +1006,17 @@ Flight::route('/markAllNotificationsAsRead', function()
 	echo json_encode($returnarray);
 });
 
+//78 Route to mark all notifications as read
+//October 27,2016 (searchServices.php)
+Flight::route('/searchFor', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=searchResultsFor();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 //Route to test timeline posts
 //November 31,2016
 /*
@@ -1028,6 +1039,7 @@ Flight::start();
 function services_included()
 {
 	
+	require_once 'services/searchServices.php'; 
 	require_once 'services/myCompanyProfileServices.php'; 
 	require_once 'services/readOnlyServices.php'; 
 	require_once 'services/userLoginServices.php'; 

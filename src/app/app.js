@@ -19,7 +19,7 @@
 	  });
 	  return deferred.promise;
 	};	
-	
+
 	var countAllUnreads = function($location, $q, AuthService3) 
 	{
 		var deferred = $q.defer();
@@ -32,7 +32,6 @@
       });
       return deferred.promise;
 	}
-	
 	
 	angular.module('entreprenityApp', [
 		'ngRoute',
@@ -115,15 +114,13 @@
 	.factory('AuthService3', ["$http", "$location", function($http, $location){
 	   //var vm = this;
 	   var baseUrl = 'api/';
+	   
       var fetchUnreadNotifications = function()
  	   {
-        
-        return	$http.post(baseUrl + 'getAllUnreadNotifications');	     
-        
-                
+        return	$http.post(baseUrl + 'getAllUnreadNotifications');	             
       }    
-	    
 		return {fetchUnreadNotifications: fetchUnreadNotifications} ; 
+
 	}])
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider

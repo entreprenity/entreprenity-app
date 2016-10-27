@@ -116,14 +116,13 @@
 					
 					notificationsService.getNotifications(vm.userName).success(function(data) {
 						vm.notifications = data;
+						
+						//To mark all notifications as read
+						notificationsService.markAllNotificationsAsRead().success(function(data) {
+							vm.notifResponse 		= data;	
+						});
 					});	
 				});
-				
-				//To mark all notifications as read
-				notificationsService.markAllNotificationsAsRead().success(function(data) {
-					vm.notifResponse 		= data;	
-				});				
-				
 				
 				//to get basic user information
 				vm.basicInfo = function () {
