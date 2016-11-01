@@ -78,7 +78,7 @@
 								<ul ng-hide="vm.editState">
 									<li ng-repeat="skill in vm.member.skills"><a href="" class="tags-item">{{skill.text}}</a></li>
 								</ul>
-								<tags-input class="bootstrap" ng-model="vm.member.skills" placeholder="Add a skill" replace-spaces-with-dashes="false" ng-show="vm.editState"></tags-input>
+								<tags-input class="bootstrap" ng-model="vm.member.skills" placeholder="Add a skill: eg. PHP" replace-spaces-with-dashes="false" ng-show="vm.editState"></tags-input>
 							</div>
 						</div>
 						<div class="interests">
@@ -87,7 +87,7 @@
 								<ul ng-hide="vm.editState">
 									<li ng-repeat="interest in vm.member.interests"><a href="" class="tags-item">{{interest.text}}</a></li>
 								</ul>
-								<tags-input class="bootstrap" ng-model="vm.member.interests" placeholder="Add an interest" replace-spaces-with-dashes="false" ng-show="vm.editState"></tags-input>
+								<tags-input class="bootstrap" ng-model="vm.member.interests" placeholder="Add an interest: eg. Photography" replace-spaces-with-dashes="false" ng-show="vm.editState"></tags-input>
 							</div>
 						</div>
 					</div>

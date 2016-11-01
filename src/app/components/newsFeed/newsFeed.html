@@ -173,7 +173,7 @@
 									<a ng-click="vm.unLikeComment(comment.commentId)" ng-show="comment.isLiked">Liked</a>
 								</div>
 								<div class="clearfix"></div>
-								<div class="comment-content">{{comment.content}}</div>
+								<div class="comment-content">{{comment.content}}</div><button ng-click="vm.deleteComment(comment.commentId)">&times;</button>
 							</li>
 						</ul>
 

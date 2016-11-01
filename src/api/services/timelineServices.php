@@ -2566,6 +2566,47 @@ function postThisComment()
 	return $data;
 }
 
+//Function to delete a comment for a timeline post
+//October 31, 2016
+//Jerry
+function deleteThisComment()
+{
+	$data = array();
+	$session_values = get_user_session();
+	$my_session_id	= $session_values['id'];
+	if($my_session_id)
+	{
+		$requestData = json_decode(file_get_contents("php://input"));
+		
+		$commentId = $requestData->commentId;
+		//Check the comment owner is user itself
+		$qry = "SELECT commented_by FROM entrp_user_timeline_post_comments  
+			     WHERE post_comments_id=".$commentId." and commented_by=".$my_session_id."  ";
+		$res = getData($qry);
+	   $count_res = mysqli_num_rows($res);
+		if($count_res > 0)
+		{
+			
+				$qry = "DELETE FROM entrp_user_timeline_post_comments  
+					     WHERE post_comments_id=".$commentId."";
+				$res = setData($qry);
+			   //$count_res = mysqli_affected_rows($res);
+				if($res)
+				{
+					$data['response'] = 'success';
+				}else{
+					$data['response'] = 'failed';
+				}
+		}else{
+				$data['response'] = 'failed';
+		}
+	
+	}
+	
+	
+	return $data;
+}
+
 
 //Function to fetch users who liked this comment
 //May 19,2016

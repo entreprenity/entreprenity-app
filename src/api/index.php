@@ -513,6 +513,17 @@ Flight::route('/postThisComment', function()
 	echo json_encode($returnarray);
 });
 
+// Route to delete a comment for a timeline post
+//May 20,2016 (timelineServices.php)
+Flight::route('/deleteThisComment', function()
+{
+   enable_cors();
+   services_included();	
+	$returnarray=deleteThisComment();
+	header('Content-type:application/json;charset=utf-8');
+	echo json_encode($returnarray);
+});
+
 
 //41 Route to like a timeline post 
 //May 20,2016 (timelineServices.php)
@@ -1232,7 +1243,10 @@ function getUserQRCode()
 	    }
 	    
 	    $qr->text($qrCodeToken);
-	    return $qr->get_link();  
+	    $data['qr_link'] = $qr->get_link();
+	    $data['client_id'] = $clientid;
+	    //return $qr->get_link();  
+	    return $data;  
 	 }	 
 }
 

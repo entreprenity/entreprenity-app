@@ -33,7 +33,7 @@
 				//console.log(data);
 				vm.data='http://callanswering.me/app/authVerify.php?auth='+data;
 				if(data !='failed')
-				{					
+				{		
 					window.open('http://callanswering.me/app/authVerify.php?auth='+data, '_blank');	
 				}
 			});

@@ -139,6 +139,14 @@
 										data: dataPost,
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									});
+				},
+				deleteComment: function (commentId) {
+					var dataPost = {commentId: commentId};														
+					return $http({ method: 'post',
+										url: baseUrl+'deleteThisComment',
+										data: dataPost,
+										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+									});
 				}
 				
 			};
@@ -506,7 +514,7 @@
 					currentPost.created_at = new Date();
 					//vm.posts.unshift(currentPost);
 					currentPost.content = ""; //clear post textarea
-					currentPost.image = ""; //clear post image
+					//currentPost.image = ""; //clear post image
 					if(newImg)
 					{
 					 	var base64ImgString= newImg;
@@ -733,11 +741,33 @@
 				vm.openPostToEdit = function(index) {
 					vm.indexOfEditedPost = index;
 					vm.editState = true;
-				}
+				};
 
 				vm.nextPage = function() {
 					//console.log('trigger nextpage');
-				}
+				};
+				
+				//Delete a comment
+				//Jerry
+				vm.deleteComment = function(comment) 
+				{
+					console.log(comment);
+					var commentId = comment;
+					
+					if(commentId)
+					{
+						//service to delete a post
+						newsFeedService.deleteComment(commentId).then(function(response) {
+							if(response.data.response == 'success'){
+								//Splice the comments array here
+								
+							}else{
+								//Show error message here
+																
+							}
+						});
+					}
+				};
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';
