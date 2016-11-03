@@ -18,7 +18,7 @@
 			qrCodeService.getMyQRCode().success(function(data) {
 				//vm.qrCode 			= data;
 				vm.qrCode 			= data.qr_link;
-				vm.client_id 			= data.client_id;
+				vm.vofClientId 			= data.vofClientId;
 			 });
 		});
 	

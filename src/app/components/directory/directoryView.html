@@ -115,7 +115,7 @@
 								</div>
 							</a>
 							<hr>
-							<div class="button-group">
+							<div class="button-group" ng-show="!vm.checkEventFinished(vm.events.items[{{$index}}].date_time_formatted)"><!--!vm.events.items[{{$index}}].joining && -->
 								<a class="btn btn-default" ng-click="vm.going_event(event.id)" ng-hide="vm.events.items[{{$index}}].joining">JOIN</a>
 								<a class="btn btn-primary" ng-click="vm.notGoing_event(event.id)" ng-show="vm.events.items[{{$index}}].joining">NOT JOINING ANYMORE</a>
 							</div>

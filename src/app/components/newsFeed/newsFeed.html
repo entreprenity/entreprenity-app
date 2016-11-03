@@ -35,7 +35,7 @@
 					ng-model="vm.currentPost.content"
 					placeholder="What do you need right now? Start a conversation..."
 					ta-disabled="vm.disabled"
-					ta-toolbar="[]"
+					ta-toolbar="[['insertLink','bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo']]"
 					class="post-wysiwyg-editor"
 					required
 			></text-angular>
@@ -173,7 +173,8 @@
 									<a ng-click="vm.unLikeComment(comment.commentId)" ng-show="comment.isLiked">Liked</a>
 								</div>
 								<div class="clearfix"></div>
-								<div class="comment-content">{{comment.content}}</div><button ng-click="vm.deleteComment(comment.commentId)">&times;</button>
+								<div class="comment-content">{{comment.content}}</div>
+								<button ng-click="vm.deleteComment(comment.commentId)" ng-if="vm.currentPost.post_author.id == comment.comment_author.id">&times;</button>
 							</li>
 						</ul>
 

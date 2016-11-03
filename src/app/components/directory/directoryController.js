@@ -198,6 +198,16 @@
 				//console.log(vm.location);
 			});
 			
+			vm.checkEventFinished = function (date_time) {
+				var today = new Date();
+				var event_date_time = new Date(date_time);
+				if(event_date_time > today){
+					return false;
+				}else{
+					return true;
+				}			
+			};
+			
 			
 			vm.follow_member = function(memberId) {
 				var index = returnIndexOfCLicked(vm.members.items, memberId);				

@@ -411,6 +411,7 @@ function getEvents()
 			}
 			
 			$data[$i]['city']				=	$row['city'];
+			$data[$i]['date_time_formatted']				=	date('Y/m/d H:i:s', strtotime($row['event_date_time']));
 			$data[$i]['date']				=	$row['event_date'];
 			$data[$i]['time']				=	$row['event_time'];
 			$data[$i]['joining']			=	goingForThisEventorNot($data[$i]['id']);

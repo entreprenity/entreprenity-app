@@ -1245,6 +1245,7 @@ function getUserQRCode()
 	    $qr->text($qrCodeToken);
 	    $data['qr_link'] = $qr->get_link();
 	    $data['client_id'] = $clientid;
+	    $data['vofClientId'] = $vofClientId;
 	    //return $qr->get_link();  
 	    return $data;  
 	 }	 
@@ -1766,6 +1767,7 @@ function viewEventDetail()
 	   		$data['name']			=	$row['eventName'];
 	   		$data['address']		=	$row['address'];
 	
+	   		$data['date_time_formatted']			=	date('Y/m/d H:i:s', strtotime($row['event_date_time']));
 	   		$data['date']			=	$row['event_date'];
 	   		$data['startTime']	=	$row['start_time'];
 	   		$data['endTime']		=	$row['end_time'];

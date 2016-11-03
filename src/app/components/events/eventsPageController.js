@@ -45,6 +45,13 @@
 
 		eventsPageService.getEventProfile(vm.eventId).success(function(data) {
 			vm.event = data;
+			var today = new Date();
+			var event_date_time = new Date(data.date_time_formatted);
+			if(event_date_time > today){
+				vm.event_over = false;
+			}else{
+				vm.event_over = true;
+			}
 	  		
 	  		$scope.map = 
 	  		{ 
