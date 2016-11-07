@@ -27,7 +27,7 @@
 			};
 		})
 		
-		.controller('HomeController', function($scope, $routeParams, myHomeService, AuthService) {
+		.controller('HomeController', function($scope, $routeParams, myHomeService, AuthService, settingsService) {
 			var vm = this;
 			//If user is not logged in
 			var token;
@@ -114,6 +114,11 @@
 					vm.isTriggerNextPageMy = true;					
 				}
 			}
+			
+			//Function to check facebook linked or not
+			settingsService.checkFBConnectedorNot().success(function(response) {
+				vm.FBConnected = (response == 'connected' ? true : false);
+			});
 
 			$scope.$watch('vm.activeTab', function() {
 				//alert('active tab changed' + vm.activeTab);

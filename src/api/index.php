@@ -1243,9 +1243,10 @@ function getUserQRCode()
 	    }
 	    
 	    $qr->text($qrCodeToken);
-	    $data['qr_link'] = $qr->get_link();
-	    $data['client_id'] = $clientid;
-	    $data['vofClientId'] = $vofClientId;
+	    $data['qr_link'] 			= $qr->get_link();
+	    $data['client_id'] 			= $clientid;
+	    $data['vofClientId'] 		= $vofClientId;
+	    $data['vofStaffStatus'] 	= $voffStaff;
 	    //return $qr->get_link();  
 	    return $data;  
 	 }	 

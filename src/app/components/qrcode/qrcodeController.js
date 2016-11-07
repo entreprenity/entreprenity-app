@@ -17,8 +17,9 @@
 		   //To get user session value
 			qrCodeService.getMyQRCode().success(function(data) {
 				//vm.qrCode 			= data;
-				vm.qrCode 			= data.qr_link;
-				vm.vofClientId 			= data.vofClientId;
+				vm.qrCode 				= data.qr_link;
+				vm.vofClientId 		= data.vofClientId;
+				vm.vofStaffStatus 	= data.vofStaffStatus;
 			 });
 		});
 	

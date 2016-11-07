@@ -27,15 +27,20 @@
 			        //$scope.commonId=10;
 			        //console.log($scope.commonId);
 			    };
-			    update();
+			    
+			    if (localStorage['entrp_token'])
+				 {
+			     update();
+			    }
 			
-			    $scope.$on('$routeChangeSuccess', update);	
+				 $scope.$on('$routeChangeSuccess', update);	
+			   
 
 				//If user is not logged in
 				var token;
 				if (localStorage['entrp_token'])
 				{
-			    	token = JSON.parse(localStorage['entrp_token']);
+			    	token = JSON.parse(localStorage['entrp_token']);	
 				} 
 				else 
 				{

@@ -768,6 +768,8 @@
 						});
 					}
 				};
+				
+				//console.log(localStorage);
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';

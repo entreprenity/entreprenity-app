@@ -35,7 +35,32 @@ function checkEntrpTokenExpiration()
 			
 			if(isset($_SESSION) && !empty($_SESSION)) 
 			{
-			   $resp['msg']				=	"authorized"; 
+			   //$resp['msg']				=	"authorized"; 
+			   $data = fetch_info_from_entrp_login($clientid);
+	    		
+	    		if(!empty($data))
+	    		{
+	    			if($data['success'] == 'true')
+	    			{
+	    				$_SESSION['id'] 				= $data['clientid'];
+						$_SESSION['firstname'] 		= $data['firstname'];
+						$_SESSION['lastname'] 		= $data['lastname'];
+						$_SESSION['login_token'] 	= $token;
+						$_SESSION['username'] 	   = $data['username']; 
+						
+						update_lastlogin_datetime($data['clientid']);
+						
+						$resp['msg']				=	"authorized";
+	    			}
+	    			else
+	    			{
+	    				$resp['msg']				=	"unauthorized";  
+	    			}
+	    		}
+	    		else
+	    		{
+	    			$resp['msg']				=	"unauthorized";  
+	    		}	
 			}
 			else
 			{

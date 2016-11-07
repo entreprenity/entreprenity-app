@@ -14,7 +14,7 @@
             };
         })
 
-        .controller('addEventController', function($routeParams, addEventService,$http, $scope,$location) {
+        .controller('addEventController', function($routeParams, addEventService, eventPosterService, $http, $scope,$location) {
 
 			  var vm = this;
 			  var map;
@@ -285,6 +285,8 @@
 							var endTime = new Date(vm.eventEndTime);
 							var eventendTime = endTime.getHours()+':'+endTime.getMinutes()+':'+endTime.getSeconds();
 							
+							var event_poster = $('#event_poster_ars').val();
+							
 	                	var dataPost = 
 	                			{
 	                				eventName			: vm.name,
@@ -296,7 +298,8 @@
 	                				eventLocation		: vm.source_point,
 	                				eventLocLat			: vm.src_lat,
 	                				eventLocLong		: vm.src_long,
-	                				eventCity			: vm.eventCity
+	                				eventCity			: vm.eventCity,
+	                				poster				: event_poster
 	                			
 	                			};														
 							$http({ method: 'post',
@@ -305,12 +308,15 @@
 										headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 									})
 									.success(function(data, status, headers, config) 
-								   {
+								   {console.log(data);
 								    	if(data.eventToken)
 								    	{
 								    		var eT=data.eventToken;
 								    		
-								    		$location.path('/addEventPoster/'+eT);
+								    		//$location.path('/addEventPoster/'+eT);
+								    		eventPosterService.finshEvent(eT).success(function(data) {
+												$location.path('/eventPlaced');
+											});
 								    	}
 								    	else
 								    	{
@@ -415,5 +421,22 @@
 				vm.eventStartTime = null;
 				vm.eventEndTime = null;
 			};
+			
+			$scope.myImage='';
+		    $scope.myCroppedImage='';
+		
+		    var handleFileSelect=function(evt) {
+		      var file=evt.currentTarget.files[0];
+		      var reader = new FileReader();
+		      reader.onload = function (evt) {
+		        $scope.$apply(function($scope){
+		          $scope.myImage=evt.target.result;
+		        });
+		      };
+		      reader.readAsDataURL(file);
+		    };
+		    angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+    
+    
         });
 })();

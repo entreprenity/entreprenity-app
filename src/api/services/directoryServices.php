@@ -94,7 +94,18 @@ function addNewEvent()
 		$locLong = $requestData->eventLocLong;
 		$eventLocLong=validate_input($locLong);
 		
-		
+		$poster = $requestData->poster;
+		$poster = str_replace('data:image/png;base64,', '', $poster);
+		//$poster = str_replace(' ', '+', $poster);
+		$poster = base64_decode($poster);
+		$extension = ".png";
+		$eventPosterName = uniqueEventPostersName();
+		$fileName 	 = EVENT_POSTER.$eventPosterName.$extension;
+		$filePath 	 = EVENT_POSTER_UPL.$eventPosterName.$extension;
+		$success = file_put_contents($filePath, $poster);
+		if($success == false){
+			$fileName = '';
+		}
 		//$eventLocation='';
 		//$eventLocLat='';
 		//$eventLocLong='';
@@ -108,12 +119,12 @@ function addNewEvent()
 			   (clientid,companyid,eventName,eventTagId,category,address,description,
 			    city,event_date,event_time,event_date_time,
 			    start_time,end_time,location_lat,location_long,
-			    added_by,added_on,status) 
+			    added_by,added_on,status,poster)
 			   VALUES 
 			   (".$my_session_id.", ".$companyID.",'".$eventName."','".$eventTag."',".$eventCategory.",'".$eventLocation."','".$eventDescription."',
 			    '".$eventCity."','".$eventDate."','".$eventStartTime."','".$eventDateTime."',
 			    '".$eventStartTime."','".$eventEndTime."','".$eventLocLat."','".$eventLocLong."',
-			    ".$my_session_id.",'".$addedON."',".$status.")";
+			    ".$my_session_id.",'".$addedON."',".$status.",'".$fileName."')";//$fileName
 		if(setData($qry))
 		{
 			
