@@ -1,0 +1,52 @@
+<div>
+	<div id="search">
+		<div class="search-box">
+			<input type="text" class="form-control" placeholder="Search..." ng-model="vm.searchQuery" ng-keyup="vm.searchOnKeyup()">
+		</div>
+		<div class="search-results" ng-hide="vm.isBusy">
+			<ul class="search-users">
+				<h4>Users</h4>
+				<li ng-repeat="user in vm.searchResults.users">
+					<div>{{user.clientid}}</div>
+					<div>{{user.username}}</div>
+					<div>{{user.firstname}}</div>
+					<div>{{user.lastname}}</div>
+				</li>
+				<div ng-hide="vm.searchResults.users.length">No results found</div>
+			</ul>
+			<br>
+			<ul class="search-companies">
+				<h4>Companies</h4>
+				<li ng-repeat="company in vm.searchResults.companies">
+					<div>{{company.compId}}</div>
+					<div>{{company.compUName}}</div>
+					<div>{{company.compName}}</div>
+					<div>{{company.city}}</div>
+					<div>{{company.location}}</div>
+				</li>
+				<div ng-hide="vm.searchResults.companies.length">No results found</div>
+			</ul>
+			<br>
+			<ul class="search-events">
+				<h4>Events</h4>
+				<li ng-repeat="event in vm.searchResults.events">
+					<div>{{event.id}}</div>
+					<div>{{event.eventName}}</div>
+					<div>{{event.eventTagId}}</div>
+					<div>{{event.eventDate}}</div>
+					<div>{{event.location}}</div>
+				</li>
+				<div ng-hide="vm.searchResults.events.length">No results found</div>
+			</ul>
+			<br>
+			<ul class="search-busOpp">
+				<h4>Business Opportunities</h4>
+				<li ng-repeat="opportunity in vm.searchResults.bussOpp">
+					<div>{{opportunity.id}}</div>
+					<div>{{opportunity.content}}</div>
+				</li>
+				<div ng-hide="vm.searchResults.bussOpp.length">No results found</div>
+			</ul>
+		</div>
+	</div>
+</div>

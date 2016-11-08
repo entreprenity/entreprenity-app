@@ -75,7 +75,10 @@
 		'entreprenityApp.bussOpp',
 		'entreprenityApp.resetpassword',
 		'entreprenityApp.register',
-		'entreprenityApp.qrcode'
+		'entreprenityApp.qrcode',
+		'entreprenityApp.search',
+		'entreprenityApp.searchDemo'
+		
 	])
 	.filter('UTCToNow', ['moment', function (moment) {
 	     return function (input, format) {
@@ -260,7 +263,7 @@
 			resolve: {loggedIn: onlyLoggedIn},		
 			controllerAs: 'vm'
 		})
-      .when('/eventPlaced', {
+      	.when('/eventPlaced', {
 			controller: 'eventPlacedController',
 			templateUrl: 'app/components/events/eventPlaced.html',
 			resolve: {loggedIn: onlyLoggedIn},		
@@ -282,6 +285,12 @@
 			controller: 'qrcodeController',
 			templateUrl: 'app/components/qrcode/qrcodeView.html',
 			resolve: {loggedIn: onlyLoggedIn},	
+			controllerAs: 'vm'
+		})
+		.when('/search-demo', {
+			controller: 'SearchDemoController',
+			templateUrl: 'app/components/search/searchDemoView.html',
+			resolve: {loggedIn: onlyLoggedIn},
 			controllerAs: 'vm'
 		})
 		.otherwise({
