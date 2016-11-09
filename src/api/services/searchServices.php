@@ -66,6 +66,18 @@ function searchEvents($query)
 	//LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
 	//LEFT JOIN location_info ON location_info.id=client_profile.client_location
 	//WHERE entrp_events.status IN (1,2) AND location_info.location_desc like '%global%'
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends	
 
 	$data= array();
 	$statusQuery='entrp_events.status IN (1,2)';
@@ -90,6 +102,15 @@ function searchEvents($query)
       	$data[$i]['eventTagId']	=	$row['eventTagId'];
       	$data[$i]['eventDate']	=	$row['event_date'];
       	$data[$i]['location']	=	$row['location_desc'];
+      	if($row['poster']!='')
+			{
+				$data[$i]['poster']			=	$row['poster'];
+			}
+			else
+			{
+				$data[$i]['poster']			=	$event_default_poster;
+			}
+			$data[$i]['eventUrl']			=	'events/'.$row['eventTagId'];
       	
       	$i++;
       }
@@ -106,12 +127,28 @@ function searchUserInfo($query)
 	//FROM entrp_login 
 	//WHERE entrp_login.firstname like '%dominic%' OR entrp_login.lastname like '%dominic%' OR CONCAT(entrp_login.firstname, ' ',entrp_login.lastname) like '%dominic%' 
 	//AND entrp_login.status=1
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	
 	$data= array();
 	$statusQuery='entrp_login.status=1';
-	$qry="SELECT entrp_login.clientid,entrp_login.username, entrp_login.firstname,entrp_login.lastname 
+	$qry="SELECT entrp_login.clientid,entrp_login.username, entrp_login.firstname,entrp_login.lastname,client_profile.avatar, location_info.location_desc AS userLocation
 			FROM entrp_login 
 			LEFT JOIN entrp_user_skills ON entrp_user_skills.user_id=entrp_login.clientid 
 			LEFT JOIN entrp_user_interests ON entrp_user_interests.user_id=entrp_login.clientid 
+			LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
+	      LEFT JOIN location_info ON location_info.id=client_profile.client_location
 			WHERE (".$statusQuery.") 
 			AND (entrp_login.firstname like '%$query%' OR entrp_login.lastname like '%$query%' OR CONCAT(entrp_login.firstname, ' ',entrp_login.lastname) like '%$query%'
 			     OR entrp_user_interests.interests like '%$query%' OR entrp_user_skills.skills like '%$query%' ) ";
@@ -126,6 +163,15 @@ function searchUserInfo($query)
       	$data[$i]['username']	=	$row['username'];
       	$data[$i]['firstname']	=	$row['firstname'];
       	$data[$i]['lastname']	=	$row['lastname'];
+      	
+      	if(!empty($row['avatar']))
+      	{
+      		$data[$i]['avatar']			=	$row['avatar'];
+      	}
+      	else
+      	{
+      		$data[$i]['avatar']			=	$member_default;
+      	}
       	
       	$i++;
       }
@@ -142,6 +188,20 @@ function searchCompanyInfo($query)
 	//FROM company_profiles 
 	//LEFT JOIN entrp_company_categories ON entrp_company_categories.companyid=company_profiles.id
 	//WHERE company_profiles.company_username like '%dominic%' OR company_profiles.company_name like '%dominic%' OR entrp_company_categories.category like '%first%'
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
+	
+	
 	$data= array();
 	$qry="SELECT company_profiles.*,location_info.location_desc  
 			FROM company_profiles 
@@ -156,11 +216,20 @@ function searchCompanyInfo($query)
    {
    	while($row=mysqli_fetch_array($res))
       {
-      	$data[$i]['compId']	=	$row['id'];
+      	$data[$i]['compId']		=	$row['id'];
       	$data[$i]['compUName']	=	$row['company_username'];
       	$data[$i]['compName']	=	$row['company_name'];
       	$data[$i]['city']			=	$row['city'];
       	$data[$i]['location']	=	$row['location_desc'];
+      	
+      	if($row['avatar']!='')
+			{
+				$data[$i]['avatar']			=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['avatar']			=	$company_default_avatar;
+			}
       	
       	$i++;
       }
