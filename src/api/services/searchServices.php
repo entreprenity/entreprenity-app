@@ -173,6 +173,9 @@ function searchUserInfo($query)
       		$data[$i]['avatar']			=	$member_default;
       	}
       	
+      	$companyId							=	getCompanyIDFromCompUserRelation($data[$i]['clientid']);
+			$data[$i]['companyName'] 		= getCompanyNameUsingCompUserRelation($companyId);
+      	
       	$i++;
       }
    }
