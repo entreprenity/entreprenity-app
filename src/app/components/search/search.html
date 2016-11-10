@@ -2,50 +2,57 @@
 	<div id="search">
 		<div class="search-box">
 			<input type="text" class="form-control" placeholder="Search..." ng-model="vm.searchQuery" ng-keyup="vm.searchOnKeyup()">
+			<i class="fa fa-search fa-lg"></i>
+			<i class="fa fa-spinner fa-pulse fa-spin fa-lg fa-fw" ng-show="vm.isBusy"></i>
 		</div>
 		<div class="search-results" ng-hide="vm.isBusy">
-			<ul class="search-users">
+			<ul class="search-users" ng-show="vm.searchResults.users.length">
 				<h4>Users</h4>
-				<li ng-repeat="user in vm.searchResults.users">
-					<div>{{user.clientid}}</div>
-					<div>{{user.username}}</div>
-					<div>{{user.firstname}}</div>
-					<div>{{user.lastname}}</div>
+				<li class="media" ng-repeat="user in vm.searchResults.users">
+					<a href="#/members/{{user.userName}}" class="pull-left">
+						<img ng-src="{{user.avatar}}" alt="" class="img-circle" width="40px">
+					</a>
+					<div class="media-body comment-header">
+						<a href="#/members/{{user.username}}"><strong>{{user.firstname + ' ' + user.lastname}}</strong></a>
+						<p><small class="text-muted">{{user.companyName}}</small></p>
+					</div>
 				</li>
-				<div ng-hide="vm.searchResults.users.length">No results found</div>
 			</ul>
-			<br>
-			<ul class="search-companies">
+			<ul class="search-companies" ng-show="vm.searchResults.companies.length">
 				<h4>Companies</h4>
-				<li ng-repeat="company in vm.searchResults.companies">
-					<div>{{company.compId}}</div>
-					<div>{{company.compUName}}</div>
-					<div>{{company.compName}}</div>
-					<div>{{company.city}}</div>
-					<div>{{company.location}}</div>
+				<li class="media" ng-repeat="company in vm.searchResults.companies">
+					<a href="#/companies/{{company.compUName}}" class="pull-left">
+						<img ng-src="{{company.avatar}}" alt="" class="img-circle" width="40px">
+					</a>
+					<div class="media-body comment-header">
+						<a href="#/companies/{{company.compUName}}"><strong>{{company.compName}}</strong></a>
+						<p><small class="text-muted">{{company.location}}</small></p>
+					</div>
 				</li>
-				<div ng-hide="vm.searchResults.companies.length">No results found</div>
 			</ul>
-			<br>
-			<ul class="search-events">
+			<ul class="search-events" ng-show="vm.searchResults.events.length">
 				<h4>Events</h4>
-				<li ng-repeat="event in vm.searchResults.events">
-					<div>{{event.id}}</div>
-					<div>{{event.eventName}}</div>
-					<div>{{event.eventTagId}}</div>
-					<div>{{event.eventDate}}</div>
-					<div>{{event.location}}</div>
+				<li class="media" ng-repeat="event in vm.searchResults.events">
+					<a href="#/events/{{event.eventTagId}}" class="pull-left">
+						<img ng-src="{{event.poster}}" width="40px">
+					</a>
+					<div class="media-body comment-header">
+						<a href="#/members/{{event.eventTagId}}"><strong>{{event.eventName}}</strong></a>
+						<p><small class="text-muted">{{event.eventDate}}</small>, <small class="text-muted">{{event.location}}</small></p>
+					</div>
 				</li>
-				<div ng-hide="vm.searchResults.events.length">No results found</div>
 			</ul>
-			<br>
-			<ul class="search-busOpp">
+			<ul class="search-busOpp" ng-show="vm.searchResults.bussOpp.length">
 				<h4>Business Opportunities</h4>
-				<li ng-repeat="opportunity in vm.searchResults.bussOpp">
-					<div>{{opportunity.id}}</div>
-					<div>{{opportunity.content}}</div>
+				<li class="media" ng-repeat="opportunity in vm.searchResults.bussOpp">
+					<a href="#/members/{{opportunity.user.eventTagId}}" class="pull-left">
+						<img ng-src="{{opportunity.user.avatar}}" width="40px">
+					</a>
+					<div class="media-body comment-header">
+						<a href="#/members/{{opportunity.user.userName}}"><strong>{{opportunity.user.firstName + ' ' + opportunity.user.lastName}}</strong></a>
+						<div class="post-content" ng-bind-html="opportunity.content"></div>
+					</div>
 				</li>
-				<div ng-hide="vm.searchResults.bussOpp.length">No results found</div>
 			</ul>
 		</div>
 	</div>

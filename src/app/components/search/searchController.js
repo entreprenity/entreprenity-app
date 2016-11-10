@@ -6,7 +6,6 @@
 			var baseUrl = 'api/';
 			
 			return {
-
 				getSearchResults: function(searchQuery)
 				{ 
 					return $http({
@@ -16,14 +15,13 @@
 						headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 					})
 				}
-				
 			};
 		})
 		.directive('search', function() {
 			var controller = function($routeParams, searchService, $scope) {
 				var vm = this;
 				vm.isBusy =  true;
-				
+
 				vm.searchOnKeyup = function() {
 					var searchQuery = {query: vm.searchQuery};
 					vm.isBusy = true;
