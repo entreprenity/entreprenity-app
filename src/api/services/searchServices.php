@@ -31,12 +31,26 @@ function searchBusinessOpportunities($query)
 	//FROM entrp_user_timeline
 	//LEFT JOIN entrp_user_timeline_businessopp_tags ON entrp_user_timeline.post_id=entrp_user_timeline_businessopp_tags.postid
 	//WHERE status=1 AND entrp_user_timeline.business_opp=1 
+	
+	//the defaults starts
+	global $myStaticVars;
+	extract($myStaticVars);  // make static vars local
+	$member_default_avatar 		= $member_default_avatar;
+	$member_default_cover		= $member_default_cover;
+	$member_default				= $member_default;
+	$company_default_cover		= $company_default_cover;
+	$company_default_avatar		= $company_default_avatar;
+	$events_default				= $events_default;
+	$event_default_poster		= $event_default_poster;
+	//the defaults ends
 
 	$data= array();
-	$statusQuery='status=1 AND entrp_user_timeline.business_opp=1';
-	$qry="SELECT entrp_user_timeline.*
+	$statusQuery='entrp_user_timeline.status=1 AND entrp_user_timeline.business_opp=1';
+	$qry="SELECT entrp_user_timeline.*,entrp_login.firstname,entrp_login.lastname,entrp_login.username,client_profile.avatar
 			FROM entrp_user_timeline
 			LEFT JOIN entrp_user_timeline_businessopp_tags ON entrp_user_timeline.post_id=entrp_user_timeline_businessopp_tags.postid
+			LEFT JOIN entrp_login ON entrp_login.clientid=entrp_user_timeline.posted_by
+			LEFT JOIN client_profile ON client_profile.clientid=entrp_login.clientid
 			WHERE (".$statusQuery.") 
 			AND (entrp_user_timeline_businessopp_tags.business_tags like '%$query%' OR entrp_user_timeline.content like '%$query%' ) ";
 	$res=getData($qry);
@@ -47,7 +61,19 @@ function searchBusinessOpportunities($query)
    	while($row=mysqli_fetch_array($res))
       {
       	$data[$i]['id']			=	$row['post_id'];
-      	$data[$i]['content']	=	$row['content'];
+      	$data[$i]['content']		=	$row['content'];
+      	
+			$data[$i]['user']['firstName']		=	$row['firstname'];
+			$data[$i]['user']['lastName']			=	$row['lastname'];
+			if($row['avatar']!='')
+			{
+				$data[$i]['user']['avatar']		=	$row['avatar'];
+			}
+			else
+			{
+				$data[$i]['user']['avatar']		=	$member_default_avatar;
+			}
+			$data[$i]['user']['userName']			=	$row['username'];
       	
       	$i++;
       }
