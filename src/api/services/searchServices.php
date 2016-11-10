@@ -15,11 +15,13 @@ function searchResultsFor()
 	//BO Posts- posts, tags
 	$data= array();
 	$query = validate_input($_POST['query']);
-	
-	$data["users"]			=	searchUserInfo($query);
-	$data["companies"]	=	searchCompanyInfo($query);
-	$data["events"]		=	searchEvents($query);
-	$data["bussOpp"]		=	searchBusinessOpportunities($query);
+	if(strlen($query)>=3)
+	{
+		$data["users"]			=	searchUserInfo($query);
+		$data["companies"]	=	searchCompanyInfo($query);
+		$data["events"]		=	searchEvents($query);
+		$data["bussOpp"]		=	searchBusinessOpportunities($query);
+	}
 	return $data;
 }
 
