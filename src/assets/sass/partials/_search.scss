@@ -1,5 +1,4 @@
 #search {
-  max-width: 500px;
   a {
     color: inherit;
     text-decoration: none;
@@ -9,6 +8,12 @@
     input {
       border-color: $primary-divider-color;
       outline-color: $primary-divider-color;
+      &:focus {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+
+      }
     }
     .fa-search {
       position: absolute;
@@ -28,6 +33,8 @@
     background-color: #ffffff;
     max-height: 500px;
     overflow-y: auto;
+    border: 1px solid;
+    border-color: $primary-border-color;
     ul {
       h4 {
         border-bottom: 1px solid $primary-divider-color;
@@ -44,5 +51,24 @@
 
       }
     }
+  }
+}
+
+#searchDirectiveContainer {
+  position: fixed;
+  top: 15px;
+  z-index: 1050;
+  width: 500px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  @media (max-width: 900px) {
+    width: 300px;
+  }
+  @media (max-width: 768px) {
+    position: fixed;
+    width: 100%;
+    padding: 15px;
+    background-color: #222;
+    top: 70px;
   }
 }

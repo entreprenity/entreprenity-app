@@ -20,24 +20,27 @@
 		.directive('search', function() {
 			var controller = function($routeParams, searchService, $scope) {
 				var vm = this;
-				vm.isBusy =  true;
+				vm.isBusy =  false;
+				vm.showResultsDiv = false;
 
 				vm.searchOnKeyup = function() {
 					var searchQuery = {query: vm.searchQuery};
+
 					vm.isBusy = true;
 
-					console.log(searchQuery);
-					console.log(vm.searchQuery.length);
-
-					if(vm.searchQuery.length > 0) {
+					if(vm.searchQuery.length > 2) {
+						console.log(searchQuery);
+						console.log(vm.searchQuery.length);
 						//Service to get search results
 						searchService.getSearchResults(searchQuery).success(function(data) {
 							vm.searchResults = data;
 							console.log(vm);
 							vm.isBusy =  false;
+							vm.showResultsDiv = true;
 						});
 					} else {
-						vm.isBusy =  true;
+						vm.isBusy =  false;
+						vm.showResultsDiv = false;
 					}
 
 				}

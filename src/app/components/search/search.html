@@ -5,7 +5,7 @@
 			<i class="fa fa-search fa-lg"></i>
 			<i class="fa fa-spinner fa-pulse fa-spin fa-lg fa-fw" ng-show="vm.isBusy"></i>
 		</div>
-		<div class="search-results" ng-hide="vm.isBusy">
+		<div class="search-results" ng-show="vm.showResultsDiv">
 			<ul class="search-users" ng-show="vm.searchResults.users.length">
 				<h4>Users</h4>
 				<li class="media" ng-repeat="user in vm.searchResults.users">
