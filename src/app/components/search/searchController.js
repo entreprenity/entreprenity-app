@@ -42,8 +42,24 @@
 						vm.isBusy =  false;
 						vm.showResultsDiv = false;
 					}
-
 				}
+
+				vm.convertToHTML =  function(content) {
+					var origContent = content;
+					var htmlContent;
+
+					htmlContent = replaceAll(content, '&lt;', '<');
+					htmlContent = replaceAll(htmlContent, '&gt;', '>');
+
+					return htmlContent;
+				}
+
+				var replaceAll = function(string, search, replacement) {
+					var target = string;
+					return target.replace(new RegExp(search, 'g'), replacement);
+				};
+
+
 				
 			};
 		

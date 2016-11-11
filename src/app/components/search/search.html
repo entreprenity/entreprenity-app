@@ -37,7 +37,7 @@
 						<img ng-src="{{event.poster}}" width="40px">
 					</a>
 					<div class="media-body comment-header">
-						<a href="#/members/{{event.eventTagId}}"><strong>{{event.eventName}}</strong></a>
+						<a href="#/events/{{event.eventTagId}}"><strong>{{event.eventName}}</strong></a>
 						<p><small class="text-muted">{{event.eventDate}}</small>, <small class="text-muted">{{event.location}}</small></p>
 					</div>
 				</li>
@@ -50,7 +50,7 @@
 					</a>
 					<div class="media-body comment-header">
 						<a href="#/members/{{opportunity.user.userName}}"><strong>{{opportunity.user.firstName + ' ' + opportunity.user.lastName}}</strong></a>
-						<div class="post-content" ng-bind-html="opportunity.content"></div>
+						<div class="post-content" ng-bind-html="vm.convertToHTML(opportunity.content)"></div>
 					</div>
 				</li>
 			</ul>
