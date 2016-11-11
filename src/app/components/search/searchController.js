@@ -29,12 +29,12 @@
 					vm.isBusy = true;
 
 					if(vm.searchQuery.length > 2) {
-						console.log(searchQuery);
-						console.log(vm.searchQuery.length);
+						//console.log(searchQuery);
+						//console.log(vm.searchQuery.length);
 						//Service to get search results
 						searchService.getSearchResults(searchQuery).success(function(data) {
 							vm.searchResults = data;
-							console.log(vm);
+							//console.log(vm);
 							vm.isBusy =  false;
 							vm.showResultsDiv = true;
 						});
