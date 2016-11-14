@@ -163,7 +163,10 @@
 								</a>
 								<div class="media-body comment-header">
 										<span class="text-muted pull-right">
-											<small class="text-muted"><span am-time-ago="comment.created_at| UTCToNow"></span></small>
+											<small class="text-muted">
+												<span am-time-ago="comment.created_at| UTCToNow"></span>
+												<span ng-click="vm.deleteComment(post.comments,$index,comment.commentId)" ng-if="vm.currentPost.post_author.id == comment.comment_author.id"><i class="fa fa-times"></i></span>
+											</small>
 										</span>
 										<a href="#/members/{{comment.comment_author.userName}}" ><strong>{{comment.comment_author.firstName + ' ' + comment.comment_author.lastName}}</strong></a>
 										<p><small class="text-muted">{{comment.comment_author.companyName}}</small></p>
@@ -174,7 +177,6 @@
 								</div>
 								<div class="clearfix"></div>
 								<div class="comment-content">{{comment.content}}</div>
-								<button ng-click="vm.deleteComment(comment.commentId)" ng-if="vm.currentPost.post_author.id == comment.comment_author.id">&times;</button>
 							</li>
 						</ul>
 

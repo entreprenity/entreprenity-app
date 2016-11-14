@@ -749,27 +749,25 @@
 				
 				//Delete a comment
 				//Jerry
-				vm.deleteComment = function(comment) 
+				vm.deleteComment = function(commentArray, commentIndex, commentId)
 				{
-					console.log(comment);
-					var commentId = comment;
-					
+					console.log(commentArray, commentIndex, commentId);
+					//var commentId = comment;
+
 					if(commentId)
 					{
 						//service to delete a post
 						newsFeedService.deleteComment(commentId).then(function(response) {
 							if(response.data.response == 'success'){
 								//Splice the comments array here
-								
+								commentArray.splice(commentIndex, 1);
 							}else{
 								//Show error message here
-																
 							}
 						});
 					}
+
 				};
-				
-				//console.log(localStorage);
 			};
 		
 			var template = '<button>{{vm.poststype}}</button>';
