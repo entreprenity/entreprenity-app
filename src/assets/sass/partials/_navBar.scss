@@ -50,4 +50,10 @@
     }
   }
 
+  @media (max-width: 767px) {
+    .navbar-collapse {
+      padding-top:60px;
+    }
+  }
+
 }
