@@ -39,17 +39,20 @@
 
 		.controller('EventsPageController', function($routeParams, eventsPageService,$scope) {
 		var vm = this;
-
 		vm.eventId = $routeParams.eventId;
 		
 
 		eventsPageService.getEventProfile(vm.eventId).success(function(data) {
 			vm.event = data;
+			vm.event_over=true;
 			var today = new Date();
 			var event_date_time = new Date(data.date_time_formatted);
-			if(event_date_time > today){
+			if(event_date_time > today)
+			{
 				vm.event_over = false;
-			}else{
+			}
+			else
+			{
 				vm.event_over = true;
 			}
 	  		

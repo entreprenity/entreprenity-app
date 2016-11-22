@@ -398,8 +398,8 @@ function getEvents()
 	$data= array();
 	
 	$qry="SELECT * FROM entrp_events 
-			WHERE status=1 
-			ORDER BY event_date_time ASC 
+			WHERE status IN (1,2) 
+			ORDER BY event_date_time DESC 
 			LIMIT $start, $limit";
 	$res=getData($qry);
    $count_res=mysqli_num_rows($res);
